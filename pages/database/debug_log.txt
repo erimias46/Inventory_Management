@@ -1,0 +1,14 @@
+2024-08-22 06:39:15 - Received data: ID = 25, Type = banner, Item ID = 195
+2024-08-22 06:39:15 - Fetched row: null
+2024-08-22 06:39:15 - Row not found for ID = 25 and Type = banner.
+
+
+2024-08-22 06:43:34 - Received data: ID = 25, Type = banner, Item ID = 195
+2024-08-22 06:43:34 - Fetched row: null
+2024-08-22 06:43:34 - Row not found for ID = 25 and Type = banner.
+2024-08-22 06:45:29 - Received data: ID = 19, Type = banner, Item ID = 195
+2024-08-22 06:45:29 - Fetched row: {"data":"[\"195\", \"194\"]"}
+2024-08-22 06:45:29 - JSON data before modification: ["195","194"]
+2024-08-22 06:45:29 - Item with ID 195 removed from JSON data.
+2024-08-22 06:45:29 - JSON data after modification: {"1":"194"}
+2024-08-22 06:45:29 - Updated row with new JSON data.

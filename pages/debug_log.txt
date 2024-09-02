@@ -1,0 +1,17 @@
+[2024-08-09 14:28:23] SQL Query: SELECT * FROM `digital`
+[2024-08-09 14:31:16] SQL Query: SELECT * FROM `digital`
+[2024-08-09 14:31:37] SQL Query: SELECT * FROM `digital` WHERE `date` BETWEEN '2024-08-08' AND '2024-08-09'
+[2024-08-09 14:32:05] SQL Query: SELECT * FROM `brocher` WHERE `date` BETWEEN '2024-08-08' AND '2024-08-09'
+[2024-08-09 15:18:57] SQL Query: SELECT * FROM `sales`
+[2024-08-09 15:27:27] SQL Query: SELECT * FROM `sales_withoutvat`
+[2024-08-09 15:33:13] SQL Query: SELECT * FROM `sales` WHERE `date` BETWEEN '2024-08-08' AND '2024-08-09'
+[2024-08-09 15:33:13] Error: Unknown column 'date' in 'where clause'
+[2024-08-09 15:34:29] SQL Query: SELECT * FROM `sales` WHERE `date` BETWEEN '2024-08-08' AND '2024-08-09'
+[2024-08-09 15:34:29] Error: Unknown column 'date' in 'where clause'
+[2024-08-09 15:34:34] SQL Query: SELECT * FROM `sales` WHERE `date` BETWEEN '2024-08-08' AND '2024-08-09'
+[2024-08-09 15:34:34] Error: Unknown column 'date' in 'where clause'
+[2024-08-12 07:46:02] SQL Query: SELECT * FROM `stock`
+[2024-08-12 07:46:33] SQL Query: SELECT * FROM `file`
+[2024-08-28 18:34:30] SQL Query: SELECT * FROM `generate`
+[2024-08-28 20:14:40] SQL Query: SELECT * FROM `remainder`
+[2024-08-28 20:14:40] No data found for the given criteria.

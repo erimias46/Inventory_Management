@@ -1,0 +1,7 @@
+[2024-08-09 15:36:21] SQL Query: SELECT * FROM `sales` WHERE `sales_date` BETWEEN '2024-08-08' AND '2024-08-09'
+[2024-08-09 15:36:56] SQL Query: SELECT * FROM `sales`
+[2024-08-09 15:38:56] SQL Query: SELECT * FROM `sales_withoutvat_purchase` WHERE `sales_date` BETWEEN '2024-08-08' AND '2024-08-09'
+[2024-08-09 15:39:16] SQL Query: SELECT * FROM `sales_withoutvat_purchase`
+[2024-08-09 15:40:26] SQL Query: SELECT * FROM `sales_withvat` WHERE `sales_date` BETWEEN '2024-08-08' AND '2024-08-09'
+[2024-08-09 15:41:38] SQL Query: SELECT * FROM `sales_withoutvat` WHERE `sales_date` BETWEEN '2024-08-08' AND '2024-08-09'
+[2024-08-09 15:41:53] SQL Query: SELECT * FROM `sales_withoutvat`

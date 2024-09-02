@@ -1,0 +1,8 @@
+[07-Aug-2024 15:50:36 UTC] PHP Warning:  Undefined variable $customer in /home/habeshyq/elegant.habeshamovie.com/include/pdf/index1.php on line 115
+[07-Aug-2024 15:51:26 UTC] PHP Warning:  Undefined variable $customer in /home/habeshyq/elegant.habeshamovie.com/include/pdf/index1.php on line 115
+[07-Aug-2024 16:26:16 UTC] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: int + string in /home/habeshyq/elegant.habeshamovie.com/include/pdf/index1.php:48
+Stack trace:
+#0 {main}
+  thrown in /home/habeshyq/elegant.habeshamovie.com/include/pdf/index1.php on line 48
+[07-Aug-2024 16:28:35 UTC] PHP Warning:  Undefined variable $customer in /home/habeshyq/elegant.habeshamovie.com/include/pdf/index1.php on line 117
+[07-Aug-2024 16:29:11 UTC] PHP Warning:  Undefined variable $customer in /home/habeshyq/elegant.habeshamovie.com/include/pdf/index1.php on line 121

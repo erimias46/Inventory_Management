@@ -105,12 +105,7 @@ if ($result) {
 
 
 
-            <li class="menu-item">
-                <a href="https://project.habeshamovie.com/" class="menu-link">
-                    <span class="menu-icon"><i class="msr">work</i></span>
-                    <span class="menu-text"> Project Management </span>
-                </a>
-            </li>
+           
 
             <li class="menu-item">
                 <a href="<?php echo $redirect_link ?>index.php" class="menu-link">

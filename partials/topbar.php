@@ -42,7 +42,7 @@
 
 
 
-    <div class="relative md:flex hidden">
+    <!-- <div class="relative md:flex hidden">
         <a class="nav-link" href="<?= $redirect_link ?>pages/deliver.php">
             <button type="button" class="btn bg-warning text-white rounded-full">
                 <i class="mgc_pdf_line text-base me-2"></i>
@@ -65,7 +65,7 @@
                 Generate
             </button>
         </a>
-    </div>
+    </div> -->
 
     <!-- Light/Dark Toggle Button -->
     <div class="flex">

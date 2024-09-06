@@ -18,109 +18,182 @@ if (isset($_GET['import_brocher_id'])) {
     $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
 }
 
-?>
 
-<?php
-if (isset($_POST['add'])) {
 
-    // Collect form data
-    $jeans_name = $_POST['jeans_name'];
-    $size_ids = $_POST['size_ids']; // Array of size IDs
-    $sizes = $_POST['sizes']; // Array of sizes
-    $quantities = $_POST['quantities']; // Array of quantities
-    $type_id = $_POST['type'];
-    $price = $_POST['price'];
-    
-    $image = $_FILES['image']['name'];
 
-    // Fetch type from the database
-    $sql = "SELECT * FROM trouser_type_db WHERE id='$type_id'";
+
+
+if (isset($_POST['set_entries'])) {
+    $num_entries = $_POST['num_entries'];
+
+    // Fetch size options from the jeansdb
+    $sizeOptions = '';
+    $sql = "SELECT * FROM jeansdb";
     $result = mysqli_query($con, $sql);
-    $row = mysqli_fetch_assoc($result);
-    $type = $row['type'];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $sizeOptions .= '<option value="' . $row['id'] . '">' . $row['size'] . '</option>';
+    }
 
-    // Set the target directory for uploads
-    $target_dir = $redirect_link . "include/uploads/";
+    // Fetch type options from the trouser_type_db
+    $typeOptions = '';
+    $sql = "SELECT * FROM trouser_type_db";
+    $result = mysqli_query($con, $sql);
+    while ($row = mysqli_fetch_assoc($result)) {
+        $typeOptions .= '<option value="' . $row['id'] . '">' . $row['type'] . '</option>';
+    }
 
-    // Check if an image was uploaded
-    if (!empty($image)) {
-        $target_file = $target_dir . basename($image);
-        $uploadOk = 1;
+    echo '<form method="post" enctype="multipart/form-data">';
+    echo '<table class="min-w-full border-collapse">';
+    echo '<thead>';
+    echo '<tr>';
+    echo '<th class="border p-2">Jeans Name</th>';
+    echo '<th class="border p-2">Size</th>';
+    echo '<th class="border p-2">Type</th>';
+    echo '<th class="border p-2">Price</th>';
+    echo '<th class="border p-2">Quantity</th>';
+    echo '<th class="border p-2">Private</th>';
+    echo '<th class="border p-2">Product Image</th>';
+    echo '<th class="border p-2">Image Preview</th>';
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
 
-        // Validate if the file is an image
-        $check = getimagesize($_FILES['image']['tmp_name']);
-        if ($check !== false) {
+    for ($i = 1; $i <= $num_entries; $i++) {
+        echo '<tr>';
+        echo '<td class="border p-2"><input type="text" name="jeans_name_' . $i . '" class="form-input" required></td>';
+        echo '<td class="border p-2"><select name="size_' . $i . '" class="search-select" required>' . $sizeOptions . '</select></td>';
+        echo '<td class="border p-2"><select name="type_' . $i . '" class="search-select" required>' . $typeOptions . '</select></td>';
+        echo '<td class="border p-2"><input type="number" step="0.0000001" name="price_' . $i . '" class="form-input" required></td>';
+        echo '<td class="border p-2"><input type="number" step="0.0000001" name="quantity_' . $i . '" class="form-input" required></td>';
+        echo '<td class="border p-2"><select name="private_' . $i . '" class="form-input" required>';
+        echo '<option value="choose">Select</option>';
+        echo '<option value="yes">Yes</option>';
+        echo '<option value="no">No</option>';
+        echo '</select></td>';
+
+        // File input for product image
+        echo '<td class="border p-2">';
+        echo '<label for="fileInput_' . $i . '" class="custom-file-label">Choose Image</label>';
+        echo '<input type="file" name="image_' . $i . '" class="form-input choose-image" id="fileInput_' . $i . '" onchange="previewImage(event, ' . $i . ')">';
+        echo '</td>';
+
+        // Image preview section
+        echo '<td class="border p-2">';
+        echo '<div class="image-preview" id="imagePreview_' . $i . '">';
+        echo '<img src="../../include/uploads/defaultjeans.jpg" />';
+        echo '</div>';
+        echo '</td>';
+
+        echo '</tr>';
+    }
+
+    echo '</tbody>';
+    echo '</table>';
+    echo '<button type="submit" name="add_entries" class="btn btn-sm bg-success text-white rounded-full mt-4">Add Entries</button>';
+    echo '</form>';
+}
+
+
+
+
+
+if (isset($_POST['add_entries'])) {
+    $num_entries = $_POST['num_entries'];
+
+    for ($i = 1; $i <= $num_entries; $i++) {
+        $jeans_name = $_POST['jeans_name_' . $i];
+        $size_id = $_POST['size_' . $i];
+        $type_id = $_POST['type_' . $i];
+        $price = $_POST['price_' . $i];
+        $quantity = $_POST['quantity_' . $i];
+        $private = $_POST['private_' . $i];
+        $image = $_FILES['image_' . $i]['name'];
+
+        // Fetch size from the database
+        $sql = "SELECT * FROM jeansdb WHERE id='$size_id'";
+        $result = mysqli_query($con, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $size = $row['size'];
+
+        // Fetch type from the database
+        $sql = "SELECT * FROM trouser_type_db WHERE id='$type_id'";
+        $result = mysqli_query($con, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $type = $row['type'];
+
+        // Set the target directory for uploads
+        $target_dir = $redirect_link . "include/uploads/";
+
+        // Check if an image was uploaded
+        if (!empty($image)) {
+            $target_file = $target_dir . basename($image);
             $uploadOk = 1;
-        } else {
-            $uploadOk = 0;
-            $error_message = "File is not an image.";
-        }
 
-        // Allow only specific file formats
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-        if (!in_array($imageFileType, $allowed_extensions)) {
-            $uploadOk = 0;
-            $error_message = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-        }
-
-        // Check file size (500 KB limit)
-        if ($_FILES['image']['size'] > 500000) {
-            $uploadOk = 0;
-            $error_message = "Sorry, your file is too large.";
-        }
-
-        // Attempt to upload the file if no issues
-        if ($uploadOk == 1) {
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-                $image_path = 'uploads/' . basename($image);
+            // Validate if the file is an image
+            $check = getimagesize($_FILES['image_' . $i]['tmp_name']);
+            if ($check !== false) {
+                $uploadOk = 1;
             } else {
                 $uploadOk = 0;
-                $error_message = "Sorry, there was an error uploading your file.";
+                $error_message = "File is not an image.";
             }
+
+            // Allow only specific file formats
+            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+            if (!in_array($imageFileType, $allowed_extensions)) {
+                $uploadOk = 0;
+                $error_message = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            }
+
+            // Check file size
+            if ($_FILES['image_' . $i]['size'] > 500000) { // 500 KB
+                $uploadOk = 0;
+                $error_message = "Sorry, your file is too large.";
+            }
+
+            // Attempt to upload the file if no issues
+            if ($uploadOk == 1) {
+                if (move_uploaded_file($_FILES['image_' . $i]['tmp_name'], $target_file)) {
+                    $image_path = 'uploads/' . basename($image);
+                } else {
+                    $uploadOk = 0;
+                    $error_message = "Sorry, there was an error uploading your file.";
+                }
+            }
+        } else {
+            // If no image is uploaded, use the default image
+            $image_path = 'uploads/defaultjeans.jpg';
         }
-    } else {
-        // If no image is uploaded, use the default image
-        $image_path = 'uploads/defaultjeans.jpg';
-    }
 
-    // If image upload failed, use the default image
-    if ($uploadOk == 0) {
-        $image_path = 'uploads/defaultjeans.jpg';
-    }
+        // If image upload failed, use the default image
+        if ($uploadOk == 0) {
+            $image_path = 'uploads/defaultjeans.jpg';
+        }
 
-    // Loop through sizes and quantities to insert each size with quantity > 0
-    for ($i = 0; $i < count($sizes); $i++) {
-        $size = $sizes[$i];
-        $size_id = $size_ids[$i];
-        $quantity = $quantities[$i];
+        // Insert the jeans data into the database
+        $add_jeans = "INSERT INTO jeans(jeans_name, size, size_id, image, price, private, type_id, type, quantity)
+    VALUES ('$jeans_name', '$size', '$size_id', '$image_path', '$price', '$private', '$type_id', '$type', '$quantity')";
+        $result_add = mysqli_query($con, $add_jeans);
 
-        // Insert only if the quantity is greater than zero
-        if ($quantity > 0) {
-            $add_jeans = "INSERT INTO jeans(jeans_name, size, size_id, image, price,type_id, type, quantity) 
-                          VALUES ('$jeans_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity')";
-            mysqli_query($con, $add_jeans);
+        // Check if the insert was successful
+        if (!$result_add) {
+            $status = isset($error_message) ? $error_message : "Error adding jeans to the database for entry $i.";
+            echo "<script>
+        window.location = 'action.php?status=error&message=$status&redirect=add_multiple_jeans.php';
+    </script>";
+            //  exit; // Stop further processing if there's an error
         }
     }
 
-    // Redirect after successful insertion
-
-    if ($add_jeans) {
-        echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
-    } else {
-        echo "<script>window.location = 'action.php?status=error&message=Error adding jeans to the database.&redirect=add_single_jeans.php';</script>";
-    }
-    echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
+    // // If all inserts are successful, redirect with success
+    // echo "<script>
+    //     window.location = 'action.php?status=success&redirect=add_multiple_jeans.php';
+    // </script>";
 }
+
 ?>
 
-<?php
-
-
-if (isset($_POST['update'])) {
-}
-
-?>
 
 <?php
 $id = $_SESSION['user_id'];
@@ -172,6 +245,17 @@ if ($result) {
 
 
     <?php include $redirect_link . 'partials/head-css.php'; ?>
+
+    <script>
+        function previewImage(event, index) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('imagePreview_' + index).getElementsByTagName('img')[0];
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 
 
     <style>
@@ -237,6 +321,14 @@ if ($result) {
                         <div class="card-header">
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium"><?= $title ?></h4>
                         </div>
+
+
+                        <form method="post" action="">
+                            <label for="num_entries">How many entries would you like to make?</label>
+                            <input type="number" name="num_entries" id="num_entries" min="1" required class="form-input">
+                            <button type="submit" name="set_entries">Set Entries</button>
+                        </form>
+
                         <div class="p-6">
 
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -249,7 +341,36 @@ if ($result) {
                                         <!-- Options will be populated here -->
                                     </datalist>
                                 </div>
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Size</label>
 
+                                    <select name="size" class="search-select" required>
+
+                                        <?php
+
+                                        $sql = "SELECT * FROM jeansdb";
+                                        $result = mysqli_query($con, $sql);
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                            <option value="<?php echo $row['id'] ?>" <?php
+                                                                                        if (isset($size)) {
+                                                                                            if ($row['size'] == $size) {
+                                                                                                echo "selected";
+                                                                                            }
+                                                                                        }
+                                                                                        ?>>
+                                                <?php echo $row['size']; ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
+
+
+
+
+                                    </select>
+
+                                </div>
 
 
 
@@ -292,8 +413,24 @@ if ($result) {
                                     <input type="number" step="0.0000001" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
                                 </div>
 
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Quantity</label>
+                                    <input type="number" step="0.0000001" name="quantity" class="form-input" required value="<?php if (isset($quantity)) echo  $quantity ?>">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Private</label>
 
 
+                                    <Select name="private" class="form-input" required>
+
+                                        <option value="choose">Select</option>
+                                        <option value="yes" <?php if (isset($private) && $private == 'yes') echo 'selected' ?>>Yes
+                                        </option>
+                                        <option value="no" <?php if (isset($private) && $private == 'no') echo 'selected' ?>>No</option>
+                                    </Select>
+
+
+                                </div>
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">Product Image</label>
@@ -310,33 +447,6 @@ if ($result) {
                                 </div>
 
 
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Sizes and Quantities</label>
-
-                                    <?php
-                                    // Fetch all sizes from the `jeansdb` table
-                                    $sql = "SELECT * FROM jeansdb";
-                                    $result = mysqli_query($con, $sql);
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        $size = $row['size'];
-                                    ?>
-                                        <div class="flex items-center mb-2 justify-between">
-                                            <!-- Size Label -->
-                                            <label class="text-gray-800 text-sm font-medium flex-1"><?php echo $size; ?></label>
-
-                                            <!-- Hidden input for size ID -->
-                                            <input type="hidden" name="size_ids[]" value="<?php echo $row['id']; ?>">
-
-                                            <!-- Hidden input for size value -->
-                                            <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
-
-                                            <!-- Quantity Input -->
-                                            <input type="number" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
-                                        </div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
 
 
 
@@ -386,22 +496,7 @@ if ($result) {
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
 
 
-    <script>
-        function previewImage(event) {
-            const imagePreview = document.getElementById('imagePreview');
-            imagePreview.innerHTML = ''; // Clear previous image
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    imagePreview.appendChild(img);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-    </script>
+
 
 
     <script>
@@ -451,5 +546,3 @@ if ($result) {
             });
     });
 </script>
-
-<script src="../../assets/libs/dropzone/min/dropzone.min.js"></script>

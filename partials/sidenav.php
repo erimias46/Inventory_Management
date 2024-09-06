@@ -144,7 +144,7 @@ if ($result) {
                         <?php endif; ?>
 
 
-                        <?php if ($bookview) : ?>
+                        <!-- <?php if ($bookview) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/price_calculator/bag.php" class="menu-link">
                                     <span class="menu-text">Bag</span>
@@ -193,7 +193,7 @@ if ($result) {
                                     <span class="menu-text">Multi Page Digital</span>
                                 </a>
                             </li>
-                        <?php endif; ?>
+                        <?php endif; ?> -->
                     </ul>
                 </li>
             <?php endif; ?>

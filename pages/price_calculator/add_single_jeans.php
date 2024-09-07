@@ -110,7 +110,7 @@ if (isset($_POST['add'])) {
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error adding jeans to the database.&redirect=add_single_jeans.php';</script>";
     }
-    echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
+    
 }
 ?>
 

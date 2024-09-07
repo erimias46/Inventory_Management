@@ -105,7 +105,7 @@ if ($result) {
 
 
 
-           
+
 
             <li class="menu-item">
                 <a href="<?php echo $redirect_link ?>index.php" class="menu-link">
@@ -139,6 +139,14 @@ if ($result) {
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/price_calculator/all_jeans.php" class="menu-link">
                                     <span class="menu-text">All Jeans</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/price_calculator/type_jeans.php" class="menu-link">
+                                    <span class="menu-text">Type Jeans</span>
                                 </a>
                             </li>
                         <?php endif; ?>

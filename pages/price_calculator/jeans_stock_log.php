@@ -80,7 +80,7 @@ $stock = '';
 
                             </p>
                             <a class="inline-flex items-center gap-2 mt-5 text-sm font-medium text-primary hover:text-sky-700" href="#">
-                                <a href="stock_log.php" class="btn bg-danger text-white"><i class="fas fa-undo-alt"></i> Reset</a>
+                                <a href="jeans_stock_log.php" class="btn bg-danger text-white"><i class="fas fa-undo-alt"></i> Reset</a>
                                 <button name="filter" type="submit" class="btn bg-success text-white"><i class="fab fa-gitter"></i> Filter</button>
                             </a>
                         </form>
@@ -146,7 +146,7 @@ $stock = '';
                                                 <th>Error</th>
                                                 <th>Add/Remove</th>
                                                 <th>Log Type</th>
-                                               
+
                                                 <th>Date</th>
 
                                             </tr>
@@ -197,14 +197,14 @@ $stock = '';
 
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php
-                                                       
+
                                                         echo $row['size'];
                                                         ?></td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php
                                                         echo $row['price'];
-                                                       
-                                                       
+
+
                                                         ?></td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php echo $row['method']; ?></td>
@@ -235,7 +235,7 @@ $stock = '';
                                                         }
                                                         ?>
                                                     </td>
-                                                    
+
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php echo $row['sales_date']; ?></td>
 
@@ -254,7 +254,7 @@ $stock = '';
                     </div>
                 </div>
 
-                
+
             </main>
 
             <?php include $redirect_link . 'partials/footer.php'; ?>
@@ -298,7 +298,7 @@ if (isset($_POST['filter'])) {
     $from_date = $_POST['from_date'];
     $to_date = $_POST['to_date'];
 
-    echo "<script>window.location = 'stock_log.php?from_date=$from_date&to_date=$to_date&stock=$stock_type'; </script>";
+    echo "<script>window.location = 'jeans_stock_log.php?from_date=$from_date&to_date=$to_date&stock=$stock_type'; </script>";
 }
 
 

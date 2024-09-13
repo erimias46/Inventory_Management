@@ -150,6 +150,20 @@ if ($result) {
                                 </a>
                             </li>
                         <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/price_calculator/sale_jeans.php" class="menu-link">
+                                    <span class="menu-text">Sale Jeans</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/price_calculator/jeans_stock_log.php" class="menu-link">
+                                    <span class="menu-text">Jeans Stock Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
 
 
                         <!-- <?php if ($bookview) : ?>

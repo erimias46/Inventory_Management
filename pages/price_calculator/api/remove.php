@@ -2,8 +2,8 @@
 
 
    $current_date = date('Y-m-d');
-    $redirect_link = "../../";
-    $side_link = "../../";
+    $redirect_link = "../../../";
+    $side_link = "../../../";
 
     
 
@@ -21,7 +21,7 @@ include_once $redirect_link . 'include/db.php';
             $remove = "DELETE FROM sales WHERE sales_id ='$id'";
             $remove_res = mysqli_query($con, $remove);
             if ($remove_res) {
-                echo "<script>window.location.href='purchase.php?status=success';</script>";
+                echo "<script>window.location.href='../sale_jeans.php?status=success';</script>";
             }
 
             

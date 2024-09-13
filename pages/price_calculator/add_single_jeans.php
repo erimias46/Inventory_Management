@@ -320,7 +320,7 @@ if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
                                         $size = $row['size'];
                                     ?>
-                                        <div class="flex items-center mb-2 justify-between">
+                                        <div class="flex items-center mb-2 justify-around">
                                             <!-- Size Label -->
                                             <label class="text-gray-800 text-sm font-medium flex-1"><?php echo $size; ?></label>
 

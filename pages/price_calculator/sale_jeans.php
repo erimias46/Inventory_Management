@@ -647,6 +647,42 @@ if (isset($_POST['add_data'])) {
                 $result_error_log = mysqli_query($con, $add_error_log);
             }
 
+
+            $subscribers_query = "SELECT chat_id FROM subscribers";
+            $subscribers_result = mysqli_query($con, $subscribers_query);
+            $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
+
+            $message = "New Sale Added:\n";
+            $message .= "Jeans Name: $jeans_name\n";
+            $message .= "Size: $size\n";
+            $message .= "Price: $price\n";
+            $message .= "Cash: $cash\n";
+            $message .= "Bank: $bank\n";
+            $message .= "Method: $method\n";
+            $message .= "Date: $date\n";
+            $message .= "Quantity: $quantity\n";
+
+            $botToken = "7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0"; // Replace with your bot token
+            $apiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
+
+            foreach ($subscribers as $subscriber) {
+                $chatId = $subscriber['chat_id'];
+
+                $data = [
+                    'chat_id' => $chatId,
+                    'text' => $message,
+                    'parse_mode' => 'HTML' // Optional: Use HTML formatting
+                ];
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $apiUrl);
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+                curl_close($ch);
+            }
+
             if (!$result_add || !$result_adds || !$result_update) {
                 echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
                 exit;

@@ -364,7 +364,7 @@ if ($result) {
                                             class="text-gray-800 text-sm font-medium inline-block mb-2">
                                             Jeans Name </label>
 
-                                        <select name="jeans_name" class="search-select" required>
+                                        <select name="jeans_name" class="search-select" required onchange="fetchPrice()">
 
                                             <?php
 
@@ -397,7 +397,7 @@ if ($result) {
                                             class="text-gray-800 text-sm font-medium inline-block mb-2">
                                             Jeans Size </label>
 
-                                        <select name="size" class="search-select" required>
+                                        <select name="size" class="search-select" required onchange="fetchPrice()">
 
                                             <?php
 
@@ -448,18 +448,16 @@ if ($result) {
                                         <label
                                             class="text-gray-800 text-sm font-medium inline-block mb-2">Price
                                         </label>
-                                        <input type="text" name="price"
-                                            class="form-input"
+                                        <input type="text" name="price" class="form-input" required onchange="fetchPrice()">
 
-                                            required>
                                     </div>
                                     <div class="mb-3">
                                         <label
                                             class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity
                                         </label>
                                         <input type="text" name="quantity"
-                                            class="form-input"
-
+                                            class="form-input" value="1"
+                                            onchange="fetchPrice()"
                                             required>
                                     </div>
 
@@ -528,6 +526,37 @@ if ($result) {
 
 </body>
 
+<script>
+    function fetchPrice() {
+        var jeansName = document.querySelector('select[name="jeans_name"]').value;
+        var size = document.querySelector('select[name="size"]').value;
+        var quantity = parseInt(document.querySelector('input[name="quantity"]').value);
+
+        if (jeansName && size) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "api/fetch_price.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    var price = parseFloat(this.responseText);
+                    if (!isNaN(price)) {
+                        var totalPrice = (price * quantity).toFixed(2);
+                        document.querySelector('input[name="price"]').value = totalPrice;
+                    }
+                }
+            };
+            xhr.send("jeans_name=" + encodeURIComponent(jeansName) + "&size=" + encodeURIComponent(size));
+        }
+    }
+
+    // Event listeners for input changes
+    document.querySelector('select[name="jeans_name"]').addEventListener('change', fetchPrice);
+    document.querySelector('select[name="size"]').addEventListener('change', fetchPrice);
+    document.querySelector('input[name="quantity"]').addEventListener('change', fetchPrice);
+</script>
+
+
+
 </html>
 
 <?php
@@ -583,7 +612,7 @@ if (isset($_POST['add_data'])) {
                           VALUES (NULL, NULL, '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id')";
             $result_add = mysqli_query($con, $add_sales);
 
-            $status= "removed_quantity";
+            $status = "removed_quantity";
 
             $add_jeans_log = "INSERT INTO `sales_log`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `error`, `quantity`, `user_id` ,`status`) 
                               VALUES (NULL, NULL, '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', 'Error: Size not found', '$quantity', '$user_id','$status')";
@@ -602,7 +631,7 @@ if (isset($_POST['add_data'])) {
                           VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id')";
             $result_add = mysqli_query($con, $add_sales);
 
-            $status= "removed_quantity";
+            $status = "removed_quantity";
 
             $add_jeans_log = "INSERT INTO `sales_log`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
                               VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";

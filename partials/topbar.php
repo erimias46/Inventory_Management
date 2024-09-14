@@ -28,12 +28,7 @@
 
     <div class="me-auto"></div>
     <div class="md:flex hidden">
-        <button data-toggle="fullscreen" type="button" class="nav-link p-2">
-            <span class="sr-only">Fullscreen Mode</span>
-            <span class="flex items-center justify-center h-6 w-6">
-                <i class="mgc_fullscreen_line text-2xl"></i>
-            </span>
-        </button>
+       
 
 
 
@@ -106,43 +101,3 @@
 <!-- Topbar End -->
 
 
-<script>
-    console.log('Script loaded.');
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const fullscreenButton = document.getElementById('fullscreenButton');
-        fullscreenButton.addEventListener('click', toggleFullscreen);
-
-        // Check and apply fullscreen state on page load
-        const fullscreenState = localStorage.getItem('fullscreen');
-        if (fullscreenState === 'true') {
-            enableFullscreen();
-        }
-    });
-
-    function toggleFullscreen() {
-        if (document.fullscreenElement) {
-            disableFullscreen();
-        } else {
-            enableFullscreen();
-        }
-    }
-
-    function enableFullscreen() {
-        const element = document.documentElement;
-
-        element.requestFullscreen().then(() => {
-            localStorage.setItem('fullscreen', 'true');
-        }).catch((err) => {
-            console.error(`Error attempting to enable fullscreen: ${err.message}`);
-        });
-    }
-
-    function disableFullscreen() {
-        document.exitFullscreen().then(() => {
-            localStorage.setItem('fullscreen', 'false');
-        }).catch((err) => {
-            console.error(`Error attempting to exit fullscreen: ${err.message}`);
-        });
-    }
-</script>

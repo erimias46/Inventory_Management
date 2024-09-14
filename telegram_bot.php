@@ -1,31 +1,35 @@
 <?php
-require 'vendor/autoload.php'; // Autoload Composer dependencies
+
+// Include the Telegram Bot SDK
+require 'vendor/autoload.php'; // Ensure you have installed the Telegram SDK
+
 use Telegram\Bot\Api;
 
-$telegram = new Api('7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0');
+// Create a new instance of the Telegram API
+$telegram = new Api('7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0'); // Replace with your Bot Token
 
-// Handle Telegram updates
+// Database connection
+include('include/db.php'); // Update this
+
+// Get webhook updates from Telegram
 $update = $telegram->getWebhookUpdates();
-$chatId = $update->getMessage()->getChat()->getId();
-$text = $update->getMessage()->getText();
 
-$pdo = new PDO('mysql:host=localhost;dbname=inventory', 'root', '');
+// Check if the update contains a message
+if ($update->getMessage()) {
+    $chat_id = $update->getMessage()->getChat()->getId(); // Get user's chat_id
+    $first_name = $update->getMessage()->getChat()->getFirstName(); // Get user's first name
 
-// Handle subscriptions
-if ($text === '/subscribe') {
-    $stmt = $pdo->prepare("INSERT INTO subscribers (chat_id) VALUES (:chat_id) ON DUPLICATE KEY UPDATE subscribed_at = NOW()");
-    $stmt->bindParam(':chat_id', $chatId);
-    $stmt->execute();
-    $telegram->sendMessage([
-        'chat_id' => $chatId,
-        'text' => "You have successfully subscribed to sale notifications."
-    ]);
-} elseif ($text === '/unsubscribe') {
-    $stmt = $pdo->prepare("DELETE FROM subscribers WHERE chat_id = :chat_id");
-    $stmt->bindParam(':chat_id', $chatId);
-    $stmt->execute();
-    $telegram->sendMessage([
-        'chat_id' => $chatId,
-        'text' => "You have successfully unsubscribed from sale notifications."
-    ]);
+    // Check if this is the /start command
+    if ($update->getMessage()->getText() === '/start') {
+        // Insert or update subscriber in the database
+        $sql = "INSERT INTO subscribers (chat_id, first_name) VALUES ('$chat_id', '$first_name') 
+                ON DUPLICATE KEY UPDATE first_name='$first_name'";
+        mysqli_query($con, $sql);
+
+        // Send a welcome message back to the user
+        $telegram->sendMessage([
+            'chat_id' => $chat_id,
+            'text' => "Welcome $first_name! You have subscribed to notifications."
+        ]);
+    }
 }

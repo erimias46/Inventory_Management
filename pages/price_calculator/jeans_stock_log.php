@@ -143,7 +143,7 @@ $stock = '';
                                                 <th>Size</th>
                                                 <th>Total Price</th>
                                                 <th>Method</th>
-                                                <th>Error</th>
+                                              
                                                 <th>Add/Remove</th>
                                                 <th>Log Type</th>
 
@@ -208,8 +208,7 @@ $stock = '';
                                                         ?></td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php echo $row['method']; ?></td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                        <?php echo $row['error']; ?></td>
+                                                  
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php
                                                         $status = $row['status'];

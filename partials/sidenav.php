@@ -164,6 +164,14 @@ if ($result) {
                                 </a>
                             </li>
                         <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/price_calculator/verify.php" class="menu-link">
+                                    <span class="menu-text">Verify</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                       
 
 
                         <!-- <?php if ($bookview) : ?>

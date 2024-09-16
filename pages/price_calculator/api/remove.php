@@ -25,23 +25,11 @@ include_once $redirect_link . 'include/db.php';
             }
 
             
-        } elseif ($from == 'sales_withoutvat_purchase') {
-            $remove = "DELETE FROM sales_withoutvat_purchase WHERE sales_id ='$id'";
+        } elseif ($from == 'jeans_verify') {
+            $remove = "DELETE FROM jeans_verify WHERE id ='$id'";
             $remove_res = mysqli_query($con, $remove);
             if ($remove_res) {
-                echo "<script>window.location.href='purchase_without.php?status=success';</script>";
-            }
-        } elseif ($from == 'sales_withvat') {
-            $remove = "DELETE FROM sales_withvat WHERE sales_id ='$id'";
-            $remove_res = mysqli_query($con, $remove);
-            if ($remove_res) {
-                echo "<script>window.location.href='sales.php?status=success';</script>";
-            }
-        } elseif ($from == 'sales_withoutvat') {
-            $remove = "DELETE FROM sales_withoutvat WHERE sales_id ='$id'";
-            $remove_res = mysqli_query($con, $remove);
-            if ($remove_res) {
-                echo "<script>window.location.href='sales_without.php?status=success';</script>";
+                echo "<script>window.location.href='../verify.php?status=success';</script>";
             }
         } 
     } else {

@@ -222,6 +222,15 @@ if ($result) {
                                                                 Edit
                                                             </button>
                                                         <?php endif; ?>
+
+                                                        <?php if ($deleteButtonVisible) : ?>
+
+<a id="del-btn" href="api/refund.php?id=<?php echo $row['sales_id']; ?>&from=sales"
+    class="btn bg-info/25 text-info hover:bg-info hover:text-white btn-sm rounded-full"><i
+        class="mgc_delete_2_line text-base me-2"></i> Refund</a>
+
+<?php endif; ?>
+
                                                     </td>
                                                     <td
                                                         class="px-6 90-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">

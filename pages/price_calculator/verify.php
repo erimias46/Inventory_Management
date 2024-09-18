@@ -56,7 +56,7 @@ if ($result) {
 
 <head>
     <?php
-    $title = 'Payment Filter';
+    $title = 'Verify';
     include $redirect_link . 'partials/title-meta.php'; ?>
 
     <?php include $redirect_link . 'partials/head-css.php'; ?>
@@ -82,7 +82,7 @@ if ($result) {
                 <div class="card">
                     <div class="card-header">
                         <div class="flex justify-between items-center">
-                            <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Payment Filter</h4>
+                            <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Verify</h4>
                             <div>
 
                                 <?php if ($generateButtonVisible) { ?>
@@ -283,12 +283,12 @@ if (isset($_POST['verify'])) {
                     $delete = "DELETE FROM `jeans_verify` WHERE id = $update_id";
                     $result_delete = mysqli_query($con, $delete);
                     if ($result_delete) {
-                        echo "<script>window.location = 'action.php?status=success&redirect=payment_filter.php'; </script>";
+                        echo "<script>window.location = 'action.php?status=success&redirect=verify.php'; </script>";
                     } else {
-                        echo "<script>window.location = 'action.php?status=error&redirect=payment_filter.php'; </script>";
+                        echo "<script>window.location = 'action.php?status=error&redirect=verify.php'; </script>";
                     }
                 } else {
-                    echo "<script>window.location = 'action.php?status=error&redirect=payment_filter.php'; </script>";
+                    echo "<script>window.location = 'action.php?status=error&redirect=verify.php'; </script>";
                 }
 
             }

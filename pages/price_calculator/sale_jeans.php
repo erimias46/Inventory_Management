@@ -94,14 +94,13 @@ if ($result) {
                             <p class="mt-2 text-gray-800 dark:text-gray-400">
                             <div class="flex gap-2">
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> From Date </label>
-                                    <input type="date" name="from_date" class="form-input"
-                                        required>
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> From Date
+                                    </label>
+                                    <input type="date" name="from_date" class="form-input" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2"> To Date </label>
-                                    <input type="date" name="to_date" class="form-input"
-                                        required>
+                                    <input type="date" name="to_date" class="form-input" required>
                                 </div>
                             </div>
                             </p>
@@ -110,7 +109,8 @@ if ($result) {
                                     <i class="msr text-base me-2">restart_alt</i>
                                     Reset
                                 </a>
-                                <button name="filter" type="submit" class="btn btn-sm bg-success text-white rounded-full">
+                                <button name="filter" type="submit"
+                                    class="btn btn-sm bg-success text-white rounded-full">
                                     <i class="msr text-base me-2">filter_list</i>
                                     Filter
                                 </button>
@@ -206,7 +206,8 @@ if ($result) {
 
                                                         <?php if ($deleteButtonVisible) : ?>
 
-                                                            <a id="del-btn" href="api/remove.php?id=<?php echo $row['sales_id']; ?>&from=sales"
+                                                            <a id="del-btn"
+                                                                href="api/remove.php?id=<?php echo $row['sales_id']; ?>&from=sales"
                                                                 class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full"><i
                                                                     class="mgc_delete_2_line text-base me-2"></i> Delete</a>
 
@@ -216,8 +217,10 @@ if ($result) {
 
                                                         <?php if ($updateButtonVisible) : ?>
 
-                                                            <button type="button" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
-                                                                data-fc-type="modal" data-fc-target="edit<?= $row['sales_id'] ?>">
+                                                            <button type="button"
+                                                                class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
+                                                                data-fc-type="modal"
+                                                                data-fc-target="edit<?= $row['sales_id'] ?>">
                                                                 <i class="mgc_pencil_line text-base me-2"></i>
                                                                 Edit
                                                             </button>
@@ -225,11 +228,27 @@ if ($result) {
 
                                                         <?php if ($deleteButtonVisible) : ?>
 
-<a id="del-btn" href="api/refund.php?id=<?php echo $row['sales_id']; ?>&from=sales"
-    class="btn bg-info/25 text-info hover:bg-info hover:text-white btn-sm rounded-full"><i
-        class="mgc_delete_2_line text-base me-2"></i> Refund</a>
+                                                            <a id="del-btn"
+                                                                href="api/refund.php?id=<?php echo $row['sales_id']; ?>&from=sales"
+                                                                class="btn bg-info/25 text-info hover:bg-info hover:text-white btn-sm rounded-full"><i
+                                                                    class="mgc_delete_2_line text-base me-2"></i> Refund</a>
 
-<?php endif; ?>
+                                                        <?php endif; ?>
+
+                                                        <?php if ($updateButtonVisible) : ?>
+
+                                                            <button type="button"
+                                                                class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
+                                                                data-fc-type="modal"
+                                                                data-fc-target="exchange<?= $row['sales_id'] ?>">
+                                                                <i class="mgc_pencil_line text-base me-2"></i>
+                                                                Exchange
+                                                            </button>
+                                                        <?php endif; ?>
+
+
+
+
 
                                                     </td>
                                                     <td
@@ -257,91 +276,237 @@ if ($result) {
 
 
                                                 </tr>
-                                                <!-- Edit modal -->
-                                                <div id="edit<?= $row['sales_id'] ?>"
-                                                    class="w-full h-full fixed top-0 left-0 z-50 transition-all duration-500 hidden">
-                                                    <div
-                                                        class="fc-modal-open:mt-7 fc-modal-open:opacity-100 fc-modal-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-xl sm:w-full m-3 sm:mx-auto  bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
-                                                        <div
-                                                            class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
-                                                            <h3 class="font-medium text-gray-800 dark:text-white text-lg">
-                                                                Edit Sales
-                                                            </h3>
-                                                            <button
-                                                                class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 dark:text-gray-200"
-                                                                data-fc-dismiss type="button">
+
+
+
+
+                                                <!-- Modal for exchanging jeans -->
+                                                <div id="exchange<?= $row['sales_id'] ?>" class="w-full h-full fixed top-0 left-0 z-50 transition-all duration-500 hidden">
+                                                    <div class="fc-modal-open:mt-7 fc-modal-open:opacity-100 fc-modal-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-md sm:w-full m-3 sm:mx-auto bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
+                                                        <div class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
+                                                            <h3 class="font-medium text-gray-800 dark:text-white text-lg">Exchange Jeans</h3>
+                                                            <button class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 dark:text-gray-200" data-fc-dismiss type="button">
                                                                 <span class="material-symbols-rounded">close</span>
                                                             </button>
                                                         </div>
-                                                        <form method="POST">
-                                                            <div class="px-4 py-8 overflow-y-auto">
-                                                                <input type="hidden" name="sales_id"
-                                                                    value="<?php echo $row['sales_id'] ?>">
+                                                        <form method="POST" class="overflow-y-auto">
+                                                            <div class="px-4 py-8">
+                                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                                    <input type="hidden" name="sales_id" value="<?= $row['sales_id']; ?>">
 
-
-
-                                                                <div class="mb-3">
-                                                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Jeans Name </label>
-                                                                    <input type="text" name="jeans_name" class="form-input"
-                                                                        value="<?= $row['jeans_name'] ?>" required>
-                                                                </div>
-
-                                                                <div class="flex gap-2 justify-between">
-                                                                    <div class="mb-3">
-                                                                        <label
-                                                                            class="text-gray-800 text-sm font-medium inline-block mb-2">Size
-                                                                        </label>
-                                                                        <input type="text" name="size"
-                                                                            class="form-input"
-                                                                            value="<?= $row['size'] ?>" required>
+                                                                    <div>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Name</label>
+                                                                        <select name="jeans_name" class="search-select" id="jeans_name_select">
+                                                                            <?php
+                                                                            $sql3 = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
+                                                                            $result3 = mysqli_query($con, $sql3);
+                                                                            if (mysqli_num_rows($result3) > 0) {
+                                                                                while ($row3 = mysqli_fetch_assoc($result3)) { ?>
+                                                                                    <option value="<?= $row3['jeans_name'] ?>"><?= $row3['jeans_name'] ?></option>
+                                                                            <?php }
+                                                                            }
+                                                                            ?>
+                                                                        </select>
                                                                     </div>
 
-                                                                    <div class="mb-3">
-                                                                        <label
-                                                                            class="text-gray-800 text-sm font-medium inline-block mb-2">Price
-                                                                            Before Vat</label>
-                                                                        <input type="text" name="price"
-                                                                            class="form-input"
-                                                                            value="<?= $row['price'] ?>"
-                                                                            required>
+                                                                    <div>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Size</label>
+                                                                        <select name="size" class="search-select" id="jeans_size_select">
+                                                                            <?php
+                                                                            $sql4 = "SELECT * FROM jeansdb";
+                                                                            $result4 = mysqli_query($con, $sql4);
+                                                                            if (mysqli_num_rows($result4) > 0) {
+                                                                                while ($row4 = mysqli_fetch_assoc($result4)) { ?>
+                                                                                    <option value="<?= $row4['size'] ?>"><?= $row4['size'] ?></option>
+                                                                            <?php }
+                                                                            }
+                                                                            ?>
+                                                                        </select>
                                                                     </div>
 
-                                                                </div>
-                                                                <div class="flex gap-2 justify-between">
-                                                                    <div class="mb-3">
-                                                                        <label
-                                                                            class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                                                            Date </label>
-                                                                        <input type="date" name="date" class="form-input"
-                                                                            value="<?= $row['sales_date'] ?>" required>
+                                                                    <div>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">New Price</label>
+                                                                        <input type="number" step="0.01" name="price" class="form-input" required>
                                                                     </div>
-                                                                    <div class="mb-3">
-                                                                        <label
-                                                                            class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                                                            Method</label>
-                                                                        <input type="text" name="vat"
-                                                                            class="form-input" value="<?php echo $row['method']; ?>"
-                                                                            required>
+
+                                                                    <div>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank</label>
+                                                                        <input type="number" name="bank" id="bankInput" class="form-input" required oninput="checkBankValue()" value="0">
+                                                                    </div>
+
+                                                                    <div id="bankNameDiv" style="display:none;">
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank Name</label>
+                                                                        <select name="bank_name" id="bankNameInput" class="selectize">
+                                                                            <?php
+                                                                            $sql5 = "SELECT * FROM bankdb";
+                                                                            $result5 = mysqli_query($con, $sql5);
+                                                                            if (mysqli_num_rows($result5) > 0) {
+                                                                                while ($row5 = mysqli_fetch_assoc($result5)) { ?>
+                                                                                    <option value="<?= $row5['bankname'] ?>"><?= $row5['bankname'] ?></option>
+                                                                            <?php }
+                                                                            }
+                                                                            ?>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Cash</label>
+                                                                        <input type="number" name="cash" step="0.01" class="form-input" required value="0">
+                                                                    </div>
+
+                                                                    <div>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Date</label>
+                                                                        <input type="date" name="date" class="form-input" required value="<?= date('Y-m-d'); ?>">
+                                                                    </div>
+
+                                                                    <div>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity</label>
+                                                                        <input type="text" name="quantity" class="form-input" required value="1">
+                                                                    </div>
+
+                                                                    <div>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Method</label>
+                                                                        <select name="method" class="selectize">
+                                                                            <option value="shop">Shop</option>
+                                                                            <option value="delivery">Delivery</option>
+                                                                        </select>
                                                                     </div>
                                                                 </div>
+                                                            </div>
 
-
-
-
-
-                                                                <div
-                                                                    class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
-                                                                    <button
-                                                                        class="py-2 px-5 inline-flex justify-center items-center gap-2 rounded dark:text-gray-200 border dark:border-slate-700 font-medium hover:bg-slate-100 hover:dark:bg-slate-700 transition-all"
-                                                                        data-fc-dismiss type="button">Close
-                                                                    </button>
-                                                                    <button name="update_purchase" type="submit"
-                                                                        class="btn bg-success text-white">Edit Sales</button>
-                                                                </div>
+                                                            <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
+                                                                <button class="py-2 px-5 inline-flex justify-center items-center gap-2 rounded dark:text-gray-200 border dark:border-slate-700 font-medium hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button">Close</button>
+                                                                <button name="exchange_jeans" type="submit" class="btn bg-success text-white">Exchange</button>
+                                                            </div>
                                                         </form>
                                                     </div>
                                                 </div>
-                                            <?php } ?>
+
+
+                                            <?php
+
+                                            }
+                                            ?>
+
+
+
+                                            <!-- Edit modal -->
+                                            <!-- <div id="edit<?= $row['sales_id'] ?>"
+                                                class="w-full h-full fixed top-0 left-0 z-50 transition-all duration-500 hidden">
+                                                <div
+                                                    class="fc-modal-open:mt-7 fc-modal-open:opacity-100 fc-modal-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-md sm:w-full m-3 sm:mx-auto  bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
+                                                    <div
+                                                        class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
+                                                        <h3 class="font-medium text-gray-800 dark:text-white text-lg">
+                                                            Edit Sales
+                                                        </h3>
+                                                        <button
+                                                            class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 dark:text-gray-200"
+                                                            data-fc-dismiss type="button">
+                                                            <span class="material-symbols-rounded">close</span>
+                                                        </button>
+                                                    </div>
+                                                    <form method="POST">
+                                                        <div class="px-4 py-8 overflow-y-auto">
+                                                            <input type="hidden" name="sales_id"
+                                                                value="<?php echo $row['sales_id'] ?>">
+
+
+                                                            <div class="flex gap-2 justify-between">
+                                                                <div class="mb-3">
+                                                                    <label
+                                                                        class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                                                        Jeans Name </label>
+
+                                                                    <select class="search-select  form-input">
+                                                                        <?php $sql = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
+                                                                        $result = mysqli_query($con, $sql);
+                                                                        while ($row2 = mysqli_fetch_assoc($result)) {
+                                                                        ?>
+                                                                        <option
+                                                                            value="<?php echo $row2['jeans_name'] ?>">
+                                                                            <?php echo $row2['jeans_name']; ?>
+                                                                        </option>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
+                                                                    </select>
+
+                                                                </div>
+
+                                                                <div class="mb-3">
+                                                                    <label
+                                                                        class="text-gray-800 text-sm font-medium inline-block mb-2">Size
+                                                                    </label>
+                                                                    <select class="search-select  form-input">
+                                                                        <?php $sql = "SELECT * FROM jeansdb";
+                                                                        $result = mysqli_query($con, $sql);
+                                                                        while ($row2 = mysqli_fetch_assoc($result)) {
+                                                                        ?>
+                                                                        <option value="<?php echo $row2['size'] ?>">
+                                                                            <?php echo $row2['size']; ?>
+                                                                        </option>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
+                                                                    </select>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="flex gap-2 justify-between">
+
+
+
+
+                                                            <div class="mb-3">
+                                                                <label
+                                                                    class="text-gray-800 text-sm font-medium inline-block mb-2">Price
+                                                                    Before Vat</label>
+                                                                <input type="text" name="price" class="form-input"
+                                                                    value="<?= $row['price'] ?>" required>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="flex gap-2 justify-between">
+                                                            <div class="mb-3">
+                                                                <label
+                                                                    class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                                                    Date </label>
+                                                                <input type="date" name="date" class="form-input"
+                                                                    value="<?= $row['sales_date'] ?>" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label
+                                                                    class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                                                    Method</label>
+                                                                <input type="text" name="vat" class="form-input"
+                                                                    value="<?php echo $row['method']; ?>" required>
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+                                                        <div
+                                                            class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
+                                                            <button
+                                                                class="py-2 px-5 inline-flex justify-center items-center gap-2 rounded dark:text-gray-200 border dark:border-slate-700 font-medium hover:bg-slate-100 hover:dark:bg-slate-700 transition-all"
+                                                                data-fc-dismiss type="button">Close
+                                                            </button>
+                                                            <button name="update_purchase" type="submit"
+                                                                class="btn bg-success text-white">Edit Sales</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div> -->
+
+
+
+
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -367,8 +532,7 @@ if ($result) {
                             <div class="px-4 py-8 overflow-y-auto">
 
                                 <div class="mb-3">
-                                    <label
-                                        class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
                                         Jeans Name </label>
 
                                     <select name="jeans_name" class="search-select" required onchange="fetchPrice()">
@@ -398,8 +562,7 @@ if ($result) {
 
 
                                 <div class="mb-3">
-                                    <label
-                                        class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
                                         Jeans Size </label>
 
                                     <select name="size" class="search-select" required onchange="fetchPrice()">
@@ -433,8 +596,7 @@ if ($result) {
 
 
                                 <div class="mb-3">
-                                    <label
-                                        class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
                                         Method </label>
 
                                     <select name="method" class="search-select" required>
@@ -452,13 +614,10 @@ if ($result) {
 
 
                                 <div class="mb-3">
-                                    <label
-                                        class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity
                                     </label>
-                                    <input type="text" name="quantity"
-                                        class="form-input" value="1"
-                                        onchange="fetchPrice()"
-                                        required>
+                                    <input type="text" name="quantity" class="form-input" value="1"
+                                        onchange="fetchPrice()" required>
                                 </div>
 
 
@@ -468,32 +627,27 @@ if ($result) {
 
                                 <div class="flex gap-2 justify-between">
                                     <div class="mb-3">
-                                        <label
-                                            class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price
                                         </label>
-                                        <input type="text" name="price"
-                                            class="form-input"
-
-                                            required>
+                                        <input type="text" name="price" class="form-input" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label
-                                            class="text-gray-800 text-sm font-medium inline-block mb-2">Cash
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Cash
                                         </label>
-                                        <input type="text" name="cash"
-                                            class="form-input" value="0"
-
-                                            required>
+                                        <input type="text" name="cash" class="form-input" value="0" required>
                                     </div>
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank</label>
-                                        <input type="text" name="bank" class="form-input" value="0" required id="bankInput" onchange="toggleBankName()">
+                                        <input type="text" name="bank" class="form-input" value="0" required
+                                            id="bankInput" onchange="toggleBankName()">
                                     </div>
                                 </div>
 
-                                <div id="bankNameField" class="flex gap-2 justify-around hidden transition-opacity duration-300 ease-in-out opacity-0">
+                                <div id="bankNameField"
+                                    class="flex gap-2 justify-around hidden transition-opacity duration-300 ease-in-out opacity-0">
                                     <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank Name</label>
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank
+                                            Name</label>
                                         <select name="bank_name" class="form-input" required>
                                             <?php
                                             $sql = "SELECT * FROM bankdb ";
@@ -518,11 +672,10 @@ if ($result) {
                                 <div class="flex gap-2  justify-around">
 
                                     <div class="mb-3">
-                                        <label
-                                            class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">
                                             Date </label>
-                                        <input type="date" name="date" class="form-input" value="<?php echo date('Y-m-d'); ?>"
-                                            required>
+                                        <input type="date" name="date" class="form-input"
+                                            value="<?php echo date('Y-m-d'); ?>" required>
                                     </div>
 
                                 </div>
@@ -535,7 +688,8 @@ if ($result) {
                                     data-fc-dismiss type="button">Close
                                 </button>
                                 <button name="add_data" type="submit"
-                                    class="py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-success hover:bg-success-600 text-white">Add Sales</button>
+                                    class="py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-success hover:bg-success-600 text-white">Add
+                                    Sales</button>
                             </div>
                         </form>
                     </div>
@@ -577,11 +731,32 @@ if ($result) {
     }
 </script>
 
+<script>
+    function checkBankValue() {
+        var bankInput = document.getElementById('bankInput').value;
+        var bankNameDiv = document.getElementById('bankNameDiv');
+
+        // If bank value is greater than 0, show the Bank Name field, otherwise hide it
+        if (bankInput > 0) {
+            bankNameDiv.style.display = "block";
+        } else {
+            bankNameDiv.style.display = "none";
+        }
+    }
+</script>
+
+
+
 
 
 </html>
 
 <?php
+
+if (isset($_POST['exchange_jeans'])) {
+
+    include('api/exchange.php');
+}
 
 
 if (isset($_POST['update_purchase'])) {
@@ -612,8 +787,8 @@ if (isset($_POST['update_purchase'])) {
 }
 
 if (isset($_POST['add_data'])) {
-   
-    $user_id = $_SESSION['user_id']; 
+
+    $user_id = $_SESSION['user_id'];
     $jeans_name = $_POST['jeans_name'];
     $size = $_POST['size'];
     $price = $_POST['price'];
@@ -622,27 +797,27 @@ if (isset($_POST['add_data'])) {
     $method = $_POST['method'];
     $date = $_POST['date'];
     $quantity = $_POST['quantity'];
-    if($bank == 0){
-        $bank_name = null; 
+    if ($bank == 0) {
+        $bank_name = null;
         $bank_id = null;
     } else {
         $bank_name = $_POST['bank_name'];
-        $sql="SELECT * FROM bankdb WHERE bankname = '$bank_name'";
+        $sql = "SELECT * FROM bankdb WHERE bankname = '$bank_name'";
         $result = mysqli_query($con, $sql);
         $row = mysqli_fetch_assoc($result);
         $bank_id = $row['id'];
     }
-    
-    
-    
+
+
+
 
     if (!empty($jeans_name) && !empty($size)) {
         $sql = "SELECT * FROM jeans WHERE jeans_name = '$jeans_name' AND size = '$size'";
         $result = mysqli_query($con, $sql);
         $row = mysqli_fetch_assoc($result);
 
-        if(!$row) {
-            $sql="SELECT * FROM jeans WHERE jeans_name = '$jeans_name'";
+        if (!$row) {
+            $sql = "SELECT * FROM jeans WHERE jeans_name = '$jeans_name'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
             $price = $row['price'];
@@ -651,12 +826,12 @@ if (isset($_POST['add_data'])) {
             $type_id = $row['type_id'];
 
 
-            $sql2="SELECT * FROM jeansdb WHERE size = '$size'";
+            $sql2 = "SELECT * FROM jeansdb WHERE size = '$size'";
             $result2 = mysqli_query($con, $sql2);
             $row2 = mysqli_fetch_assoc($result2);
             $size_id = $row2['id'];
 
-            $quantity=$_POST['quantity'];
+            $quantity = $_POST['quantity'];
 
             $add_jeans = "INSERT INTO `jeans_verify`(`jeans_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
                           VALUES ('$jeans_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','1')";
@@ -664,113 +839,104 @@ if (isset($_POST['add_data'])) {
 
             if ($result_add) {
                 echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
-                
             }
 
             exit;
-
-           
-
         }
 
 
 
-            $jeans_id = $row['id'];
+        $jeans_id = $row['id'];
+        $size_id = $row['size_id'];
+        $current_quantity = $row['quantity'];
+
+        if ($current_quantity < $quantity) {
+
+            $sql = "SELECT * FROM jeans WHERE jeans_name = '$jeans_name' AND size = '$size'";
+            $result = mysqli_query($con, $sql);
+            $row = mysqli_fetch_assoc($result);
+            $price = $row['price'];
+            $image = $row['image'];
+            $type = $row['type'];
+            $type_id = $row['type_id'];
             $size_id = $row['size_id'];
-            $current_quantity = $row['quantity'];
 
-            if ($current_quantity < $quantity) {
-
-                $sql="SELECT * FROM jeans WHERE jeans_name = '$jeans_name' AND size = '$size'";
-                $result = mysqli_query($con, $sql);
-                $row = mysqli_fetch_assoc($result);
-                $price = $row['price'];
-                $image = $row['image'];
-                $type = $row['type'];
-                $type_id = $row['type_id'];
-                $size_id = $row['size_id'];
-
-                $add_jeans = "INSERT INTO `jeans_verify`(`jeans_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
+            $add_jeans = "INSERT INTO `jeans_verify`(`jeans_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
                               VALUES ('$jeans_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','2')";
-                $result_add = mysqli_query($con, $add_jeans);
+            $result_add = mysqli_query($con, $add_jeans);
 
-                if ($result_add) {
-                    echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
-                    exit;
-                }
-
-                exit;
-
-
-
-
-              
-            }
-
-
-
-
-            $add_sales = "INSERT INTO `sales`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`) 
-                          VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name')";
-            $result_add = mysqli_query($con, $add_sales);
-
-            $status = "removed_quantity";
-
-            $add_jeans_log = "INSERT INTO `sales_log`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
-                              VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
-            $result_adds = mysqli_query($con, $add_jeans_log);
-
-            $new_quantity = $current_quantity - $quantity;
-            $update_quantity = "UPDATE jeans SET quantity = '$new_quantity' WHERE id = '$jeans_id' AND size = '$size'";
-            $result_update = mysqli_query($con, $update_quantity);
-
-
-           
-
-
-            $subscribers_query = "SELECT chat_id FROM subscribers";
-            $subscribers_result = mysqli_query($con, $subscribers_query);
-            $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
-
-            $message = "New Sale Added:\n";
-            $message .= "Jeans Name: $jeans_name\n";
-            $message .= "Size: $size\n";
-            $message .= "Price: $price\n";
-            $message .= "Cash: $cash\n";
-            $message .= "Bank: $bank\n";
-            $message .= "Method: $method\n";
-            $message .= "Date: $date\n";
-            $message .= "Quantity: $quantity\n";
-
-            $botToken = "7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0"; // Replace with your bot token
-            $apiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
-
-            foreach ($subscribers as $subscriber) {
-                $chatId = $subscriber['chat_id'];
-
-                $data = [
-                    'chat_id' => $chatId,
-                    'text' => $message,
-                    'parse_mode' => 'HTML' // Optional: Use HTML formatting
-                ];
-
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $apiUrl);
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $response = curl_exec($ch);
-                curl_close($ch);
-            }
-
-            if (!$result_add || !$result_adds || !$result_update) {
+            if ($result_add) {
                 echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
                 exit;
             }
+
+            exit;
         }
 
-        echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
-    } 
+
+
+
+        $add_sales = "INSERT INTO `sales`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`) 
+                          VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name')";
+        $result_add = mysqli_query($con, $add_sales);
+
+        $status = "removed_quantity";
+
+        $add_jeans_log = "INSERT INTO `sales_log`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
+                              VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
+        $result_adds = mysqli_query($con, $add_jeans_log);
+
+        $new_quantity = $current_quantity - $quantity;
+        $update_quantity = "UPDATE jeans SET quantity = '$new_quantity' WHERE id = '$jeans_id' AND size = '$size'";
+        $result_update = mysqli_query($con, $update_quantity);
+
+
+
+
+
+        $subscribers_query = "SELECT chat_id FROM subscribers";
+        $subscribers_result = mysqli_query($con, $subscribers_query);
+        $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
+
+        $message = "New Sale Added:\n";
+        $message .= "Jeans Name: $jeans_name\n";
+        $message .= "Size: $size\n";
+        $message .= "Price: $price\n";
+        $message .= "Cash: $cash\n";
+        $message .= "Bank: $bank\n";
+        $message .= "Method: $method\n";
+        $message .= "Date: $date\n";
+        $message .= "Quantity: $quantity\n";
+
+        $botToken = "7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0"; // Replace with your bot token
+        $apiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
+
+        foreach ($subscribers as $subscriber) {
+            $chatId = $subscriber['chat_id'];
+
+            $data = [
+                'chat_id' => $chatId,
+                'text' => $message,
+                'parse_mode' => 'HTML' // Optional: Use HTML formatting
+            ];
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $apiUrl);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            curl_close($ch);
+        }
+
+        if (!$result_add || !$result_adds || !$result_update) {
+            echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+            exit;
+        }
+    }
+
+    echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
+}
 
 
 

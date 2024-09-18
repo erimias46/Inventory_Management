@@ -213,7 +213,7 @@ $stock = '';
                                                         <?php
                                                         $status = $row['status'];
                                                         $added_removed0 = $row['quantity'];
-                                                        if ($status == "add_quantity" || $status == "Refund") {
+                                                        if ($status == "add_quantity" || $status == "Refund"  || $status == "Exchange Back") {
                                                             $added_removed = "+$added_removed0";
                                                         } else {
                                                             $added_removed = "-$added_removed0";
@@ -223,7 +223,7 @@ $stock = '';
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php
                                                         $status = $row['status'];
-                                                        if ($status == "add_quantity" || $status == "Refund") {
+                                                        if ($status == "add_quantity" || $status == "Refund"  || $status == "Exchange Back") {
                                                         ?>
                                                             <span class="btn bg-success">Quantity Added</span>
                                                         <?php

@@ -262,9 +262,15 @@ if ($result) {
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php echo $row['cash']; ?></td>
-                                                    <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                        <?php echo $row['bank']; ?></td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                        <?php
+                                                        echo $row['bank'];
+                                                        if (!empty($row['bank_name'])) {
+                                                            echo " (" . $row['bank_name'] . ")";
+                                                        }
+                                                        ?>
+                                                    </td>
+
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php echo $row['method']; ?></td>
@@ -639,32 +645,32 @@ if ($result) {
                                     </div>
                                 </div>
 
-                                <div id="bankNameField"
-                                    class="flex gap-2 justify-around hidden transition-opacity duration-300 ease-in-out opacity-0">
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank
-                                            Name</label>
-                                        <select name="bank_name" class="form-input" required>
-                                            <?php
-                                            $sql = "SELECT * FROM bankdb ";
-                                            $result = mysqli_query($con, $sql);
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                            ?>
-                                                <option value="<?php echo $row['bankname'] ?>" <?php
-                                                                                                if (isset($bank_name)) {
-                                                                                                    if ($row['bank_name'] == $bank_name) {
-                                                                                                        echo "selected";
-                                                                                                    }
+
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank
+                                        Name</label>
+                                    <select name="bank_name" class="form-input">
+                                        <option value="">Select</option>
+                                        <?php
+                                        $sql = "SELECT * FROM bankdb ";
+                                        $result = mysqli_query($con, $sql);
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                            <option value="<?php echo $row['bankname'] ?>" <?php
+                                                                                            if (isset($bank_name)) {
+                                                                                                if ($row['bank_name'] == $bank_name) {
+                                                                                                    echo "selected";
                                                                                                 }
-                                                                                                ?>>
-                                                    <?php echo $row['bankname']; ?>
-                                                </option>
-                                            <?php
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
+                                                                                            }
+                                                                                            ?>>
+                                                <?php echo $row['bankname']; ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
+
                                 <div class="flex gap-2  justify-around">
 
                                     <div class="mb-3">
@@ -869,13 +875,13 @@ if (isset($_POST['add_data'])) {
             exit;
         }
 
-       
+
 
 
 
         if ($method == 'delivery') {
 
-            $status="pending";
+            $status = "pending";
             $sql = "INSERT into delivery (jeans_id, size_id, jeans_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id,bank_id,bank_name,status)
             VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','$status')";
             $result = mysqli_query($con, $sql);
@@ -896,7 +902,7 @@ if (isset($_POST['add_data'])) {
                   VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name')";
             $result_add = mysqli_query($con, $add_sales);
 
-            $status = "removed_quantity";
+            $status = "sold";
 
             $add_jeans_log = "INSERT INTO `sales_log`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
                       VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
@@ -951,9 +957,7 @@ if (isset($_POST['add_data'])) {
 
         // Success redirect
         echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
-
     }
-
 }
 
 

@@ -97,8 +97,8 @@ if (isset($_POST['add'])) {
 
         // Insert only if the quantity is greater than zero
         if ($quantity > 0) {
-            $add_jeans = "INSERT INTO jeans(jeans_name, size, size_id, image, price,type_id, type, quantity) 
-                          VALUES ('$jeans_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity')";
+            $add_jeans = "INSERT INTO jeans(jeans_name, size, size_id, image, price,type_id, type, quantity,active) 
+                          VALUES ('$jeans_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1')";
             mysqli_query($con, $add_jeans);
         }
     }

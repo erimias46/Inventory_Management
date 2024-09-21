@@ -81,7 +81,7 @@ $current_date = date('Y-m-d');
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['created_at']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            <a id="del-btn" href="delete_recent.php?key=<?php echo $row['id']; ?>" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
+                                                            <a id="del-btn" href="api/remove.php?id=<?php echo $row['id']; ?>&from=jeans" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_delete_2_line text-base me-2"></i> Delete
                                                             </a>
                                                             <a id="edit-btn" href="edit_jeans.php?id=<?php echo $row['id']; ?>" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full">

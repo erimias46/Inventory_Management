@@ -30,23 +30,29 @@ if (isset($_GET['id'])) {
     $quantity = $row['quantity'];
     $image = $row['image'];
 
-    $image="../../include/".$image;
+    $image = "../../include/" . $image;
     $update_button = '<button name="update" type="submit" class="btn btn-sm bg-danger text-white rounded-full"> <i class="mgc_pencil_line text-base me-2"></i> Update </button>';
     $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
 }
 
 
-if(isset($_POST['update'])){
-
+if (isset($_POST['update'])) {
 
     $jeans_name = $_POST['jeans_name'];
-    $size_ids = $_POST['size_ids']; // Array of size IDs
+
     $size = $_POST['size']; // Array of sizes
     $quantity = $_POST['quantity']; // Array of quantities
     $type_id = $_POST['type'];
     $price = $_POST['price'];
 
     $image = $_FILES['image']['name'];
+
+    // Fetch the old image from the database if no new image is uploaded
+    $id = $_GET['id']; // Assuming `jeans_id` is passed for identifying the record
+    $sql = "SELECT image FROM jeans WHERE id='$id'";
+    $result = mysqli_query($con, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $old_image = $row['image'];  // The current image in the database
 
     // Fetch type from the database
     $sql = "SELECT * FROM trouser_type_db WHERE id='$type_id'";
@@ -88,43 +94,32 @@ if(isset($_POST['update'])){
         // Attempt to upload the file if no issues
         if ($uploadOk == 1) {
             if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-                $image_path = 'uploads/' . basename($image);
+                $image_path = 'uploads/' . basename($image);  // Use the new image path
             } else {
                 $uploadOk = 0;
                 $error_message = "Sorry, there was an error uploading your file.";
             }
         }
     } else {
-        // If no image is uploaded, use the default image
-        $image_path = 'uploads/defaultjeans.jpg';
+        // No new image uploaded, keep the old image
+        $image_path = $old_image;
     }
 
-    // If image upload failed, use the default image
-    if ($uploadOk == 0) {
-        $image_path = 'uploads/defaultjeans.jpg';
+    // If image upload failed, use the old image
+    if ($uploadOk == 0 && empty($image_path)) {
+        $image_path = $old_image;
     }
 
-
+    // Update the jeans record with the new or old image
     $sql = "UPDATE jeans SET jeans_name='$jeans_name', size='$size', type='$type', price='$price', quantity='$quantity', image='$image_path' WHERE id='$id'";
     $result = mysqli_query($con, $sql);
 
-
     if ($result) {
-        echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
+        echo "<script>window.location = 'action.php?status=success&redirect=all_jeans.php';</script>";
     } else {
-        echo "<script>window.location = 'action.php?status=error&message=Error adding jeans to the database.&redirect=add_single_jeans.php';</script>";
+        echo "<script>window.location = 'action.php?status=error&message=Error updating jeans in the database.&redirect=all.php';</script>";
     }
-
-    
-
-
-
-
 }
-
-
-
-
 
 
 
@@ -176,7 +171,7 @@ if ($result) {
 
 <head>
     <?php
-    $title = 'Add Jeans';
+    $title = 'Edit Jeans';
     include $redirect_link . 'partials/title-meta.php'; ?>
     <link href="../../assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css">
 
@@ -260,7 +255,7 @@ if ($result) {
                         </div>
 
 
-                       
+
 
                         <div class="p-6">
 
@@ -350,19 +345,20 @@ if ($result) {
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Quantity</label>
                                     <input type="number" step="0.0000001" name="quantity" class="form-input" required value="<?php if (isset($quantity)) echo  $quantity ?>">
                                 </div>
-                                
+
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">Product Image</label>
                                     <div class="custom-file-upload">
                                         <label for="fileInput" class="custom-file-label">Choose Image</label>
-                                        <input type="file" name="image" class="form-input  choose-image" id="fileInput" onchange="previewImage(event)"  value="">
+                                        <input type="file" name="image" class="form-input choose-image" id="fileInput" onchange="previewImage(event)">
                                     </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <div class="image-preview" id="imagePreview">
-                                        <!-- The selected image will be displayed here -->
-                                        <img src="<?php echo $image  ?>" />
+                                        <!-- The initial image will be displayed here -->
+                                        <img id="previewImg" src="<?php echo !empty($image) ? $image : 'uploads/defaultjeans.jpg'; ?>" alt="Product Image" width="200" />
                                     </div>
                                 </div>
 
@@ -382,7 +378,7 @@ if ($result) {
                                         <!-- Display the Calculate button if $calculateButtonVisible is true -->
                                         <?php if ($calculateButtonVisible) : ?>
 
-                                            <button name="update" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>
+                                            <button name="update" type="submit" class="btn btn-sm bg-warning text-white rounded-full"> <i class="mgc_pencil_fill text-base me-2"></i> Update </button>
 
                                         <?php endif; ?>
 
@@ -417,24 +413,27 @@ if ($result) {
 
 
 
-
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fetch suggestions for customer names from the server and populate the datalist
-            fetch('getcust.php')
-                .then(response => response.json())
-                .then(data => {
-                    const datalist = document.getElementById('customer_names');
-                    datalist.innerHTML = ''; // Clear previous options
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item; // Customer name
-                        datalist.appendChild(option);
-                    });
-                });
-        });
+        function previewImage(event) {
+            const input = event.target;
+            const preview = document.getElementById('previewImg');
+
+            // If the user selects a new image, show the new image preview
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result; // Set the image source to the selected file
+                };
+                reader.readAsDataURL(input.files[0]); // Read the image as a data URL
+            }
+        }
     </script>
+
+
+
+
+
+    
 </body>
 
 </html>
@@ -450,19 +449,3 @@ if ($result) {
 
 
 
-<script>
-    document.getElementById('jeans_types').addEventListener('focus', function() {
-        // Fetch suggestions from the server and populate the datalist
-        fetch('get_job_types.php?database=jeans')
-            .then(response => response.json())
-            .then(data => {
-                const datalist = document.getElementById('jeans_types');
-                datalist.innerHTML = ''; // Clear previous options
-                data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.job_type; // Adjust to match your database field
-                    datalist.appendChild(option);
-                });
-            });
-    });
-</script>

@@ -171,7 +171,30 @@ if ($result) {
                                 </a>
                             </li>
                         <?php endif; ?>
-                       
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/price_calculator/exchange.php" class="menu-link">
+                                    <span class="menu-text">Exchange Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/price_calculator/refund.php" class="menu-link">
+                                    <span class="menu-text">Refund Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/price_calculator/delivery.php" class="menu-link">
+                                    <span class="menu-text">Delivery</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
 
 
                         <!-- <?php if ($bookview) : ?>

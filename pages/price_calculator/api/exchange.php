@@ -14,7 +14,7 @@ include_once $redirect_link . 'include/db.php'; // Include your database connect
     $user_id = $_SESSION['user_id']; 
     $sales_id = $_POST['sales_id'];
 
-    echo $sales_id;
+    
     $jeans_name = $_POST['jeans_name'];
     $size = $_POST['size'];
     $price = $_POST['price'];

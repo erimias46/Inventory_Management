@@ -143,11 +143,12 @@ $stock = '';
                                                 <th>Size</th>
                                                 <th>Total Price</th>
                                                 <th>Method</th>
-                                              
+
                                                 <th>Add/Remove</th>
                                                 <th>Log Type</th>
 
                                                 <th>Date</th>
+                                                <th>Status</th>
 
                                             </tr>
                                         </thead>
@@ -208,12 +209,12 @@ $stock = '';
                                                         ?></td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php echo $row['method']; ?></td>
-                                                  
+
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php
                                                         $status = $row['status'];
                                                         $added_removed0 = $row['quantity'];
-                                                        if ($status == "add_quantity" || $status == "Refund"  || $status == "Exchange Back") {
+                                                        if ($status == "add_quantity" || $status == "Refund"  || $status == "Exchange Back"  || $status == "DELIVERY CANCELED") {
                                                             $added_removed = "+$added_removed0";
                                                         } else {
                                                             $added_removed = "-$added_removed0";
@@ -223,7 +224,7 @@ $stock = '';
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php
                                                         $status = $row['status'];
-                                                        if ($status == "add_quantity" || $status == "Refund"  || $status == "Exchange Back") {
+                                                        if ($status == "add_quantity" || $status == "Refund"  || $status == "Exchange Back"  || $status == "DELIVERY CANCELED") {
                                                         ?>
                                                             <span class="btn bg-success">Quantity Added</span>
                                                         <?php
@@ -237,6 +238,11 @@ $stock = '';
 
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php echo $row['sales_date']; ?></td>
+
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                        <?php echo $row['status']; ?></td>
+
+
 
 
 

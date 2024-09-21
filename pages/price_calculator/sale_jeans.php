@@ -176,23 +176,19 @@ if ($result) {
                                                 $to_date = "3000-01-01";
                                             }
 
-                                            $customer = '';
+                                            $customer_condition = '';
                                             if (!empty($_GET['customer'])) {
                                                 $get_customer = $_GET['customer'];
-                                                $customer = "customer = '$get_customer'";
-                                            } else {
-                                                $customer = '';
+                                                $customer_condition = "AND customer = '$get_customer'";
                                             }
 
-                                            if (!$customer) {
-                                                $sql = "SELECT * 
-                                                FROM sales 
-                                                WHERE DATE(sales_date) >= '$from_date' 
-                                                AND DATE(sales_date) <= '$to_date'
-                                                ORDER BY sales_id DESC";
-                                            } else {
-                                                $sql = "SELECT * FROM sales WHERE DATE(sales_date) >= '$from_date' AND DATE(sales_date) <= '$to_date' AND {$customer} ORDER BY sales_id DESC";
-                                            }
+                                            $sql = "SELECT * 
+        FROM sales 
+        WHERE DATE(sales_date) >= '$from_date' 
+        AND DATE(sales_date) <= '$to_date' 
+        $customer_condition
+        ORDER BY sales_id DESC";
+
                                             $result = mysqli_query($con, $sql);
                                             while ($row = mysqli_fetch_assoc($result)) {
                                             ?>
@@ -873,27 +869,51 @@ if (isset($_POST['add_data'])) {
             exit;
         }
 
+       
 
 
 
-        $add_sales = "INSERT INTO `sales`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`) 
-                          VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name')";
-        $result_add = mysqli_query($con, $add_sales);
+        if ($method == 'delivery') {
 
-        $status = "removed_quantity";
+            $status="pending";
+            $sql = "INSERT into delivery (jeans_id, size_id, jeans_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id,bank_id,bank_name,status)
+            VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','$status')";
+            $result = mysqli_query($con, $sql);
 
-        $add_jeans_log = "INSERT INTO `sales_log`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
-                              VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
-        $result_adds = mysqli_query($con, $add_jeans_log);
-
-        $new_quantity = $current_quantity - $quantity;
-        $update_quantity = "UPDATE jeans SET quantity = '$new_quantity' WHERE id = '$jeans_id' AND size = '$size'";
-        $result_update = mysqli_query($con, $update_quantity);
+            $new_quantity = $current_quantity - $quantity;
+            $update_quantity = "UPDATE jeans SET quantity = '$new_quantity' WHERE id = '$jeans_id' AND size = '$size'";
+            $result_update = mysqli_query($con, $update_quantity);
 
 
 
+            // No need to check result_add, result_adds, or result_update for delivery
+            if (!$result || !$result_update) {
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+                exit;
+            }
+        } else {
+            $add_sales = "INSERT INTO `sales`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`) 
+                  VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name')";
+            $result_add = mysqli_query($con, $add_sales);
 
+            $status = "removed_quantity";
 
+            $add_jeans_log = "INSERT INTO `sales_log`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
+                      VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
+            $result_adds = mysqli_query($con, $add_jeans_log);
+
+            $new_quantity = $current_quantity - $quantity;
+            $update_quantity = "UPDATE jeans SET quantity = '$new_quantity' WHERE id = '$jeans_id' AND size = '$size'";
+            $result_update = mysqli_query($con, $update_quantity);
+
+            // Check only for errors in non-delivery cases
+            if (!$result_add || !$result_adds || !$result_update) {
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+                exit;
+            }
+        }
+
+        // Notify subscribers for both delivery and sales
         $subscribers_query = "SELECT chat_id FROM subscribers";
         $subscribers_result = mysqli_query($con, $subscribers_query);
         $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
@@ -929,13 +949,11 @@ if (isset($_POST['add_data'])) {
             curl_close($ch);
         }
 
-        if (!$result_add || !$result_adds || !$result_update) {
-            echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
-            exit;
-        }
+        // Success redirect
+        echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
+
     }
 
-    echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
 }
 
 

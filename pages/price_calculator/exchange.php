@@ -124,29 +124,52 @@ if ($result) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sql = "SELECT * FROM exchange_jeans order by id desc";
-                                                $result = mysqli_query($con, $sql);
-                                                while ($row = mysqli_fetch_assoc($result)) {
+    // Fetch all rows from exchange_jeans ordered by id
+    $sql = "SELECT * FROM exchange_jeans ORDER BY id DESC";
+    $result = mysqli_query($con, $sql);
 
-                                                    $sql="SELECT * FROM sales WHERE sales_id = ".$row['before_sale_id'];
-                                                    $result2 = mysqli_query($con, $sql);
-                                                    $row2 = mysqli_fetch_assoc($result2);
-                                                    $before_date = $row2['sales_date'];
-                                                    $before_jeans_name = $row2['jeans_name'];
-                                                    $before_size = $row2['size'];
-                                                    $before_price = $row2['price'];
+    while ($row = mysqli_fetch_assoc($result)) {
+        
+        // Fetch details for before_sale_id
+        $sql = "SELECT * FROM sales WHERE sales_id = ".$row['before_sale_id'];
+        $result2 = mysqli_query($con, $sql);
+        if ($row2 = mysqli_fetch_assoc($result2)) {
+            // If found, extract the values
+            $before_date = $row2['sales_date'];
+            $before_jeans_name = $row2['jeans_name'];
+            $before_size = $row2['size'];
+            $before_price = $row2['price'];
+        } else {
+            // If not found, skip or handle it (e.g., set default values)
+            $before_date = $before_jeans_name = $before_size = $before_price = 'Not found';
+        }
 
-                                                    $sql="SELECT * FROM sales WHERE sales_id = ".$row['after_sale_id'];
-                                                    $result2 = mysqli_query($con, $sql);
-                                                    $row2 = mysqli_fetch_assoc($result2);
-                                                    $after_date = $row2['sales_date'];
-                                                    $after_jeans_name = $row2['jeans_name'];
-                                                    $after_size = $row2['size'];
-                                                    $after_price = $row2['price'];
+        // Fetch details for after_sale_id
+        $sql = "SELECT * FROM sales WHERE sales_id = ".$row['after_sale_id'];
+        $result2 = mysqli_query($con, $sql);
+        if ($row2 = mysqli_fetch_assoc($result2)) {
+            // If found, extract the values
+            $after_date = $row2['sales_date'];
+            $after_jeans_name = $row2['jeans_name'];
+            $after_size = $row2['size'];
+            $after_price = $row2['price'];
+        } else {
+            // If not found, skip or handle it (e.g., set default values)
+            $after_date = $after_jeans_name = $after_size = $after_price = 'Not found';
+        }
 
-                                                    $difference = $after_price - $before_price;
+        // Calculate price difference if both sales are found and have valid prices
+        if (is_numeric($after_price) && is_numeric($before_price)) {
+            $difference = $after_price - $before_price;
+        } else {
+            $difference = 'N/A'; // Handle if prices are not available or invalid
+        }
 
-                                                ?>
+        // Output or use the data as needed
+        // ...
+    
+?>
+
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
                                                         
                                                        

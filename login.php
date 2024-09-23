@@ -1,56 +1,58 @@
 <?php
-    session_start();
-    include_once 'include/db.php';
+session_start();
+include_once 'include/db.php';
 
-    $_SESSION['error'] = null;
-    $_SESSION['error_password'] = null;
-    $_SESSION['error_username'] = null;
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['username']) && isset($_POST['password'])) {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            if (strlen($username) == 0) {
-                $_SESSION['error_username'] =  "Please enter a username";
-                $_POST['username'] = null;
-            } else if (strlen($password) == 0) {
-                $_SESSION['error_password'] =  "Please enter a password";
-                $_POST['password'] = null;
-            } else {
-                $sql = "SELECT * FROM user WHERE user_name = '$username'";
-                $result = mysqli_query($con, $sql);
-    
-                if ($result) {
-                    $row = mysqli_fetch_assoc($result);
-    
-                    if ($row) {
-                        $user_name = $row['user_name'];
-                        $password_db = $row['password'];
-                        $user_id = $row['user_id'];
-    
-                        if ($username == $user_name && $password == $password_db) {
-                            $_SESSION['username'] = $username;
-                            $_SESSION['user_id'] = $user_id;
-                            $_SESSION['user'] = true;
-                            $redirect = $_GET['redirect'] ?? 'index.php';
-                            header("Location: $redirect");
-                            die();
-                        } else {
-                            $_SESSION['error'] = "Invalid credentials";
-                        }
+$_SESSION['error'] = null;
+$_SESSION['error_password'] = null;
+$_SESSION['error_username'] = null;
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['username']) && isset($_POST['password'])) {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        if (strlen($username) == 0) {
+            $_SESSION['error_username'] =  "Please enter a username";
+            $_POST['username'] = null;
+        } else if (strlen($password) == 0) {
+            $_SESSION['error_password'] =  "Please enter a password";
+            $_POST['password'] = null;
+        } else {
+            $sql = "SELECT * FROM user WHERE user_name = '$username'";
+            $result = mysqli_query($con, $sql);
+
+            if ($result) {
+                $row = mysqli_fetch_assoc($result);
+
+                if ($row) {
+                    $user_name = $row['user_name'];
+                    $password_db = $row['password'];
+                    $user_id = $row['user_id'];
+
+                    if ($username == $user_name && $password == $password_db) {
+                        $_SESSION['username'] = $username;
+                        $_SESSION['user_id'] = $user_id;
+                        $_SESSION['user'] = true;
+                        $redirect = $_GET['redirect'] ?? 'index.php';
+                        header("Location: $redirect");
+                        die();
                     } else {
-                        $_SESSION['error'] = "User not found";
+                        $_SESSION['error'] = "Invalid credentials";
                     }
                 } else {
-                    $_SESSION['error'] = "Database query failed";
+                    $_SESSION['error'] = "User not found";
                 }
+            } else {
+                $_SESSION['error'] = "Database query failed";
             }
         }
     }
-    
+}
+
 ?>
+
 <head>
     <?php $title = "Login";
-    $redirect_link = ""; $side_link = "";
+    $redirect_link = "";
+    $side_link = "";
     include 'partials/title-meta.php'; ?>
 
     <?php include 'partials/head-css.php'; ?>
@@ -74,17 +76,17 @@
                             <img class="h-20 w-20 hidden mx-auto dark:block" src="assets/images/logo2.png" alt="">
                             <!-- <img class="h-14 w-14 block dark:hidden" src="assets/images/logo2.png" alt="">
                             <img class="h-14 w-14 hidden dark:block" src="assets/images/logo2.png" alt=""> -->
-                            
+
                         </a>
 
                         <?php if (isset($_SESSION['error'])) {
-                            ?>
+                        ?>
                             <div class="bg-danger/25 text-danger text-sm rounded-md px-4 py-3 mb-1" role="alert">
                                 <span class="font-bold">Error</span> <?php echo $_SESSION['error'] ?>.
                             </div>
-                            <?php
+                        <?php
                         } ?>
-                        
+
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-600 dark:text-gray-200 mb-2" for="LoggingUsernameAddress">Username</label>
                             <input id="LoggingUsernameAddress" name="username" class="form-input" type="username" value="<?php echo ($_POST['username'] ?? "") ?>" placeholder="Enter your username" required>
@@ -93,7 +95,7 @@
 
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-600 dark:text-gray-200 mb-2" for="loggingPassword">Password</label>
-                            <input id="loggingPassword" class="form-input" type="password"  placeholder="Enter your password" name="password" required>
+                            <input id="loggingPassword" class="form-input" type="password" placeholder="Enter your password" name="password" required>
                             <span class="text-danger text-xs"><?php echo $_SESSION['error_password'] ?></span>
                         </div>
 

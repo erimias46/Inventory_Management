@@ -1,9 +1,15 @@
 <?php
+
+use Illuminate\Support\Facades\Redirect;
+
 $redirect_link = "";
 include 'partials/main.php';
 
 
 include 'include/db.php';
+
+$redirect="pages/price_calculator/add_single_jeans.php";
+header("Location: $redirect");
 
 
 
@@ -220,19 +226,7 @@ $to_date = empty($_GET['to']) ? "3000-01-01" : $_GET['to'];
 
                                                     </div>
                                                 </div>
-                                                <?php
-                                                $query = "
-    SELECT COUNT(*) as danger_zone 
-    FROM (
-        SELECT stock_quantity FROM stock WHERE stock_quantity < dangerzone
-        UNION ALL
-        SELECT stock_quantity FROM office_stock WHERE stock_quantity < dangerzone
-    ) as combined_stock
-";
-
-                                                $result = mysqli_query($con, $query);
-                                                $row = mysqli_fetch_assoc($result);
-                                                ?>
+                                                
                                                 <h3 class="text-gray-700 mt-1 text-2xl font-bold mb-5 dark:text-gray-300">
                                                     <?= $row['danger_zone'] ?>
                                                 </h3>

@@ -418,7 +418,7 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Name</label>
-                                                                        <select name="jeans_name" class="search-select" id="jeans_name_select">
+                                                                        <select name="jeans_name" class="search-select" id="jeans_name_select" disabled  >
                                                                             <?php
                                                                             $sql3 = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
                                                                             $result3 = mysqli_query($con, $sql3);
@@ -442,7 +442,7 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Size</label>
-                                                                        <select name="size" class="search-select" id="jeans_size_select">
+                                                                        <select name="size" class="search-select" id="jeans_size_select"  disabled>
                                                                             <?php
                                                                             $sql4 = "SELECT * FROM jeansdb";
                                                                             $result4 = mysqli_query($con, $sql4);
@@ -501,12 +501,12 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity</label>
-                                                                        <input type="text" name="quantity" class="form-input" required value="<?php echo $row['quantity'] ?>">
+                                                                        <input type="text" name="quantity" class="form-input" required value="<?php echo $row['quantity'] ?>" disabled >
                                                                     </div>
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Method</label>
-                                                                        <select name="method" class="selectize">
+                                                                        <select name="method" class="selectize"  disabled>
                                                                             <option value="shop" <?php if (isset($row['method']) && $row['method'] == 'shop') echo 'selected'; ?>>Shop</option>
                                                                             <option value="delivery" <?php if (isset($row['method']) && $row['method'] == 'delivery') echo 'selected'; ?>>Delivery</option>
                                                                         </select>
@@ -517,7 +517,7 @@ if ($result) {
 
                                                             <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
                                                                 <button class="py-2 px-5 inline-flex justify-center items-center gap-2 rounded dark:text-gray-200 border dark:border-slate-700 font-medium hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button">Close</button>
-                                                                <button name="exchange_jeans" type="submit" class="btn bg-warning text-white">Edit</button>
+                                                                <button name="update" type="submit" class="btn bg-warning text-white">Edit</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -563,7 +563,7 @@ if ($result) {
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">
                                         Jeans Name </label>
 
-                                    <select name="jeans_name" class="search-select" required onchange="fetchPrice()">
+                                    <select name="jeans_name" class="search-select" required onchange="fetchPrice()"  >
 
                                         <?php
 
@@ -756,32 +756,42 @@ if (isset($_POST['exchange_jeans'])) {
 }
 
 
-if (isset($_POST['update_purchase'])) {
-    $customer = $_POST['customer'];
+if (isset($_POST['update'])) {
     $sales_id = $_POST['sales_id'];
-    $tin_number = $_POST['tin_number'];
-    $price_before_vat = $_POST['price_before_vat'];
+    $user_id = $_SESSION['user_id'];
+    $jeans_name = $_POST['jeans_name'];
+    $size = $_POST['size'];
+    $price = $_POST['price'];
+    $cash = $_POST['cash'];
+    $bank = $_POST['bank'];
+    $method = $_POST['method'];
     $date = $_POST['date'];
-    $vat = $_POST['vat'];
-    $machine_number = $_POST['machine_number'];
-    $holding_tax = $_POST['holding_tax'];
-    $receipt_number = $_POST['receipt_number'];
-    $price_including_vat = $price_before_vat + ($price_before_vat * ($vat * 0.01));
+    $quantity = $_POST['quantity'];
 
 
-
-
-    $purchase_update = "UPDATE `sales` SET `customer`='$customer', `tin_number`='$tin_number', `price_before_vat`= '$price_before_vat', `vat`='$vat', 
-                `price_including_vat`='$price_including_vat', `machine_number`='$machine_number', `holding_tax`='$holding_tax', `receipt_number`='$receipt_number', 
-                `sales_date`='$date', `update_date`='$date' WHERE `sales_id` = '$sales_id'";
-    $result_update = mysqli_query($con, $purchase_update);
-
-    if ($result_update) {
-        echo "<script>window.location = 'action.php?status=success&redirect=purchase.php'; </script>";
+    if ($bank == 0) {
+        $bank_name = null;
+        $bank_id = null;
     } else {
-        echo "<script>window.location = 'action.php?status=error&redirect=purchase.php'; </script>";
+        $bank_name = $_POST['bank_name'];
+        $sql = "SELECT * FROM bankdb WHERE bankname = '$bank_name'";
+        $result = mysqli_query($con, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $bank_id = $row['id'];
     }
+
+
+    $sql="UPDATE sales SET  price = '$price', cash = '$cash', bank = '$bank', update_date = '$date', user_id = '$user_id', bank_id = '$bank_id', bank_name = '$bank_name' WHERE sales_id = '$sales_id'";
+    $result = mysqli_query($con, $sql);
+
+    if ($result) {
+        echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
+    } else {
+        echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+    }
+    
 }
+
 
 if (isset($_POST['add_data'])) {
 

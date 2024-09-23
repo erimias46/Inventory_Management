@@ -28,17 +28,19 @@ if($error=='1'){
     $active='1';
     $insert = "INSERT INTO `jeans`(`jeans_name`, `size`, `type`, `price`, `quantity`, `active`,`size_id`,`type_id`,`image`) VALUES ('$jeans_name','$size','$type','$price','$quantity','$active','$size_id','$type_id','$image')";
     $result_insert = mysqli_query($con, $insert);
+
+    
     if ($result_insert) {
        
         $delete = "DELETE FROM `jeans_verify` WHERE id = $update_id";
         $result_delete = mysqli_query($con, $delete);
         if ($result_delete) {
-            echo "<script>window.location = 'action.php?status=success&redirect=payment_filter.php'; </script>";
+            echo "<script>window.location = '../action.php?status=success&redirect=verify.php'; </script>";
         } else {
-            echo "<script>window.location = 'action.php?status=error&redirect=payment_filter.php'; </script>";
+            echo "<script>window.location = '../action.php?status=error&redirect=verify.php'; </script>";
         }
     } else {
-        echo "<script>window.location = 'action.php?status=error&redirect=payment_filter.php'; </script>";
+        echo "<script>window.location = '../action.php?status=error&redirect=verify.php'; </script>";
     }
 
 }
@@ -53,12 +55,12 @@ if($error=='2'){
         $delete = "DELETE FROM `jeans_verify` WHERE id = $update_id";
         $result_delete = mysqli_query($con, $delete);
         if ($result_delete) {
-            echo "<script>window.location = 'action.php?status=success&redirect=verify.php'; </script>";
+            echo "<script>window.location = '../action.php?status=success&redirect=verify.php'; </script>";
         } else {
-            echo "<script>window.location = 'action.php?status=error&redirect=verify.php'; </script>";
+            echo "<script>window.location = '../action.php?status=error&redirect=verify.php'; </script>";
         }
     } else {
-        echo "<script>window.location = 'action.php?status=error&redirect=verify.php'; </script>";
+        echo "<script>window.location = '../action.php?status=error&redirect=verify.php'; </script>";
     }
 }
 

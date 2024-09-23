@@ -19,6 +19,20 @@ include_once $redirect_link . 'include/db.php';
     if (isset($id) && isset($from)) {
 
         if ($from == 'sales') {
+
+            $sql = "SELECT * FROM sales WHERE sales_id='$id'";
+            $res = mysqli_query($con, $sql);
+            $row = mysqli_fetch_assoc($res);
+            $jeans_name = $row['jeans_name'];
+            $size = $row['size'];
+            $quantity = $row['quantity'];
+
+
+            $sql="Update jeans SET quantity = quantity + $quantity WHERE jeans_name = '$jeans_name' AND size = '$size'";
+            $res = mysqli_query($con, $sql);
+            
+
+
             $remove = "DELETE FROM sales WHERE sales_id ='$id'";
             $remove_res = mysqli_query($con, $remove);
             if ($remove_res) {

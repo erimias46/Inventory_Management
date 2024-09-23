@@ -121,7 +121,7 @@ if ($result) {
                 <li class="menu-item">
                     <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
                         <span class="menu-icon"><i class="msr">calculate</i></span>
-                        <span class="menu-text"> Product </span>
+                        <span class="menu-text"> Jeans </span>
                         <span class="menu-arrow"></span>
                     </a>
 

@@ -124,25 +124,10 @@ if ($result) {
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Sales</h4>
                             <div>
 
-                                <?php if ($addButtonVisible) : ?>
-
-                                    <button type="button" data-fc-type="modal" data-fc-target="addModal"
-                                        class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
-                                        <i class="msr text-base me-2">add</i>
-                                        Add Sales
-                                    </button>
-
-                                <?php endif; ?>
+                               
 
 
-                                <?php if ($generateButtonVisible) : ?>
-                                    <a href="export.php?type=sales&from_date=<?php echo $from_date; ?>&to_date=<?php echo $to_date; ?>"
-                                        class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
-                                        <i class="msr text-base me-2">picture_as_pdf</i>
-                                        Export
-                                    </a>
-
-                                <?php endif; ?>
+                                
                             </div>
                         </div>
                     </div>

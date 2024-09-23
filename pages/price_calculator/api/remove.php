@@ -24,17 +24,44 @@ include_once $redirect_link . 'include/db.php';
             $res = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($res);
             $jeans_name = $row['jeans_name'];
+            $jeans_id = $row['jeans_id'];
+            $size_id = $row['size_id'];
+            $price = $row['price'];
+            $cash = $row['cash'];
+            $bank = $row['bank'];
+            $method = $row['method'];
+           
+            $date = $row['sales_date'];
+
             $size = $row['size'];
             $quantity = $row['quantity'];
 
 
+            $user_id=$_SESSION['user_id'];
+
+
             $sql="Update jeans SET quantity = quantity + $quantity WHERE jeans_name = '$jeans_name' AND size = '$size'";
             $res = mysqli_query($con, $sql);
-            
+
+
+
+
+
+
 
 
             $remove = "DELETE FROM sales WHERE sales_id ='$id'";
             $remove_res = mysqli_query($con, $remove);
+
+
+        $status = "SELL DELETED";
+
+
+
+
+        $add_jeans_log = "INSERT INTO `sales_log`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
+VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
+        $result_adds = mysqli_query($con, $add_jeans_log);
             if ($remove_res) {
                 echo "<script>window.location.href='../sale_jeans.php?status=success';</script>";
             }

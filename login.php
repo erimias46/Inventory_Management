@@ -31,7 +31,7 @@
                             $_SESSION['username'] = $username;
                             $_SESSION['user_id'] = $user_id;
                             $_SESSION['user'] = true;
-                            $redirect = $_GET['redirect'] ?? 'pages/price_calculator/add_single_jeans.php';
+                            $redirect = $_GET['redirect'] ?? 'index.php';
                             header("Location: $redirect");
                             die();
                         } else {

@@ -300,7 +300,7 @@ if ($result) {
                                                         </div>
                                                         <form method="POST" class="overflow-y-auto">
                                                             <div class="px-4 py-8">
-                                                                <div class="grid grid-cols-2 md:grid-cols-2 gap-3">
+                                                                <div class="grid grid-cols-3 md:grid-cols-2 gap-3">
                                                                     <input type="hidden" name="sales_id" value="<?= $row['sales_id']; ?>">
 
 
@@ -407,7 +407,7 @@ if ($result) {
                                                         </div>
                                                         <form method="POST" class="overflow-y-auto">
                                                             <div class="px-4 py-8">
-                                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                                <div class="grid grid-cols-3 md:grid-cols-2 gap-3">
                                                                     <input type="hidden" name="sales_id" value="<?= $row['sales_id']; ?>">
 
                                                                     <?php
@@ -418,7 +418,7 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Name</label>
-                                                                        <select name="jeans_name" class="search-select" id="jeans_name_select" disabled  >
+                                                                        <select name="jeans_name" class="search-select" id="jeans_name_select" disabled>
                                                                             <?php
                                                                             $sql3 = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
                                                                             $result3 = mysqli_query($con, $sql3);
@@ -442,7 +442,7 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Size</label>
-                                                                        <select name="size" class="search-select" id="jeans_size_select"  disabled>
+                                                                        <select name="size" class="search-select" id="jeans_size_select" disabled>
                                                                             <?php
                                                                             $sql4 = "SELECT * FROM jeansdb";
                                                                             $result4 = mysqli_query($con, $sql4);
@@ -501,12 +501,12 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity</label>
-                                                                        <input type="text" name="quantity" class="form-input" required value="<?php echo $row['quantity'] ?>" disabled >
+                                                                        <input type="text" name="quantity" class="form-input" required value="<?php echo $row['quantity'] ?>" disabled>
                                                                     </div>
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Method</label>
-                                                                        <select name="method" class="selectize"  disabled>
+                                                                        <select name="method" class="selectize" disabled>
                                                                             <option value="shop" <?php if (isset($row['method']) && $row['method'] == 'shop') echo 'selected'; ?>>Shop</option>
                                                                             <option value="delivery" <?php if (isset($row['method']) && $row['method'] == 'delivery') echo 'selected'; ?>>Delivery</option>
                                                                         </select>
@@ -534,7 +534,7 @@ if ($result) {
 
 
 
-                                            
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -563,7 +563,7 @@ if ($result) {
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">
                                         Jeans Name </label>
 
-                                    <select name="jeans_name" class="search-select" required onchange="fetchPrice()"  >
+                                    <select name="jeans_name" class="search-select" required onchange="fetchPrice()">
 
                                         <?php
 
@@ -781,7 +781,7 @@ if (isset($_POST['update'])) {
     }
 
 
-    $sql="UPDATE sales SET  price = '$price', cash = '$cash', bank = '$bank', update_date = '$date', user_id = '$user_id', bank_id = '$bank_id', bank_name = '$bank_name' WHERE sales_id = '$sales_id'";
+    $sql = "UPDATE sales SET  price = '$price', cash = '$cash', bank = '$bank', update_date = '$date', user_id = '$user_id', bank_id = '$bank_id', bank_name = '$bank_name' WHERE sales_id = '$sales_id'";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
@@ -789,7 +789,6 @@ if (isset($_POST['update'])) {
     } else {
         echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
     }
-    
 }
 
 

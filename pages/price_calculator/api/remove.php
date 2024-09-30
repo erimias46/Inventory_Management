@@ -46,15 +46,14 @@ include_once $redirect_link . 'include/db.php';
 
 
 
-
-
-
-
             $remove = "DELETE FROM sales WHERE sales_id ='$id'";
             $remove_res = mysqli_query($con, $remove);
 
 
-        $status = "SELL DELETED";
+                 $status = "SELL DELETED";
+
+
+                 
 
 
 

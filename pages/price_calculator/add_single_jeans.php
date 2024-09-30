@@ -106,7 +106,7 @@ if (isset($_POST['add'])) {
     // Redirect after successful insertion
 
     if ($add_jeans) {
-        echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
+        
 
 
 
@@ -137,6 +137,9 @@ if (isset($_POST['add'])) {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $response = curl_exec($ch);
             curl_close($ch);
+
+
+            echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
 
         }
 

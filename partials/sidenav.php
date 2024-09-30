@@ -197,56 +197,487 @@ if ($result) {
 
 
 
-                        <!-- <?php if ($bookview) : ?>
-                            <li class="menu-item">
-                                <a href="<?php echo $redirect_link ?>pages/price_calculator/bag.php" class="menu-link">
-                                    <span class="menu-text">Bag</span>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                        <?php if ($manualview) : ?>
-                            <li class="menu-item">
-                                <a href="<?php echo $redirect_link ?>pages/price_calculator/digital.php" class="menu-link">
-                                    <span class="menu-text">Manual</span>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                        <?php if ($digitalview) : ?>
-                            <li class="menu-item">
-                                <a href="<?php echo $redirect_link ?>pages/price_calculator/otherdigital.php" class="menu-link">
-                                    <span class="menu-text">Digital</span>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                        <?php if ($bannerview) : ?>
-                            <li class="menu-item">
-                                <a href="<?php echo $redirect_link ?>pages/price_calculator/banner.php" class="menu-link">
-                                    <span class="menu-text">Banner</span>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                        <?php if ($designview) : ?>
+
+                    </ul>
+                </li>
+            <?php endif; ?>
+
+
+            <?php if ($calcview) : ?>
+
+
+                <li class="menu-item">
+                    <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                        <span class="menu-icon"><i class="msr">calculate</i></span>
+                        <span class="menu-text"> Shoes </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
+                    <ul class="sub-menu hidden">
+
+                        <?php if ($brocherview) : ?>
 
                             <li class="menu-item">
-                                <a href="<?php echo $redirect_link ?>pages/price_calculator/design.php" class="menu-link">
-                                    <span class="menu-text">Design</span>
+                                <a href="<?php echo $redirect_link ?>pages/shoe/add_shoes.php" class="menu-link">
+                                    <span class="menu-text">Add Shoes</span>
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <?php if ($singlepagedigitalview) : ?>
+                        <?php if ($bookview) : ?>
                             <li class="menu-item">
-                                <a href="<?php echo $redirect_link ?>pages/price_calculator/singlepagedigital.php" class="menu-link">
-                                    <span class="menu-text">Single Page Digital</span>
+                                <a href="<?php echo $redirect_link ?>pages/shoe/all_shoes.php" class="menu-link">
+                                    <span class="menu-text">All Shoes</span>
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <?php if ($multipagedigitalview) : ?>
+
+                        <?php if ($bookview) : ?>
                             <li class="menu-item">
-                                <a href="<?php echo $redirect_link ?>pages/price_calculator/multipage.php" class="menu-link">
-                                    <span class="menu-text">Multi Page Digital</span>
+                                <a href="<?php echo $redirect_link ?>pages/shoe/type_shoes.php" class="menu-link">
+                                    <span class="menu-text">Type Shoes</span>
                                 </a>
                             </li>
-                        <?php endif; ?> -->
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/shoe/sale_shoes.php" class="menu-link">
+                                    <span class="menu-text">Sale Shoes</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/shoe/shoes_stock_log.php" class="menu-link">
+                                    <span class="menu-text">Shoes Stock Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/shoe/verify.php" class="menu-link">
+                                    <span class="menu-text">Verify</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/shoe/exchange.php" class="menu-link">
+                                    <span class="menu-text">Exchange Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/shoe/refund.php" class="menu-link">
+                                    <span class="menu-text">Refund Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/shoe/delivery.php" class="menu-link">
+                                    <span class="menu-text">Delivery</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+
+
+
+                    </ul>
+                </li>
+            <?php endif; ?>
+
+
+            <?php if ($calcview) : ?>
+
+
+                <li class="menu-item">
+                    <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                        <span class="menu-icon"><i class="msr">calculate</i></span>
+                        <span class="menu-text"> Top </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
+                    <ul class="sub-menu hidden">
+
+                        <?php if ($brocherview) : ?>
+
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/top/add_top.php" class="menu-link">
+                                    <span class="menu-text">Add Top</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/top/all_top.php" class="menu-link">
+                                    <span class="menu-text">All Top</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/top/type_top.php" class="menu-link">
+                                    <span class="menu-text">Type Top</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/top/sale_top.php" class="menu-link">
+                                    <span class="menu-text">Sale Top</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/top/top_stock_log.php" class="menu-link">
+                                    <span class="menu-text">Top Stock Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/top/verify.php" class="menu-link">
+                                    <span class="menu-text">Verify</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/top/exchange.php" class="menu-link">
+                                    <span class="menu-text">Exchange Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/top/refund.php" class="menu-link">
+                                    <span class="menu-text">Refund Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/top/delivery.php" class="menu-link">
+                                    <span class="menu-text">Delivery</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+
+
+
+                    </ul>
+                </li>
+            <?php endif; ?>
+
+
+
+            <?php if ($calcview) : ?>
+
+
+                <li class="menu-item">
+                    <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                        <span class="menu-icon"><i class="msr">calculate</i></span>
+                        <span class="menu-text"> Complete </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
+                    <ul class="sub-menu hidden">
+
+                        <?php if ($brocherview) : ?>
+
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/complete/add_complete.php" class="menu-link">
+                                    <span class="menu-text">Add Complete</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/complete/all_complete.php" class="menu-link">
+                                    <span class="menu-text">All Complete</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/complete/type_complete.php" class="menu-link">
+                                    <span class="menu-text">Type Complete</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/complete/sale_complete.php" class="menu-link">
+                                    <span class="menu-text">Sale complete</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/complete/complete_stock_log.php" class="menu-link">
+                                    <span class="menu-text">complete Stock Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/complete/verify.php" class="menu-link">
+                                    <span class="menu-text">Verify</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/complete/exchange.php" class="menu-link">
+                                    <span class="menu-text">Exchange Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/complete/refund.php" class="menu-link">
+                                    <span class="menu-text">Refund Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/complete/delivery.php" class="menu-link">
+                                    <span class="menu-text">Delivery</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+
+
+
+                    </ul>
+                </li>
+            <?php endif; ?>
+
+
+            <?php if ($calcview) : ?>
+
+
+                <li class="menu-item">
+                    <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                        <span class="menu-icon"><i class="msr">calculate</i></span>
+                        <span class="menu-text"> Accessory </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
+                    <ul class="sub-menu hidden">
+
+                        <?php if ($brocherview) : ?>
+
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/accessory/add_accessory.php" class="menu-link">
+                                    <span class="menu-text">Add accessory</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/accessory/all_accessory.php" class="menu-link">
+                                    <span class="menu-text">All accessory</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/accessory/type_accessory.php" class="menu-link">
+                                    <span class="menu-text">Type accessory</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/accessory/sale_accessory.php" class="menu-link">
+                                    <span class="menu-text">Sale accessory</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/accessory/accessory_stock_log.php" class="menu-link">
+                                    <span class="menu-text">Accessory Stock Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/accessory/verify.php" class="menu-link">
+                                    <span class="menu-text">Verify</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/accessory/exchange.php" class="menu-link">
+                                    <span class="menu-text">Exchange Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/accessory/refund.php" class="menu-link">
+                                    <span class="menu-text">Refund Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/accessory/delivery.php" class="menu-link">
+                                    <span class="menu-text">Delivery</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+
+
+
+                    </ul>
+                </li>
+            <?php endif; ?>
+
+
+
+            <?php if ($calcview) : ?>
+
+
+                <li class="menu-item">
+                    <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                        <span class="menu-icon"><i class="msr">calculate</i></span>
+                        <span class="menu-text"> Wig </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
+                    <ul class="sub-menu hidden">
+
+                        <?php if ($brocherview) : ?>
+
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/wig/add_wig.php" class="menu-link">
+                                    <span class="menu-text">Add wig</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/wig/all_wig.php" class="menu-link">
+                                    <span class="menu-text">All Wig</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/wig/type_wig.php" class="menu-link">
+                                    <span class="menu-text">Type accessory</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/wig/sale_wig.php" class="menu-link">
+                                    <span class="menu-text">Sale Wig</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/wig/wig_stock_log.php" class="menu-link">
+                                    <span class="menu-text">Wig Stock Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/wig/verify.php" class="menu-link">
+                                    <span class="menu-text">Verify</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/wig/exchange.php" class="menu-link">
+                                    <span class="menu-text">Exchange Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/wig/refund.php" class="menu-link">
+                                    <span class="menu-text">Refund Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/wig/delivery.php" class="menu-link">
+                                    <span class="menu-text">Delivery</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+
+
+
+                    </ul>
+                </li>
+            <?php endif; ?>
+
+
+            <?php if ($calcview) : ?>
+
+
+                <li class="menu-item">
+                    <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
+                        <span class="menu-icon"><i class="msr">calculate</i></span>
+                        <span class="menu-text"> SALE </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
+                    <ul class="sub-menu hidden">
+
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/sale/sale.php" class="menu-link">
+                                    <span class="menu-text">Sale</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($bookview) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/sale/all_sales.php" class="menu-link">
+                                    <span class="menu-text">All Sales</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+
+
+
+
                     </ul>
                 </li>
             <?php endif; ?>
@@ -285,7 +716,7 @@ if ($result) {
             <?php endif; ?>
 
 
-            
+
             <?php if ($backview) : ?>
                 <li class="menu-item">
                     <a href="<?php echo $redirect_link ?>newbackup.php" class="menu-link">

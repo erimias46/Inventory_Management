@@ -16,7 +16,7 @@ $to_date = $_GET['to'] ?? '';
 
 <head>
     <?php
-    $title = 'Sale Jeans';
+    $title = 'Sale complete';
     include $redirect_link . 'partials/title-meta.php'; ?>
 
     <?php include $redirect_link . 'partials/head-css.php'; ?>
@@ -157,8 +157,7 @@ if ($result) {
                                                 <th>ID</th>
                                                 <th>Sales Date</th>
                                                 <th>Action</th>
-
-                                                <th>Jeans Name</th>
+                                                <th>complete Name</th>
                                                 <th>Size</th>
                                                 <th>Total</th>
                                                 <th>Cash </th>
@@ -184,7 +183,7 @@ if ($result) {
                                             }
 
                                             $sql = "SELECT * 
-        FROM sales 
+        FROM complete_sales 
         WHERE DATE(sales_date) >= '$from_date' 
         AND DATE(sales_date) <= '$to_date' 
         $customer_condition
@@ -212,7 +211,7 @@ if ($result) {
                                                         <?php if ($deleteButtonVisible) : ?>
 
                                                             <a id="del-btn"
-                                                                href="api/remove.php?id=<?php echo $row['sales_id']; ?>&from=sales"
+                                                                href="api/remove.php?id=<?php echo $row['sales_id']; ?>&from=complete_sales"
                                                                 class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full"><i
                                                                     class="mgc_delete_2_line text-base me-2"></i> Delete</a>
 
@@ -234,7 +233,7 @@ if ($result) {
                                                         <?php if ($deleteButtonVisible) : ?>
 
                                                             <a id="del-btn"
-                                                                href="api/refund.php?id=<?php echo $row['sales_id']; ?>&from=sales"
+                                                                href="api/refund.php?id=<?php echo $row['sales_id']; ?>&from=complete_sales"
                                                                 class="btn bg-info/25 text-info hover:bg-info hover:text-white btn-sm rounded-full"><i
                                                                     class="mgc_delete_2_line text-base me-2"></i> Refund</a>
 
@@ -259,7 +258,7 @@ if ($result) {
 
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                        <?php echo $row['jeans_name']; ?></td>
+                                                        <?php echo $row['complete_name']; ?></td>
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php echo $row['size']; ?></td>
@@ -293,27 +292,27 @@ if ($result) {
                                                 <div id="exchange<?= $row['sales_id'] ?>" class="w-full h-full fixed top-0 left-0 z-50 transition-all duration-500 hidden">
                                                     <div class="fc-modal-open:mt-7 fc-modal-open:opacity-100 fc-modal-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-md sm:w-full m-3 sm:mx-auto bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
                                                         <div class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
-                                                            <h3 class="font-medium text-gray-800 dark:text-white text-lg">Exchange Jeans</h3>
+                                                            <h3 class="font-medium text-gray-800 dark:text-white text-lg">Exchange complete</h3>
                                                             <button class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 dark:text-gray-200" data-fc-dismiss type="button">
                                                                 <span class="material-symbols-rounded">close</span>
                                                             </button>
                                                         </div>
                                                         <form method="POST" class="overflow-y-auto">
                                                             <div class="px-4 py-8">
-                                                                <div class="grid grid-cols-2 md:grid-cols-2 gap-3">
+                                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                                     <input type="hidden" name="sales_id" value="<?= $row['sales_id']; ?>">
 
 
 
                                                                     <div>
-                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Name</label>
-                                                                        <select name="jeans_name" class="search-select" id="jeans_name_select">
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">complete Name</label>
+                                                                        <select name="complete_name" class="search-select">
                                                                             <?php
-                                                                            $sql3 = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
+                                                                            $sql3 = "SELECT * FROM complete GROUP BY complete_name ORDER BY complete_name ASC";
                                                                             $result3 = mysqli_query($con, $sql3);
                                                                             if (mysqli_num_rows($result3) > 0) {
                                                                                 while ($row3 = mysqli_fetch_assoc($result3)) { ?>
-                                                                                    <option value="<?= $row3['jeans_name'] ?>"><?= $row3['jeans_name'] ?></option>
+                                                                                    <option value="<?= $row3['complete_name'] ?>"><?= $row3['complete_name'] ?></option>
                                                                             <?php }
                                                                             }
                                                                             ?>
@@ -321,10 +320,10 @@ if ($result) {
                                                                     </div>
 
                                                                     <div>
-                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Size</label>
-                                                                        <select name="size" class="search-select" id="jeans_size_select">
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">complete Size</label>
+                                                                        <select name="size" class="search-select">
                                                                             <?php
-                                                                            $sql4 = "SELECT * FROM jeansdb";
+                                                                            $sql4 = "SELECT * FROM completedb";
                                                                             $result4 = mysqli_query($con, $sql4);
                                                                             if (mysqli_num_rows($result4) > 0) {
                                                                                 while ($row4 = mysqli_fetch_assoc($result4)) { ?>
@@ -388,7 +387,7 @@ if ($result) {
 
                                                             <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
                                                                 <button class="py-2 px-5 inline-flex justify-center items-center gap-2 rounded dark:text-gray-200 border dark:border-slate-700 font-medium hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button">Close</button>
-                                                                <button name="exchange_jeans" type="submit" class="btn bg-success text-white">Exchange</button>
+                                                                <button name="exchange_complete" type="submit" class="btn bg-success text-white">Exchange</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -411,27 +410,27 @@ if ($result) {
                                                                     <input type="hidden" name="sales_id" value="<?= $row['sales_id']; ?>">
 
                                                                     <?php
-                                                                    $sql2 = "SELECT * FROM sales WHERE sales_id = " . $row['sales_id'];
+                                                                    $sql2 = "SELECT * FROM complete_sales WHERE sales_id = " . $row['sales_id'];
                                                                     $result2 = mysqli_query($con, $sql2);
                                                                     $row2 = mysqli_fetch_assoc($result2);
                                                                     ?>
 
                                                                     <div>
-                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Name</label>
-                                                                        <select name="jeans_name" class="search-select" id="jeans_name_select" disabled  >
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">complete Name</label>
+                                                                        <select name="complete_name" class="search-select" id="jeans_name_select" disabled>
                                                                             <?php
-                                                                            $sql3 = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
+                                                                            $sql3 = "SELECT * FROM complete GROUP BY complete_name ORDER BY complete_name ASC";
                                                                             $result3 = mysqli_query($con, $sql3);
                                                                             if (mysqli_num_rows($result3) > 0) {
                                                                                 while ($row3 = mysqli_fetch_assoc($result3)) { ?>
-                                                                                    <option value="<?= $row3['jeans_name'] ?>"
+                                                                                    <option value="<?= $row3['complete_name'] ?>"
                                                                                         <?php
                                                                                         // Check if the current jeans_name should be selected
-                                                                                        if (isset($row['jeans_name']) && $row['jeans_name'] == $row3['jeans_name']) {
+                                                                                        if (isset($row['complete_name']) && $row['complete_name'] == $row3['complete_name']) {
                                                                                             echo "selected";
                                                                                         }
                                                                                         ?>>
-                                                                                        <?= $row3['jeans_name'] ?>
+                                                                                        <?= $row3['complete_name'] ?>
                                                                                     </option>
                                                                             <?php }
                                                                             }
@@ -441,10 +440,10 @@ if ($result) {
 
 
                                                                     <div>
-                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Size</label>
-                                                                        <select name="size" class="search-select" id="jeans_size_select"  disabled>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">complete Size</label>
+                                                                        <select name="size" class="search-select" disabled>
                                                                             <?php
-                                                                            $sql4 = "SELECT * FROM jeansdb";
+                                                                            $sql4 = "SELECT * FROM completedb";
                                                                             $result4 = mysqli_query($con, $sql4);
                                                                             if (mysqli_num_rows($result4) > 0) {
                                                                                 while ($row4 = mysqli_fetch_assoc($result4)) { ?>
@@ -501,12 +500,12 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity</label>
-                                                                        <input type="text" name="quantity" class="form-input" required value="<?php echo $row['quantity'] ?>" disabled >
+                                                                        <input type="text" name="quantity" class="form-input" required value="<?php echo $row['quantity'] ?>" disabled>
                                                                     </div>
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Method</label>
-                                                                        <select name="method" class="selectize"  disabled>
+                                                                        <select name="method" class="selectize" disabled>
                                                                             <option value="shop" <?php if (isset($row['method']) && $row['method'] == 'shop') echo 'selected'; ?>>Shop</option>
                                                                             <option value="delivery" <?php if (isset($row['method']) && $row['method'] == 'delivery') echo 'selected'; ?>>Delivery</option>
                                                                         </select>
@@ -534,7 +533,7 @@ if ($result) {
 
 
 
-                                            
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -542,6 +541,8 @@ if ($result) {
                         </div>
                     </div>
                 </div>
+
+
 
                 <div id="addModal" class="w-full h-full fixed top-0 left-0 z-50 transition-all duration-500 hidden">
                     <div
@@ -558,156 +559,148 @@ if ($result) {
                         </div>
                         <form method="POST">
                             <div class="px-4 py-8 overflow-y-auto">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                        Jeans Name </label>
 
-                                    <select name="jeans_name" class="search-select" required onchange="fetchPrice()"  >
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                            complete Name </label>
 
-                                        <?php
+                                        <select name="complete_name" class="search-select" required onchange="fetchPrice()">
 
-                                        $sql = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
-                                        $result = mysqli_query($con, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                        ?>
-                                            <option value="<?php echo $row['jeans_name'] ?>" <?php
-                                                                                                if (isset($jeans_name)) {
-                                                                                                    if ($row['jeans_name'] == $jeans_name) {
-                                                                                                        echo "selected";
+                                            <?php
+
+                                            $sql = "SELECT * FROM complete GROUP BY complete_name ORDER BY complete_name ASC";
+                                            $result = mysqli_query($con, $sql);
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
+                                                <option value="<?php echo $row['complete_name'] ?>" <?php
+                                                                                                    if (isset($complete_name)) {
+                                                                                                        if ($row['complete_name'] == $complete_name) {
+                                                                                                            echo "selected";
+                                                                                                        }
                                                                                                     }
-                                                                                                }
-                                                                                                ?>>
-                                                <?php echo $row['jeans_name']; ?>
-                                            </option>
-                                        <?php
-                                        }
-                                        ?>
+                                                                                                    ?>>
+                                                    <?php echo $row['complete_name']; ?>
+                                                </option>
+                                            <?php
+                                            }
+                                            ?>
 
-                                    </select>
+                                        </select>
 
-                                </div>
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                        Jeans Size </label>
-
-                                    <select name="size" class="search-select" required onchange="fetchPrice()">
-
-                                        <?php
-
-                                        $sql = "SELECT * FROM jeansdb";
-                                        $result = mysqli_query($con, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                        ?>
-                                            <option value="<?php echo $row['size'] ?>" <?php
-                                                                                        if (isset($jeans_size)) {
-                                                                                            if ($row['size'] == $jeans_size) {
-                                                                                                echo "selected";
-                                                                                            }
-                                                                                        }
-                                                                                        ?>>
-                                                <?php echo $row['size']; ?>
-                                            </option>
-                                        <?php
-                                        }
-                                        ?>
-
-
-
-
-                                    </select>
-
-                                </div>
-
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                        Method </label>
-
-                                    <select name="method" class="search-select" required>
-
-                                        <option value="shop">Shop</option>
-                                        <option value="delivery">Delivery</option>
-
-                                    </select>
-
-                                </div>
-
-
-
-
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity
-                                    </label>
-                                    <input type="text" name="quantity" class="form-input" value="1"
-                                        onchange="fetchPrice()" required>
-                                </div>
-
-
-
-
-
-
-                                <div class="flex gap-2 justify-between">
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price
-                                        </label>
-                                        <input type="text" name="price" class="form-input" required>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Cash
-                                        </label>
-                                        <input type="text" name="cash" class="form-input" value="0" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank</label>
-                                        <input type="text" name="bank" class="form-input" value="0" required
-                                            id="bankInput" onchange="toggleBankName()">
-                                    </div>
-                                </div>
 
 
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank
-                                        Name</label>
-                                    <select name="bank_name" class="form-input">
-                                        <option value="">Select</option>
-                                        <?php
-                                        $sql = "SELECT * FROM bankdb ";
-                                        $result = mysqli_query($con, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                        ?>
-                                            <option value="<?php echo $row['bankname'] ?>" <?php
-                                                                                            if (isset($bank_name)) {
-                                                                                                if ($row['bank_name'] == $bank_name) {
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                            complete Size </label>
+
+                                        <select name="size" class="search-select" required onchange="fetchPrice()">
+
+                                            <?php
+
+                                            $sql = "SELECT * FROM completedb";
+                                            $result = mysqli_query($con, $sql);
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
+                                                <option value="<?php echo $row['size'] ?>" <?php
+                                                                                            if (isset($complete_size)) {
+                                                                                                if ($row['size'] == $complete_size) {
                                                                                                     echo "selected";
                                                                                                 }
                                                                                             }
                                                                                             ?>>
-                                                <?php echo $row['bankname']; ?>
-                                            </option>
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
+                                                    <?php echo $row['size']; ?>
+                                                </option>
+                                            <?php
+                                            }
+                                            ?>
 
-                                <div class="flex gap-2  justify-around">
+
+
+
+                                        </select>
+
+                                    </div>
+
+
 
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                            Date </label>
-                                        <input type="date" name="date" class="form-input"
-                                            value="<?php echo date('Y-m-d'); ?>" required>
+                                            Method </label>
+
+                                        <select name="method" class="search-select" required>
+
+                                            <option value="shop">Shop</option>
+                                            <option value="delivery">Delivery</option>
+
+                                        </select>
+
                                     </div>
 
-                                </div>
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity
+                                        </label>
+                                        <input type="text" name="quantity" class="form-input" value="1"
+                                            onchange="fetchPrice()" required>
+                                    </div>
 
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Cash</label>
+                                        <input type="text" name="cash"  id="cash" class="form-input" value="0" required onchange="calculateTotalPrice()">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank</label>
+                                        <input type="text" name="bank"  id="bank" class="form-input" value="0" required id="bankInput" onchange="calculateTotalPrice();">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price</label>
+                                        <input type="text" name="price" id="total_price" class="form-input" value="0" required readonly>
+                                    </div>
+
+
+
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank
+                                            Name</label>
+                                        <select name="bank_name" class="form-input">
+                                            <option value="">Select</option>
+                                            <?php
+                                            $sql = "SELECT * FROM bankdb ";
+                                            $result = mysqli_query($con, $sql);
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
+                                                <option value="<?php echo $row['bankname'] ?>" <?php
+                                                                                                if (isset($bank_name)) {
+                                                                                                    if ($row['bank_name'] == $bank_name) {
+                                                                                                        echo "selected";
+                                                                                                    }
+                                                                                                }
+                                                                                                ?>>
+                                                    <?php echo $row['bankname']; ?>
+                                                </option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex gap-2  justify-around">
+
+                                        <div class="mb-3">
+                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                                Date </label>
+                                            <input type="date" name="date" class="form-input"
+                                                value="<?php echo date('Y-m-d'); ?>" required>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
 
                             </div>
                             <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
@@ -748,9 +741,32 @@ if ($result) {
 
 </html>
 
+
+<script>
+    function calculateTotalPrice() {
+        // Retrieve the input values
+        var cashValue = document.querySelector('input[id="cash"]').value;
+        var bankValue = document.querySelector('input[id="bank"]').value;
+
+        // Parse the values, default to 0 if not a valid number
+        var cash = parseFloat(cashValue) || 0;
+        var bank = parseFloat(bankValue) || 0;
+
+        // Console log for debugging
+        console.log("Cash: " + cash);
+        console.log("Bank: " + bank);
+
+        // Calculate the total price
+        var totalPrice = cash + bank;
+
+        // Update the total price input field
+        document.querySelector('input[id="total_price"]').value = totalPrice.toFixed(2); // Display with 2 decimals
+    }
+</script>
+
 <?php
 
-if (isset($_POST['exchange_jeans'])) {
+if (isset($_POST['exchange_complete'])) {
 
     include('api/exchange.php');
 }
@@ -759,7 +775,7 @@ if (isset($_POST['exchange_jeans'])) {
 if (isset($_POST['update'])) {
     $sales_id = $_POST['sales_id'];
     $user_id = $_SESSION['user_id'];
-    $jeans_name = $_POST['jeans_name'];
+    $complete_name = $_POST['complete_name'];
     $size = $_POST['size'];
     $price = $_POST['price'];
     $cash = $_POST['cash'];
@@ -781,22 +797,21 @@ if (isset($_POST['update'])) {
     }
 
 
-    $sql="UPDATE sales SET  price = '$price', cash = '$cash', bank = '$bank', update_date = '$date', user_id = '$user_id', bank_id = '$bank_id', bank_name = '$bank_name' WHERE sales_id = '$sales_id'";
+    $sql = "UPDATE complete_sales SET  price = '$price', cash = '$cash', bank = '$bank', update_date = '$date', user_id = '$user_id', bank_id = '$bank_id', bank_name = '$bank_name' WHERE sales_id = '$sales_id'";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
-        echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
+        echo "<script>window.location = 'action.php?status=success&redirect=sale_complete.php'; </script>";
     } else {
-        echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+        echo "<script>window.location = 'action.php?status=error&redirect=sale_complete.php'; </script>";
     }
-    
 }
 
 
 if (isset($_POST['add_data'])) {
 
     $user_id = $_SESSION['user_id'];
-    $jeans_name = $_POST['jeans_name'];
+    $complete_name = $_POST['complete_name'];
     $size = $_POST['size'];
     $price = $_POST['price'];
     $cash = $_POST['cash'];
@@ -818,13 +833,13 @@ if (isset($_POST['add_data'])) {
 
 
 
-    if (!empty($jeans_name) && !empty($size)) {
-        $sql = "SELECT * FROM jeans WHERE jeans_name = '$jeans_name' AND size = '$size'";
+    if (!empty($complete_name) && !empty($size)) {
+        $sql = "SELECT * FROM complete WHERE complete_name = '$complete_name' AND size = '$size'";
         $result = mysqli_query($con, $sql);
         $row = mysqli_fetch_assoc($result);
 
         if (!$row) {
-            $sql = "SELECT * FROM jeans WHERE jeans_name = '$jeans_name'";
+            $sql = "SELECT * FROM complete WHERE complete_name = '$complete_name'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
             $price = $row['price'];
@@ -833,19 +848,19 @@ if (isset($_POST['add_data'])) {
             $type_id = $row['type_id'];
 
 
-            $sql2 = "SELECT * FROM jeansdb WHERE size = '$size'";
+            $sql2 = "SELECT * FROM completedb WHERE size = '$size'";
             $result2 = mysqli_query($con, $sql2);
             $row2 = mysqli_fetch_assoc($result2);
             $size_id = $row2['id'];
 
             $quantity = $_POST['quantity'];
 
-            $add_jeans = "INSERT INTO `jeans_verify`(`jeans_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
-                          VALUES ('$jeans_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','1')";
-            $result_add = mysqli_query($con, $add_jeans);
+            $add_complete = "INSERT INTO `complete_verify`(`complete_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
+                          VALUES ('$complete_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','1')";
+            $result_add = mysqli_query($con, $add_complete);
 
             if ($result_add) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_complete.php'; </script>";
             }
 
             exit;
@@ -853,13 +868,13 @@ if (isset($_POST['add_data'])) {
 
 
 
-        $jeans_id = $row['id'];
+        $complete_id = $row['id'];
         $size_id = $row['size_id'];
         $current_quantity = $row['quantity'];
 
         if ($current_quantity < $quantity) {
 
-            $sql = "SELECT * FROM jeans WHERE jeans_name = '$jeans_name' AND size = '$size'";
+            $sql = "SELECT * FROM complete WHERE complete_name = '$complete_name' AND size = '$size'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
             $price = $row['price'];
@@ -868,12 +883,12 @@ if (isset($_POST['add_data'])) {
             $type_id = $row['type_id'];
             $size_id = $row['size_id'];
 
-            $add_jeans = "INSERT INTO `jeans_verify`(`jeans_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
-                              VALUES ('$jeans_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','2')";
-            $result_add = mysqli_query($con, $add_jeans);
+            $add_complete = "INSERT INTO `complete_verify`(`complete_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
+                              VALUES ('$complete_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','2')";
+            $result_add = mysqli_query($con, $add_complete);
 
             if ($result_add) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_complete.php'; </script>";
                 exit;
             }
 
@@ -887,39 +902,39 @@ if (isset($_POST['add_data'])) {
         if ($method == 'delivery') {
 
             $status = "pending";
-            $sql = "INSERT into delivery (jeans_id, size_id, jeans_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id,bank_id,bank_name,status)
-            VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','$status')";
+            $sql = "INSERT into complete_delivery (complete_id, size_id, complete_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id,bank_id,bank_name,status)
+            VALUES ('$complete_id', '$size_id', '$complete_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','$status')";
             $result = mysqli_query($con, $sql);
 
             $new_quantity = $current_quantity - $quantity;
-            $update_quantity = "UPDATE jeans SET quantity = '$new_quantity' WHERE id = '$jeans_id' AND size = '$size'";
+            $update_quantity = "UPDATE complete SET quantity = '$new_quantity' WHERE id = '$complete_id' AND size = '$size'";
             $result_update = mysqli_query($con, $update_quantity);
 
 
 
             // No need to check result_add, result_adds, or result_update for delivery
             if (!$result || !$result_update) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_complete.php'; </script>";
                 exit;
             }
         } else {
-            $add_sales = "INSERT INTO `sales`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`,`status`) 
-                  VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','active')";
+            $add_sales = "INSERT INTO `complete_sales`(`complete_id`, `size_id`, `complete_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`,`status`) 
+                  VALUES ('$complete_id', '$size_id', '$complete_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','active')";
             $result_add = mysqli_query($con, $add_sales);
 
             $status = "sold";
 
-            $add_jeans_log = "INSERT INTO `sales_log`(`jeans_id`, `size_id`, `jeans_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
-                      VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
-            $result_adds = mysqli_query($con, $add_jeans_log);
+            $add_complete_log = "INSERT INTO `complete_sales_log`(`complete_id`, `size_id`, `complete_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
+                      VALUES ('$complete_id', '$size_id', '$complete_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
+            $result_adds = mysqli_query($con, $add_complete_log);
 
             $new_quantity = $current_quantity - $quantity;
-            $update_quantity = "UPDATE jeans SET quantity = '$new_quantity' WHERE id = '$jeans_id' AND size = '$size'";
+            $update_quantity = "UPDATE complete SET quantity = '$new_quantity' WHERE id = '$complete_id' AND size = '$size'";
             $result_update = mysqli_query($con, $update_quantity);
 
             // Check only for errors in non-delivery cases
             if (!$result_add || !$result_adds || !$result_update) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_complete.php'; </script>";
                 exit;
             }
         }
@@ -930,7 +945,7 @@ if (isset($_POST['add_data'])) {
         $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
 
         $message = "New Sale Added:\n";
-        $message .= "Jeans Name: $jeans_name\n";
+        $message .= "complete Name: $complete_name\n";
         $message .= "Size: $size\n";
         $message .= "Price: $price\n";
         $message .= "Cash: $cash\n";
@@ -961,7 +976,7 @@ if (isset($_POST['add_data'])) {
         }
 
         // Success redirect
-        echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
+        echo "<script>window.location = 'action.php?status=success&redirect=sale_complete.php'; </script>";
     }
 }
 
@@ -972,7 +987,7 @@ if (isset($_POST['filter'])) {
     $from = $_POST['from_date'];
     $to = $_POST['to_date'];
     $customer = $_POST['customer'];
-    echo "<script>window.location = 'sale_jeans.php?from=$from&to=$to&customer=$customer'; </script>";
+    echo "<script>window.location = 'sale_complete.php?from=$from&to=$to&customer=$customer'; </script>";
 }
 
 

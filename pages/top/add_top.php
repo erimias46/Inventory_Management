@@ -24,7 +24,7 @@ if (isset($_GET['import_brocher_id'])) {
 if (isset($_POST['add'])) {
 
     // Collect form data
-    $jeans_name = $_POST['jeans_name'];
+    $top_name = $_POST['top_name'];
     $size_ids = $_POST['size_ids']; // Array of size IDs
     $sizes = $_POST['sizes']; // Array of sizes
     $quantities = $_POST['quantities']; // Array of quantities
@@ -34,7 +34,7 @@ if (isset($_POST['add'])) {
     $image = $_FILES['image']['name'];
 
     // Fetch type from the database
-    $sql = "SELECT * FROM trouser_type_db WHERE id='$type_id'";
+    $sql = "SELECT * FROM shoe_type_db WHERE id='$type_id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $type = $row['type'];
@@ -81,12 +81,12 @@ if (isset($_POST['add'])) {
         }
     } else {
         // If no image is uploaded, use the default image
-        $image_path = 'uploads/defaultjeans.jpg';
+        $image_path = 'uploads/defaulttop.jpg';
     }
 
     // If image upload failed, use the default image
     if ($uploadOk == 0) {
-        $image_path = 'uploads/defaultjeans.jpg';
+        $image_path = 'uploads/defaulttop.jpg';
     }
 
     // Loop through sizes and quantities to insert each size with quantity > 0
@@ -97,55 +97,18 @@ if (isset($_POST['add'])) {
 
         // Insert only if the quantity is greater than zero
         if ($quantity > 0) {
-            $add_jeans = "INSERT INTO jeans(jeans_name, size, size_id, image, price,type_id, type, quantity,active) 
-                          VALUES ('$jeans_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1')";
-            mysqli_query($con, $add_jeans);
+            $add_top = "INSERT INTO top(top_name, size, size_id, image, price,type_id, type, quantity,active) 
+                          VALUES ('$top_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1')";
+            mysqli_query($con, $add_top);
         }
     }
 
     // Redirect after successful insertion
 
-    if ($add_jeans) {
-        echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
-
-
-
-        $subscribers_query = "SELECT chat_id FROM subscribers";
-        $subscribers_result = mysqli_query($con, $subscribers_query);
-        $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
-
-        $message = "New Jeans Added:\n";
-        $message .= "Jeans Name: $jeans_name\n";
-        $message .= "Price: $price\n";
-
-        $botToken = "7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0"; // Replace with your bot token
-        $apiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
-
-        foreach ($subscribers as $subscriber) {
-            $chatId = $subscriber['chat_id'];
-
-            $data = [
-                'chat_id' => $chatId,
-                'text' => $message,
-                'parse_mode' => 'HTML' // Optional: Use HTML formatting
-            ];
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $apiUrl);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            curl_close($ch);
-
-        }
-
-
-
-
-
+    if ($add_top) {
+        echo "<script>window.location = 'action.php?status=success&redirect=add_top.php';</script>";
     } else {
-        echo "<script>window.location = 'action.php?status=error&message=Error adding jeans to the database.&redirect=add_single_jeans.php';</script>";
+        echo "<script>window.location = 'action.php?status=error&message=Error adding top to the database.&redirect=add_top.php';</script>";
     }
     
 }
@@ -203,7 +166,7 @@ if ($result) {
 
 <head>
     <?php
-    $title = 'Add Jeans';
+    $title = 'Add Top';
     include $redirect_link . 'partials/title-meta.php'; ?>
     <link href="../../assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css">
 
@@ -280,8 +243,8 @@ if ($result) {
 
 
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="Jeans names">Jeans Name</label>
-                                    <input type="text" name="jeans_name" id="jeans_name" value="<?php if (isset($jeans_name)) echo  $jeans_name ?>" class="form-input" list="jeans_types" required>
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" >Top Name</label>
+                                    <input type="text" name="top_name" id="top_name"  class="form-input" list="jeans_types" required>
                                     <datalist id="jeans_types">
                                         <!-- Options will be populated here -->
                                     </datalist>
@@ -297,7 +260,7 @@ if ($result) {
 
                                         <?php
 
-                                        $sql = "SELECT * FROM trouser_type_db";
+                                        $sql = "SELECT * FROM top_type_db";
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
@@ -342,17 +305,17 @@ if ($result) {
                                 <div class="mb-3">
                                     <div class="image-preview" id="imagePreview">
                                         <!-- The selected image will be displayed here -->
-                                        <img src="../../include/uploads/defaultjeans.jpg" />
+                                        <img src="../../include/uploads/defaulttop.jpg" />
                                     </div>
                                 </div>
 
 
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Sizes and Quantities</label>
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Top Sizes and Quantities</label>
 
                                     <?php
-                                    // Fetch all sizes from the `jeansdb` table
-                                    $sql = "SELECT * FROM jeansdb";
+                                  
+                                    $sql = "SELECT * FROM topdb";
                                     $result = mysqli_query($con, $sql);
                                     while ($row = mysqli_fetch_assoc($result)) {
                                         $size = $row['size'];

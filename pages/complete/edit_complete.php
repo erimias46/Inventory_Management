@@ -3,7 +3,7 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
-
+include_once $redirect_link . 'include/mdb.php';
 $current_date = date('Y-m-d');
 
 $generate_button = '';
@@ -18,20 +18,41 @@ if (isset($_GET['import_brocher_id'])) {
     $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
 }
 
-?>
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $sql = "SELECT * FROM complete WHERE id = $id";
+    $result = mysqli_query($con, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $complete_name = $row['complete_name'];
+    $size = $row['size'];
+    $type = $row['type'];
+    $price = $row['price'];
+    $quantity = $row['quantity'];
+    $image = $row['image'];
 
-<?php
-if (isset($_POST['add'])) {
+    $image = "../../include/" . $image;
+    $update_button = '<button name="update" type="submit" class="btn btn-sm bg-danger text-white rounded-full"> <i class="mgc_pencil_line text-base me-2"></i> Update </button>';
+    $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
+}
 
-    // Collect form data
-    $jeans_name = $_POST['jeans_name'];
-    $size_ids = $_POST['size_ids']; // Array of size IDs
-    $sizes = $_POST['sizes']; // Array of sizes
-    $quantities = $_POST['quantities']; // Array of quantities
+
+if (isset($_POST['update'])) {
+
+    $complete_name = $_POST['complete_name'];
+
+    $size = $_POST['size']; // Array of sizes
+    $quantity = $_POST['quantity']; // Array of quantities
     $type_id = $_POST['type'];
     $price = $_POST['price'];
-    
+
     $image = $_FILES['image']['name'];
+
+    // Fetch the old image from the database if no new image is uploaded
+    $id = $_GET['id']; // Assuming `jeans_id` is passed for identifying the record
+    $sql = "SELECT image FROM complete WHERE id='$id'";
+    $result = mysqli_query($con, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $old_image = $row['image'];  // The current image in the database
 
     // Fetch type from the database
     $sql = "SELECT * FROM trouser_type_db WHERE id='$type_id'";
@@ -73,91 +94,38 @@ if (isset($_POST['add'])) {
         // Attempt to upload the file if no issues
         if ($uploadOk == 1) {
             if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-                $image_path = 'uploads/' . basename($image);
+                $image_path = 'uploads/' . basename($image);  // Use the new image path
             } else {
                 $uploadOk = 0;
                 $error_message = "Sorry, there was an error uploading your file.";
             }
         }
     } else {
-        // If no image is uploaded, use the default image
-        $image_path = 'uploads/defaultjeans.jpg';
+        // No new image uploaded, keep the old image
+        $image_path = $old_image;
     }
 
-    // If image upload failed, use the default image
-    if ($uploadOk == 0) {
-        $image_path = 'uploads/defaultjeans.jpg';
+    // If image upload failed, use the old image
+    if ($uploadOk == 0 && empty($image_path)) {
+        $image_path = $old_image;
     }
 
-    // Loop through sizes and quantities to insert each size with quantity > 0
-    for ($i = 0; $i < count($sizes); $i++) {
-        $size = $sizes[$i];
-        $size_id = $size_ids[$i];
-        $quantity = $quantities[$i];
+    // Update the jeans record with the new or old image
+    $sql = "UPDATE complete SET complete_name='$complete_name', size='$size', type='$type', price='$price', quantity='$quantity', image='$image_path' WHERE id='$id'";
+    $result = mysqli_query($con, $sql);
 
-        // Insert only if the quantity is greater than zero
-        if ($quantity > 0) {
-            $add_jeans = "INSERT INTO jeans(jeans_name, size, size_id, image, price,type_id, type, quantity,active) 
-                          VALUES ('$jeans_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1')";
-            mysqli_query($con, $add_jeans);
-        }
-    }
-
-    // Redirect after successful insertion
-
-    if ($add_jeans) {
-        echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
-
-
-
-        $subscribers_query = "SELECT chat_id FROM subscribers";
-        $subscribers_result = mysqli_query($con, $subscribers_query);
-        $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
-
-        $message = "New Jeans Added:\n";
-        $message .= "Jeans Name: $jeans_name\n";
-        $message .= "Price: $price\n";
-
-        $botToken = "7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0"; // Replace with your bot token
-        $apiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
-
-        foreach ($subscribers as $subscriber) {
-            $chatId = $subscriber['chat_id'];
-
-            $data = [
-                'chat_id' => $chatId,
-                'text' => $message,
-                'parse_mode' => 'HTML' // Optional: Use HTML formatting
-            ];
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $apiUrl);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            curl_close($ch);
-
-        }
-
-
-
-
-
+    if ($result) {
+        echo "<script>window.location = 'action.php?status=success&redirect=all_complete.php';</script>";
     } else {
-        echo "<script>window.location = 'action.php?status=error&message=Error adding jeans to the database.&redirect=add_single_jeans.php';</script>";
+        echo "<script>window.location = 'action.php?status=error&message=Error updating complete in the database.&redirect=all.php';</script>";
     }
-    
-}
-?>
-
-<?php
-
-
-if (isset($_POST['update'])) {
 }
 
+
+
+
 ?>
+
 
 <?php
 $id = $_SESSION['user_id'];
@@ -203,12 +171,23 @@ if ($result) {
 
 <head>
     <?php
-    $title = 'Add Jeans';
+    $title = 'Edit complete';
     include $redirect_link . 'partials/title-meta.php'; ?>
     <link href="../../assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css">
 
 
     <?php include $redirect_link . 'partials/head-css.php'; ?>
+
+    <script>
+        function previewImage(event, index) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('imagePreview_' + index).getElementsByTagName('img')[0];
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 
 
     <style>
@@ -274,19 +253,52 @@ if ($result) {
                         <div class="card-header">
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium"><?= $title ?></h4>
                         </div>
+
+
+
+
                         <div class="p-6">
 
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 
 
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="Jeans names">Jeans Name</label>
-                                    <input type="text" name="jeans_name" id="jeans_name" value="<?php if (isset($jeans_name)) echo  $jeans_name ?>" class="form-input" list="jeans_types" required>
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">complete Name</label>
+                                    <input type="text" name="complete_name"  class="form-input" list="jeans_types" required  value="<?php echo $complete_name ?>">
                                     <datalist id="jeans_types">
                                         <!-- Options will be populated here -->
                                     </datalist>
                                 </div>
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Size</label>
 
+                                    <select name="size" class="search-select" required>
+
+                                        <?php
+
+                                        $sql = "SELECT * FROM completedb";
+                                        $result = mysqli_query($con, $sql);
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                            <option value="<?php echo $row['id'] ?>" <?php
+                                                                                        if (isset($size)) {
+                                                                                            if ($row['size'] == $size) {
+                                                                                                echo "selected";
+                                                                                            }
+                                                                                        }
+                                                                                        ?>>
+                                                <?php echo $row['size']; ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
+
+
+
+
+                                    </select>
+
+                                </div>
 
 
 
@@ -329,51 +341,28 @@ if ($result) {
                                     <input type="number" step="0.0000001" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
                                 </div>
 
-
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Quantity</label>
+                                    <input type="number" step="0.0000001" name="quantity" class="form-input" required value="<?php if (isset($quantity)) echo  $quantity ?>">
+                                </div>
 
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">Product Image</label>
                                     <div class="custom-file-upload">
                                         <label for="fileInput" class="custom-file-label">Choose Image</label>
-                                        <input type="file" name="image" class="form-input  choose-image" id="fileInput" onchange="previewImage(event)">
+                                        <input type="file" name="image" class="form-input choose-image" id="fileInput" onchange="previewImage(event)">
                                     </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <div class="image-preview" id="imagePreview">
-                                        <!-- The selected image will be displayed here -->
-                                        <img src="../../include/uploads/defaultjeans.jpg" />
+                                        <!-- The initial image will be displayed here -->
+                                        <img id="previewImg" src="<?php echo !empty($image) ? $image : 'uploads/defaultcomplete.jpg'; ?>" alt="Product Image" width="200" />
                                     </div>
                                 </div>
 
 
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Sizes and Quantities</label>
-
-                                    <?php
-                                    // Fetch all sizes from the `jeansdb` table
-                                    $sql = "SELECT * FROM jeansdb";
-                                    $result = mysqli_query($con, $sql);
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        $size = $row['size'];
-                                    ?>
-                                        <div class="flex items-center mb-2 justify-around">
-                                            <!-- Size Label -->
-                                            <label class="text-gray-800 text-sm font-medium flex-1"><?php echo $size; ?></label>
-
-                                            <!-- Hidden input for size ID -->
-                                            <input type="hidden" name="size_ids[]" value="<?php echo $row['id']; ?>">
-
-                                            <!-- Hidden input for size value -->
-                                            <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
-
-                                            <!-- Quantity Input -->
-                                            <input type="number" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
-                                        </div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
 
 
 
@@ -389,7 +378,7 @@ if ($result) {
                                         <!-- Display the Calculate button if $calculateButtonVisible is true -->
                                         <?php if ($calculateButtonVisible) : ?>
 
-                                            <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>
+                                            <button name="update" type="submit" class="btn btn-sm bg-warning text-white rounded-full"> <i class="mgc_pencil_fill text-base me-2"></i> Update </button>
 
                                         <?php endif; ?>
 
@@ -423,40 +412,28 @@ if ($result) {
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
 
 
+
     <script>
         function previewImage(event) {
-            const imagePreview = document.getElementById('imagePreview');
-            imagePreview.innerHTML = ''; // Clear previous image
-            const file = event.target.files[0];
-            if (file) {
+            const input = event.target;
+            const preview = document.getElementById('previewImg');
+
+            // If the user selects a new image, show the new image preview
+            if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    imagePreview.appendChild(img);
-                }
-                reader.readAsDataURL(file);
+                    preview.src = e.target.result; // Set the image source to the selected file
+                };
+                reader.readAsDataURL(input.files[0]); // Read the image as a data URL
             }
         }
     </script>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fetch suggestions for customer names from the server and populate the datalist
-            fetch('getcust.php')
-                .then(response => response.json())
-                .then(data => {
-                    const datalist = document.getElementById('customer_names');
-                    datalist.innerHTML = ''; // Clear previous options
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item; // Customer name
-                        datalist.appendChild(option);
-                    });
-                });
-        });
-    </script>
+
+
+
+    
 </body>
 
 </html>
@@ -472,21 +449,3 @@ if ($result) {
 
 
 
-<script>
-    document.getElementById('jeans_types').addEventListener('focus', function() {
-        // Fetch suggestions from the server and populate the datalist
-        fetch('get_job_types.php?database=jeans')
-            .then(response => response.json())
-            .then(data => {
-                const datalist = document.getElementById('jeans_types');
-                datalist.innerHTML = ''; // Clear previous options
-                data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.job_type; // Adjust to match your database field
-                    datalist.appendChild(option);
-                });
-            });
-    });
-</script>
-
-<script src="../../assets/libs/dropzone/min/dropzone.min.js"></script>

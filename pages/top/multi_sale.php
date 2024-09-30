@@ -3,7 +3,7 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
-
+include_once $redirect_link . 'include/mdb.php';
 $current_date = date('Y-m-d');
 
 $generate_button = '';
@@ -30,7 +30,7 @@ if (isset($_POST['add'])) {
     $quantities = $_POST['quantities']; // Array of quantities
     $type_id = $_POST['type'];
     $price = $_POST['price'];
-    
+
     $image = $_FILES['image']['name'];
 
     // Fetch type from the database
@@ -97,8 +97,8 @@ if (isset($_POST['add'])) {
 
         // Insert only if the quantity is greater than zero
         if ($quantity > 0) {
-            $add_jeans = "INSERT INTO jeans(jeans_name, size, size_id, image, price,type_id, type, quantity,active) 
-                          VALUES ('$jeans_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1')";
+            $add_jeans = "INSERT INTO jeans(jeans_name, size, size_id, image, price,type_id, type, quantity) 
+                          VALUES ('$jeans_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity')";
             mysqli_query($con, $add_jeans);
         }
     }
@@ -107,47 +107,9 @@ if (isset($_POST['add'])) {
 
     if ($add_jeans) {
         echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
-
-
-
-        $subscribers_query = "SELECT chat_id FROM subscribers";
-        $subscribers_result = mysqli_query($con, $subscribers_query);
-        $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
-
-        $message = "New Jeans Added:\n";
-        $message .= "Jeans Name: $jeans_name\n";
-        $message .= "Price: $price\n";
-
-        $botToken = "7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0"; // Replace with your bot token
-        $apiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
-
-        foreach ($subscribers as $subscriber) {
-            $chatId = $subscriber['chat_id'];
-
-            $data = [
-                'chat_id' => $chatId,
-                'text' => $message,
-                'parse_mode' => 'HTML' // Optional: Use HTML formatting
-            ];
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $apiUrl);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            curl_close($ch);
-
-        }
-
-
-
-
-
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error adding jeans to the database.&redirect=add_single_jeans.php';</script>";
     }
-    
 }
 ?>
 
@@ -269,7 +231,7 @@ if ($result) {
             <?php include $redirect_link . 'partials/topbar.php'; ?>
 
             <main class="flex-grow p-6">
-                <div class="grid grid-cols-1 md:grid-cols-1 gap-3">
+                <div class="grid grid-cols-2 md:grid-cols-2 gap-3">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium"><?= $title ?></h4>
@@ -280,35 +242,55 @@ if ($result) {
 
 
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="Jeans names">Jeans Name</label>
-                                    <input type="text" name="jeans_name" id="jeans_name" value="<?php if (isset($jeans_name)) echo  $jeans_name ?>" class="form-input" list="jeans_types" required>
-                                    <datalist id="jeans_types">
-                                        <!-- Options will be populated here -->
-                                    </datalist>
-                                </div>
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                        Jeans Name </label>
 
-
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Type</label>
-
-                                    <select name="type" class="search-select" required>
+                                    <select name="jeans_name" class="search-select" required onchange="fetchPrice()">
 
                                         <?php
 
-                                        $sql = "SELECT * FROM trouser_type_db";
+                                        $sql = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
-                                            <option value="<?php echo $row['id'] ?>" <?php
-                                                                                        if (isset($type)) {
-                                                                                            if ($row['type'] == $type) {
+                                            <option value="<?php echo $row['jeans_name'] ?>" <?php
+                                                                                                if (isset($jeans_name)) {
+                                                                                                    if ($row['jeans_name'] == $jeans_name) {
+                                                                                                        echo "selected";
+                                                                                                    }
+                                                                                                }
+                                                                                                ?>>
+                                                <?php echo $row['jeans_name']; ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                        Jeans Size </label>
+
+                                    <select name="size" class="search-select" required onchange="fetchPrice()">
+
+                                        <?php
+
+                                        $sql = "SELECT * FROM jeansdb";
+                                        $result = mysqli_query($con, $sql);
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                            <option value="<?php echo $row['size'] ?>" <?php
+                                                                                        if (isset($jeans_size)) {
+                                                                                            if ($row['size'] == $jeans_size) {
                                                                                                 echo "selected";
                                                                                             }
                                                                                         }
                                                                                         ?>>
-                                                <?php echo $row['type']; ?>
+                                                <?php echo $row['size']; ?>
                                             </option>
                                         <?php
                                         }
@@ -323,57 +305,96 @@ if ($result) {
 
 
 
-
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
-                                    <input type="number" step="0.0000001" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                        Method </label>
+
+                                    <select name="method" class="search-select" required>
+
+                                        <option value="shop">Shop</option>
+                                        <option value="delivery">Delivery</option>
+
+                                    </select>
+
                                 </div>
 
 
 
 
+
+
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Product Image</label>
-                                    <div class="custom-file-upload">
-                                        <label for="fileInput" class="custom-file-label">Choose Image</label>
-                                        <input type="file" name="image" class="form-input  choose-image" id="fileInput" onchange="previewImage(event)">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity
+                                    </label>
+                                    <input type="text" name="quantity" class="form-input" value="1"
+                                        onchange="fetchPrice()" required>
+                                </div>
+
+
+
+
+
+
+                                <div class="flex gap-2 justify-between">
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price
+                                        </label>
+                                        <input type="text" name="price" class="form-input" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Cash
+                                        </label>
+                                        <input type="text" name="cash" class="form-input" value="0" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank</label>
+                                        <input type="text" name="bank" class="form-input" value="0" required
+                                            id="bankInput" onchange="toggleBankName()">
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <div class="image-preview" id="imagePreview">
-                                        <!-- The selected image will be displayed here -->
-                                        <img src="../../include/uploads/defaultjeans.jpg" />
+
+                                <div id="bankNameField"
+                                    class="flex gap-2 justify-around hidden transition-opacity duration-300 ease-in-out opacity-0">
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank
+                                            Name</label>
+                                        <select name="bank_name" class="form-input" required>
+                                            <?php
+                                            $sql = "SELECT * FROM bankdb ";
+                                            $result = mysqli_query($con, $sql);
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
+                                                <option value="<?php echo $row['bankname'] ?>" <?php
+                                                                                                if (isset($bank_name)) {
+                                                                                                    if ($row['bank_name'] == $bank_name) {
+                                                                                                        echo "selected";
+                                                                                                    }
+                                                                                                }
+                                                                                                ?>>
+                                                    <?php echo $row['bankname']; ?>
+                                                </option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
+                                <div class="flex gap-2  justify-around">
 
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                            Date </label>
+                                        <input type="date" name="date" class="form-input"
+                                            value="<?php echo date('Y-m-d'); ?>" required>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Sizes and Quantities</label>
-
-                                    <?php
-                                    // Fetch all sizes from the `jeansdb` table
-                                    $sql = "SELECT * FROM jeansdb";
-                                    $result = mysqli_query($con, $sql);
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        $size = $row['size'];
-                                    ?>
-                                        <div class="flex items-center mb-2 justify-around">
-                                            <!-- Size Label -->
-                                            <label class="text-gray-800 text-sm font-medium flex-1"><?php echo $size; ?></label>
-
-                                            <!-- Hidden input for size ID -->
-                                            <input type="hidden" name="size_ids[]" value="<?php echo $row['id']; ?>">
-
-                                            <!-- Hidden input for size value -->
-                                            <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
-
-                                            <!-- Quantity Input -->
-                                            <input type="number" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
-                                        </div>
-                                    <?php
-                                    }
-                                    ?>
                                 </div>
+                                <button type="button" id="addItemButton">Add Item</button>
+
+
+
+
+
 
 
 
@@ -439,6 +460,11 @@ if ($result) {
             }
         }
     </script>
+
+
+<script>
+    
+</script>
 
 
     <script>

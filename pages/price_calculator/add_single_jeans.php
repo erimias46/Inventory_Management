@@ -3,6 +3,8 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
+include_once $redirect_link . 'include/bot.php';
+
 
 $current_date = date('Y-m-d');
 

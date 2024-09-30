@@ -112,6 +112,19 @@ if (isset($_POST['add'])) {
         $message = "New Jeans Added:\n";
         $message .= "Jeans Name: $jeans_name\n";
         $message .= "Price: $price\n";
+        $message .= "Type: $type\n";
+       
+        $message .= "Sizes and Quantities:\n";
+        for ($i = 0; $i < count($sizes); $i++) {
+            $size = $sizes[$i];
+            $quantity = $quantities[$i];
+            if ($quantity > 0) {
+                $message .= "$size: $quantity\n";
+            }
+        }
+
+        
+
 
 
         sendMessageToSubscribers($message, $con);

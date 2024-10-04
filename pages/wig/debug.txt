@@ -1,0 +1,28 @@
+Current Quantity: 
+Wig ID: 
+Size: 18
+Piece: 1
+From Piece: 2
+
+
+
+Current Quantity: 0
+Wig ID: 3
+Size: 18
+Piece: 1
+From Piece: 2
+Current Quantity: 2
+Wig ID: 4
+Size: 18
+Piece: 1
+From Piece: 2
+Current Quantity: 5
+Wig ID: 10
+Size: 18
+Piece: 2
+From Piece: 3
+Current Quantity: 4
+Wig ID: 10
+Size: 18
+Piece: 3
+From Piece: 3

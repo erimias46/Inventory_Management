@@ -66,12 +66,12 @@ $stock = '';
                                     <select class="form-input" name="stock_type">
                                         <option value="all">All</option>
                                         <?php
-                                        $sql = "SELECT * FROM shoes_sales_log GROUP BY shoes_name";
+                                        $sql = "SELECT * FROM wig_sales_log GROUP BY wig_name";
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
-                                            <option value="<?php echo $row['shoes_name']; ?>">
-                                                <?php echo $row['shoes_name']; ?>
+                                            <option value="<?php echo $row['wig_name']; ?>">
+                                                <?php echo $row['wig_name']; ?>
                                             </option>
                                         <?php } ?>
                                     </select>
@@ -80,7 +80,7 @@ $stock = '';
 
                             </p>
                             <a class="inline-flex items-center gap-2 mt-5 text-sm font-medium text-primary hover:text-sky-700" href="#">
-                                <a href="shoes_stock_log.php" class="btn bg-danger text-white"><i class="fas fa-undo-alt"></i> Reset</a>
+                                <a href="wig_stock_log.php" class="btn bg-danger text-white"><i class="fas fa-undo-alt"></i> Reset</a>
                                 <button name="filter" type="submit" class="btn bg-success text-white"><i class="fab fa-gitter"></i> Filter</button>
                             </a>
                         </form>
@@ -139,7 +139,7 @@ $stock = '';
 
                                                 <th>#</th>
                                                 <th>User</th>
-                                                <th>shoes Name</th>
+                                                <th>wig Name</th>
                                                 <th>Size</th>
                                                 <th>Total Price</th>
                                                 <th>Method</th>
@@ -166,7 +166,7 @@ $stock = '';
                                             }
 
                                             if ($stock_type != 'all') {
-                                                $conditions[] = "shoes_name = '$stock_type'";
+                                                $conditions[] = "wig_name = '$stock_type'";
                                             }
 
                                             $whereClause = '';
@@ -174,7 +174,7 @@ $stock = '';
                                                 $whereClause = 'WHERE ' . implode(' AND ', $conditions);
                                             }
 
-                                            $sql = "SELECT * FROM shoes_sales_log $whereClause ORDER BY sales_id DESC";
+                                            $sql = "SELECT * FROM wig_sales_log $whereClause ORDER BY sales_id DESC";
                                             $result = mysqli_query($con, $sql);
                                             while ($row = mysqli_fetch_assoc($result)) {
                                             ?>
@@ -194,7 +194,7 @@ $stock = '';
                                                         ?></td>
 
                                                     <td class="px-6 90-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                        <?php echo $row['shoes_name']; ?></td>
+                                                        <?php echo $row['wig_name']; ?></td>
 
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php
@@ -303,7 +303,7 @@ if (isset($_POST['filter'])) {
     $from_date = $_POST['from_date'];
     $to_date = $_POST['to_date'];
 
-    echo "<script>window.location = 'shoes_stock_log.php?from_date=$from_date&to_date=$to_date&stock=$stock_type'; </script>";
+    echo "<script>window.location = 'wig_stock_log.php?from_date=$from_date&to_date=$to_date&stock=$stock_type'; </script>";
 }
 
 

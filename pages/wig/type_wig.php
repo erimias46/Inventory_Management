@@ -14,7 +14,7 @@ $current_date = date('Y-m-d');
 
     <?php
 
-    $title = "All Shoes";
+    $title = "All wig";
 
 
     ?>
@@ -54,7 +54,7 @@ $current_date = date('Y-m-d');
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Shoes Name</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">wig Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
 
@@ -80,11 +80,17 @@ $current_date = date('Y-m-d');
                                                 ]; // Array of 10 different text colors to alternate between
                                                 $currentColorIndex = 0; // To toggle between colors
 
-                                                $sql = "SELECT shoes_name, GROUP_CONCAT(CONCAT('Size ', size, ' (', quantity, 'X)') SEPARATOR ', ') AS sizes, price, image, created_at, id 
-        FROM shoes
-        WHERE quantity > 0 
-        GROUP BY shoes_name, price, image  
-        ORDER BY created_at DESC";
+                                                $sql = "SELECT wig_name, 
+       GROUP_CONCAT(CONCAT('Size ', size, ' (', quantity, 'X, ', piece, ' pcs)') SEPARATOR ', ') AS sizes, 
+       price, 
+       image, 
+       created_at, 
+       id 
+FROM wig
+WHERE quantity > 0 
+GROUP BY wig_name, price, image  
+ORDER BY created_at DESC;
+";
                                                 $result22 = mysqli_query($con, $sql);
                                                 while ($row = mysqli_fetch_assoc($result22)) {
                                                     // Extract just the date part (Y-m-d) from the timestamp
@@ -104,7 +110,7 @@ $current_date = date('Y-m-d');
                                                             <?php echo $row['created_at']; ?>
                                                         </td>
                                                         <td> <?php echo $row['id']; ?> </td>
-                                                        <td> <?php echo $row['shoes_name']; ?> </td>
+                                                        <td> <?php echo $row['wig_name']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 text-ellipsis overflow-hidden">
                                                             <?php echo $row['sizes']; ?>
                                                         </td>

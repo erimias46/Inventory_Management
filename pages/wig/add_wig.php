@@ -27,23 +27,25 @@ if (isset($_POST['add'])) {
     $wig_name = $_POST['wig_name'];
     $size_ids = $_POST['size_ids']; // Array of size IDs
     $sizes = $_POST['sizes']; // Array of sizes
-    $quantities = $_POST['quantities']; // Array of quantities
+
+    $quantities_1_piece = $_POST['quantities_1_piece']; // Array of 1-piece quantities
+    $quantities_2_piece = $_POST['quantities_2_piece']; // Array of 2-piece quantities
+    $quantities_3_piece = $_POST['quantities_3_piece']; // Array of 3-piece quantities
+
     $type_id = $_POST['type'];
-    $price = $_POST['price'];
-    
-    $image = $_FILES['image']['name'];
 
     // Fetch type from the database
-    $sql = "SELECT * FROM shoe_type_db WHERE id='$type_id'";
+    $sql = "SELECT * FROM wig_type_db WHERE id='$type_id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $type = $row['type'];
 
     // Set the target directory for uploads
-    $target_dir = $redirect_link . "include/uploads/";
+    $target_dir = "include/uploads/";
 
     // Check if an image was uploaded
-    if (!empty($image)) {
+    if (!empty($_FILES['image']['name'])) {
+        $image = $_FILES['image']['name'];
         $target_file = $target_dir . basename($image);
         $uploadOk = 1;
 
@@ -93,13 +95,44 @@ if (isset($_POST['add'])) {
     for ($i = 0; $i < count($sizes); $i++) {
         $size = $sizes[$i];
         $size_id = $size_ids[$i];
-        $quantity = $quantities[$i];
 
-        // Insert only if the quantity is greater than zero
-        if ($quantity > 0) {
-            $add_wig = "INSERT INTO wig(wig_name, size, size_id, image, price,type_id, type, quantity,active) 
-                          VALUES ('$wig_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1')";
-            mysqli_query($con, $add_wig);
+        // Insert for 1-piece quantity
+        if ($quantities_1_piece[$i] > 0) {
+            $quantity = $quantities_1_piece[$i];
+            $piece = 1;
+            $total = $quantity * $piece;
+
+            $add_wig = "INSERT INTO wig (wig_name, size, size_id, image, type_id, type, quantity, active, piece, total) 
+                          VALUES ('$wig_name', '$size', '$size_id', '$image_path', '$type_id', '$type', '$quantity', '1', '$piece', '$total')";
+            mysqli_query($con,
+                $add_wig
+            );
+        }
+
+        // Insert for 2-piece quantity
+        if ($quantities_2_piece[$i] > 0) {
+            $quantity = $quantities_2_piece[$i];
+            $piece = 2;
+            $total = $quantity * $piece;
+
+            $add_wig = "INSERT INTO wig (wig_name, size, size_id, image, type_id, type, quantity, active, piece, total) 
+                          VALUES ('$wig_name', '$size', '$size_id', '$image_path', '$type_id', '$type', '$quantity', '1', '$piece', '$total')";
+            mysqli_query($con,
+                $add_wig
+            );
+        }
+
+        // Insert for 3-piece quantity
+        if ($quantities_3_piece[$i] > 0) {
+            $quantity = $quantities_3_piece[$i];
+            $piece = 3;
+            $total = $quantity * $piece;
+
+            $add_wig = "INSERT INTO wig (wig_name, size, size_id, image, type_id, type, quantity, active, piece, total) 
+                          VALUES ('$wig_name', '$size', '$size_id', '$image_path', '$type_id', '$type', '$quantity', '1', '$piece', '$total')";
+            mysqli_query($con,
+                $add_wig
+            );
         }
     }
 
@@ -110,7 +143,6 @@ if (isset($_POST['add'])) {
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error adding wig to the database.&redirect=add_wig.php';</script>";
     }
-    
 }
 ?>
 
@@ -238,29 +270,20 @@ if ($result) {
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium"><?= $title ?></h4>
                         </div>
                         <div class="p-6">
-
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" >Wig Name</label>
-                                    <input type="text" name="wig_name" id="wig_name"  class="form-input" list="jeans_types" required>
+                                <div class="mb-3 col-span-1">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Wig Name</label>
+                                    <input type="text" name="wig_name" id="wig_name" class="form-input" list="jeans_types" required>
                                     <datalist id="jeans_types">
                                         <!-- Options will be populated here -->
                                     </datalist>
                                 </div>
 
-
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Type</label>
-
+                                <div class="mb-3 col-span-1">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Type</label>
                                     <select name="type" class="search-select" required>
-
                                         <?php
-
-                                        $sql = "SELECT * FROM shoe_type_db";
+                                        $sql = "SELECT * FROM wig_type_db";
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
@@ -276,92 +299,58 @@ if ($result) {
                                         <?php
                                         }
                                         ?>
-
-
-
-
                                     </select>
-
                                 </div>
 
-
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
-                                    <input type="number" step="0.0000001" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
+                                <div class="mb-3 col-span-1 sm:col-span-2 md:col-span-3">
+                                    <label class="text-black-800 text-sm font-medium inline-block mb-2">Wig Sizes and Quantities</label>
+                                    <table class="min-w-full border border-grey-300 mt-4">
+                                        <thead>
+                                            <tr class="bg-gray-100">
+                                                <th class="text-left p-2 text-sm text-gray-800 border-b">Size</th>
+                                                <th class="text-left p-2 text-sm text-gray-800 border-b">1 Piece Quantity</th>
+                                                <th class="text-left p-2 text-sm text-gray-800 border-b">2 Piece Quantity</th>
+                                                <th class="text-left p-2 text-sm text-gray-800 border-b">3 Piece Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $sql = "SELECT * FROM wigdb";
+                                            $result = mysqli_query($con, $sql);
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                $size = $row['size'];
+                                            ?>
+                                                <tr class="border-b">
+                                                    <td class="p-2 text-sm text-black-800">
+                                                        <?php echo $size; ?>
+                                                        <input type="hidden" name="size_ids[]" value="<?php echo $row['id']; ?>">
+                                                        <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
+                                                    </td>
+                                                    <td class="p-2">
+                                                        <input type="number" name="quantities_1_piece[]" value="0" step="1" class="form-input w-full border border-gray-300 p-1 rounded-md text-gray-800" placeholder="Quantity">
+                                                    </td>
+                                                    <td class="p-2">
+                                                        <input type="number" name="quantities_2_piece[]" value="0" step="1" class="form-input w-full border border-gray-300 p-1 rounded-md text-gray-800" placeholder="Quantity">
+                                                    </td>
+                                                    <td class="p-2">
+                                                        <input type="number" name="quantities_3_piece[]" value="0" step="1" class="form-input w-full border border-gray-300 p-1 rounded-md text-gray-800" placeholder="Quantity">
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
                                 </div>
-
-
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Product Image</label>
-                                    <div class="custom-file-upload">
-                                        <label for="fileInput" class="custom-file-label">Choose Image</label>
-                                        <input type="file" name="image" class="form-input  choose-image" id="fileInput" onchange="previewImage(event)">
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="image-preview" id="imagePreview">
-                                        <!-- The selected image will be displayed here -->
-                                        <img src="../../include/uploads/defaultwig.jpg" />
-                                    </div>
-                                </div>
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Wig Sizes and Quantities</label>
-
-                                    <?php
-                                  
-                                    $sql = "SELECT * FROM wigdb";
-                                    $result = mysqli_query($con, $sql);
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        $size = $row['size'];
-                                    ?>
-                                        <div class="flex items-center mb-2 justify-around">
-                                            <!-- Size Label -->
-                                            <label class="text-gray-800 text-sm font-medium flex-1"><?php echo $size; ?></label>
-
-                                            <!-- Hidden input for size ID -->
-                                            <input type="hidden" name="size_ids[]" value="<?php echo $row['id']; ?>">
-
-                                            <!-- Hidden input for size value -->
-                                            <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
-
-                                            <!-- Quantity Input -->
-                                            <input type="number" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
-                                        </div>
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-
-
-
-
-
-
-
 
                                 <div class="col-span-1 sm:col-span-2 md:col-span-3 text-end">
                                     <div class="mt-3">
-
-
-                                        <!-- Display the Calculate button if $calculateButtonVisible is true -->
-                                        <?php if ($calculateButtonVisible) : ?>
-
-                                            <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>
-
-                                        <?php endif; ?>
-
-                                        <!-- Display the Add button if $addButtonVisible is true -->
-
+                                        <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full">Add</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
+
                     </div>
 
                 </div>

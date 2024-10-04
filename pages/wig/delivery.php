@@ -142,7 +142,7 @@ if ($result) {
                                                 <th>Sales Date</th>
                                                 <th>Action</th>
                                                 <th>ID</th>
-                                                <th>Shoes Name</th>
+                                                <th>wig Name</th>
                                                 <th>Size</th>
                                                 <th>Total</th>
                                                 <th>Cash </th>
@@ -172,12 +172,12 @@ if ($result) {
 
                                             if (!$customer) {
                                                 $sql = "SELECT * 
-                                                FROM shoes_delivery
+                                                FROM wig_delivery
                                                 WHERE DATE(sales_date) >= '$from_date' 
                                                 AND DATE(sales_date) <= '$to_date'
                                                 ORDER BY sales_id DESC";
                                             } else {
-                                                $sql = "SELECT * FROM shoes_delivery WHERE DATE(sales_date) >= '$from_date' AND DATE(sales_date) <= '$to_date' AND {$customer} ORDER BY sales_id DESC";
+                                                $sql = "SELECT * FROM wig_delivery WHERE DATE(sales_date) >= '$from_date' AND DATE(sales_date) <= '$to_date' AND {$customer} ORDER BY sales_id DESC";
                                             }
                                             $result = mysqli_query($con, $sql);
                                             while ($row = mysqli_fetch_assoc($result)) {
@@ -228,7 +228,7 @@ if ($result) {
                                                         <?php echo $row['sales_id']; ?></td>
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                        <?php echo $row['shoes_name']; ?></td>
+                                                        <?php echo $row['wig_name']; ?></td>
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php echo $row['size']; ?></td>
@@ -271,7 +271,7 @@ if ($result) {
 
                                                                     <?php 
 
-                                                                    $sql8="SELECT * from shoes_delivery WHERE sales_id = ".$row['sales_id'];
+                                                                    $sql8="SELECT * from wig_delivery WHERE sales_id = ".$row['sales_id'];
                                                                     $result8 = mysqli_query($con, $sql8);
                                                                     $row8 = mysqli_fetch_assoc($result8);
 
@@ -284,12 +284,12 @@ if ($result) {
                                                                     <input type="hidden" name="sales_id" value="<?= $row8['sales_id']; ?>">
 
                                                                     <div>
-                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Shoes Name</label>
-                                                                        <input type="text" name="shoes_name" class="form-input" required value="<?php echo $row['shoes_name'] ?>">
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">wig Name</label>
+                                                                        <input type="text" name="wig_name" class="form-input" required value="<?php echo $row['wig_name'] ?>">
                                                                     </div>
 
                                                                     <div>
-                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Shoes Size</label>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">wig Size</label>
                                                                         <input type="text" name="size" class="form-input" required value="<?php echo $row['size'] ?>">
                                                                     </div>
 

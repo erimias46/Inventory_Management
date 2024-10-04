@@ -20,15 +20,16 @@ if (isset($_GET['import_brocher_id'])) {
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $sql = "SELECT * FROM shoes WHERE id = $id";
+    $sql = "SELECT * FROM wig WHERE id = $id";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
-    $shoes_name = $row['shoes_name'];
+    $wig_name = $row['wig_name'];
     $size = $row['size'];
     $type = $row['type'];
     $price = $row['price'];
     $quantity = $row['quantity'];
     $image = $row['image'];
+    $piece = $row['piece'];
 
     $image = "../../include/" . $image;
     $update_button = '<button name="update" type="submit" class="btn btn-sm bg-danger text-white rounded-full"> <i class="mgc_pencil_line text-base me-2"></i> Update </button>';
@@ -38,18 +39,19 @@ if (isset($_GET['id'])) {
 
 if (isset($_POST['update'])) {
 
-    $shoes_name = $_POST['shoes_name'];
+    $wig_name = $_POST['wig_name'];
 
     $size = $_POST['size']; // Array of sizes
     $quantity = $_POST['quantity']; // Array of quantities
     $type_id = $_POST['type'];
     $price = $_POST['price'];
+    $piece = $_POST['piece'];
 
     $image = $_FILES['image']['name'];
 
     // Fetch the old image from the database if no new image is uploaded
     $id = $_GET['id']; // Assuming `jeans_id` is passed for identifying the record
-    $sql = "SELECT image FROM shoes WHERE id='$id'";
+    $sql = "SELECT image FROM wig WHERE id='$id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $old_image = $row['image'];  // The current image in the database
@@ -111,13 +113,13 @@ if (isset($_POST['update'])) {
     }
 
     // Update the jeans record with the new or old image
-    $sql = "UPDATE shoes SET shoes_name='$shoes_name', size='$size', type='$type', price='$price', quantity='$quantity', image='$image_path' WHERE id='$id'";
+    $sql = "UPDATE wig SET wig_name='$wig_name', size='$size', type='$type', price='$price', quantity='$quantity', image='$image_path',piece='$piece' WHERE id='$id'";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
-        echo "<script>window.location = 'action.php?status=success&redirect=all_shoes.php';</script>";
+        echo "<script>window.location = 'action.php?status=success&redirect=all_wig.php';</script>";
     } else {
-        echo "<script>window.location = 'action.php?status=error&message=Error updating shoes in the database.&redirect=all.php';</script>";
+        echo "<script>window.location = 'action.php?status=error&message=Error updating wig in the database.&redirect=all.php';</script>";
     }
 }
 
@@ -171,7 +173,7 @@ if ($result) {
 
 <head>
     <?php
-    $title = 'Edit Shoes';
+    $title = 'Edit wig';
     include $redirect_link . 'partials/title-meta.php'; ?>
     <link href="../../assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css">
 
@@ -263,8 +265,8 @@ if ($result) {
 
 
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Shoes Name</label>
-                                    <input type="text" name="shoes_name"  class="form-input" list="jeans_types" required  value="<?php echo $shoes_name ?>">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">wig Name</label>
+                                    <input type="text" name="wig_name" class="form-input" list="jeans_types" required value="<?php echo $wig_name ?>">
                                     <datalist id="jeans_types">
                                         <!-- Options will be populated here -->
                                     </datalist>
@@ -276,7 +278,7 @@ if ($result) {
 
                                         <?php
 
-                                        $sql = "SELECT * FROM shoesdb";
+                                        $sql = "SELECT * FROM wigdb";
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
@@ -348,6 +350,12 @@ if ($result) {
 
 
                                 <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Piece</label>
+                                    <input type="number" step="0.0000001" name="piece" class="form-input" required value="<?php if (isset($piece)) echo  $piece ?>">
+                                </div>
+
+
+                                <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">Product Image</label>
                                     <div class="custom-file-upload">
                                         <label for="fileInput" class="custom-file-label">Choose Image</label>
@@ -358,7 +366,7 @@ if ($result) {
                                 <div class="mb-3">
                                     <div class="image-preview" id="imagePreview">
                                         <!-- The initial image will be displayed here -->
-                                        <img id="previewImg" src="<?php echo !empty($image) ? $image : 'uploads/defaultshoes.jpg'; ?>" alt="Product Image" width="200" />
+                                        <img id="previewImg" src="<?php echo !empty($image) ? $image : 'uploads/defaultwig.jpg'; ?>" alt="Product Image" width="200" />
                                     </div>
                                 </div>
 
@@ -433,19 +441,7 @@ if ($result) {
 
 
 
-    
+
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

@@ -16,7 +16,7 @@ $to_date = $_GET['to'] ?? '';
 
 <head>
     <?php
-    $title = 'Sale Shoes';
+    $title = 'Sale wig';
     include $redirect_link . 'partials/title-meta.php'; ?>
 
     <?php include $redirect_link . 'partials/head-css.php'; ?>
@@ -157,7 +157,7 @@ if ($result) {
                                                 <th>ID</th>
                                                 <th>Sales Date</th>
                                                 <th>Action</th>
-                                                <th>Shoes Name</th>
+                                                <th>Wig Name</th>
                                                 <th>Size</th>
                                                 <th>Total</th>
                                                 <th>Cash </th>
@@ -183,7 +183,7 @@ if ($result) {
                                             }
 
                                             $sql = "SELECT * 
-        FROM shoes_sales 
+        FROM wig_sales 
         WHERE DATE(sales_date) >= '$from_date' 
         AND DATE(sales_date) <= '$to_date' 
         $customer_condition
@@ -211,7 +211,7 @@ if ($result) {
                                                         <?php if ($deleteButtonVisible) : ?>
 
                                                             <a id="del-btn"
-                                                                href="api/remove.php?id=<?php echo $row['sales_id']; ?>&from=shoes_sales"
+                                                                href="api/remove.php?id=<?php echo $row['sales_id']; ?>&from=wig_sales"
                                                                 class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full"><i
                                                                     class="mgc_delete_2_line text-base me-2"></i> Delete</a>
 
@@ -233,7 +233,7 @@ if ($result) {
                                                         <?php if ($deleteButtonVisible) : ?>
 
                                                             <a id="del-btn"
-                                                                href="api/refund.php?id=<?php echo $row['sales_id']; ?>&from=shoes_sales"
+                                                                href="api/refund.php?id=<?php echo $row['sales_id']; ?>&from=wig_sales"
                                                                 class="btn bg-info/25 text-info hover:bg-info hover:text-white btn-sm rounded-full"><i
                                                                     class="mgc_delete_2_line text-base me-2"></i> Refund</a>
 
@@ -258,7 +258,7 @@ if ($result) {
 
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                        <?php echo $row['shoes_name']; ?></td>
+                                                        <?php echo $row['wig_name']; ?></td>
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                         <?php echo $row['size']; ?></td>
@@ -292,7 +292,7 @@ if ($result) {
                                                 <div id="exchange<?= $row['sales_id'] ?>" class="w-full h-full fixed top-0 left-0 z-50 transition-all duration-500 hidden">
                                                     <div class="fc-modal-open:mt-7 fc-modal-open:opacity-100 fc-modal-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-md sm:w-full m-3 sm:mx-auto bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
                                                         <div class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
-                                                            <h3 class="font-medium text-gray-800 dark:text-white text-lg">Exchange Shoes</h3>
+                                                            <h3 class="font-medium text-gray-800 dark:text-white text-lg">Exchange Wig</h3>
                                                             <button class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 dark:text-gray-200" data-fc-dismiss type="button">
                                                                 <span class="material-symbols-rounded">close</span>
                                                             </button>
@@ -305,14 +305,14 @@ if ($result) {
 
 
                                                                     <div>
-                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Shoes Name</label>
-                                                                        <select name="shoes_name" class="search-select">
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Wig Name</label>
+                                                                        <select name="wig_name" class="search-select">
                                                                             <?php
-                                                                            $sql3 = "SELECT * FROM shoes GROUP BY shoes_name ORDER BY shoes_name ASC";
+                                                                            $sql3 = "SELECT * FROM wig GROUP BY wig_name ORDER BY wig_name ASC";
                                                                             $result3 = mysqli_query($con, $sql3);
                                                                             if (mysqli_num_rows($result3) > 0) {
                                                                                 while ($row3 = mysqli_fetch_assoc($result3)) { ?>
-                                                                                    <option value="<?= $row3['shoes_name'] ?>"><?= $row3['shoes_name'] ?></option>
+                                                                                    <option value="<?= $row3['wig_name'] ?>"><?= $row3['wig_name'] ?></option>
                                                                             <?php }
                                                                             }
                                                                             ?>
@@ -320,10 +320,10 @@ if ($result) {
                                                                     </div>
 
                                                                     <div>
-                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Shoes Size</label>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">wig Size</label>
                                                                         <select name="size" class="search-select">
                                                                             <?php
-                                                                            $sql4 = "SELECT * FROM shoesdb";
+                                                                            $sql4 = "SELECT * FROM wigdb";
                                                                             $result4 = mysqli_query($con, $sql4);
                                                                             if (mysqli_num_rows($result4) > 0) {
                                                                                 while ($row4 = mysqli_fetch_assoc($result4)) { ?>
@@ -387,7 +387,7 @@ if ($result) {
 
                                                             <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
                                                                 <button class="py-2 px-5 inline-flex justify-center items-center gap-2 rounded dark:text-gray-200 border dark:border-slate-700 font-medium hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button">Close</button>
-                                                                <button name="exchange_shoes" type="submit" class="btn bg-success text-white">Exchange</button>
+                                                                <button name="exchange_wig" type="submit" class="btn bg-success text-white">Exchange</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -410,27 +410,27 @@ if ($result) {
                                                                     <input type="hidden" name="sales_id" value="<?= $row['sales_id']; ?>">
 
                                                                     <?php
-                                                                    $sql2 = "SELECT * FROM shoes_sales WHERE sales_id = " . $row['sales_id'];
+                                                                    $sql2 = "SELECT * FROM wig_sales WHERE sales_id = " . $row['sales_id'];
                                                                     $result2 = mysqli_query($con, $sql2);
                                                                     $row2 = mysqli_fetch_assoc($result2);
                                                                     ?>
 
                                                                     <div>
-                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Shoes Name</label>
-                                                                        <select name="shoes_name" class="search-select" id="jeans_name_select" disabled>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">wig Name</label>
+                                                                        <select name="wig_name" class="search-select" id="jeans_name_select" disabled>
                                                                             <?php
-                                                                            $sql3 = "SELECT * FROM shoes GROUP BY shoes_name ORDER BY shoes_name ASC";
+                                                                            $sql3 = "SELECT * FROM wig GROUP BY wig_name ORDER BY wig_name ASC";
                                                                             $result3 = mysqli_query($con, $sql3);
                                                                             if (mysqli_num_rows($result3) > 0) {
                                                                                 while ($row3 = mysqli_fetch_assoc($result3)) { ?>
-                                                                                    <option value="<?= $row3['shoes_name'] ?>"
+                                                                                    <option value="<?= $row3['wig_name'] ?>"
                                                                                         <?php
                                                                                         // Check if the current jeans_name should be selected
-                                                                                        if (isset($row['shoes_name']) && $row['shoes_name'] == $row3['shoes_name']) {
+                                                                                        if (isset($row['wig_name']) && $row['wig_name'] == $row3['wig_name']) {
                                                                                             echo "selected";
                                                                                         }
                                                                                         ?>>
-                                                                                        <?= $row3['shoes_name'] ?>
+                                                                                        <?= $row3['wig_name'] ?>
                                                                                     </option>
                                                                             <?php }
                                                                             }
@@ -440,10 +440,10 @@ if ($result) {
 
 
                                                                     <div>
-                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Shoes Size</label>
+                                                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">wig Size</label>
                                                                         <select name="size" class="search-select" disabled>
                                                                             <?php
-                                                                            $sql4 = "SELECT * FROM shoesdb";
+                                                                            $sql4 = "SELECT * FROM wigdb";
                                                                             $result4 = mysqli_query($con, $sql4);
                                                                             if (mysqli_num_rows($result4) > 0) {
                                                                                 while ($row4 = mysqli_fetch_assoc($result4)) { ?>
@@ -559,29 +559,29 @@ if ($result) {
                         </div>
                         <form method="POST">
                             <div class="px-4 py-8 overflow-y-auto">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
 
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                            Shoes Name </label>
+                                            Wig Name </label>
 
-                                        <select name="shoes_name" class="search-select" required onchange="fetchPrice()">
+                                        <select name="wig_name" class="search-select" required onchange="fetchPrice()">
 
                                             <?php
 
-                                            $sql = "SELECT * FROM shoes GROUP BY shoes_name ORDER BY shoes_name ASC";
+                                            $sql = "SELECT * FROM wig GROUP BY wig_name ORDER BY wig_name ASC";
                                             $result = mysqli_query($con, $sql);
                                             while ($row = mysqli_fetch_assoc($result)) {
                                             ?>
-                                                <option value="<?php echo $row['shoes_name'] ?>" <?php
-                                                                                                    if (isset($shoes_name)) {
-                                                                                                        if ($row['shoes_name'] == $shoes_name) {
-                                                                                                            echo "selected";
-                                                                                                        }
+                                                <option value="<?php echo $row['wig_name'] ?>" <?php
+                                                                                                if (isset($wig_name)) {
+                                                                                                    if ($row['wig_name'] == $wig_name) {
+                                                                                                        echo "selected";
                                                                                                     }
-                                                                                                    ?>>
-                                                    <?php echo $row['shoes_name']; ?>
+                                                                                                }
+                                                                                                ?>>
+                                                    <?php echo $row['wig_name']; ?>
                                                 </option>
                                             <?php
                                             }
@@ -594,19 +594,19 @@ if ($result) {
 
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                            Shoes Size </label>
+                                            Wig Size </label>
 
                                         <select name="size" class="search-select" required onchange="fetchPrice()">
 
                                             <?php
 
-                                            $sql = "SELECT * FROM shoesdb";
+                                            $sql = "SELECT * FROM wigdb";
                                             $result = mysqli_query($con, $sql);
                                             while ($row = mysqli_fetch_assoc($result)) {
                                             ?>
                                                 <option value="<?php echo $row['size'] ?>" <?php
-                                                                                            if (isset($shoes_size)) {
-                                                                                                if ($row['size'] == $shoes_size) {
+                                                                                            if (isset($wig_size)) {
+                                                                                                if ($row['size'] == $wig_size) {
                                                                                                     echo "selected";
                                                                                                 }
                                                                                             }
@@ -623,6 +623,42 @@ if ($result) {
                                         </select>
 
                                     </div>
+
+
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                            Piece </label>
+
+                                        <select name="piece" class="search-select" required onchange="fetchPrice()">
+
+                                            <option value="1">1 piece</option>
+                                            <option value="2">2 piece</option>
+                                            <option value="3">3 piece</option>
+
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                            From Piece </label>
+
+                                        <select name="from_piece" class="search-select" required onchange="fetchPrice()">
+
+                                            <option value="1">1 piece</option>
+                                            <option value="2">2 piece</option>
+                                            <option value="3">3 piece</option>
+
+
+                                        </select>
+
+                                    </div>
+
+
+
+
 
 
 
@@ -648,12 +684,12 @@ if ($result) {
 
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Cash</label>
-                                        <input type="text" name="cash"  id="cash" class="form-input" value="0" required onchange="calculateTotalPrice()">
+                                        <input type="text" name="cash" id="cash" class="form-input" value="0" required onchange="calculateTotalPrice()">
                                     </div>
 
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank</label>
-                                        <input type="text" name="bank"  id="bank" class="form-input" value="0" required id="bankInput" onchange="calculateTotalPrice();">
+                                        <input type="text" name="bank" id="bank" class="form-input" value="0" required id="bankInput" onchange="calculateTotalPrice();">
                                     </div>
 
                                     <div class="mb-3">
@@ -766,7 +802,7 @@ if ($result) {
 
 <?php
 
-if (isset($_POST['exchange_shoes'])) {
+if (isset($_POST['exchange_wig'])) {
 
     include('api/exchange.php');
 }
@@ -775,7 +811,7 @@ if (isset($_POST['exchange_shoes'])) {
 if (isset($_POST['update'])) {
     $sales_id = $_POST['sales_id'];
     $user_id = $_SESSION['user_id'];
-    $shoes_name = $_POST['shoes_name'];
+    $wig_name = $_POST['wig_name'];
     $size = $_POST['size'];
     $price = $_POST['price'];
     $cash = $_POST['cash'];
@@ -797,13 +833,13 @@ if (isset($_POST['update'])) {
     }
 
 
-    $sql = "UPDATE shoes_sales SET  price = '$price', cash = '$cash', bank = '$bank', update_date = '$date', user_id = '$user_id', bank_id = '$bank_id', bank_name = '$bank_name' WHERE sales_id = '$sales_id'";
+    $sql = "UPDATE wig_sales SET  price = '$price', cash = '$cash', bank = '$bank', update_date = '$date', user_id = '$user_id', bank_id = '$bank_id', bank_name = '$bank_name' WHERE sales_id = '$sales_id'";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
-        echo "<script>window.location = 'action.php?status=success&redirect=sale_shoes.php'; </script>";
+        echo "<script>window.location = 'action.php?status=success&redirect=sale_wig.php'; </script>";
     } else {
-        echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+        echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
     }
 }
 
@@ -811,7 +847,7 @@ if (isset($_POST['update'])) {
 if (isset($_POST['add_data'])) {
 
     $user_id = $_SESSION['user_id'];
-    $shoes_name = $_POST['shoes_name'];
+    $wig_name = $_POST['wig_name'];
     $size = $_POST['size'];
     $price = $_POST['price'];
     $cash = $_POST['cash'];
@@ -819,6 +855,8 @@ if (isset($_POST['add_data'])) {
     $method = $_POST['method'];
     $date = $_POST['date'];
     $quantity = $_POST['quantity'];
+    $piece = $_POST['piece'];
+    $from_piece = $_POST['from_piece'];
     if ($bank == 0) {
         $bank_name = null;
         $bank_id = null;
@@ -832,14 +870,22 @@ if (isset($_POST['add_data'])) {
 
 
 
+   
 
-    if (!empty($shoes_name) && !empty($size)) {
-        $sql = "SELECT * FROM shoes WHERE shoes_name = '$shoes_name' AND size = '$size'";
+
+
+
+    if (!empty($wig_name) && !empty($size)) {
+        $sql = "SELECT * FROM wig WHERE wig_name = '$wig_name' AND size = '$size' AND piece = '$from_piece'";
         $result = mysqli_query($con, $sql);
         $row = mysqli_fetch_assoc($result);
 
+
+
+       
+
         if (!$row) {
-            $sql = "SELECT * FROM shoes WHERE shoes_name = '$shoes_name'";
+            $sql = "SELECT * FROM wig WHERE wig_name = '$wig_name'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
             $price = $row['price'];
@@ -848,19 +894,19 @@ if (isset($_POST['add_data'])) {
             $type_id = $row['type_id'];
 
 
-            $sql2 = "SELECT * FROM shoesdb WHERE size = '$size'";
+            $sql2 = "SELECT * FROM wigdb WHERE size = '$size'";
             $result2 = mysqli_query($con, $sql2);
             $row2 = mysqli_fetch_assoc($result2);
             $size_id = $row2['id'];
 
             $quantity = $_POST['quantity'];
 
-            $add_shoes = "INSERT INTO `shoes_verify`(`shoes_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
-                          VALUES ('$shoes_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','1')";
-            $result_add = mysqli_query($con, $add_shoes);
+            $add_wig = "INSERT INTO `wig_verify`(`wig_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
+                          VALUES ('$wig_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','1')";
+            $result_add = mysqli_query($con, $add_wig);
 
             if ($result_add) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
             }
 
             exit;
@@ -868,13 +914,26 @@ if (isset($_POST['add_data'])) {
 
 
 
-        $shoes_id = $row['id'];
+        $wig_id = $row['id'];
         $size_id = $row['size_id'];
         $current_quantity = $row['quantity'];
 
+
+
+        $log_file = 'debug.txt';
+
+        // Sample debug information
+
+        $debug_message .= "Current Quantity: $current_quantity\n";
+        $debug_message .= "Wig ID: $wig_id\n";
+        $debug_message .= "Size: $size\n";
+        $debug_message .= "Piece: $piece\n";
+        $debug_message .= "From Piece: $from_piece\n";
+        file_put_contents($log_file, $debug_message, FILE_APPEND);
+
         if ($current_quantity < $quantity) {
 
-            $sql = "SELECT * FROM shoes WHERE shoes_name = '$shoes_name' AND size = '$size'";
+            $sql = "SELECT * FROM wig WHERE wig_name = '$wig_name' AND size = '$size'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
             $price = $row['price'];
@@ -883,12 +942,12 @@ if (isset($_POST['add_data'])) {
             $type_id = $row['type_id'];
             $size_id = $row['size_id'];
 
-            $add_shoes = "INSERT INTO `shoes_verify`(`shoes_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
-                              VALUES ('$shoes_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','2')";
-            $result_add = mysqli_query($con, $add_shoes);
+            $add_wig = "INSERT INTO `wig_verify`(`wig_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
+                              VALUES ('$wig_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','2')";
+            $result_add = mysqli_query($con, $add_wig);
 
             if ($result_add) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
                 exit;
             }
 
@@ -902,41 +961,103 @@ if (isset($_POST['add_data'])) {
         if ($method == 'delivery') {
 
             $status = "pending";
-            $sql = "INSERT into shoes_delivery (shoes_id, size_id, shoes_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id,bank_id,bank_name,status)
-            VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','$status')";
+            $sql = "INSERT into wig_delivery (wig_id, size_id, wig_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id,bank_id,bank_name,status)
+            VALUES ('$wig_id', '$size_id', '$wig_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','$status')";
             $result = mysqli_query($con, $sql);
 
             $new_quantity = $current_quantity - $quantity;
-            $update_quantity = "UPDATE shoes SET quantity = '$new_quantity' WHERE id = '$shoes_id' AND size = '$size'";
+            $update_quantity = "UPDATE wig SET quantity = '$new_quantity' WHERE id = '$wig_id' AND size = '$size'";
             $result_update = mysqli_query($con, $update_quantity);
 
 
 
             // No need to check result_add, result_adds, or result_update for delivery
             if (!$result || !$result_update) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
                 exit;
             }
         } else {
-            $add_sales = "INSERT INTO `shoes_sales`(`shoes_id`, `size_id`, `shoes_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`,`status`) 
-                  VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','active')";
+
+
+            $piece = $_POST['piece'];
+            $from_piece = $_POST['from_piece'];
+
+            if ($piece > $from_piece) {
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
+                exit;
+            }
+
+            $sql = "SELECT * FROM wig WHERE wig_name = '$wig_name' AND size = '$size' AND piece = '$from_piece'";
+            $result = mysqli_query($con, $sql);
+            $row = mysqli_fetch_assoc($result);
+
+            if (!$row) {
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
+                exit;
+            }
+
+            $wig_id = $row['id'];
+            $saved_piece = $row['piece'];
+            $current_quantity = $row['quantity'];
+
+
+
+          
+            // Logic to adjust stock based on pieces sold
+            if ($from_piece == 1) {
+                // Selling from 1 piece: simply reduce the quantity
+                $new_quantity = $current_quantity - 1;
+            } elseif ($from_piece == 2) {
+                // Selling from 2 pieces
+                $new_quantity = $current_quantity - 1;
+
+
+
+                
+
+// Write to file
+
+
+
+                if ($piece == 1
+                ) {
+                    // Add 1 piece back to the 1-piece stock
+                    $sql_update_1_piece = "UPDATE wig SET quantity = quantity + 1 WHERE wig_name = '$wig_name' AND size = '$size' AND piece = 1";
+                    mysqli_query($con, $sql_update_1_piece);
+                }
+            } elseif ($from_piece == 3) {
+                // Selling from 3 pieces
+                $new_quantity = $current_quantity - 1;
+
+                if ($piece == 1
+                ) {
+                    // Add 2 pieces back to the 1-piece stock
+                    $sql_update_1_piece = "UPDATE wig SET quantity = quantity + 2 WHERE wig_name = '$wig_name' AND size = '$size' AND piece = 1";
+                    mysqli_query($con, $sql_update_1_piece);
+                } elseif ($piece == 2) {
+                    // Add 1 piece back to the 2-piece stock
+                    $sql_update_2_piece = "UPDATE wig SET quantity = quantity + 1 WHERE wig_name = '$wig_name' AND size = '$size' AND piece = 1";
+                    mysqli_query($con, $sql_update_2_piece);
+                }
+            }
+
+            // Update the current stock for the piece sold
+            $update_quantity = "UPDATE wig SET quantity = '$new_quantity' WHERE id = '$wig_id' AND size = '$size' AND piece = '$from_piece'";
+            $result_update = mysqli_query($con, $update_quantity);
+
+            // Insert the sales and log information
+            $add_sales = "INSERT INTO `wig_sales`(`wig_id`, `size_id`, `wig_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`,`status`) 
+              VALUES ('$wig_id', '$size_id', '$wig_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','active')";
             $result_add = mysqli_query($con, $add_sales);
 
             $status = "sold";
 
-            $add_shoes_log = "INSERT INTO `shoes_sales_log`(`shoes_id`, `size_id`, `shoes_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
-                      VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
-            $result_adds = mysqli_query($con, $add_shoes_log);
-
-            $new_quantity = $current_quantity - $quantity;
-            $update_quantity = "UPDATE shoes SET quantity = '$new_quantity' WHERE id = '$shoes_id' AND size = '$size'";
-            $result_update = mysqli_query($con, $update_quantity);
+            $add_wig_log = "INSERT INTO `wig_sales_log`(`wig_id`, `size_id`, `wig_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
+                VALUES ('$wig_id', '$size_id', '$wig_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
+            $result_adds = mysqli_query($con, $add_wig_log);
 
             // Check only for errors in non-delivery cases
-            if (!$result_add || !$result_adds || !$result_update) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
-                exit;
-            }
+           
         }
 
         // Notify subscribers for both delivery and sales
@@ -945,7 +1066,7 @@ if (isset($_POST['add_data'])) {
         $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
 
         $message = "New Sale Added:\n";
-        $message .= "shoes Name: $shoes_name\n";
+        $message .= "wig Name: $wig_name\n";
         $message .= "Size: $size\n";
         $message .= "Price: $price\n";
         $message .= "Cash: $cash\n";
@@ -976,7 +1097,7 @@ if (isset($_POST['add_data'])) {
         }
 
         // Success redirect
-        echo "<script>window.location = 'action.php?status=success&redirect=sale_shoes.php'; </script>";
+        echo "<script>window.location = 'action.php?status=success&redirect=sale_wig.php'; </script>";
     }
 }
 
@@ -987,7 +1108,7 @@ if (isset($_POST['filter'])) {
     $from = $_POST['from_date'];
     $to = $_POST['to_date'];
     $customer = $_POST['customer'];
-    echo "<script>window.location = 'sale_shoes.php?from=$from&to=$to&customer=$customer'; </script>";
+    echo "<script>window.location = 'sale_wig.php?from=$from&to=$to&customer=$customer'; </script>";
 }
 
 

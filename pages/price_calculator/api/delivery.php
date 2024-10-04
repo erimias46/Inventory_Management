@@ -73,6 +73,10 @@ $sql = "UPDATE delivery SET status = 'Delivered', verifiy = 1 WHERE sales_id = $
 $result = mysqli_query($con, $sql);
 
 
+$message=$sale_id." Jeans has been delivered";
+sendMessageToSubscribers($message, $con);
+
+
 
 if (!$result_add || !$result_adds || !$result) {
     echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";

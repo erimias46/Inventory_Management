@@ -14,7 +14,7 @@ $current_date = date('Y-m-d');
 
     <?php
 
-    $title = "All Shoes";
+    $title = "All Wig";
 
 
     ?>
@@ -53,10 +53,14 @@ $current_date = date('Y-m-d');
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Shoes Name</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Wig Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Piece</th>
                                                     <th class="p-2.5 text-left text-xs font-meduim text-gray-500 uppercase">Quantity</th>
+
+
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
@@ -65,7 +69,7 @@ $current_date = date('Y-m-d');
                                             <tbody>
                                                 <?php
 
-                                                $sql = "SELECT * FROM shoes ORDER BY created_at DESC";
+                                                $sql = "SELECT * FROM wig ORDER BY created_at DESC";
                                                 $result22 = mysqli_query($con, $sql);
                                                 while ($row = mysqli_fetch_assoc($result22)) {
 
@@ -73,18 +77,20 @@ $current_date = date('Y-m-d');
                                                 ?>
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['id']; ?> </td>
-                                                        <td> <?php echo $row['shoes_name']; ?> </td>
+                                                        <td> <?php echo $row['wig_name']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 text-ellipsis overflow-hidden" style="max-width: 32ch"> <?php echo $row['size']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['price']; ?> </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['piece']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['quantity'] ?></td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['price']; ?> </td>
+                                                        
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <Img width="100px" height="100px" src="../../include/<?php echo $row['image']; ?> " alt="Product Image" class="product-image" /> </td>
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['created_at']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            <a id="del-btn" href="api/remove.php?id=<?php echo $row['id']; ?>&from=shoes" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
+                                                            <a id="del-btn" href="api/remove.php?id=<?php echo $row['id']; ?>&from=wig" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_delete_2_line text-base me-2"></i> Delete
                                                             </a>
-                                                            <a id="edit-btn" href="edit_shoes.php?id=<?php echo $row['id']; ?>" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full">
+                                                            <a id="edit-btn" href="edit_wig.php?id=<?php echo $row['id']; ?>" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_edit_2_line text-base me-2"></i> Edit
                                                             </a>
                                                         </td>

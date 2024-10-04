@@ -114,7 +114,7 @@ if ($result) {
                                                     
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">shoes Name</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">wig Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
@@ -128,7 +128,7 @@ if ($result) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sql = "SELECT * FROM shoes_verify order by id desc";
+                                                $sql = "SELECT * FROM wig_verify order by id desc";
                                                 $result = mysqli_query($con, $sql);
                                                 while ($row = mysqli_fetch_assoc($result)) {
                                                 ?>
@@ -140,11 +140,11 @@ if ($result) {
                                                             </div>
                                                         </td>
                                                         <td>
-                                                        <a href="api/verify.php?id=<?php echo $row['id']; ?>&from=shoes_verify" id="del-btn" class="btn bg-success/25 text-success hover:bg-success hover:text-white btn-sm rounded-full">
+                                                        <a href="api/verify.php?id=<?php echo $row['id']; ?>&from=wig_verify" id="del-btn" class="btn bg-success/25 text-success hover:bg-success hover:text-white btn-sm rounded-full">
                                                             <i class="mgc_check_circle_line text-base me-2"></i>
                                                                 Verify
                                                             </a>
-                                                        <a href="api/remove.php?id=<?php echo $row['id']; ?>&from=shoes_verify" id="del-btn" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
+                                                        <a href="api/remove.php?id=<?php echo $row['id']; ?>&from=wig_verify" id="del-btn" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_delete_2_line text-base me-2"></i>
                                                                 Delete
                                                             </a>
@@ -153,7 +153,7 @@ if ($result) {
 
                                                         </td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['id']; ?></td>
-                                                        <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['shoes_name']; ?></td>
+                                                        <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['wig_name']; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['size']; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['type']; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['price']; ?></td>
@@ -258,10 +258,10 @@ if (isset($_POST['verify'])) {
     if (isset($_POST['update'])) {
         foreach ($_POST['update'] as $update_id) {
 
-            $sql="SELECT * FROM shoes_verify WHERE id = $update_id";
+            $sql="SELECT * FROM wig_verify WHERE id = $update_id";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
-            $shoes_name = $row['shoes_name'];
+            $wig_name = $row['wig_name'];
             $size = $row['size'];
             $size_id=$row['size_id'];
             $type_id=$row['type_id'];
@@ -276,11 +276,11 @@ if (isset($_POST['verify'])) {
 
             if($error=='1'){
                 $active='1';
-                $insert = "INSERT INTO `shoes`(`shoes_name`, `size`, `type`, `price`, `quantity`, `active`,`size_id`,`type_id`,`image`) VALUES ('$shoes_name','$size','$type','$price','$quantity','$active','$size_id','$type_id','$image')";
+                $insert = "INSERT INTO `wig`(`wig_name`, `size`, `type`, `price`, `quantity`, `active`,`size_id`,`type_id`,`image`) VALUES ('$wig_name','$size','$type','$price','$quantity','$active','$size_id','$type_id','$image')";
                 $result_insert = mysqli_query($con, $insert);
                 if ($result_insert) {
                    
-                    $delete = "DELETE FROM `shoes_verify` WHERE id = $update_id";
+                    $delete = "DELETE FROM `wig_verify` WHERE id = $update_id";
                     $result_delete = mysqli_query($con, $delete);
                     if ($result_delete) {
                         echo "<script>window.location = 'action.php?status=success&redirect=verify.php'; </script>";
@@ -293,14 +293,14 @@ if (isset($_POST['verify'])) {
 
             }
             if($error=='2'){
-                $sql="SELECT * FROM shoes WHERE shoes_name = '$shoes_name' AND size = '$size' ";
+                $sql="SELECT * FROM wig WHERE wig_name = '$wig_name' AND size = '$size' ";
                 $result = mysqli_query($con, $sql);
                 $row = mysqli_fetch_assoc($result);
                 $quantity = $row['quantity'] + $quantity;
-                $update = "UPDATE `shoes` SET `quantity`= '$quantity' WHERE shoes_name = '$shoes_name' AND size = '$size'";
+                $update = "UPDATE `wig` SET `quantity`= '$quantity' WHERE wig_name = '$wig_name' AND size = '$size'";
                 $result_update = mysqli_query($con, $update);
                 if ($result_update) {
-                    $delete = "DELETE FROM `shoes_verify` WHERE id = $update_id";
+                    $delete = "DELETE FROM `wig_verify` WHERE id = $update_id";
                     $result_delete = mysqli_query($con, $delete);
                     if ($result_delete) {
                         echo "<script>window.location = 'action.php?status=success&redirect=verify.php'; </script>";

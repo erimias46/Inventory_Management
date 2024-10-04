@@ -15,7 +15,7 @@ include_once $redirect_link . 'include/db.php'; // Include your database connect
     $sales_id = $_POST['sales_id'];
 
     
-    $shoes_name = $_POST['shoes_name'];
+    $wig_name = $_POST['wig_name'];
     $size = $_POST['size'];
     $price = $_POST['price'];
     $cash = $_POST['cash'];
@@ -37,13 +37,13 @@ include_once $redirect_link . 'include/db.php'; // Include your database connect
     
     
 
-    if (!empty($shoes_name) && !empty($size)) {
-        $sql = "SELECT * FROM shoes WHERE shoes_name = '$shoes_name' AND size = '$size'";
+    if (!empty($wig_name) && !empty($size)) {
+        $sql = "SELECT * FROM wig WHERE wig_name = '$wig_name' AND size = '$size'";
         $result = mysqli_query($con, $sql);
         $row = mysqli_fetch_assoc($result);
 
         if(!$row) {
-            $sql="SELECT * FROM shoes WHERE shoes_name = '$shoes_name'";
+            $sql="SELECT * FROM wig WHERE wig_name = '$wig_name'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
             $price = $row['price'];
@@ -52,19 +52,19 @@ include_once $redirect_link . 'include/db.php'; // Include your database connect
             $type_id = $row['type_id'];
 
 
-            $sql2="SELECT * FROM shoesdb WHERE size = '$size'";
+            $sql2="SELECT * FROM wigdb WHERE size = '$size'";
             $result2 = mysqli_query($con, $sql2);
             $row2 = mysqli_fetch_assoc($result2);
             $size_id = $row2['id'];
 
             $quantity=$_POST['quantity'];
 
-            $add_shoes = "INSERT INTO `shoes_verify`(`shoes_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
-                          VALUES ('$shoes_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','1')";
-            $result_add = mysqli_query($con, $add_shoes);
+            $add_wig = "INSERT INTO `wig_verify`(`wig_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
+                          VALUES ('$wig_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','1')";
+            $result_add = mysqli_query($con, $add_wig);
 
             if ($result_add) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
                 
             }
 
@@ -76,13 +76,13 @@ include_once $redirect_link . 'include/db.php'; // Include your database connect
 
 
 
-            $shoes_id = $row['id'];
+            $wig_id = $row['id'];
             $size_id = $row['size_id'];
             $current_quantity = $row['quantity'];
 
             if ($current_quantity < $quantity) {
 
-                $sql="SELECT * FROM shoes WHERE shoes_name = '$shoes_name' AND size = '$size'";
+                $sql="SELECT * FROM wig WHERE wig_name = '$wig_name' AND size = '$size'";
                 $result = mysqli_query($con, $sql);
                 $row = mysqli_fetch_assoc($result);
                 $price = $row['price'];
@@ -91,12 +91,12 @@ include_once $redirect_link . 'include/db.php'; // Include your database connect
                 $type_id = $row['type_id'];
                 $size_id = $row['size_id'];
 
-                $add_shoes = "INSERT INTO `shoes_verify`(`shoes_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
-                              VALUES ('$shoes_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','2')";
-                $result_add = mysqli_query($con, $add_shoes);
+                $add_wig = "INSERT INTO `wig_verify`(`wig_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
+                              VALUES ('$wig_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','2')";
+                $result_add = mysqli_query($con, $add_wig);
 
                 if ($result_add) {
-                    echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                    echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
                     exit;
                 }
 
@@ -108,42 +108,42 @@ include_once $redirect_link . 'include/db.php'; // Include your database connect
 
 
 
-            $add_sales = "INSERT INTO `shoes_sales`(`shoes_id`, `size_id`, `shoes_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`,`status`) 
-                          VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','active')";
+            $add_sales = "INSERT INTO `wig_sales`(`wig_id`, `size_id`, `wig_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`,`status`) 
+                          VALUES ('$wig_id', '$size_id', '$wig_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name','active')";
             $result_add = mysqli_query($con, $add_sales);
 
             $sales_id_new = mysqli_insert_id($con);
 
 
 
-            $update_sales = "UPDATE `shoes_sales` SET `status` = 'Exchange Sell' WHERE sales_id = '$sales_id'";
+            $update_sales = "UPDATE `wig_sales` SET `status` = 'Exchange Sell' WHERE sales_id = '$sales_id'";
             $result_update = mysqli_query($con, $update_sales);
 
             if($result_add && $result_update) {
-                echo "<script>window.location = 'action.php?status=success&redirect=sale_shoes.php'; </script>";
+                echo "<script>window.location = 'action.php?status=success&redirect=sale_wig.php'; </script>";
             } else {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
             }
 
             $status = "Exchange Sell";
 
-            $add_shoes_log = "INSERT INTO `shoes_sales_log`(`shoes_id`, `size_id`, `shoes_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
-                              VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
-            $result_adds = mysqli_query($con, $add_shoes_log);
+            $add_wig_log = "INSERT INTO `wig_sales_log`(`wig_id`, `size_id`, `wig_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
+                              VALUES ('$wig_id', '$size_id', '$wig_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
+            $result_adds = mysqli_query($con, $add_wig_log);
 
             $new_quantity = $current_quantity - $quantity;
-            $update_quantity = "UPDATE shoes SET quantity = '$new_quantity' WHERE id = '$shoes_id' AND size = '$size'";
+            $update_quantity = "UPDATE wig SET quantity = '$new_quantity' WHERE id = '$wig_id' AND size = '$size'";
             $result_update = mysqli_query($con, $update_quantity);
 
 
-            $sql="SELECT * from shoes_sales where sales_id = '$sales_id'";
+            $sql="SELECT * from wig_sales where sales_id = '$sales_id'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
-            $shoes_id = $row['shoes_id'];
+            $wig_id = $row['wig_id'];
             $size_id = $row['size_id'];
             $quantity = $row['quantity'];
             $price = $row['price'];
-            $shoes_name = $row['shoes_name'];
+            $wig_name = $row['wig_name'];
             $size = $row['size'];
             $cash = $row['cash'];
             $bank = $row['bank'];
@@ -155,26 +155,26 @@ include_once $redirect_link . 'include/db.php'; // Include your database connect
 
 
 
-            $sql2="SELECT * from shoes where id = '$shoes_id' AND size_id = '$size_id'";
+            $sql2="SELECT * from wig where id = '$wig_id' AND size_id = '$size_id'";
             $result2 = mysqli_query($con, $sql2);
             $row2 = mysqli_fetch_assoc($result2);
             $current_quantity = $row2['quantity'];
 
             $new_quantity = $current_quantity + $quantity;
-            $update_quantity = "UPDATE shoes SET quantity = '$new_quantity' WHERE id = '$shoes_id' AND size_id = '$size_id'";
+            $update_quantity = "UPDATE wig SET quantity = '$new_quantity' WHERE id = '$wig_id' AND size_id = '$size_id'";
             $result_update = mysqli_query($con, $update_quantity);
 
 
             $status = "Exchange Back";
 
 
-            $add_shoes_log = "INSERT INTO `shoes_sales_log`(`shoes_id`, `size_id`, `shoes_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
-                              VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
+            $add_wig_log = "INSERT INTO `wig_sales_log`(`wig_id`, `size_id`, `wig_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
+                              VALUES ('$wig_id', '$size_id', '$wig_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
 
-            $result_add = mysqli_query($con, $add_shoes_log);
+            $result_add = mysqli_query($con, $add_wig_log);
 
 
-            $sql="INSERT into exchange_shoes (before_sale_id, after_sale_id) VALUES ('$sales_id', '$sales_id_new')";
+            $sql="INSERT into exchange_wig (before_sale_id, after_sale_id) VALUES ('$sales_id', '$sales_id_new')";
             $result = mysqli_query($con, $sql);
 
 
@@ -184,9 +184,9 @@ include_once $redirect_link . 'include/db.php'; // Include your database connect
 
 
             // if ($result_add && $result_update) {
-            //     echo "<script>window.location = 'action.php?status=success&redirect=sale_shoes.php'; </script>";
+            //     echo "<script>window.location = 'action.php?status=success&redirect=sale_wig.php'; </script>";
             // } else {
-            //     echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+            //     echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
             // }
 
     } 

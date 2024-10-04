@@ -10,18 +10,18 @@ include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php'; 
 $sale_id = $_POST['sales_id'];
 
-$shoes_name = $_POST['shoes_name'];
+$wig_name = $_POST['wig_name'];
 
-$sql="SELECT * from shoes WHERE shoes_name = '$shoes_name'";
+$sql="SELECT * from wig WHERE wig_name = '$wig_name'";
 $result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 
-$shoes_id = $row['shoes_id'];
+$wig_id = $row['wig_id'];
 
 $size = $_POST['size'];
 
 
-$sql="SELECT * from shoesdb WHERE size = '$size'";
+$sql="SELECT * from wigdb WHERE size = '$size'";
 $result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 
@@ -58,30 +58,30 @@ $status = "Delivered";
 
 
 
-$add_sales = "INSERT INTO `shoes_sales`(`shoes_id`, `size_id`, `shoes_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`, `status`) 
-                  VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name', 'active')";
+$add_sales = "INSERT INTO `wig_sales`(`wig_id`, `size_id`, `wig_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`,`bank_id`,`bank_name`, `status`) 
+                  VALUES ('$wig_id', '$size_id', '$wig_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id','$bank_id','$bank_name', 'active')";
 $result_add = mysqli_query($con, $add_sales);
 
 $status = "removed_quantity";
 
-$add_shoes_log = "INSERT INTO `shoes_sales_log`(`shoes_id`, `size_id`, `shoes_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
-                      VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
-$result_adds = mysqli_query($con, $add_shoes_log);
+$add_wig_log = "INSERT INTO `wig_sales_log`(`wig_id`, `size_id`, `wig_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
+                      VALUES ('$wig_id', '$size_id', '$wig_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
+$result_adds = mysqli_query($con, $add_wig_log);
 
 
-$sql = "UPDATE shoes_delivery SET status = 'Delivered', verifiy = 1 WHERE sales_id = $sale_id";
+$sql = "UPDATE wig_delivery SET status = 'Delivered', verifiy = 1 WHERE sales_id = $sale_id";
 $result = mysqli_query($con, $sql);
 
 
 
 if (!$result_add || !$result_adds || !$result) {
-    echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+    echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
     exit;
 }
 
 
 
-echo "<script>window.location = 'action.php?status=success&redirect=sale_shoes.php'; </script>";
+echo "<script>window.location = 'action.php?status=success&redirect=sale_wig.php'; </script>";
 
 ?>
 

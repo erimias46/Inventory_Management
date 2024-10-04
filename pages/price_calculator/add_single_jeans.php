@@ -4,6 +4,7 @@ $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 include_once $redirect_link . 'include/bot.php';
+include_once $redirect_link . 'include/email.php';
 
 
 $current_date = date('Y-m-d');
@@ -84,6 +85,7 @@ if (isset($_POST['add'])) {
     } else {
         // If no image is uploaded, use the default image
         $image_path = 'uploads/defaultjeans.jpg';
+        $uploadOk = 1;
     }
 
     // If image upload failed, use the default image
@@ -128,10 +130,13 @@ if (isset($_POST['add'])) {
 
 
         sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message, $con);
 
 
-    
-            echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
+      
+
+
+        
 
         }
 
@@ -176,16 +181,10 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['calcview'] == 1) ? true : false;
+        $addButtonVisible = ($module['addjeans'] == 1) ? true : false;
 
 
-        $addButtonVisible = ($module['calcadd'] == 1) ? true : false;
-
-
-        $updateButtonVisible = ($module['calcedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['calcgenerate'] == 1) ? true : false;
+       
     } else {
         echo "No user found with the specified ID";
     }
@@ -384,7 +383,7 @@ if ($result) {
 
 
                                         <!-- Display the Calculate button if $calculateButtonVisible is true -->
-                                        <?php if ($calculateButtonVisible) : ?>
+                                        <?php if ($addButtonVisible) : ?>
 
                                             <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>
 

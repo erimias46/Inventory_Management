@@ -116,7 +116,7 @@ if ($result) {
                                                 <th>User Name</th>
                                                 <th>Password</th>
                                                 <th>Privileged</th>
-                                                <th>Payment Option</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -157,9 +157,7 @@ if ($result) {
                                                         <?php echo $row1['previledge'] ?></td>
 
 
-                                                    <td
-                                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                        <?php echo $row1['payment'] ?></td>
+
 
                                                 </tr>
                                                 <!-- Edit modal -->
@@ -194,7 +192,7 @@ if ($result) {
                     </button>
                 </div>
                 <div class="overflow-y-auto mt-3">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium"><?= $title ?>
@@ -202,7 +200,7 @@ if ($result) {
                             </div>
                             <div class="p-4">
 
-                                <form method="post" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                                <form method="post" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-3">
                                     <div class="px-4 py-8 overflow-y-auto">
                                         <div class="mb-3">
                                             <label class="text-gray-800 text-sm font-medium inline-block mb-2">
@@ -229,16 +227,7 @@ if ($result) {
 
                                         </div>
 
-                                        <div class="mb-3">
-
-                                            <label class="form-label">Payment</label>
-                                            <select class="form-select" name="payment" id="inputGroupSelect04" required>
-                                                <option value="yes">Yes</option>
-                                                <option value="no">No</option>
-
-                                            </select>
-
-                                        </div>
+                                       
 
 
 
@@ -251,7 +240,7 @@ if ($result) {
 
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card  col-span-2">
                             <div class="card-header">
                                 <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Assign
                                     Permission</h4>
@@ -266,684 +255,120 @@ if ($result) {
                                                         <th scope="col"
                                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                                                             Modules</th>
-                                                        <th scope="col"
-                                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                                            Features</th>
+
 
                                                         <th scope="col"
                                                             class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                            View/Import</th>
+                                                            Jeans</th>
                                                         <th scope="col"
                                                             class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                            Add</th>
+                                                            Shoes </th>
                                                         <th scope="col"
                                                             class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                            Edit</th>
+                                                            Top</th>
                                                         <th scope="col"
                                                             class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                            Delete</th>
+                                                            Complete</th>
                                                         <th scope="col"
                                                             class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                            Generate</th>
+                                                            Accesssory</th>
                                                         <th scope="col"
                                                             class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                            Verify</th>
+                                                            Wig</th>
+                                                        <th scope="col"
+                                                            class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
+                                                            Cosmetics</th>
 
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Calculator</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Calculate</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="calcview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="calcadd" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="calcedit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="calcdelete" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="calcgenerate" value="1">
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Constants</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Calculate</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="constview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="constadd" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="constedit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="constdelete" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="constgenerate" value="1">
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Payment</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            pay</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="payview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                                            Pay
-
-                                                            <input type="checkbox" name="payadd" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="payedit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="paydelete" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="paygenerate" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="payverify" value="1">
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Bank Statment</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            pay</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="bankview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
 
 
-                                                            <input type="checkbox" name="bankadd" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="bankedit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="bankdelete" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="bankgenerate" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="bankverify" value="1">
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Vat Status</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Check </td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="vatview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="vatadd" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="vatedit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="vatdelete" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="vatgenerate" value="1">
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Bank</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Bank Operations</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="banksview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="banksadd" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="banksedit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="banksdelete" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="banksgenerate" value="1">
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Stock</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Stock Operations</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="stockview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="stockadd" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="stockedit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="stockdelete" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="stockgenerate" value="1">
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Database</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="dataview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="dataadd" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="dataedit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="datadelete" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="datagenerate" value="1">
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Job Status</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Calculate</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="jobview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
 
 
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
 
-                                                            <input type="checkbox" name="jobedit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Sales</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Calculate</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="saleview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="saleadd" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="saleedit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="saledelete" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="salegenerate" value="1">
-                                                        </td>
-
-                                                    </tr>
-
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Report</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Calculate</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="reportview" value="1">
+                                                    <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                            View Product
                                                         </td>
 
 
+                                                        <?php
+
+
+                                                        // Define the checkbox names
+                                                        $checkboxNames = [
+                                                            'viewjeans',
+                                                            'viewshoes',
+                                                            'viewtop',
+                                                            'viewcomplete',
+                                                            'viewaccessory',
+                                                            'viewwig',
+                                                            'viewcosmetics'
+                                                        ];
+
+                                                        // Define the CSS classes for each column
+                                                        $columnClasses = 'px-6 py-4 whitespace-nowrap text-center text-sm font-medium';
+
+
+                                                        foreach ($checkboxNames as $index => $checkboxName) {
+
+
+                                                            echo '<td class="' . $columnClasses . '">';
+                                                            echo '<input type="checkbox" name="' . $checkboxName . '" value="1"  >';
+                                                            echo '</td>';
+                                                        }
+                                                        ?>
                                                     </tr>
 
 
 
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            User Managment</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Managment</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="userview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="useradd" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="useredit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="userdelete" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="usergenerate" value="1">
-                                                        </td>
-
-                                                    </tr>
+                                                    <?php
+                                                    // Define the sets of checkbox names
+                                                    $checkboxSets = [
+                                                        'add' => ['addjeans', 'addshoes', 'addtop', 'addcomplete', 'addaccessory', 'addwig', 'addcosmetics'],
+                                                        'edit' => ['editjeans', 'editshoes', 'edittop', 'editcomplete', 'editaccessory', 'editwig', 'editcosmetics'],
+                                                        'delete' => ['deletejeans', 'deleteshoes', 'deletetop', 'deletecomplete', 'deleteaccessory', 'deletewig', 'deletecosmetics'],
+                                                        'verify' => ['verifyjeans', 'verifyshoes', 'verifytop', 'verifycomplete', 'verifyaccessory', 'verifywig', 'verifycosmetics'],
+                                                        'sale' => ['salejeans', 'saleshoes', 'saletop', 'salecomplete', 'saleaccessory', 'salewig', 'salecosmetics'],
+                                                        'editsale' => ['editsalejeans', 'editsaleshoes', 'editsaletop', 'editsalecomplete', 'editsaleaccessory', 'editsalewig', 'editsalecosmetics'],
+                                                        'deletesale' => ['deletesalejeans', 'deletesaleshoes', 'deletesaletop', 'deletesalecomplete', 'deletesaleaccessory', 'deletesalewig', 'deletesalecosmetics'],
+                                                        'refundsale' => ['refundsalejeans', 'refundsaleshoes', 'refundsalestop', 'refundsalecomplete', 'refundsaleaccessory', 'refundsalewig', 'refundsalecosmetics'],
+                                                        'exchangesale'=> ['exchangesalejeans', 'exchangesaleshoes', 'exchangesaletop', 'exchangesalecomplete', 'exchangesaleaccessory', 'exchangesalewig', 'exchangesalecosmetics'],
+                                                        'deliverysale' => ['deliverysalejeans', 'deliverysaleshoes', 'deliverysaletop', 'deliverysalecomplete', 'deliverysaleaccessory', 'deliverysalewig', 'deliverysalecosmetics'],
+                                                        'log' => ['logjeans', 'logshoes', 'logtop', 'logcomplete', 'logaccessory', 'logwig', 'logcosmetics'],
+                                                        'constant'=>['constant'],
+                                                        'email'=>['email'],
+                                                        'backup'=>['backup']
 
 
+                                                    ];
 
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Customers</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
+                                                    // Define the CSS class for each column
+                                                    $columnClasses = 'px-6 py-4 whitespace-nowrap text-center text-sm font-medium';
 
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="custview" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                                    // Iterate through each set of checkbox names and generate the table rows
+                                                    foreach ($checkboxSets as $setName => $checkboxNames) {
+                                                        echo '<tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">';
+                                                        echo '<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">';
+                                                        echo ucfirst($setName) . ' Product';
+                                                        echo '</td>';
 
-                                                            <input type="checkbox" name="custadd" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                                        // Loop through each checkbox name in the current set
+                                                        foreach ($checkboxNames as $checkboxName) {
+                                                            echo '<td class="' . $columnClasses . '">';
+                                                            echo '<input type="checkbox" name="' . $checkboxName . '" value="1">';
+                                                            echo '</td>';
+                                                        }
 
-                                                            <input type="checkbox" name="custedit" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-
-                                                            <input type="checkbox" name="custdelete" value="1">
-                                                        </td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="custgenerate" value="1">
-                                                        </td>
-
-                                                    </tr>
-
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Generarte Performa</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="generateview" value="1">
-                                                        </td>
+                                                        echo '</tr>';
+                                                    }
+                                                    ?>
 
 
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            File Manager</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="fileview" value="1">
-                                                        </td>
 
 
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Backup</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
 
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="backview" value="1">
-                                                        </td>
-
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Profile</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="profileview" value="1">
-                                                        </td>
-
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Brocher</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="brocherview" value="1">
-                                                        </td>
-
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Book</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="bookview" value="1">
-                                                        </td>
-
-                                                        </td>
-
-                                                    </tr>
-
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Manual</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="manualview" value="1">
-                                                        </td>
-
-                                                        </td>
-
-                                                    </tr>
-
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Digital</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="digitalview" value="1">
-                                                        </td>
-
-                                                        </td>
-
-                                                    </tr>
-
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Banner</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="bannerview" value="1">
-                                                        </td>
-
-                                                        </td>
-
-                                                    </tr>
-
-
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Design</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="designview" value="1">
-                                                        </td>
-
-                                                        </td>
-
-                                                    </tr>
-
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Single Page</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="singlepageview" value="1">
-                                                        </td>
-
-                                                        </td>
-
-                                                    </tr>
-
-
-                                                    <tr
-                                                        class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            Multi Page</td>
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            Actions</td>
-
-                                                        <td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                            <input type="checkbox" name="multipageview" value="1">
-                                                        </td>
-
-                                                        </td>
-
-                                                    </tr>
 
 
 
@@ -1022,645 +447,247 @@ if (isset($_POST['add_user'])) {
     $user_name = $_POST['user_name'];
     $password = $_POST['password'];
     $privileged = $_POST['privileged'];
-    $payment = $_POST['payment'];
-    $calcview = $_POST['calcview'];
-    $calcadd = $_POST['calcadd'];
-    $calcedit = $_POST['calcedit'];
-    $calcdelete = $_POST['calcdelete'];
-    $calcgenerate = $_POST['calcgenerate'];
-
-
-
-
-
-
-    if ($calcview == 1) {
-        $calcview = 1;
-    } else {
-        $calcview = 0;
-    }
-    if ($calcadd == 1) {
-        $calcadd = 1;
-    } else {
-        $calcadd = 0;
-    }
-    if ($calcedit == 1) {
-        $calcedit = 1;
-    } else {
-        $calcedit = 0;
-    }
-    if ($calcdelete == 1) {
-        $calcdelete = 1;
-    } else {
-        $calcdelete = 0;
-    }
-    if ($calcgenerate == 1) {
-        $calcgenerate = 1;
-    } else {
-        $calcgenerate = 0;
-    }
-
-    //constants
-
-
-    $constview = $_POST['constview'];
-    $constadd = $_POST['constadd'];
-    $constedit = $_POST['constedit'];
-    $constdelete = $_POST['constdelete'];
-    $constgenerate = $_POST['constgenerate'];
-
-
-
-    if ($constview == 1) {
-        $constview = 1;
-    } else {
-        $constview = 0;
-    }
-    if ($constadd == 1) {
-        $constadd = 1;
-    } else {
-        $constadd = 0;
-    }
-    if ($constedit == 1) {
-        $constedit = 1;
-    } else {
-        $constedit = 0;
-    }
-    if ($constdelete == 1) {
-        $constdelete = 1;
-    } else {
-        $constdelete = 0;
-    }
-    if ($constgenerate == 1) {
-        $constgenerate = 1;
-    } else {
-        $constgenerate = 0;
-    }
-
-
-
-
-    // stock operations
-    $stockview = $_POST['stockview'];
-    $stockadd = $_POST['stockadd'];
-    $stockedit = $_POST['stockedit'];
-    $stockdelete = $_POST['stockdelete'];
-    $stockgenerate = $_POST['stockgenerate'];
-
-
-
-
-
-
-    if ($stockview == 1) {
-        $stockview = 1;
-    } else {
-        $stockview = 0;
-    }
-    if ($stockadd == 1) {
-        $stockadd = 1;
-    } else {
-        $stockadd = 0;
-    }
-    if ($stockedit == 1) {
-        $stockedit = 1;
-    } else {
-        $stockedit = 0;
-    }
-    if ($stockdelete == 1) {
-        $stockdelete = 1;
-    } else {
-        $stockdelete = 0;
-    }
-    if ($stockgenerate == 1) {
-        $stockgenerate = 1;
-    } else {
-        $stockgenerate = 0;
-    }
-
-
-
-    //database
-    $dataview = $_POST['dataview'];
-    $dataadd = $_POST['dataadd'];
-    $dataedit = $_POST['dataedit'];
-    $datadelete = $_POST['datadelete'];
-    $datagenerate = $_POST['datagenerate'];
-
-
-
-
-
-
-    if ($dataview == 1) {
-        $dataview = 1;
-    } else {
-        $dataview = 0;
-    }
-    if ($dataadd == 1) {
-        $dataadd = 1;
-    } else {
-        $dataadd = 0;
-    }
-    if ($dataedit == 1) {
-        $dataedit = 1;
-    } else {
-        $dataedit = 0;
-    }
-    if ($datadelete == 1) {
-        $datadelete = 1;
-    } else {
-        $datadelete = 0;
-    }
-    if ($datagenerate == 1) {
-        $datagenerate = 1;
-    } else {
-        $datagenerate = 0;
-    }
-
-
-    //job
-
-    $jobview = $_POST['jobview'];
-    $jobedit = $_POST['jobedit'];
-
-
-    if ($jobview == 1) {
-        $jobview = 1;
-    } else {
-        $jobview = 0;
-    }
-
-    if ($jobedit == 1) {
-        $jobedit = 1;
-    } else {
-        $jobedit = 0;
-    }
-
-
-
-
-    //sales
-    $saleview = $_POST['saleview'];
-    $saleadd = $_POST['saleadd'];
-    $saleedit = $_POST['saleedit'];
-    $saledelete = $_POST['saledelete'];
-    $salegenerate = $_POST['salegenerate'];
-
-
-
-
-
-
-    if ($saleview == 1) {
-        $saleview = 1;
-    } else {
-        $saleview = 0;
-    }
-    if ($saleadd == 1) {
-        $saleadd = 1;
-    } else {
-        $saleadd = 0;
-    }
-    if ($saleedit == 1) {
-        $saleedit = 1;
-    } else {
-        $saleedit = 0;
-    }
-    if ($saledelete == 1) {
-        $saledelete = 1;
-    } else {
-        $saledelete = 0;
-    }
-    if ($salegenerate == 1) {
-        $salegenerate = 1;
-    } else {
-        $salegenerate = 0;
-    }
-
-
-    //report
-    $reportview = $_POST['reportview'];
-
-
-    if ($reportview == 1) {
-        $reportview = 1;
-    } else {
-        $reportview = 0;
-    }
-
-
-    //user managment
-    $userview = $_POST['userview'];
-    $useradd = $_POST['useradd'];
-    $useredit = $_POST['useredit'];
-    $userdelete = $_POST['userdelete'];
-    $usergenerate = $_POST['usergenerate'];
-
-
-    if ($userview == 1) {
-        $userview = 1;
-    } else {
-        $userview = 0;
-    }
-    if ($useradd == 1) {
-        $useradd = 1;
-    } else {
-        $useradd = 0;
-    }
-    if ($useredit == 1) {
-        $useredit = 1;
-    } else {
-        $useredit = 0;
-    }
-    if ($userdelete == 1) {
-        $userdelete = 1;
-    } else {
-        $userdelete = 0;
-    }
-    if ($usergenerate == 1) {
-        $usergenerate = 1;
-    } else {
-        $usergenerate = 0;
-    }
-
-
-    //customer managment
-    $custview = $_POST['custview'];
-    $custadd = $_POST['custadd'];
-    $custedit = $_POST['custedit'];
-    $custdelete = $_POST['custdelete'];
-    $custgenerate = $_POST['custgenerate'];
-
-
-    if ($custview == 1) {
-        $custview = 1;
-    } else {
-        $custview = 0;
-    }
-    if ($custadd == 1) {
-        $custadd = 1;
-    } else {
-        $custadd = 0;
-    }
-    if ($custedit == 1) {
-        $custedit = 1;
-    } else {
-        $custedit = 0;
-    }
-    if ($custdelete == 1) {
-        $custdelete = 1;
-    } else {
-        $custdelete = 0;
-    }
-    if ($custgenerate == 1) {
-        $custgenerate = 1;
-    } else {
-        $custgenerate = 0;
-    }
-
-
-    //randoms
-    $generateview = $_POST['generateview'];
-    $fileview = $_POST['fileview'];
-    $backview = $_POST['backview'];
-
-
-    if ($generateview == 1) {
-        $generateview = 1;
-    } else {
-        $generateview = 0;
-    }
-    if ($fileview == 1) {
-        $fileview = 1;
-    } else {
-        $fileview = 0;
-    }
-    if ($backview == 1) {
-        $backview = 1;
-    } else {
-        $backview = 0;
-    }
-
-
-    //payment 
-    $payview = $_POST['payview'];
-    $payadd = $_POST['payadd'];
-    $payedit = $_POST['payedit'];
-    $paydelete = $_POST['paydelete'];
-    $paygenerate = $_POST['paygenerate'];
-    $payverify = $_POST['payverify'];
-
-    if ($payview == 1) {
-        $payview = 1;
-    } else {
-        $payview = 0;
-    }
-    if ($payadd == 1) {
-        $payadd = 1;
-    } else {
-        $payadd = 0;
-    }
-    if ($payedit == 1) {
-        $payedit = 1;
-    } else {
-        $payedit = 0;
-    }
-    if ($paydelete == 1) {
-        $paydelete = 1;
-    } else {
-        $paydelete = 0;
-    }
-    if ($paygenerate == 1) {
-        $paygenerate = 1;
-    } else {
-        $paygenerate = 0;
-    }
-    if ($payverify == 1) {
-        $payverify = 1;
-    } else {
-        $payverify = 0;
-    }
-
-
-    //bank statment
-    $bankview = $_POST['bankview'];
-    $bankadd = $_POST['bankadd'];
-    $bankedit = $_POST['bankedit'];
-    $bankdelete = $_POST['bankdelete'];
-    $bankgenerate = $_POST['bankgenerate'];
-    $bankverify = $_POST['bankverify'];
-
-
-    if ($bankview == 1) {
-        $bankview = 1;
-    } else {
-        $bankview = 0;
-    }
-    if ($bankadd == 1) {
-        $bankadd = 1;
-    } else {
-        $bankadd = 0;
-    }
-    if ($bankedit == 1) {
-        $bankedit = 1;
-    } else {
-        $bankedit = 0;
-    }
-    if ($bankdelete == 1) {
-        $bankdelete = 1;
-    } else {
-        $bankdelete = 0;
-    }
-    if ($bankgenerate == 1) {
-        $bankgenerate = 1;
-    } else {
-        $bankgenerate = 0;
-    }
-    if ($bankverify == 1) {
-        $bankverify = 1;
-    } else {
-        $bankverify = 0;
-    }
-
-
-    //vat status
-    $vatview = $_POST['vatview'];
-    $vatadd = $_POST['vatadd'];
-    $vatedit = $_POST['vatedit'];
-    $vatdelete = $_POST['vatdelete'];
-    $vatgenerate = $_POST['vatgenerate'];
-
-    if ($vatview == 1) {
-        $vatview = 1;
-    } else {
-        $vatview = 0;
-    }
-    if ($vatadd == 1) {
-        $vatadd = 1;
-    } else {
-        $vatadd = 0;
-    }
-    if ($vatedit == 1) {
-        $vatedit = 1;
-    } else {
-        $vatedit = 0;
-    }
-    if ($vatdelete == 1) {
-        $vatdelete = 1;
-    } else {
-        $vatdelete = 0;
-    }
-    if ($vatgenerate == 1) {
-        $vatgenerate = 1;
-    } else {
-        $vatgenerate = 0;
-    }
-
-    //bank
-    $banksview = $_POST['banksview'];
-    $banksadd = $_POST['banksadd'];
-    $banksedit = $_POST['banksedit'];
-    $banksdelete = $_POST['banksdelete'];
-    $banksgenerate = $_POST['banksgenerate'];
-
-    if ($banksview == 1) {
-        $banksview = 1;
-    } else {
-        $banksview = 0;
-    }
-    if ($banksadd == 1) {
-        $banksadd = 1;
-    } else {
-        $banksadd = 0;
-    }
-    if ($banksedit == 1) {
-        $banksedit = 1;
-    } else {
-        $banksedit = 0;
-    }
-    if ($banksdelete == 1) {
-        $banksdelete = 1;
-    } else {
-        $banksdelete = 0;
-    }
-    if ($banksgenerate == 1) {
-        $banksgenerate = 1;
-    } else {
-        $banksgenerate = 0;
-    }
-
-
-    $profileview = $_POST['profileview'];
-
-    if ($profileview == 1) {
-        $profileview = 1;
-    } else {
-        $profileview = 0;
-    }
-
-    $brocherview = $_POST['brocherview'];
-
-    if ($brocherview == 1) {
-        $brocherview = 1;
-    } else {
-        $brocherview = 0;
-    }
-
-    $bookview = $_POST['bookview'];
-
-    if ($bookview == 1) {
-        $bookview = 1;
-    } else {
-        $bookview = 0;
-    }
-
-    $manualview = $_POST['manualview'];
-
-    if ($manualview == 1) {
-        $manualview = 1;
-    } else {
-        $manualview = 0;
-    }
-
-    $digitalview = $_POST['digitalview'];
-
-    if ($digitalview == 1) {
-        $digitalview = 1;
-    } else {
-        $digitalview = 0;
-    }
-
-    $bannerview = $_POST['bannerview'];
-
-    if ($bannerview == 1) {
-        $bannerview = 1;
-    } else {
-        $bannerview = 0;
-    }
-
-    $designview = $_POST['designview'];
-
-    if ($designview == 1) {
-        $designview = 1;
-    } else {
-        $designview = 0;
-    }
-
-    $singlepageview = $_POST['singlepageview'];
-
-    if ($singlepageview == 1) {
-        $singlepageview = 1;
-    } else {
-        $singlepageview = 0;
-    }
-
-    $multipageview = $_POST['multipageview'];
-
-    if ($multipageview == 1) {
-        $multipageview = 1;
-    } else {
-        $multipageview = 0;
-    }
 
+
+
+    
+    $viewjeans = (int) boolval($_POST['viewjeans']);
+    $viewshoes = (int) boolval($_POST['viewshoes']);
+    $viewtop = (int) boolval($_POST['viewtop']);
+    $viewcomplete = (int) boolval($_POST['viewcomplete']);
+    $viewaccessory = (int) boolval($_POST['viewaccessory']);
+    $viewwig = (int) boolval($_POST['viewwig']);
+    $viewcosmetics = (int) boolval($_POST['viewcosmetics']);
+
+    $addjeans = (int) boolval($_POST['addjeans']);
+    $addshoes = (int) boolval($_POST['addshoes']);
+    $addtop = (int) boolval($_POST['addtop']);
+    $addcomplete = (int) boolval($_POST['addcomplete']);
+    $addaccessory = (int) boolval($_POST['addaccessory']);
+    $addwig = (int) boolval($_POST['addwig']);
+    $addcosmetics = (int) boolval($_POST['addcosmetics']);
+
+    $editjeans = (int) boolval($_POST['editjeans']);
+    $editshoes = (int) boolval($_POST['editshoes']);
+    $edittop = (int) boolval($_POST['edittop']);
+    $editcomplete = (int) boolval($_POST['editcomplete']);
+    $editaccessory = (int) boolval($_POST['editaccessory']);
+    $editwig = (int) boolval($_POST['editwig']);
+    $editcosmetics = (int) boolval($_POST['editcosmetics']);
+
+    $deletejeans = (int) boolval($_POST['deletejeans']);
+    $deleteshoes = (int) boolval($_POST['deleteshoes']);
+    $deletetop = (int) boolval($_POST['deletetop']);
+    $deletecomplete = (int) boolval($_POST['deletecomplete']);
+    $deleteaccessory = (int) boolval($_POST['deleteaccessory']);
+    $deletewig = (int) boolval($_POST['deletewig']);
+    $deletecosmetics = (int) boolval($_POST['deletecosmetics']);
+
+    
+
+
+    $verifyjeans = (int) boolval($_POST['verifyjeans']);
+    $verifyshoes = (int) boolval($_POST['verifyshoes']);
+    $verifytop = (int) boolval($_POST['verifytop']);
+    $verifycomplete = (int) boolval($_POST['verifycomplete']);
+    $verifyaccessory = (int) boolval($_POST['verifyaccessory']);
+    $verifywig = (int) boolval($_POST['verifywig']);
+    $verifycosmetics = (int) boolval($_POST['verifycosmetics']);
+
+
+
+
+
+
+    $salejeans = (int) boolval($_POST['salejeans']);
+    $saleshoes = (int) boolval($_POST['saleshoes']);
+    $saletop = (int) boolval($_POST['saletop']);
+    $salecomplete = (int) boolval($_POST['salecomplete']);
+    $saleaccessory = (int) boolval($_POST['saleaccessory']);
+    $salewig = (int) boolval($_POST['salewig']);
+    $salecosmetics = (int) boolval($_POST['salecosmetics']);
+
+
+    $editsalejeans = (int) boolval($_POST['editsalejeans']);
+    $editsaleshoes = (int) boolval($_POST['editsaleshoes']);
+    $editsaletop = (int) boolval($_POST['editsaletop']);
+    $editsalecomplete = (int) boolval($_POST['editsalecomplete']);
+    $editsaleaccessory = (int) boolval($_POST['editsaleaccessory']);
+    $editsalewig = (int) boolval($_POST['editsalewig']);
+    $editsalecosmetics = (int) boolval($_POST['editsalecosmetics']);
+
+
+    $deletesalejeans = (int) boolval($_POST['deletesalejeans']);
+    $deletesaleshoes = (int) boolval($_POST['deletesaleshoes']);
+    $deletesaletop = (int) boolval($_POST['deletesaletop']);
+    $deletesalecomplete = (int) boolval($_POST['deletesalecomplete']);
+    $deletesaleaccessory = (int) boolval($_POST['deletesaleaccessory']);
+    $deletesalewig = (int) boolval($_POST['deletesalewig']);
+    $deletesalecosmetics = (int) boolval($_POST['deletesalecosmetics']);
+
+    $refundsalejeans = (int) boolval($_POST['refundsalejeans']);
+    $refundsaleshoes = (int) boolval($_POST['refundsaleshoes']);
+    $refundsaletop = (int) boolval($_POST['refundsaletop']);
+    $refundsalecomplete = (int) boolval($_POST['refundsalecomplete']);
+    $refundsaleaccessory = (int) boolval($_POST['refundsaleaccessory']);
+    $refundsalewig = (int) boolval($_POST['refundsalewig']);
+    $refundsalecosmetics = (int) boolval($_POST['refundsalecosmetics']);
+
+    $exchangesalejeans = (int) boolval($_POST['exchangesalejeans']);
+    $exchangesaleshoes = (int) boolval($_POST['exchangesaleshoes']);
+    $exchangesaletop = (int) boolval($_POST['exchangesaletop']);
+    $exchangesalecomplete = (int) boolval($_POST['exchangesalecomplete']);
+    $exchangesaleaccessory = (int) boolval($_POST['exchangesaleaccessory']);
+    $exchangesalewig = (int) boolval($_POST['exchangesalewig']);
+    $exchangesalecosmetics = (int) boolval($_POST['exchangesalecosmetics']);
+
+    $deliverysalejeans = (int) boolval($_POST['deliverysalejeans']);
+    $deliverysaleshoes = (int) boolval($_POST['deliverysaleshoes']);
+    $deliverysaletop = (int) boolval($_POST['deliverysaletop']);
+    $deliverysalecomplete = (int) boolval($_POST['deliverysalecomplete']);
+    $deliverysaleaccessory = (int) boolval($_POST['deliverysaleaccessory']);
+    $deliverysalewig = (int) boolval($_POST['deliverysalewig']);
+    $deliverysalecosmetics = (int) boolval($_POST['deliverysalecosmetics']);
+
+    $logjeans = (int) boolval($_POST['logjeans']);
+    $logshoes = (int) boolval($_POST['logshoes']);
+    $logtop = (int) boolval($_POST['logtop']);
+    $logcomplete = (int) boolval($_POST['logcomplete']);
+    $logaccessory = (int) boolval($_POST['logaccessory']);
+    $logwig = (int) boolval($_POST['logwig']);
+    $logcosmetics = (int) boolval($_POST['logcosmetics']);
+
+
+    $constant = (int) boolval($_POST['constant']);
+    $email = (int) boolval($_POST['email']);
+    $backup = (int) boolval($_POST['backup']);
+
+   
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+    
 
 
 
 
 
     $jsonDataArray = array(
-        'calcview' => $calcview,
-        'calcadd' => $calcadd,
-        'calcedit' => $calcedit,
-        'calcdelete' => $calcdelete,
-        'calcgenerate' => $calcgenerate,
+        
+        'viewjeans' => $viewjeans,
+        'viewshoes' => $viewshoes,
+        'viewtop' => $viewtop,
+        'viewcomplete' => $viewcomplete,
+        'viewaccessory' => $viewaccessory,
+        'viewwig' => $viewwig,
+        'viewcosmetics' => $viewcosmetics,
+
+        'addjeans' => $addjeans,
+        'addshoes' => $addshoes,
+        'addtop' => $addtop,
+        'addcomplete' => $addcomplete,
+        'addaccessory' => $addaccessory,
+        'addwig' => $addwig,
+        'addcosmetics' => $addcosmetics,
+
+        'editjeans' => $editjeans,
+        'editshoes' => $editshoes,
+        'edittop' => $edittop,
+        'editcomplete' => $editcomplete,
+        'editaccessory' => $editaccessory,
+        'editwig' => $editwig,
+        'editcosmetics' => $editcosmetics,
+
+        'deletejeans' => $deletejeans,
+        'deleteshoes' => $deleteshoes,
+        'deletetop' => $deletetop,
+        'deletecomplete' => $deletecomplete,
+        'deleteaccessory' => $deleteaccessory,
+        'deletewig' => $deletewig,
+        'deletecosmetics' => $deletecosmetics,
+
+        'verifyjeans' => $verifyjeans,
+        'verifyshoes' => $verifyshoes,
+        'verifytop' => $verifytop,
+        'verifycomplete' => $verifycomplete,
+        'verifyaccessory' => $verifyaccessory,
+        'verifywig' => $verifywig,
+        'verifycosmetics' => $verifycosmetics,
+
+        'salejeans' => $salejeans,
+        'saleshoes' => $saleshoes,
+        'saletop' => $saletop,
+        'salecomplete' => $salecomplete,
+        'saleaccessory' => $saleaccessory,
+        'salewig' => $salewig,
+        'salecosmetics' => $salecosmetics,
+
+        'editsalejeans' => $editsalejeans,
+        'editsaleshoes' => $editsaleshoes,
+        'editsaletop' => $editsaletop,
+        'editsalecomplete' => $editsalecomplete,
+        'editsaleaccessory' => $editsaleaccessory,
+        'editsalewig' => $editsalewig,
+        'editsalecosmetics' => $editsalecosmetics,
+
+        'deletesalejeans' => $deletesalejeans,
+        'deletesaleshoes' => $deletesaleshoes,
+        'deletesaletop' => $deletesaletop,
+        'deletesalecomplete' => $deletesalecomplete,
+        'deletesaleaccessory' => $deletesaleaccessory,
+        'deletesalewig' => $deletesalewig,
+        'deletesalecosmetics' => $deletesalecosmetics,
 
 
-        'constview' => $constview,
-        'constadd' => $constadd,
-        'constedit' => $constedit,
-        'constdelete' => $constdelete,
-        'constgenerate' => $constgenerate,
+        'refundsalejeans' => $refundsalejeans,
+        'refundsaleshoes' => $refundsaleshoes,
+        'refundsaletop' => $refundsaletop,
+        'refundsalecomplete' => $refundsalecomplete,
+        'refundsaleaccessory' => $refundsaleaccessory,
+        'refundsalewig' => $refundsalewig,
+        'refundsalecosmetics' => $refundsalecosmetics,
+
+        'exchangesalejeans' => $exchangesalejeans,
+        'exchangesaleshoes' => $exchangesaleshoes,
+
+        'exchangesaletop' => $exchangesaletop,
+        'exchangesalecomplete' => $exchangesalecomplete,
+        'exchangesaleaccessory' => $exchangesaleaccessory,
+        'exchangesalewig' => $exchangesalewig,
+        'exchangesalecosmetics' => $exchangesalecosmetics,
+
+        'deliverysalejeans' => $deliverysalejeans,
+        'deliverysaleshoes' => $deliverysaleshoes,
+        'deliverysaletop' => $deliverysaletop,
+        'deliverysalecomplete' => $deliverysalecomplete,
+        'deliverysaleaccessory' => $deliverysaleaccessory,
+        'deliverysalewig' => $deliverysalewig,
+        'deliverysalecosmetics' => $deliverysalecosmetics,
+
+        'logjeans' => $logjeans,
+        'logshoes' => $logshoes,
+        'logtop' => $logtop,
+        'logcomplete' => $logcomplete,
+        'logaccessory' => $logaccessory,
+        'logwig' => $logwig,
+        'logcosmetics' => $logcosmetics,
 
 
 
-        'stockview' => $stockview,
-        'stockadd' => $stockadd,
-        'stockedit' => $stockedit,
-        'stockdelete' => $stockdelete,
-        'stockgenerate' => $stockgenerate,
-
-
-        'dataview' => $dataview,
-        'dataadd' => $dataadd,
-        'dataedit' => $dataedit,
-        'datadelete' => $datadelete,
-        'datagenerate' => $datagenerate,
-
-        'jobview' => $jobview,
-        'jobedit' => $jobedit,
-
-        'saleview' => $saleview,
-        'saleadd' => $saleadd,
-        'saleedit' => $saleedit,
-        'saledelete' => $saledelete,
-        'salegenerate' => $salegenerate,
-
-        'reportview' => $reportview,
-
-        'userview' => $userview,
-        'useradd' => $useradd,
-        'useredit' => $useredit,
-        'userdelete' => $userdelete,
-        'usergenerate' => $usergenerate,
-
-
-        'custview' => $custview,
-        'custadd' => $custadd,
-        'custedit' => $custedit,
-        'custdelete' => $custdelete,
-        'custgenerate' => $custgenerate,
-
-        'generateview' => $generateview,
-        'fileview' => $fileview,
-        'backview' => $backview,
-
-        'payview' => $payview,
-        'payadd' => $payadd,
-        'payedit' => $payedit,
-        'paydelete' => $paydelete,
-        'paygenerate' => $paygenerate,
-        'payverify' => $payverify,
-
-        'bankview' => $bankview,
-        'bankadd' => $bankadd,
-        'bankedit' => $bankedit,
-        'bankdelete' => $bankdelete,
-        'bankgenerate' => $bankgenerate,
-        'bankverify' => $bankverify,
-
-        'vatview' => $vatview,
-        'vatadd' => $vatadd,
-        'vatedit' => $vatedit,
-        'vatdelete' => $vatdelete,
-        'vatgenerate' => $vatgenerate,
-
-        'banksview' => $banksview,
-        'banksadd' => $banksadd,
-        'banksedit' => $banksedit,
-        'banksdelete' => $banksdelete,
-        'banksgenerate' => $banksgenerate,
-
-
-        'profileview' => $profileview,
-        'brocherview' => $brocherview,
-        'bookview' => $bookview,
-        'manualview' => $manualview,
-        'digitalview' => $digitalview,
-        'bannerview' => $bannerview,
-        'designview' => $designview,
-        'singlepageview' => $singlepageview,
-        'multipageview' => $multipageview
 
 
 
@@ -1674,8 +701,8 @@ if (isset($_POST['add_user'])) {
 
 
 
-    $add_user = "INSERT INTO user(user_name, password, previledge,module, payment) 
-                    VALUES ('$user_name', '$password', '$privileged','$jsonData','$payment')";
+    $add_user = "INSERT INTO user(user_name, password, previledge,module) 
+                    VALUES ('$user_name', '$password', '$privileged','$jsonData')";
     $result_add = mysqli_query($con, $add_user);
 
     if ($result_add) {
@@ -1685,21 +712,6 @@ if (isset($_POST['add_user'])) {
     }
 }
 
-if (isset($_POST['update_user'])) {
-    $user_id = $_POST['user_id'];
-    $user_name = $_POST['user_name'];
-    $password = $_POST['password'];
-    $privileged = $_POST['privileged'];
-    $payment = $_POST['payment'];
 
-    $user_update = "UPDATE `user` SET `user_name`='$user_name', `password`='$password', `previledge`='$privileged', `payment`='$payment' WHERE `user_id` = '$user_id'";
-    $result_update = mysqli_query($con, $user_update);
-
-    if ($result_update) {
-        echo "<script>window.location = 'action.php?status=success&redirect=users.php'; </script>";
-    } else {
-        echo "<script>window.location = 'action.php?status=error&redirect=users.php'; </script>";
-    }
-}
 
 ?>

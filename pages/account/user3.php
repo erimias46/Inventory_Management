@@ -44,7 +44,7 @@ $from = $_GET['from'];
                     </div>
                     <div class="p-2">
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                             <div class="md:mr-4">
                                 <div class="card">
                                     <div class="card-header">
@@ -93,7 +93,7 @@ $from = $_GET['from'];
                                         ?>
 
 
-                                        <form method="post" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                                        <form method="post" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-3">
                                             <div class="px-4 py-8 overflow-y-auto">
                                                 <input type="hidden" name="user_id"
                                                     value="<?= $row['user_id'] ?>">
@@ -112,29 +112,18 @@ $from = $_GET['from'];
 
 
                                                 <div class="mb-3">
-
                                                     <label class="form-label">Privileged</label>
                                                     <select class="form-select" name="privileged" id="inputGroupSelect04" required>
-                                                        <option value="administrator">Administrator</option>
-                                                        <option value="user">User</option>
-                                                        <option value="finance">Finance</option>
+                                                        <option value="administrator" <?= ($row['previledge'] == 'administrator') ? 'selected' : '' ?>>Administrator</option>
+                                                        <option value="user" <?= ($row['previledge'] == 'user') ? 'selected' : '' ?>>User</option>
+                                                        <option value="finance" <?= ($row['previledge'] == 'finance') ? 'selected' : '' ?>>Finance</option>
                                                     </select>
-
                                                 </div>
 
 
 
 
-                                                <div class="mb-3">
 
-                                                    <label class="form-label">Payment</label>
-                                                    <select class="form-select" name="payment" id="inputGroupSelect04" required>
-                                                        <option value="yes">Yes</option>
-                                                        <option value="no">No</option>
-
-                                                    </select>
-
-                                                </div>
 
 
 
@@ -146,7 +135,7 @@ $from = $_GET['from'];
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
+                            <div class="card  col-span-3">
                                 <div class="card-header">
                                     <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Assign
                                         Permission</h4>
@@ -163,47 +152,49 @@ $from = $_GET['from'];
                                                             <th scope="col"
                                                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                                                                 Modules</th>
-                                                            <th scope="col"
-                                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                                                Features</th>
+
 
                                                             <th scope="col"
                                                                 class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                                View</th>
+                                                                Jeans</th>
                                                             <th scope="col"
                                                                 class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                                Add</th>
+                                                                Shoes </th>
                                                             <th scope="col"
                                                                 class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                                Edit</th>
+                                                                Top</th>
                                                             <th scope="col"
                                                                 class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                                Delete</th>
+                                                                Complete</th>
                                                             <th scope="col"
                                                                 class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                                Generate</th>
+                                                                Accesssory</th>
                                                             <th scope="col"
                                                                 class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
-                                                                Verify</th>
+                                                                Wig</th>
+                                                            <th scope="col"
+                                                                class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">
+                                                                Cosmetics</th>
+
 
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+
+
                                                         <tr
                                                             class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Calculator</td>
+                                                                View Product</td>
 
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                Calculate</td>
+
 
                                                             <?php
                                                             $moduleData = json_decode($module, true);
 
                                                             // Define the checkbox names
-                                                            $checkboxNames = ['calcview', 'calcadd', 'calcedit', 'calcdelete', 'calcgenerate'];
+                                                            $checkboxNames = ['viewjeans', 'viewshoes', 'viewtop', 'viewcomplete',  'viewaccessory', 'viewwig', 'viewcosmetics'];
 
                                                             // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
@@ -230,17 +221,15 @@ $from = $_GET['from'];
                                                             class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Constants</td>
+                                                                Add Product</td>
 
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                Calculate</td>
+
 
                                                             <?php
                                                             $moduleData = json_decode($module, true);
 
                                                             // Define the checkbox names
-                                                            $checkboxNames = ['constview', 'constadd', 'constedit', 'constdelete', 'constgenerate'];
+                                                            $checkboxNames = ['addjeans', 'addshoes', 'addtop', 'addcomplete',  'addaccessory', 'addwig', 'addcosmetics'];
 
                                                             // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
@@ -264,135 +253,21 @@ $from = $_GET['from'];
 
                                                         </tr>
 
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Payment</td>
 
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                pay</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['payview', 'payadd', 'payedit', 'paydelete', 'paygenerate', 'payverify'];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
 
                                                         <tr
                                                             class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Bank Statment </td>
+                                                                Edit Product</td>
 
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                pay</td>
+
 
                                                             <?php
                                                             $moduleData = json_decode($module, true);
 
                                                             // Define the checkbox names
-                                                            $checkboxNames = ['bankview', 'bankadd', 'bankedit', 'bankdelete', 'bankgenerate', 'bankverify'];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
-
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Vat Status</td>
-
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                vat</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['vatview', 'vatadd', 'vatedit', 'vatdelete', 'vatgenerate'];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
-
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Bank</td>
-
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                Bank Operations</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['banksview', 'banksadd', 'banksedit', 'banksdelete', 'banksgenerate'];
+                                                            $checkboxNames = ['editjeans', 'editshoes', 'edittop', 'editcomplete',  'editaccessory', 'editwig', 'editcosmetics'];
 
                                                             // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
@@ -421,356 +296,15 @@ $from = $_GET['from'];
                                                             class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Stocks</td>
+                                                                Delete Product</td>
 
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                Calculate</td>
+
 
                                                             <?php
                                                             $moduleData = json_decode($module, true);
 
                                                             // Define the checkbox names
-                                                            $checkboxNames = ['stockview', 'stockadd', 'stockedit', 'stockdelete', 'stockgenerate'];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Database</td>
-
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                actions</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['dataview', 'dataadd', 'dataedit', 'datadelete', 'datagenerate'];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
-
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Job Status</td>
-
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                actions</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['jobview', 'jobedit',];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
-
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Sales</td>
-
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                actions</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['saleview', 'saleadd', 'saleedit', 'saledelete', 'salegenerate'];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Report</td>
-
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                actions</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['reportview'];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
-
-
-
-
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                User</td>
-
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                actions</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['userview', 'useradd', 'useredit', 'userdelete', 'usergenerate'];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Customer</td>
-
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                actions</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['custview', 'custadd', 'custedit', 'custdelete', 'custgenerate'];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Generate </td>
-
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                actions</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['generateview'];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                FileManager</td>
-
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                actions</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['fileview'];
-
-                                                            // Loop through each checkbox name
-                                                            foreach ($checkboxNames as $checkboxName) {
-                                                                // Check if the value is 1 in the JSON data
-                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-
-                                                                // Generate the checkbox input
-
-                                                                echo '<td
-                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
-                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
-
-                                                                // You can also display the checkbox label if needed
-                                                                echo '</td>';
-                                                            }
-                                                            ?>
-
-
-
-
-
-                                                        </tr>
-                                                        <tr
-                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                BackUp</td>
-
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                actions</td>
-
-                                                            <?php
-                                                            $moduleData = json_decode($module, true);
-
-                                                            // Define the checkbox names
-                                                            $checkboxNames = ['backview'];
+                                                            $checkboxNames = ['deletejeans', 'deleteshoes', 'deletetop', 'deletecomplete',  'deleteaccessory', 'deletewig', 'deletecosmetics'];
 
                                                             // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
@@ -799,17 +333,15 @@ $from = $_GET['from'];
                                                             class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Profile</td>
+                                                                Verify Product</td>
 
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                actions</td>
+
 
                                                             <?php
                                                             $moduleData = json_decode($module, true);
 
                                                             // Define the checkbox names
-                                                            $checkboxNames = ['profileview'];
+                                                            $checkboxNames = ['verifyjeans', 'verifyshoes', 'verifytop', 'verifycomplete',  'verifyaccessory', 'verifywig', 'verifycosmetics'];
 
                                                             // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
@@ -826,6 +358,46 @@ $from = $_GET['from'];
                                                                 echo '</td>';
                                                             }
                                                             ?>
+
+
+
+
+
+                                                        </tr>
+
+                                                        <tr
+                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                Add Sale </td>
+
+
+
+                                                            <?php
+                                                            $moduleData = json_decode($module, true);
+
+                                                            // Define the checkbox names
+                                                            $checkboxNames = ['salejeans', 'saleshoes', 'saletop', 'salecomplete',  'saleaccessory', 'salewig', 'salecosmetics'];
+
+                                                            // Loop through each checkbox name
+                                                            foreach ($checkboxNames as $checkboxName) {
+                                                                // Check if the value is 1 in the JSON data
+                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
+
+                                                                // Generate the checkbox input
+
+                                                                echo '<td
+                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
+                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
+
+                                                                // You can also display the checkbox label if needed
+                                                                echo '</td>';
+                                                            }
+                                                            ?>
+
+
+
+
 
                                                         </tr>
 
@@ -834,17 +406,15 @@ $from = $_GET['from'];
                                                             class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Brocher</td>
+                                                                Edit Sale </td>
 
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                actions</td>
+
 
                                                             <?php
                                                             $moduleData = json_decode($module, true);
 
                                                             // Define the checkbox names
-                                                            $checkboxNames = ['brocherview'];
+                                                            $checkboxNames = ['editsalejeans', 'editsaleshoes', 'editsaletop', 'editsalecomplete',  'editsaleaccessory', 'editsalewig', 'editsalecosmetics'];
 
                                                             // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
@@ -862,135 +432,320 @@ $from = $_GET['from'];
                                                             }
                                                             ?>
 
+
+
+
+
                                                         </tr>
 
 
+                                                        <tr
+                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                Delete Sale</td>
 
-                                                        <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Book
-                                                            </td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                Actions
-                                                            </td>
+
+
                                                             <?php
-                                                            $checkboxNames = ['bookview'];
+                                                            $moduleData = json_decode($module, true);
+
+                                                            // Define the checkbox names
+                                                            $checkboxNames = ['deletesalejeans', 'deletesaleshoes', 'deletesaletop', 'deletesalecomplete',  'deletesaleaccessory', 'deletesalewig', 'deletesalecosmetics'];
+
+                                                            // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
+                                                                // Check if the value is 1 in the JSON data
                                                                 $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-                                                                echo '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
+
+                                                                // Generate the checkbox input
+
+                                                                echo '<td
+                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
                                                                 echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
+
+                                                                // You can also display the checkbox label if needed
                                                                 echo '</td>';
                                                             }
                                                             ?>
+
+
+
+
+
                                                         </tr>
 
-                                                        <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Manual
-                                                            </td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                Actions
-                                                            </td>
+
+                                                        <tr
+                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                Refund Sale</td>
+
+
+
                                                             <?php
-                                                            $checkboxNames = ['manualview'];
+                                                            $moduleData = json_decode($module, true);
+
+                                                            // Define the checkbox names
+                                                            $checkboxNames = ['refundsalejeans', 'refundsaleshoes', 'refundsaletop', 'refundsalecomplete',  'refundsaleaccessory', 'refundsalewig', 'refundsalecosmetics'];
+
+                                                            // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
+                                                                // Check if the value is 1 in the JSON data
                                                                 $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-                                                                echo '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
+
+                                                                // Generate the checkbox input
+
+                                                                echo '<td
+                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
                                                                 echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
+
+                                                                // You can also display the checkbox label if needed
                                                                 echo '</td>';
                                                             }
                                                             ?>
+
+
+
+
+
                                                         </tr>
 
-                                                        <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Digital
-                                                            </td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                Actions
-                                                            </td>
+
+
+                                                        <tr
+                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                Exchange Sale</td>
+
+
+
                                                             <?php
-                                                            $checkboxNames = ['digitalview'];
+                                                            $moduleData = json_decode($module, true);
+
+                                                            // Define the checkbox names
+                                                            $checkboxNames = ['exchangesalejeans', 'exchangesaleshoes', 'exchangesaletop', 'exchangesalecomplete',  'exchangesaleaccessory', 'exchangesalewig', 'exchangesalecosmetics'];
+
+                                                            // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
+                                                                // Check if the value is 1 in the JSON data
                                                                 $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-                                                                echo '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
+
+                                                                // Generate the checkbox input
+
+                                                                echo '<td
+                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
                                                                 echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
+
+                                                                // You can also display the checkbox label if needed
                                                                 echo '</td>';
                                                             }
                                                             ?>
+
+
+
+
+
                                                         </tr>
 
-                                                        <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Banner
-                                                            </td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                Actions
-                                                            </td>
+
+
+
+
+
+
+                                                        <tr
+                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                Delivery</td>
+
+
+
                                                             <?php
-                                                            $checkboxNames = ['bannerview'];
+                                                            $moduleData = json_decode($module, true);
+
+                                                            // Define the checkbox names
+                                                            $checkboxNames = ['deliverysalejeans', 'deliverysaleshoes', 'deliverysaletop', 'deliverysalecomplete',  'deliverysaleaccessory', 'deliverysalewig', 'deliverysalecosmetics'];
+
+                                                            // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
+                                                                // Check if the value is 1 in the JSON data
                                                                 $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-                                                                echo '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
+
+                                                                // Generate the checkbox input
+
+                                                                echo '<td
+                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
                                                                 echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
+
+                                                                // You can also display the checkbox label if needed
                                                                 echo '</td>';
                                                             }
                                                             ?>
+
+
+
+
+
                                                         </tr>
 
-                                                        <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Design
-                                                            </td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                Actions
-                                                            </td>
+
+
+                                                        <tr
+                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                Log </td>
+
+
+
                                                             <?php
-                                                            $checkboxNames = ['designview'];
+                                                            $moduleData = json_decode($module, true);
+
+                                                            // Define the checkbox names
+                                                            $checkboxNames = ['logjeans', 'logshoes', 'logtop', 'logcomplete',  'logaccessory', 'logwig', 'logcosmetics'];
+
+                                                            // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
+                                                                // Check if the value is 1 in the JSON data
                                                                 $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-                                                                echo '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
+
+                                                                // Generate the checkbox input
+
+                                                                echo '<td
+                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
                                                                 echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
+
+                                                                // You can also display the checkbox label if needed
                                                                 echo '</td>';
                                                             }
                                                             ?>
+
+
+
+
+
                                                         </tr>
 
-                                                        <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Single Page
-                                                            </td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                Actions
-                                                            </td>
+
+                                                        <tr
+                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                Constant </td>
+
+
+
                                                             <?php
-                                                            $checkboxNames = ['singlepageview'];
+                                                            $moduleData = json_decode($module, true);
+
+                                                            // Define the checkbox names
+                                                            $checkboxNames = ['constant'];
+
+                                                            // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
+                                                                // Check if the value is 1 in the JSON data
                                                                 $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-                                                                echo '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
+
+                                                                // Generate the checkbox input
+
+                                                                echo '<td
+                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
                                                                 echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
+
+                                                                // You can also display the checkbox label if needed
                                                                 echo '</td>';
                                                             }
                                                             ?>
+
+
+
+
+
                                                         </tr>
 
-                                                        <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                Multi Page
-                                                            </td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                                                                Actions
-                                                            </td>
+
+                                                        <tr
+                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                Backup </td>
+
+
+
                                                             <?php
-                                                            $checkboxNames = ['multipageview'];
+                                                            $moduleData = json_decode($module, true);
+
+                                                            // Define the checkbox names
+                                                            $checkboxNames = ['backup'];
+
+                                                            // Loop through each checkbox name
                                                             foreach ($checkboxNames as $checkboxName) {
+                                                                // Check if the value is 1 in the JSON data
                                                                 $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
-                                                                echo '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
+
+                                                                // Generate the checkbox input
+
+                                                                echo '<td
+                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
                                                                 echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
+
+                                                                // You can also display the checkbox label if needed
                                                                 echo '</td>';
                                                             }
                                                             ?>
+
+
+
+
+
                                                         </tr>
+
+
+
+                                                        <tr
+                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                Email </td>
+
+
+
+                                                            <?php
+                                                            $moduleData = json_decode($module, true);
+
+                                                            // Define the checkbox names
+                                                            $checkboxNames = ['email'];
+
+                                                            // Loop through each checkbox name
+                                                            foreach ($checkboxNames as $checkboxName) {
+                                                                // Check if the value is 1 in the JSON data
+                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
+
+                                                                // Generate the checkbox input
+
+                                                                echo '<td
+                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
+                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
+
+                                                                // You can also display the checkbox label if needed
+                                                                echo '</td>';
+                                                            }
+                                                            ?>
+
+
+
+
+
+                                                        </tr>
+
+
+
+
+
 
 
 
@@ -1077,627 +832,393 @@ if (isset($_POST['update_user'])) {
     $user_name = $_POST['user_name'];
     $password = $_POST['password'];
     $privileged = $_POST['privileged'];
-    $payment = $_POST['payment'];
-    $calcview = $_POST['calcview'];
-    $calcadd = $_POST['calcadd'];
-    $calcedit = $_POST['calcedit'];
-    $calcdelete = $_POST['calcdelete'];
-    $calcgenerate = $_POST['calcgenerate'];
-
-    if ($calcview == 1) {
-        $calcview = 1;
-    } else {
-        $calcview = 0;
-    }
-    if ($calcadd == 1) {
-        $calcadd = 1;
-    } else {
-        $calcadd = 0;
-    }
-    if ($calcedit == 1) {
-        $calcedit = 1;
-    } else {
-        $calcedit = 0;
-    }
-    if ($calcdelete == 1) {
-        $calcdelete = 1;
-    } else {
-        $calcdelete = 0;
-    }
-    if ($calcgenerate == 1) {
-        $calcgenerate = 1;
-    } else {
-        $calcgenerate = 0;
-    }
 
-    //constants
-    $constview = $_POST['constview'];
-    $constadd = $_POST['constadd'];
-    $constedit = $_POST['constedit'];
-    $constdelete = $_POST['constdelete'];
-    $constgenerate = $_POST['constgenerate'];
 
 
+    $addjeans = $_POST['addjeans'];
+    $addshoes = $_POST['addshoes'];
+    $addtop = $_POST['addtop'];
+    $addcomplete = $_POST['addcomplete'];
+    $addaccessory = $_POST['addaccessory'];
+    $addwig = $_POST['addwig'];
+    $addcosmetics = $_POST['addcosmetics'];
 
-    if ($constview == 1) {
-        $constview = 1;
-    } else {
-        $constview = 0;
-    }
-    if ($constadd == 1) {
-        $constadd = 1;
-    } else {
-        $constadd = 0;
-    }
-    if ($constedit == 1) {
-        $constedit = 1;
-    } else {
-        $constedit = 0;
-    }
-    if ($constdelete == 1) {
-        $constdelete = 1;
+    if ($addjeans == 1) {
+        $addjeans = 1;
     } else {
-        $constdelete = 0;
+        $addjeans = 0;
     }
-    if ($constgenerate == 1) {
-        $constgenerate = 1;
+    if ($addshoes == 1) {
+        $addshoes = 1;
     } else {
-        $constgenerate = 0;
+        $addshoes = 0;
     }
-
-
-
-
-    $stockview = $_POST['stockview'];
-    $stockadd = $_POST['stockadd'];
-    $stockedit = $_POST['stockedit'];
-    $stockdelete = $_POST['stockdelete'];
-    $stockgenerate = $_POST['stockgenerate'];
-
-
-
-
-
-
-    if ($stockview == 1) {
-        $stockview = 1;
+    if ($addtop == 1) {
+        $addtop = 1;
     } else {
-        $stockview = 0;
+        $addtop = 0;
     }
-    if ($stockadd == 1) {
-        $stockadd = 1;
+    if ($addcomplete == 1) {
+        $addcomplete = 1;
     } else {
-        $stockadd = 0;
+        $addcomplete = 0;
     }
-    if ($stockedit == 1) {
-        $stockedit = 1;
+    if ($addaccessory == 1) {
+        $addaccessory = 1;
     } else {
-        $stockedit = 0;
+        $addaccessory = 0;
     }
-    if ($stockdelete == 1) {
-        $stockdelete = 1;
+    if ($addwig == 1) {
+        $addwig = 1;
     } else {
-        $stockdelete = 0;
+        $addwig = 0;
     }
-    if ($stockgenerate == 1) {
-        $stockgenerate = 1;
+    if ($addcosmetics == 1) {
+        $addcosmetics = 1;
     } else {
-        $stockgenerate = 0;
+        $addcosmetics = 0;
     }
-
-
-    $dataview = $_POST['dataview'];
-    $dataadd = $_POST['dataadd'];
-    $dataedit = $_POST['dataedit'];
-    $datadelete = $_POST['datadelete'];
-    $datagenerate = $_POST['datagenerate'];
-
-
-
-
 
+    $editjeans = $_POST['editjeans'];
+    $editshoes = $_POST['editshoes'];
+    $edittop = $_POST['edittop'];
+    $editcomplete = $_POST['editcomplete'];
+    $editaccessory = $_POST['editaccessory'];
+    $editwig = $_POST['editwig'];
+    $editcosmetics = $_POST['editcosmetics'];
 
-    if ($dataview == 1) {
-        $dataview = 1;
+    if ($editjeans == 1) {
+        $editjeans = 1;
     } else {
-        $dataview = 0;
+        $editjeans = 0;
     }
-    if ($dataadd == 1) {
-        $dataadd = 1;
+    if ($editshoes == 1) {
+        $editshoes = 1;
     } else {
-        $dataadd = 0;
+        $editshoes = 0;
     }
-    if ($dataedit == 1) {
-        $dataedit = 1;
+    if ($edittop == 1) {
+        $edittop = 1;
     } else {
-        $dataedit = 0;
+        $edittop = 0;
     }
-    if ($datadelete == 1) {
-        $datadelete = 1;
+    if ($editcomplete == 1) {
+        $editcomplete = 1;
     } else {
-        $datadelete = 0;
+        $editcomplete = 0;
     }
-    if ($datagenerate == 1) {
-        $datagenerate = 1;
+    if ($editaccessory == 1) {
+        $editaccessory = 1;
     } else {
-        $datagenerate = 0;
+        $editaccessory = 0;
     }
-
-
-    //job
-
-    $jobview = $_POST['jobview'];
-    $jobedit = $_POST['jobedit'];
-
-
-    if ($jobview == 1) {
-        $jobview = 1;
+    if ($editwig == 1) {
+        $editwig = 1;
     } else {
-        $jobview = 0;
+        $editwig = 0;
     }
-
-    if ($jobedit == 1) {
-        $jobedit = 1;
+    if ($editcosmetics == 1) {
+        $editcosmetics = 1;
     } else {
-        $jobedit = 0;
+        $editcosmetics = 0;
     }
-
-
-    $saleview = $_POST['saleview'];
-    $saleadd = $_POST['saleadd'];
-    $saleedit = $_POST['saleedit'];
-    $saledelete = $_POST['saledelete'];
-    $salegenerate = $_POST['salegenerate'];
 
+    $deletejeans = $_POST['deletejeans'];
+    $deleteshoes = $_POST['deleteshoes'];
+    $deletetop = $_POST['deletetop'];
+    $deletecomplete = $_POST['deletecomplete'];
+    $deleteaccessory = $_POST['deleteaccessory'];
+    $deletewig = $_POST['deletewig'];
+    $deletecosmetics = $_POST['deletecosmetics'];
 
-
-
-
-
-    if ($saleview == 1) {
-        $saleview = 1;
+    if ($deletejeans == 1) {
+        $deletejeans = 1;
     } else {
-        $saleview = 0;
+        $deletejeans = 0;
     }
-    if ($saleadd == 1) {
-        $saleadd = 1;
+    if ($deleteshoes == 1) {
+        $deleteshoes = 1;
     } else {
-        $saleadd = 0;
+        $deleteshoes = 0;
     }
-    if ($saleedit == 1) {
-        $saleedit = 1;
+    if ($deletetop == 1) {
+        $deletetop = 1;
     } else {
-        $saleedit = 0;
+        $deletetop = 0;
     }
-    if ($saledelete == 1) {
-        $saledelete = 1;
+    if ($deletecomplete == 1) {
+        $deletecomplete = 1;
     } else {
-        $saledelete = 0;
+        $deletecomplete = 0;
     }
-    if ($salegenerate == 1) {
-        $salegenerate = 1;
+    if ($deleteaccessory == 1) {
+        $deleteaccessory = 1;
     } else {
-        $salegenerate = 0;
+        $deleteaccessory = 0;
     }
 
-
-    $reportview = $_POST['reportview'];
-
-    if ($reportview == 1) {
-        $reportview = 1;
+    if ($deletewig == 1) {
+        $deletewig = 1;
     } else {
-        $reportview = 0;
+        $deletewig = 0;
     }
-
-
-    //user managment
-    $userview = $_POST['userview'];
-    $useradd = $_POST['useradd'];
-    $useredit = $_POST['useredit'];
-    $userdelete = $_POST['userdelete'];
-    $usergenerate = $_POST['usergenerate'];
 
-
-    if ($userview == 1) {
-        $userview = 1;
-    } else {
-        $userview = 0;
-    }
-    if ($useradd == 1) {
-        $useradd = 1;
-    } else {
-        $useradd = 0;
-    }
-    if ($useredit == 1) {
-        $useredit = 1;
-    } else {
-        $useredit = 0;
-    }
-    if ($userdelete == 1) {
-        $userdelete = 1;
-    } else {
-        $userdelete = 0;
-    }
-    if ($usergenerate == 1) {
-        $usergenerate = 1;
+    if ($deletecosmetics == 1) {
+        $deletecosmetics = 1;
     } else {
-        $usergenerate = 0;
+        $deletecosmetics = 0;
     }
-
 
-    //customer managment
-    $custview = $_POST['custview'];
-    $custadd = $_POST['custadd'];
-    $custedit = $_POST['custedit'];
-    $custdelete = $_POST['custdelete'];
-    $custgenerate = $_POST['custgenerate'];
 
+    $verifyjeans = $_POST['verifyjeans'];
+    $verifyshoes = $_POST['verifyshoes'];
+    $verifytop = $_POST['verifytop'];
+    $verifycomplete = $_POST['verifycomplete'];
+    $verifyaccessory = $_POST['verifyaccessory'];
+    $verifywig = $_POST['verifywig'];
+    $verifycosmetics = $_POST['verifycosmetics'];
 
-    if ($custview == 1) {
-        $custview = 1;
-    } else {
-        $custview = 0;
-    }
-    if ($custadd == 1) {
-        $custadd = 1;
+    if ($verifyjeans == 1) {
+        $verifyjeans = 1;
     } else {
-        $custadd = 0;
+        $verifyjeans = 0;
     }
-    if ($custedit == 1) {
-        $custedit = 1;
+
+    if ($verifyshoes == 1) {
+        $verifyshoes = 1;
     } else {
-        $custedit = 0;
+        $verifyshoes = 0;
     }
-    if ($custdelete == 1) {
-        $custdelete = 1;
+
+    if ($verifytop == 1) {
+        $verifytop = 1;
     } else {
-        $custdelete = 0;
+        $verifytop = 0;
     }
-    if ($custgenerate == 1) {
-        $custgenerate = 1;
+
+    if ($verifycomplete == 1) {
+        $verifycomplete = 1;
     } else {
-        $custgenerate = 0;
+        $verifycomplete = 0;
     }
-
-    //randoms
-    $generateview = $_POST['generateview'];
-    $fileview = $_POST['fileview'];
-    $backview = $_POST['backview'];
-
 
-    if ($generateview == 1) {
-        $generateview = 1;
+    if ($verifyaccessory == 1) {
+        $verifyaccessory = 1;
     } else {
-        $generateview = 0;
+        $verifyaccessory = 0;
     }
-    if ($fileview == 1) {
-        $fileview = 1;
+
+    if ($verifywig == 1) {
+        $verifywig = 1;
     } else {
-        $fileview = 0;
+        $verifywig = 0;
     }
-    if ($backview == 1) {
-        $backview = 1;
+
+    if ($verifycosmetics == 1) {
+        $verifycosmetics = 1;
     } else {
-        $backview = 0;
+        $verifycosmetics = 0;
     }
 
+    $verifyjeans = (int) boolval($_POST['verifyjeans']);
+    $verifyshoes = (int) boolval($_POST['verifyshoes']);
+    $verifytop = (int) boolval($_POST['verifytop']);
+    $verifycomplete = (int) boolval($_POST['verifycomplete']);
+    $verifyaccessory = (int) boolval($_POST['verifyaccessory']);
+    $verifywig = (int) boolval($_POST['verifywig']);
+    $verifycosmetics = (int) boolval($_POST['verifycosmetics']);
 
-    //payment 
-    $payview = $_POST['payview'];
-    $payadd = $_POST['payadd'];
-    $payedit = $_POST['payedit'];
-    $paydelete = $_POST['paydelete'];
-    $paygenerate = $_POST['paygenerate'];
-    $payverify = $_POST['payverify'];
 
-    if ($payview == 1) {
-        $payview = 1;
-    } else {
-        $payview = 0;
-    }
-    if ($payadd == 1) {
-        $payadd = 1;
-    } else {
-        $payadd = 0;
-    }
-    if ($payedit == 1) {
-        $payedit = 1;
-    } else {
-        $payedit = 0;
-    }
-    if ($paydelete == 1) {
-        $paydelete = 1;
-    } else {
-        $paydelete = 0;
-    }
-    if ($paygenerate == 1) {
-        $paygenerate = 1;
-    } else {
-        $paygenerate = 0;
-    }
-    if ($payverify == 1) {
-        $payverify = 1;
-    } else {
-        $payverify = 0;
-    }
 
 
-    //bank statment
-    $bankview = $_POST['bankview'];
-    $bankadd = $_POST['bankadd'];
-    $bankedit = $_POST['bankedit'];
-    $bankdelete = $_POST['bankdelete'];
-    $bankgenerate = $_POST['bankgenerate'];
-    $bankverify = $_POST['bankverify'];
 
 
-    if ($bankview == 1) {
-        $bankview = 1;
-    } else {
-        $bankview = 0;
-    }
-    if ($bankadd == 1) {
-        $bankadd = 1;
-    } else {
-        $bankadd = 0;
-    }
-    if ($bankedit == 1) {
-        $bankedit = 1;
-    } else {
-        $bankedit = 0;
-    }
-    if ($bankdelete == 1) {
-        $bankdelete = 1;
-    } else {
-        $bankdelete = 0;
-    }
-    if ($bankgenerate == 1) {
-        $bankgenerate = 1;
-    } else {
-        $bankgenerate = 0;
-    }
-    if ($bankverify == 1) {
-        $bankverify = 1;
-    } else {
-        $bankverify = 0;
-    }
+    $salejeans = (int) boolval($_POST['salejeans']);
+    $saleshoes = (int) boolval($_POST['saleshoes']);
+    $saletop = (int) boolval($_POST['saletop']);
+    $salecomplete = (int) boolval($_POST['salecomplete']);
+    $saleaccessory = (int) boolval($_POST['saleaccessory']);
+    $salewig = (int) boolval($_POST['salewig']);
+    $salecosmetics = (int) boolval($_POST['salecosmetics']);
 
 
-    //vat status
-    $vatview = $_POST['vatview'];
-    $vatadd = $_POST['vatadd'];
-    $vatedit = $_POST['vatedit'];
-    $vatdelete = $_POST['vatdelete'];
-    $vatgenerate = $_POST['vatgenerate'];
+    $editsalejeans = (int) boolval($_POST['editsalejeans']);
+    $editsaleshoes = (int) boolval($_POST['editsaleshoes']);
+    $editsaletop = (int) boolval($_POST['editsaletop']);
+    $editsalecomplete = (int) boolval($_POST['editsalecomplete']);
+    $editsaleaccessory = (int) boolval($_POST['editsaleaccessory']);
+    $editsalewig = (int) boolval($_POST['editsalewig']);
+    $editsalecosmetics = (int) boolval($_POST['editsalecosmetics']);
 
-    if ($vatview == 1) {
-        $vatview = 1;
-    } else {
-        $vatview = 0;
-    }
-    if ($vatadd == 1) {
-        $vatadd = 1;
-    } else {
-        $vatadd = 0;
-    }
-    if ($vatedit == 1) {
-        $vatedit = 1;
-    } else {
-        $vatedit = 0;
-    }
-    if ($vatdelete == 1) {
-        $vatdelete = 1;
-    } else {
-        $vatdelete = 0;
-    }
-    if ($vatgenerate == 1) {
-        $vatgenerate = 1;
-    } else {
-        $vatgenerate = 0;
-    }
 
-    //bank
-    $banksview = $_POST['banksview'];
-    $banksadd = $_POST['banksadd'];
-    $banksedit = $_POST['banksedit'];
-    $banksdelete = $_POST['banksdelete'];
-    $banksgenerate = $_POST['banksgenerate'];
-
-    if ($banksview == 1) {
-        $banksview = 1;
-    } else {
-        $banksview = 0;
-    }
-    if ($banksadd == 1) {
-        $banksadd = 1;
-    } else {
-        $banksadd = 0;
-    }
-    if ($banksedit == 1) {
-        $banksedit = 1;
-    } else {
-        $banksedit = 0;
-    }
-    if ($banksdelete == 1) {
-        $banksdelete = 1;
-    } else {
-        $banksdelete = 0;
-    }
-    if ($banksgenerate == 1) {
-        $banksgenerate = 1;
-    } else {
-        $banksgenerate = 0;
-    }
+    $deletesalejeans = (int) boolval($_POST['deletesalejeans']);
+    $deletesaleshoes = (int) boolval($_POST['deletesaleshoes']);
+    $deletesaletop = (int) boolval($_POST['deletesaletop']);
+    $deletesalecomplete = (int) boolval($_POST['deletesalecomplete']);
+    $deletesaleaccessory = (int) boolval($_POST['deletesaleaccessory']);
+    $deletesalewig = (int) boolval($_POST['deletesalewig']);
+    $deletesalecosmetics = (int) boolval($_POST['deletesalecosmetics']);
 
+    $refundsalejeans = (int) boolval($_POST['refundsalejeans']);
+    $refundsaleshoes = (int) boolval($_POST['refundsaleshoes']);
+    $refundsaletop = (int) boolval($_POST['refundsaletop']);
+    $refundsalecomplete = (int) boolval($_POST['refundsalecomplete']);
+    $refundsaleaccessory = (int) boolval($_POST['refundsaleaccessory']);
+    $refundsalewig = (int) boolval($_POST['refundsalewig']);
+    $refundsalecosmetics = (int) boolval($_POST['refundsalecosmetics']);
 
-    $profileview = $_POST['profileview'];
+    $exchangesalejeans = (int) boolval($_POST['exchangesalejeans']);
+    $exchangesaleshoes = (int) boolval($_POST['exchangesaleshoes']);
+    $exchangesaletop = (int) boolval($_POST['exchangesaletop']);
+    $exchangesalecomplete = (int) boolval($_POST['exchangesalecomplete']);
+    $exchangesaleaccessory = (int) boolval($_POST['exchangesaleaccessory']);
+    $exchangesalewig = (int) boolval($_POST['exchangesalewig']);
+    $exchangesalecosmetics = (int) boolval($_POST['exchangesalecosmetics']);
 
-    if ($profileview == 1) {
-        $profileview = 1;
-    } else {
-        $profileview = 0;
-    }
+    $deliverysalejeans = (int) boolval($_POST['deliverysalejeans']);
+    $deliverysaleshoes = (int) boolval($_POST['deliverysaleshoes']);
+    $deliverysaletop = (int) boolval($_POST['deliverysaletop']);
+    $deliverysalecomplete = (int) boolval($_POST['deliverysalecomplete']);
+    $deliverysaleaccessory = (int) boolval($_POST['deliverysaleaccessory']);
+    $deliverysalewig = (int) boolval($_POST['deliverysalewig']);
+    $deliverysalecosmetics = (int) boolval($_POST['deliverysalecosmetics']);
 
-    $brocherview = $_POST['brocherview'];
+    $logjeans = (int) boolval($_POST['logjeans']);
+    $logshoes = (int) boolval($_POST['logshoes']);
+    $logtop = (int) boolval($_POST['logtop']);
+    $logcomplete = (int) boolval($_POST['logcomplete']);
+    $logaccessory = (int) boolval($_POST['logaccessory']);
+    $logwig = (int) boolval($_POST['logwig']);
+    $logcosmetics = (int) boolval($_POST['logcosmetics']);
 
-    if ($brocherview == 1) {
-        $brocherview = 1;
-    } else {
-        $brocherview = 0;
-    }
 
-    $bookview = $_POST['bookview'];
+    $constant = (int) boolval($_POST['constant']);
+    $email = (int) boolval($_POST['email']);
+    $backup = (int) boolval($_POST['backup']);
 
-    if ($bookview == 1) {
-        $bookview = 1;
-    } else {
-        $bookview = 0;
-    }
 
-    $manualview = $_POST['manualview'];
 
-    if ($manualview == 1) {
-        $manualview = 1;
-    } else {
-        $manualview = 0;
-    }
 
-    $digitalview = $_POST['digitalview'];
 
-    if ($digitalview == 1) {
-        $digitalview = 1;
-    } else {
-        $digitalview = 0;
-    }
 
-    $bannerview = $_POST['bannerview'];
 
-    if ($bannerview == 1) {
-        $bannerview = 1;
-    } else {
-        $bannerview = 0;
-    }
 
-    $designview = $_POST['designview'];
 
-    if ($designview == 1) {
-        $designview = 1;
-    } else {
-        $designview = 0;
-    }
 
-    $singlepageview = $_POST['singlepageview'];
 
-    if ($singlepageview == 1) {
-        $singlepageview = 1;
-    } else {
-        $singlepageview = 0;
-    }
 
-    $multipageview = $_POST['multipageview'];
 
-    if ($multipageview == 1) {
-        $multipageview = 1;
-    } else {
-        $multipageview = 0;
-    }
+
+
 
 
 
 
 
     $jsonDataArray = array(
-        'calcview' => $calcview,
-        'calcadd' => $calcadd,
-        'calcedit' => $calcedit,
-        'calcdelete' => $calcdelete,
-        'calcgenerate' => $calcgenerate,
 
 
-        'constview' => $constview,
-        'constadd' => $constadd,
-        'constedit' => $constedit,
-        'constdelete' => $constdelete,
-        'constgenerate' => $constgenerate,
+        'viewjeans' => $viewjeans,
+        'viewshoes' => $viewshoes,
+        'viewtop' => $viewtop,
+        'viewcomplete' => $viewcomplete,
+        'viewaccessory' => $viewaccessory,
+        'viewwig' => $viewwig,
+        'viewcosmetics' => $viewcosmetics,
+
+        'addjeans' => $addjeans,
+        'addshoes' => $addshoes,
+        'addtop' => $addtop,
+        'addcomplete' => $addcomplete,
+        'addaccessory' => $addaccessory,
+        'addwig' => $addwig,
+        'addcosmetics' => $addcosmetics,
+
+        'editjeans' => $editjeans,
+        'editshoes' => $editshoes,
+        'edittop' => $edittop,
+        'editcomplete' => $editcomplete,
+        'editaccessory' => $editaccessory,
+        'editwig' => $editwig,
+        'editcosmetics' => $editcosmetics,
+
+        'deletejeans' => $deletejeans,
+        'deleteshoes' => $deleteshoes,
+        'deletetop' => $deletetop,
+        'deletecomplete' => $deletecomplete,
+        'deleteaccessory' => $deleteaccessory,
+        'deletewig' => $deletewig,
+        'deletecosmetics' => $deletecosmetics,
+
+        'verifyjeans' => $verifyjeans,
+        'verifyshoes' => $verifyshoes,
+        'verifytop' => $verifytop,
+        'verifycomplete' => $verifycomplete,
+        'verifyaccessory' => $verifyaccessory,
+        'verifywig' => $verifywig,
+        'verifycosmetics' => $verifycosmetics,
+
+        'salejeans' => $salejeans,
+        'saleshoes' => $saleshoes,
+        'saletop' => $saletop,
+        'salecomplete' => $salecomplete,
+        'saleaccessory' => $saleaccessory,
+        'salewig' => $salewig,
+        'salecosmetics' => $salecosmetics,
+
+        'editsalejeans' => $editsalejeans,
+        'editsaleshoes' => $editsaleshoes,
+        'editsaletop' => $editsaletop,
+        'editsalecomplete' => $editsalecomplete,
+        'editsaleaccessory' => $editsaleaccessory,
+        'editsalewig' => $editsalewig,
+        'editsalecosmetics' => $editsalecosmetics,
+
+        'deletesalejeans' => $deletesalejeans,
+        'deletesaleshoes' => $deletesaleshoes,
+        'deletesaletop' => $deletesaletop,
+        'deletesalecomplete' => $deletesalecomplete,
+        'deletesaleaccessory' => $deletesaleaccessory,
+        'deletesalewig' => $deletesalewig,
+        'deletesalecosmetics' => $deletesalecosmetics,
+
+        'refundsalejeans' => $refundsalejeans,
+        'refundsaleshoes' => $refundsaleshoes,
+        'refundsaletop' => $refundsaletop,
+        'refundsalecomplete' => $refundsalecomplete,
+        'refundsaleaccessory' => $refundsaleaccessory,
+        'refundsalewig' => $refundsalewig,
+        'refundsalecosmetics' => $refundsalecosmetics,
+
+        'exchangesalejeans' => $exchangesalejeans,
+        'exchangesaleshoes' => $exchangesaleshoes,
+        'exchangesaletop' => $exchangesaletop,
+        'exchangesalecomplete' => $exchangesalecomplete,
+        'exchangesaleaccessory' => $exchangesaleaccessory,
+        'exchangesalewig' => $exchangesalewig,
+        'exchangesalecosmetics' => $exchangesalecosmetics,
+
+        'deliverysalejeans' => $deliverysalejeans,
+        'deliverysaleshoes' => $deliverysaleshoes,
+        'deliverysaletop' => $deliverysaletop,
+        'deliverysalecomplete' => $deliverysalecomplete,
+        'deliverysaleaccessory' => $deliverysaleaccessory,
+        'deliverysalewig' => $deliverysalewig,
+        'deliverysalecosmetics' => $deliverysalecosmetics,
+
+        'logjeans' => $logjeans,
+        'logshoes' => $logshoes,
+        'logtop' => $logtop,
+        'logcomplete' => $logcomplete,
+        'logaccessory' => $logaccessory,
+        'logwig' => $logwig,
+        'logcosmetics' => $logcosmetics,
+
+        'constant' => $constant,
+        'email' => $email,
+        'backup' => $backup
 
 
-
-        'stockview' => $stockview,
-        'stockadd' => $stockadd,
-        'stockedit' => $stockedit,
-        'stockdelete' => $stockdelete,
-        'stockgenerate' => $stockgenerate,
-
-
-        'dataview' => $dataview,
-        'dataadd' => $dataadd,
-        'dataedit' => $dataedit,
-        'datadelete' => $datadelete,
-        'datagenerate' => $datagenerate,
-
-        'jobview' => $jobview,
-        'jobedit' => $jobedit,
-
-        'saleview' => $saleview,
-        'saleadd' => $saleadd,
-        'saleedit' => $saleedit,
-        'saledelete' => $saledelete,
-        'salegenerate' => $salegenerate,
-
-        'reportview' => $reportview,
-
-        'userview' => $userview,
-        'useradd' => $useradd,
-        'useredit' => $useredit,
-        'userdelete' => $userdelete,
-        'usergenerate' => $usergenerate,
-
-
-        'custview' => $custview,
-        'custadd' => $custadd,
-        'custedit' => $custedit,
-        'custdelete' => $custdelete,
-        'custgenerate' => $custgenerate,
-
-        'generateview' => $generateview,
-        'fileview' => $fileview,
-        'backview' => $backview,
-
-        'payview' => $payview,
-        'payadd' => $payadd,
-        'payedit' => $payedit,
-        'paydelete' => $paydelete,
-        'paygenerate' => $paygenerate,
-        'payverify' => $payverify,
-
-        'bankview' => $bankview,
-        'bankadd' => $bankadd,
-        'bankedit' => $bankedit,
-        'bankdelete' => $bankdelete,
-        'bankgenerate' => $bankgenerate,
-        'bankverify' => $bankverify,
-
-        'vatview' => $vatview,
-        'vatadd' => $vatadd,
-        'vatedit' => $vatedit,
-        'vatdelete' => $vatdelete,
-        'vatgenerate' => $vatgenerate,
-
-        'banksview' => $banksview,
-        'banksadd' => $banksadd,
-        'banksedit' => $banksedit,
-        'banksdelete' => $banksdelete,
-        'banksgenerate' => $banksgenerate,
-
-        'profileview' => $profileview,
-        'brocherview' => $brocherview,
-        'bookview' => $bookview,
-        'manualview' => $manualview,
-        'digitalview' => $digitalview,
-        'bannerview' => $bannerview,
-        'designview' => $designview,
-        'singlepageview' => $singlepageview,
-        'multipageview' => $multipageview
 
 
 
@@ -1708,7 +1229,7 @@ if (isset($_POST['update_user'])) {
     // Convert the JSON array to a JSON-formatted string
     $jsonData = json_encode($jsonDataArray);
 
-    $user_update = "UPDATE `user` SET `user_name`='$user_name', `password`='$password', `previledge`='$privileged', `payment`='$payment',`module`='$jsonData' WHERE `user_id` = '$user_id'";
+    $user_update = "UPDATE `user` SET `user_name`='$user_name', `password`='$password', `previledge`='$privileged', `module`='$jsonData' WHERE `user_id` = '$user_id'";
     $result_update = mysqli_query($con, $user_update);
 
     if ($result_update) {

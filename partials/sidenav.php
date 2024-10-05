@@ -90,7 +90,7 @@ if ($result) {
         $constant = ($module['constant'] == 1) ? true : false;
         $backup = ($module['backup'] == 1) ? true : false;
         $email = ($module['email'] == 1) ? true : false;
-        $profile = ($module['profile'] == 1) ? true : false;
+       
         
 
 

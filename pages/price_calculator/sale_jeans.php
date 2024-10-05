@@ -43,18 +43,16 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['saleview'] == 1) ? true : false;
+        $sale_jeans = ($module['salejeans'] == 1) ? true : false;
+        $editsalejeans = ($module['editsalejeans'] == 1) ? true : false;
+        $deletesalejeans = ($module['deletesalejeans'] == 1) ? true : false;
+        $exchangesalejeans = ($module['exchangesalejeans'] == 1) ? true : false;
+        $refundsalejeans = ($module['refundsalejeans'] == 1) ? true : false;
 
 
-        $addButtonVisible = ($module['saleadd'] == 1) ? true : false;
-
-        $deleteButtonVisible = ($module['saledelete'] == 1) ? true : false;
 
 
-        $updateButtonVisible = ($module['saleedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['salegenerate'] == 1) ? true : false;
+       
     } else {
         echo "No user found with the specified ID";
     }
@@ -124,7 +122,7 @@ if ($result) {
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Sales</h4>
                             <div>
 
-                                <?php if ($addButtonVisible) : ?>
+                                <?php if ($sale_jeans) : ?>
 
                                     <button type="button" data-fc-type="modal" data-fc-target="addModal"
                                         class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
@@ -135,14 +133,14 @@ if ($result) {
                                 <?php endif; ?>
 
 
-                                <?php if ($generateButtonVisible) : ?>
+                              
                                     <a href="export.php?type=sales&from_date=<?php echo $from_date; ?>&to_date=<?php echo $to_date; ?>"
                                         class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
                                         <i class="msr text-base me-2">picture_as_pdf</i>
                                         Export
                                     </a>
 
-                                <?php endif; ?>
+                               
                             </div>
                         </div>
                     </div>
@@ -209,7 +207,7 @@ if ($result) {
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
 
-                                                        <?php if ($deleteButtonVisible) : ?>
+                                                        <?php if ($deletesalejeans) : ?>
 
                                                             <a id="del-btn"
                                                                 href="api/remove.php?id=<?php echo $row['sales_id']; ?>&from=sales"
@@ -220,7 +218,7 @@ if ($result) {
 
 
 
-                                                        <?php if ($updateButtonVisible) : ?>
+                                                        <?php if ($editsalejeans) : ?>
 
                                                             <button type="button"
                                                                 class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
@@ -231,7 +229,7 @@ if ($result) {
                                                             </button>
                                                         <?php endif; ?>
 
-                                                        <?php if ($deleteButtonVisible) : ?>
+                                                        <?php if ($refundsalejeans) : ?>
 
                                                             <a id="del-btn"
                                                                 href="api/refund.php?id=<?php echo $row['sales_id']; ?>&from=sales"
@@ -240,7 +238,7 @@ if ($result) {
 
                                                         <?php endif; ?>
 
-                                                        <?php if ($updateButtonVisible) : ?>
+                                                        <?php if ($exchangesalejeans) : ?>
 
                                                             <button type="button"
                                                                 class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
@@ -559,155 +557,155 @@ if ($result) {
                         <form method="POST">
                             <div class="px-4 py-8 overflow-y-auto">
 
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                        Jeans Name </label>
 
-                                    <select name="jeans_name" class="search-select" required onchange="fetchPrice()">
+                                <div class="grid grid-cols-3 md:grid-cols-2 gap-3">
 
-                                        <?php
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                            Jeans Name </label>
 
-                                        $sql = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
-                                        $result = mysqli_query($con, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                        ?>
-                                            <option value="<?php echo $row['jeans_name'] ?>" <?php
-                                                                                                if (isset($jeans_name)) {
-                                                                                                    if ($row['jeans_name'] == $jeans_name) {
-                                                                                                        echo "selected";
+                                        <select name="jeans_name" class="search-select" required onchange="fetchPrice()">
+
+                                            <?php
+
+                                            $sql = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
+                                            $result = mysqli_query($con, $sql);
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
+                                                <option value="<?php echo $row['jeans_name'] ?>" <?php
+                                                                                                    if (isset($jeans_name)) {
+                                                                                                        if ($row['jeans_name'] == $jeans_name) {
+                                                                                                            echo "selected";
+                                                                                                        }
                                                                                                     }
-                                                                                                }
-                                                                                                ?>>
-                                                <?php echo $row['jeans_name']; ?>
-                                            </option>
-                                        <?php
-                                        }
-                                        ?>
+                                                                                                    ?>>
+                                                    <?php echo $row['jeans_name']; ?>
+                                                </option>
+                                            <?php
+                                            }
+                                            ?>
 
-                                    </select>
+                                        </select>
 
-                                </div>
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                        Jeans Size </label>
-
-                                    <select name="size" class="search-select" required onchange="fetchPrice()">
-
-                                        <?php
-
-                                        $sql = "SELECT * FROM jeansdb";
-                                        $result = mysqli_query($con, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                        ?>
-                                            <option value="<?php echo $row['size'] ?>" <?php
-                                                                                        if (isset($jeans_size)) {
-                                                                                            if ($row['size'] == $jeans_size) {
-                                                                                                echo "selected";
-                                                                                            }
-                                                                                        }
-                                                                                        ?>>
-                                                <?php echo $row['size']; ?>
-                                            </option>
-                                        <?php
-                                        }
-                                        ?>
-
-
-
-
-                                    </select>
-
-                                </div>
-
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                        Method </label>
-
-                                    <select name="method" class="search-select" required>
-
-                                        <option value="shop">Shop</option>
-                                        <option value="delivery">Delivery</option>
-
-                                    </select>
-
-                                </div>
-
-
-
-
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity
-                                    </label>
-                                    <input type="text" name="quantity" class="form-input" value="1"
-                                        onchange="fetchPrice()" required>
-                                </div>
-
-
-
-
-
-
-                                <div class="flex gap-2 justify-between">
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price
-                                        </label>
-                                        <input type="text" name="price" class="form-input" required>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Cash
-                                        </label>
-                                        <input type="text" name="cash" class="form-input" value="0" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank</label>
-                                        <input type="text" name="bank" class="form-input" value="0" required
-                                            id="bankInput" onchange="toggleBankName()">
-                                    </div>
-                                </div>
 
 
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank
-                                        Name</label>
-                                    <select name="bank_name" class="form-input">
-                                        <option value="">Select</option>
-                                        <?php
-                                        $sql = "SELECT * FROM bankdb ";
-                                        $result = mysqli_query($con, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                        ?>
-                                            <option value="<?php echo $row['bankname'] ?>" <?php
-                                                                                            if (isset($bank_name)) {
-                                                                                                if ($row['bank_name'] == $bank_name) {
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                            Jeans Size </label>
+
+                                        <select name="size" class="search-select" required onchange="fetchPrice()">
+
+                                            <?php
+
+                                            $sql = "SELECT * FROM jeansdb";
+                                            $result = mysqli_query($con, $sql);
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
+                                                <option value="<?php echo $row['size'] ?>" <?php
+                                                                                            if (isset($jeans_size)) {
+                                                                                                if ($row['size'] == $jeans_size) {
                                                                                                     echo "selected";
                                                                                                 }
                                                                                             }
                                                                                             ?>>
-                                                <?php echo $row['bankname']; ?>
-                                            </option>
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
+                                                    <?php echo $row['size']; ?>
+                                                </option>
+                                            <?php
+                                            }
+                                            ?>
 
-                                <div class="flex gap-2  justify-around">
+
+
+
+                                        </select>
+
+                                    </div>
+
+
 
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">
-                                            Date </label>
-                                        <input type="date" name="date" class="form-input"
-                                            value="<?php echo date('Y-m-d'); ?>" required>
+                                            Method </label>
+
+                                        <select name="method" class="search-select" required>
+
+                                            <option value="shop">Shop</option>
+                                            <option value="delivery">Delivery</option>
+
+                                        </select>
+
                                     </div>
 
-                                </div>
 
+
+
+
+
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity
+                                        </label>
+                                        <input type="text" name="quantity" class="form-input" value="1"
+                                            onchange="fetchPrice()" required>
+                                    </div>
+
+
+
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Cash</label>
+                                        <input type="text" name="cash" id="cash" class="form-input" value="0" required onchange="calculateTotalPrice()">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank</label>
+                                        <input type="text" name="bank" id="bank" class="form-input" value="0" required id="bankInput" onchange="calculateTotalPrice();">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price</label>
+                                        <input type="text" name="price" id="total_price" class="form-input" value="0" required readonly>
+                                    </div>
+
+
+
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank
+                                            Name</label>
+                                        <select name="bank_name" class="form-input">
+                                            <option value="">Select</option>
+                                            <?php
+                                            $sql = "SELECT * FROM bankdb ";
+                                            $result = mysqli_query($con, $sql);
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
+                                                <option value="<?php echo $row['bankname'] ?>" <?php
+                                                                                                if (isset($bank_name)) {
+                                                                                                    if ($row['bank_name'] == $bank_name) {
+                                                                                                        echo "selected";
+                                                                                                    }
+                                                                                                }
+                                                                                                ?>>
+                                                    <?php echo $row['bankname']; ?>
+                                                </option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="flex gap-2  justify-around">
+
+                                        <div class="mb-3">
+                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2">
+                                                Date </label>
+                                            <input type="date" name="date" class="form-input"
+                                                value="<?php echo date('Y-m-d'); ?>" required>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
 
                             </div>
                             <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
@@ -747,6 +745,29 @@ if ($result) {
 
 
 </html>
+
+
+<script>
+    function calculateTotalPrice() {
+        // Retrieve the input values
+        var cashValue = document.querySelector('input[id="cash"]').value;
+        var bankValue = document.querySelector('input[id="bank"]').value;
+
+        // Parse the values, default to 0 if not a valid number
+        var cash = parseFloat(cashValue) || 0;
+        var bank = parseFloat(bankValue) || 0;
+
+        // Console log for debugging
+        console.log("Cash: " + cash);
+        console.log("Bank: " + bank);
+
+        // Calculate the total price
+        var totalPrice = cash + bank;
+
+        // Update the total price input field
+        document.querySelector('input[id="total_price"]').value = totalPrice.toFixed(2); // Display with 2 decimals
+    }
+</script>
 
 <?php
 

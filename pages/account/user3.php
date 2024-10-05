@@ -743,6 +743,43 @@ $from = $_GET['from'];
                                                         </tr>
 
 
+                                                        <tr
+                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                User Account </td>
+
+
+
+                                                            <?php
+                                                            $moduleData = json_decode($module, true);
+
+                                                            // Define the checkbox names
+                                                            $checkboxNames = ['user'];
+
+                                                            // Loop through each checkbox name
+                                                            foreach ($checkboxNames as $checkboxName) {
+                                                                // Check if the value is 1 in the JSON data
+                                                                $checked = ($moduleData[$checkboxName] == 1) ? 'checked' : '';
+
+                                                                // Generate the checkbox input
+
+                                                                echo '<td
+                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
+                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . '>';
+
+                                                                // You can also display the checkbox label if needed
+                                                                echo '</td>';
+                                                            }
+                                                            ?>
+
+
+
+
+
+                                                        </tr>
+
+
 
 
 
@@ -1095,6 +1132,7 @@ if (isset($_POST['update_user'])) {
     $constant = (int) boolval($_POST['constant']);
     $email = (int) boolval($_POST['email']);
     $backup = (int) boolval($_POST['backup']);
+    $user= (int) boolval($_POST['user']);
 
 
 
@@ -1216,7 +1254,9 @@ if (isset($_POST['update_user'])) {
 
         'constant' => $constant,
         'email' => $email,
-        'backup' => $backup
+        'backup' => $backup,
+        'user' => $user,
+
 
 
 

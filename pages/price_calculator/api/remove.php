@@ -5,6 +5,9 @@
     $redirect_link = "../../../";
     $side_link = "../../../";
 
+include_once $redirect_link . 'include/email.php';
+include_once $redirect_link . 'include/bot.php';
+
     
 
 include $redirect_link . 'partials/main.php';
@@ -50,7 +53,7 @@ include_once $redirect_link . 'include/db.php';
             $remove_res = mysqli_query($con, $remove);
 
 
-                 $status = "SELL DELETED";
+         $status = "SELL DELETED";
 
 
                  
@@ -63,6 +66,32 @@ VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$ba
         $result_adds = mysqli_query($con, $add_jeans_log);
             if ($remove_res) {
                 echo "<script>window.location.href='../sale_jeans.php?status=success';</script>";
+
+
+
+            $message = " Sale of Jeans Deleted:\n";
+            $message .= "Jeans Name: $jeans_name\n";
+            $message .= "Price: $price\n";
+            $message .= "Type: $type\n";
+            $message .= "Size: $size\n";
+            $message .= "Quantity: $quantity\n";
+
+
+            $subject="Sale of Jeans Deleted";
+
+
+
+
+
+
+
+            sendMessageToSubscribers($message, $con);
+            sendEmailToSubscribers($message,$subject, $con);
+
+
+            
+
+                
             }
 
             
@@ -75,6 +104,34 @@ VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$ba
         } 
 
         elseif($from=='jeans'){
+
+            $sql = "SELECT * FROM jeans WHERE id='$id'";
+            $res = mysqli_query($con, $sql);
+            $row = mysqli_fetch_assoc($res);
+            $jeans_name = $row['jeans_name'];
+            $size = $row['size'];
+            $quantity = $row['quantity'];
+            $price = $row['price'];
+            $type = $row['type'];
+           
+
+            $status = "JEANS DELETED";
+
+            $message = " Jeans Deleted:\n";
+            $message .= "Jeans Name: $jeans_name\n";
+            $message .= "Price: $price\n";
+            $message .= "Type: $type\n";
+            $message .= "Size: $size\n";
+            $message .= "Quantity: $quantity\n";
+            $message.="status: $status\n";
+
+            $subject = "Jeans Deleted";
+
+            sendMessageToSubscribers($message, $con);
+            sendEmailToSubscribers($message,$subject, $con);
+
+
+
             $remove = "DELETE FROM jeans WHERE id ='$id'";
             $remove_res = mysqli_query($con, $remove);
             if ($remove_res) {
@@ -112,6 +169,25 @@ VALUES ('$jeans_id', '$size_id', '$jeans_name', '$size', '$price', '$cash', '$ba
         $result_adds = mysqli_query($con, $add_jeans_log);
 
         if ($result_adds) {
+
+
+
+            $message = " Jeans Delivery Canceled:\n";
+            $message .= "Jeans Name: $jeans_name\n";
+            $message .= "Price: $price\n";
+            $message .= "Type: $type\n";
+            $message .= "Size: $size\n";
+            $message .= "Quantity: $quantity\n";
+            $message.="status: $status\n";
+
+
+$subject="Jeans Delivery Canceled";
+
+
+
+
+            sendMessageToSubscribers($message, $con);
+            sendEmailToSubscribers($message,$subject, $con);
 
 
 

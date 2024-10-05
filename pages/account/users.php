@@ -27,18 +27,10 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['userview'] == 1) ? true : false;
+        $user = ($module['user'] == 1) ? true : false;
 
 
-        $addButtonVisible = ($module['useradd'] == 1) ? true : false;
-
-        $deleteButtonVisible = ($module['userdelete'] == 1) ? true : false;
-
-
-        $updateButtonVisible = ($module['useredit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['usergenerate'] == 1) ? true : false;
+      
     } else {
         echo "No user found with the specified ID";
     }
@@ -81,7 +73,7 @@ if ($result) {
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Users</h4>
                             <div>
 
-                                <?php if ($addButtonVisible) : ?>
+                                <?php if ($user) : ?>
 
                                     <button type="button" data-fc-type="modal" data-fc-target="addModal"
                                         class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
@@ -92,14 +84,6 @@ if ($result) {
                                 <?php endif; ?>
 
 
-                                <?php if ($generateButtonVisible) : ?>
-                                    <a href="<?php $redirect_link . 'pages/export.php?type=bankdb' ?>"
-                                        class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
-                                        <i class="msr text-base me-2">picture_as_pdf</i>
-                                        Export
-                                    </a>
-
-                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -129,13 +113,13 @@ if ($result) {
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
 
-                                                        <?php if ($deleteButtonVisible) : ?>
+                                                        <?php if ($user) : ?>
                                                             <a id="del-btn"
                                                                 href="remove.php?id=<?php echo $row1['user_id']; ?>&from=user"
                                                                 class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full"><i
                                                                     class="mgc_delete_2_line text-base me-2"></i> Delete</a>
                                                         <?php endif; ?>
-                                                        <?php if ($updateButtonVisible) : ?>
+                                                        <?php if ($user) : ?>
                                                             <a id="edit-btn"
                                                                 href="user3.php?id=<?php echo $row1['user_id']; ?>&from=user"
                                                                 class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"><i class="mgc_pencil_line text-base me-2"></i> Edit</a>
@@ -339,7 +323,8 @@ if ($result) {
                                                         'log' => ['logjeans', 'logshoes', 'logtop', 'logcomplete', 'logaccessory', 'logwig', 'logcosmetics'],
                                                         'constant'=>['constant'],
                                                         'email'=>['email'],
-                                                        'backup'=>['backup']
+                                                        'backup'=>['backup'],
+                                                        'user'=>['user']
 
 
                                                     ];
@@ -561,6 +546,7 @@ if (isset($_POST['add_user'])) {
     $constant = (int) boolval($_POST['constant']);
     $email = (int) boolval($_POST['email']);
     $backup = (int) boolval($_POST['backup']);
+    $user = (int) boolval($_POST['user']);
 
    
 
@@ -687,6 +673,10 @@ if (isset($_POST['add_user'])) {
         'logcosmetics' => $logcosmetics,
 
 
+        'constant'=>$constant,
+        'email'=>$email,
+        'backup'=>$backup,
+        '$user'=>$user
 
 
 

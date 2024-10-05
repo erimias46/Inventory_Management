@@ -4,19 +4,13 @@ $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 include_once $redirect_link . 'include/mdb.php';
+include_once $redirect_link . 'include/email.php';
+include_once $redirect_link . 'include/bot.php';
 $current_date = date('Y-m-d');
 
 $generate_button = '';
 
-if (isset($_GET['import_brocher_id'])) {
-    $brocher_type = $_GET['brocher_type'];
 
-
-
-    $add_button = '<button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>';
-    $update_button = '<button name="update" type="submit" class="btn btn-sm bg-danger text-white rounded-full"> <i class="mgc_pencil_line text-base me-2"></i> Update </button>';
-    $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
-}
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -116,6 +110,30 @@ if (isset($_POST['update'])) {
 
     if ($result) {
         echo "<script>window.location = 'action.php?status=success&redirect=all_jeans.php';</script>";
+
+        //send notification
+
+        $message = " Jeans Updated:\n";
+        $message .= "Jeans Name: $jeans_name\n";
+        $message .= "Price: $price\n";
+        $message .= "Type: $type\n";
+        $message .= "Size: $size\n";
+        $message .= "Quantity: $quantity\n";
+
+
+        $subject = "Jeans Updated";
+
+
+
+    
+
+
+
+        sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message,$subject, $con);
+
+
+
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error updating jeans in the database.&redirect=all.php';</script>";
     }
@@ -147,16 +165,12 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['calcview'] == 1) ? true : false;
+       
 
 
-        $addButtonVisible = ($module['calcadd'] == 1) ? true : false;
+        $updateButtonVisible = ($module['editjeans'] == 1) ? true : false;
 
 
-        $updateButtonVisible = ($module['calcedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['calcgenerate'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -280,7 +294,7 @@ if ($result) {
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
-                                            <option value="<?php echo $row['id'] ?>" <?php
+                                            <option value="<?php echo $row['size'] ?>" <?php
                                                                                         if (isset($size)) {
                                                                                             if ($row['size'] == $size) {
                                                                                                 echo "selected";
@@ -376,7 +390,7 @@ if ($result) {
 
 
                                         <!-- Display the Calculate button if $calculateButtonVisible is true -->
-                                        <?php if ($calculateButtonVisible) : ?>
+                                        <?php if ($updateButtonVisible) : ?>
 
                                             <button name="update" type="submit" class="btn btn-sm bg-warning text-white rounded-full"> <i class="mgc_pencil_fill text-base me-2"></i> Update </button>
 

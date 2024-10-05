@@ -5,7 +5,7 @@
 include 'config.php';
 include 'db.php'; // Assuming you have a file for database connection
 
-function sendEmailToSubscribers($message, $con)
+function sendEmailToSubscribers($message,$subject, $con)
 {
     // Get the configured mailer
     $mail = setupMailer();
@@ -28,8 +28,8 @@ function sendEmailToSubscribers($message, $con)
 
                 // Email content
                 $mail->isHTML(true);
-                $mail->Subject = 'New Product Added';
-                $mail->Body    = "<h1>New Jeans Added</h1><p>" . nl2br($message) . "</p>";
+                $mail->Subject = $subject;
+                $mail->Body    = "<h1>Message</h1><p>" . nl2br($message) . "</p>";
 
                 // Send email
                 $mail->send();
@@ -45,5 +45,5 @@ function sendEmailToSubscribers($message, $con)
         echo "No subscribers found.";
     }
 
-    $con->close(); // Close the database connection
+    
 }

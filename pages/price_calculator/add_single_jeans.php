@@ -127,10 +127,10 @@ if (isset($_POST['add'])) {
 
         
 
-
+$subject="New Jeans Added";
 
         sendMessageToSubscribers($message, $con);
-        sendEmailToSubscribers($message, $con);
+        sendEmailToSubscribers($message,$subject, $con);
 
 
       

@@ -7,6 +7,8 @@ $side_link = "../../";
 
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
+include_once $redirect_link . 'include/email.php';
+include_once $redirect_link . 'include/bot.php';
 
 $user_id = $_SESSION['user_id'];
 
@@ -807,6 +809,27 @@ if (isset($_POST['update'])) {
 
     if ($result) {
         echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
+
+        $message="Sale Have been Updated";
+
+       
+        $message .= "Jeans Name: $jeans_name\n";
+        $message .= "Price: $price\n";
+        $message .= "Type: $type\n";
+        $message .= "Size: $size\n";
+        $message .= "Quantity: $quantity\n";
+
+
+        $subject = "Sale Updated";
+
+
+        sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message, $subject, $con);
+
+
+
+
+
     } else {
         echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
     }
@@ -944,41 +967,23 @@ if (isset($_POST['add_data'])) {
             }
         }
 
-        // Notify subscribers for both delivery and sales
-        $subscribers_query = "SELECT chat_id FROM subscribers";
-        $subscribers_result = mysqli_query($con, $subscribers_query);
-        $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
+        $message = "Sale Have been Made";
 
-        $message = "New Sale Added:\n";
+
         $message .= "Jeans Name: $jeans_name\n";
-        $message .= "Size: $size\n";
         $message .= "Price: $price\n";
-        $message .= "Cash: $cash\n";
-        $message .= "Bank: $bank\n";
-        $message .= "Method: $method\n";
-        $message .= "Date: $date\n";
+        $message .= "Size: $size\n";
         $message .= "Quantity: $quantity\n";
+        $message .= "Cash :  $cash\n";
+        $message.="Bank : $bank\n";
 
-        $botToken = "7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0"; // Replace with your bot token
-        $apiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
 
-        foreach ($subscribers as $subscriber) {
-            $chatId = $subscriber['chat_id'];
 
-            $data = [
-                'chat_id' => $chatId,
-                'text' => $message,
-                'parse_mode' => 'HTML' // Optional: Use HTML formatting
-            ];
+        $subject = "Sold Jeans";
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $apiUrl);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            curl_close($ch);
-        }
+
+        sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message, $subject, $con);
 
         // Success redirect
         echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";

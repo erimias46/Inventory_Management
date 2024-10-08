@@ -3,7 +3,7 @@
 include 'config.php';
 include 'db.php'; // Assuming you have a file for database connection
 
-function sendEmailToSubscribersAsync($message, $subject, $con)
+function sendEmailToSubscribers($message, $subject, $con)
 {
     // Fork the process to run the email sending asynchronously
     $pid = pcntl_fork();

@@ -15,6 +15,7 @@ function setupMailer()
     try {
         // SMTP configuration
         $mail->isSMTP();
+        $mail->SMTPKeepAlive = true;
         $mail->Host = 'inventory.yurostock.com';       // Set the SMTP server to send through
         $mail->SMTPAuth = true;                  // Enable SMTP authentication
         $mail->Username = 'inventory@yurostock.com'; // SMTP username

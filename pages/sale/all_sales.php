@@ -87,7 +87,7 @@ ORDER BY sales_date DESC;
                                                                 <i class="mgc_delete_2_line text-base me-2"></i> Delete
                                                             </a>
 
-                                                            <a id="del-btn" href="exchange.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
+                                                            <a id="del-btn" href="exchange.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-warning text-white hover:bg-warning hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_delete_2_line text-base me-2"></i> Exchange
                                                             </a>
 

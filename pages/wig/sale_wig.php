@@ -43,18 +43,11 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['saleview'] == 1) ? true : false;
-
-
-        $addButtonVisible = ($module['saleadd'] == 1) ? true : false;
-
-        $deleteButtonVisible = ($module['saledelete'] == 1) ? true : false;
-
-
-        $updateButtonVisible = ($module['saleedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['salegenerate'] == 1) ? true : false;
+        $sale_wig = ($module['salewig'] == 1) ? true : false;
+        $editsalewig = ($module['editsalewig'] == 1) ? true : false;
+        $deletesalewig = ($module['deletesalewig'] == 1) ? true : false;
+        $exchangesalewig = ($module['exchangesalewig'] == 1) ? true : false;
+        $refundsalewig = ($module['refundsalewig'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -124,7 +117,7 @@ if ($result) {
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Sales</h4>
                             <div>
 
-                                <?php if ($addButtonVisible) : ?>
+                                <?php if ($sale_wig) : ?>
 
                                     <button type="button" data-fc-type="modal" data-fc-target="addModal"
                                         class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
@@ -135,14 +128,7 @@ if ($result) {
                                 <?php endif; ?>
 
 
-                                <?php if ($generateButtonVisible) : ?>
-                                    <a href="export.php?type=sales&from_date=<?php echo $from_date; ?>&to_date=<?php echo $to_date; ?>"
-                                        class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
-                                        <i class="msr text-base me-2">picture_as_pdf</i>
-                                        Export
-                                    </a>
-
-                                <?php endif; ?>
+                                
                             </div>
                         </div>
                     </div>
@@ -208,7 +194,7 @@ if ($result) {
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
 
-                                                        <?php if ($deleteButtonVisible) : ?>
+                                                        <?php if ($deletesalewig) : ?>
 
                                                             <a id="del-btn"
                                                                 href="api/remove.php?id=<?php echo $row['sales_id']; ?>&from=wig_sales"
@@ -219,7 +205,7 @@ if ($result) {
 
 
 
-                                                        <?php if ($updateButtonVisible) : ?>
+                                                        <?php if ($editsalewig) : ?>
 
                                                             <button type="button"
                                                                 class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
@@ -230,7 +216,7 @@ if ($result) {
                                                             </button>
                                                         <?php endif; ?>
 
-                                                        <?php if ($deleteButtonVisible) : ?>
+                                                        <?php if ($refundsalewig) : ?>
 
                                                             <a id="del-btn"
                                                                 href="api/refund.php?id=<?php echo $row['sales_id']; ?>&from=wig_sales"
@@ -239,7 +225,7 @@ if ($result) {
 
                                                         <?php endif; ?>
 
-                                                        <?php if ($updateButtonVisible) : ?>
+                                                        <?php if ($exchangesalewig) : ?>
 
                                                             <button type="button"
                                                                 class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
@@ -288,7 +274,7 @@ if ($result) {
 
 
 
-                                                <!-- Modal for exchanging jeans -->
+                                                <!-- Modal for exchanging wig -->
                                                 <div id="exchange<?= $row['sales_id'] ?>" class="w-full h-full fixed top-0 left-0 z-50 transition-all duration-500 hidden">
                                                     <div class="fc-modal-open:mt-7 fc-modal-open:opacity-100 fc-modal-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-md sm:w-full m-3 sm:mx-auto bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
                                                         <div class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
@@ -417,7 +403,7 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">wig Name</label>
-                                                                        <select name="wig_name" class="search-select" id="jeans_name_select" disabled>
+                                                                        <select name="wig_name" class="search-select" id="wig_name_select" disabled>
                                                                             <?php
                                                                             $sql3 = "SELECT * FROM wig GROUP BY wig_name ORDER BY wig_name ASC";
                                                                             $result3 = mysqli_query($con, $sql3);
@@ -425,7 +411,7 @@ if ($result) {
                                                                                 while ($row3 = mysqli_fetch_assoc($result3)) { ?>
                                                                                     <option value="<?= $row3['wig_name'] ?>"
                                                                                         <?php
-                                                                                        // Check if the current jeans_name should be selected
+                                                                                        // Check if the current wig_name should be selected
                                                                                         if (isset($row['wig_name']) && $row['wig_name'] == $row3['wig_name']) {
                                                                                             echo "selected";
                                                                                         }

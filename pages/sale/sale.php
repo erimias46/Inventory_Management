@@ -237,16 +237,13 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['calcview'] == 1) ? true : false;
+       
 
 
-        $addButtonVisible = ($module['calcadd'] == 1) ? true : false;
+        $add_button = ($module['salejeans'] == 1) ? true : false;
 
 
-        $updateButtonVisible = ($module['calcedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['calcgenerate'] == 1) ? true : false;
+       
     } else {
         echo "No user found with the specified ID";
     }
@@ -336,8 +333,8 @@ if ($result) {
                                 <!-- Jeans Name Field -->
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
-                                    <select name="code_name" id="code_name" class="form-select w-full border border-gray-300 p-2 rounded-md" onchange="fetchSizes()" required>
-                                        <option value="">Select Code Name</option>
+                                    <select name="code_name" id="code_name" class=" w-full border border-gray-300 p-2 rounded-md  search-select" onchange="fetchSizes()" required>
+                                        <option value="">Select Name</option>
                                         <?php
                                         $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
                                         foreach ($tables as $table) {
@@ -420,7 +417,7 @@ if ($result) {
 
                                 <!-- Submit Button Section -->
                                 <div class="text-center mt-5">
-                                    <?php if ($calculateButtonVisible) : ?>
+                                    <?php if ($add_button) : ?>
                                         <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full px-4 py-2">
                                             <i class="mgc_add_fill text-base me-2"></i> Add Sale
                                         </button>

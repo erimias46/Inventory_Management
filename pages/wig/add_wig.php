@@ -3,6 +3,8 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
+    include_once $redirect_link . 'include/bot.php';
+    include_once $redirect_link . 'include/email.php';
 
 $current_date = date('Y-m-d');
 
@@ -139,6 +141,44 @@ if (isset($_POST['add'])) {
     // Redirect after successful insertion
 
     if ($add_wig) {
+
+
+
+
+
+        $message = "New Wig Added:\n";
+        $message .= "Wig Name: $wig_name\n";
+        $message .= "Type: $type\n";
+        $message .= "Sizes and Quantities:\n";
+
+        // Loop through sizes and piece counts
+        for ($i = 0; $i < count($sizes); $i++) {
+            $size = $sizes[$i];
+
+            // Add 1-piece quantity
+            if ($quantities_1_piece[$i] > 0) {
+                $message .= "Size $size (1-Piece): " . $quantities_1_piece[$i] . "\n";
+            }
+
+            // Add 2-piece quantity
+            if ($quantities_2_piece[$i] > 0) {
+                $message .= "Size $size (2-Piece): " . $quantities_2_piece[$i] . "\n";
+            }
+
+            // Add 3-piece quantity
+            if ($quantities_3_piece[$i] > 0) {
+                $message .= "Size $size (3-Piece): " . $quantities_3_piece[$i] . "\n";
+            }
+        }
+
+        // Define the subject for the email
+        $subject = "New Wig Added";
+
+        // Send message to subscribers via Telegram and Email
+        sendMessageToSubscribers($message, $con); // Sends to Telegram subscribers
+        sendEmailToSubscribers($message, $subject, $con);
+
+
         echo "<script>window.location = 'action.php?status=success&redirect=add_wig.php';</script>";
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error adding wig to the database.&redirect=add_wig.php';</script>";
@@ -174,16 +214,12 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['calcview'] == 1) ? true : false;
+       
 
 
-        $addButtonVisible = ($module['calcadd'] == 1) ? true : false;
+        $addButtonVisible = ($module['addwig'] == 1) ? true : false;
 
 
-        $updateButtonVisible = ($module['calcedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['calcgenerate'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -343,10 +379,21 @@ if ($result) {
                                     </table>
                                 </div>
 
+                                
+
                                 <div class="col-span-1 sm:col-span-2 md:col-span-3 text-end">
+
+                                <?php 
+                                if($addButtonVisible){
+                                    ?>
                                     <div class="mt-3">
                                         <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full">Add</button>
                                     </div>
+
+                                    <?php
+                                }
+                                ?>
+                                
                                 </div>
                             </form>
                         </div>
@@ -375,40 +422,10 @@ if ($result) {
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
 
 
-    <script>
-        function previewImage(event) {
-            const imagePreview = document.getElementById('imagePreview');
-            imagePreview.innerHTML = ''; // Clear previous image
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    imagePreview.appendChild(img);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-    </script>
+    
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fetch suggestions for customer names from the server and populate the datalist
-            fetch('getcust.php')
-                .then(response => response.json())
-                .then(data => {
-                    const datalist = document.getElementById('customer_names');
-                    datalist.innerHTML = ''; // Clear previous options
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item; // Customer name
-                        datalist.appendChild(option);
-                    });
-                });
-        });
-    </script>
+    
 </body>
 
 </html>
@@ -424,21 +441,5 @@ if ($result) {
 
 
 
-<script>
-    document.getElementById('jeans_types').addEventListener('focus', function() {
-        // Fetch suggestions from the server and populate the datalist
-        fetch('get_job_types.php?database=jeans')
-            .then(response => response.json())
-            .then(data => {
-                const datalist = document.getElementById('jeans_types');
-                datalist.innerHTML = ''; // Clear previous options
-                data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.job_type; // Adjust to match your database field
-                    datalist.appendChild(option);
-                });
-            });
-    });
-</script>
 
-<script src="../../assets/libs/dropzone/min/dropzone.min.js"></script>
+

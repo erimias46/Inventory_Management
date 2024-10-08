@@ -4,6 +4,9 @@ $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 include_once $redirect_link . 'include/mdb.php';
+    include_once $redirect_link . 'include/email.php';
+    include_once $redirect_link . 'include/bot.php';
+
 $current_date = date('Y-m-d');
 
 $generate_button = '';
@@ -50,14 +53,14 @@ if (isset($_POST['update'])) {
     $image = $_FILES['image']['name'];
 
     // Fetch the old image from the database if no new image is uploaded
-    $id = $_GET['id']; // Assuming `jeans_id` is passed for identifying the record
+    $id = $_GET['id']; // Assuming `wig_id` is passed for identifying the record
     $sql = "SELECT image FROM wig WHERE id='$id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $old_image = $row['image'];  // The current image in the database
 
     // Fetch type from the database
-    $sql = "SELECT * FROM trouser_type_db WHERE id='$type_id'";
+    $sql = "SELECT * FROM wig_type_db WHERE id='$type_id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $type = $row['type'];
@@ -112,11 +115,32 @@ if (isset($_POST['update'])) {
         $image_path = $old_image;
     }
 
-    // Update the jeans record with the new or old image
+    // Update the wig record with the new or old image
     $sql = "UPDATE wig SET wig_name='$wig_name', size='$size', type='$type', price='$price', quantity='$quantity', image='$image_path',piece='$piece' WHERE id='$id'";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
+
+
+
+        $message = " Wig Updated:\n";
+        $message .= "Wig Name: $wig_name\n";
+        $message .= "Price: $price\n";
+        $message .= "Type: $type\n";
+        $message .= "Size: $size\n";
+        $message .= "Quantity: $quantity\n";
+
+
+        $subject = "wig Updated";
+
+
+
+
+
+
+
+        sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message, $subject, $con);
         echo "<script>window.location = 'action.php?status=success&redirect=all_wig.php';</script>";
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error updating wig in the database.&redirect=all.php';</script>";
@@ -149,16 +173,12 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['calcview'] == 1) ? true : false;
 
 
-        $addButtonVisible = ($module['calcadd'] == 1) ? true : false;
+        $updateButtonVisible = ($module['editwig'] == 1) ? true : false;
 
 
-        $updateButtonVisible = ($module['calcedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['calcgenerate'] == 1) ? true : false;
+      
     } else {
         echo "No user found with the specified ID";
     }
@@ -266,8 +286,8 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">wig Name</label>
-                                    <input type="text" name="wig_name" class="form-input" list="jeans_types" required value="<?php echo $wig_name ?>">
-                                    <datalist id="jeans_types">
+                                    <input type="text" name="wig_name" class="form-input" list="wig_types" required value="<?php echo $wig_name ?>">
+                                    <datalist id="wig_types">
                                         <!-- Options will be populated here -->
                                     </datalist>
                                 </div>
@@ -311,7 +331,7 @@ if ($result) {
 
                                         <?php
 
-                                        $sql = "SELECT * FROM trouser_type_db";
+                                        $sql = "SELECT * FROM wig_type_db";
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
@@ -384,7 +404,7 @@ if ($result) {
 
 
                                         <!-- Display the Calculate button if $calculateButtonVisible is true -->
-                                        <?php if ($calculateButtonVisible) : ?>
+                                        <?php if ($updateButtonVisible) : ?>
 
                                             <button name="update" type="submit" class="btn btn-sm bg-warning text-white rounded-full"> <i class="mgc_pencil_fill text-base me-2"></i> Update </button>
 

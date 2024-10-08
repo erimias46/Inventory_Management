@@ -26,3 +26,8 @@ Wig ID: 10
 Size: 18
 Piece: 3
 From Piece: 3
+Current Quantity: 4
+Wig ID: 13
+Size: 18
+Piece: 3
+From Piece: 3

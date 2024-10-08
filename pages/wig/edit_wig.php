@@ -302,7 +302,7 @@ if ($result) {
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
-                                            <option value="<?php echo $row['id'] ?>" <?php
+                                            <option value="<?php echo $row['size'] ?>" <?php
                                                                                         if (isset($size)) {
                                                                                             if ($row['size'] == $size) {
                                                                                                 echo "selected";

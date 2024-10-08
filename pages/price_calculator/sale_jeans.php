@@ -969,7 +969,7 @@ if (isset($_POST['add_data'])) {
             }
         }
 
-        $message = "Sale Have been Made";
+        $message = "Sale Have been Made \n";
 
 
         $message .= "Jeans Name: $jeans_name\n";

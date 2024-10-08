@@ -28,20 +28,7 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['payview'] == 1) ? true : false;
-
-
-        $addButtonVisible = ($module['payadd'] == 1) ? true : false;
-        $deleteButtonVisible = ($module['paydelete'] == 1) ? true : false;
-
-        $verifyButtonVisible = ($module['payverify'] == 1) ? true : false;
-
-
-
-        $updateButtonVisible = ($module['payedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['paygenerate'] == 1) ? true : false;
+        
     } else {
         echo "No user found with the specified ID";
     }
@@ -85,12 +72,7 @@ if ($result) {
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Refund Log</h4>
                             <div>
 
-                                <?php if ($generateButtonVisible) { ?>
-                                    <a href="<?= $redirect_link . 'pages/export.php?type=bank' ?>" class=" btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
-                                        <i class="msr text-base me-2">picture_as_pdf</i>
-                                        Export
-                                    </a>
-                                <?php } ?>
+                               
                             </div>
                         </div>
                     </div>

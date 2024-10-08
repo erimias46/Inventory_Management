@@ -3,6 +3,9 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
+    include_once $redirect_link . 'include/email.php';
+    include_once $redirect_link . 'include/bot.php';
+
 
 $current_date = date('Y-m-d');
 
@@ -181,26 +184,21 @@ if (isset($_POST['add'])) {
         $message .= "Date: $date\n";
         $message .= "Quantity: $quantity\n";
 
-        $botToken = "YOUR_TELEGRAM_BOT_TOKEN"; // Replace with your bot token
-        $apiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
 
-        foreach ($subscribers as $subscriber) {
-            $chatId = $subscriber['chat_id'];
 
-            $data = [
-                'chat_id' => $chatId,
-                'text' => $message,
-                'parse_mode' => 'HTML' // Optional: Use HTML formatting
-            ];
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $apiUrl);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            curl_close($ch);
-        }
+
+       
+
+
+
+        $subject = "Sold Product: $product_name";
+
+
+        sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message, $subject, $con);
+
+        
 
         // Success redirect
         echo "<script>window.location = 'action.php?status=success&redirect=sale_$table.php'; </script>";

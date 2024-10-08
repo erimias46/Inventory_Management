@@ -9,6 +9,9 @@
 
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
+
+include_once $redirect_link . 'include/email.php';
+include_once $redirect_link . 'include/bot.php';
    // include '../../include/nav.php'; 
    // $current_date = date('Y-m-d');
 
@@ -64,6 +67,26 @@ VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$ba
         $result_adds = mysqli_query($con, $add_shoes_log);
             if ($remove_res) {
                 echo "<script>window.location.href='../sale_shoes.php?status=success';</script>";
+
+
+            $message = " Sale of shoes Deleted:\n";
+            $message .= "shoes Name: $shoes_name\n";
+            $message .= "Price: $price\n";
+            $message .= "Type: $type\n";
+            $message .= "Size: $size\n";
+            $message .= "Quantity: $quantity\n";
+
+
+            $subject = "Sale of shoes Deleted";
+
+
+
+
+
+
+
+            sendMessageToSubscribers($message, $con);
+            sendEmailToSubscribers($message, $subject, $con);
             }
 
             
@@ -76,10 +99,36 @@ VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$ba
         } 
 
         elseif($from=='shoes'){
+
+            $sql = "SELECT * FROM shoes WHERE id='$id'";
+            $res = mysqli_query($con, $sql);
+            $row = mysqli_fetch_assoc($res);
+            $shoes_name = $row['shoes_name'];
+            $size = $row['size'];
+            $price = $row['price'];
+            $type = $row['type'];
+            $quantity = $row['quantity'];
+
             $remove = "DELETE FROM shoes WHERE id ='$id'";
             $remove_res = mysqli_query($con, $remove);
             if ($remove_res) {
                 echo "<script>window.location.href='../all_shoes.php?status=success';</script>";
+
+
+            $status = "Shoes DELETED";
+
+            $message = " shoes Deleted:\n";
+            $message .= "shoes Name: $shoes_name\n";
+            $message .= "Price: $price\n";
+            $message .= "Type: $type\n";
+            $message .= "Size: $size\n";
+            $message .= "Quantity: $quantity\n";
+            $message .= "status: $status\n";
+
+            $subject = "Shoes Deleted";
+
+            sendMessageToSubscribers($message, $con);
+            sendEmailToSubscribers($message, $subject, $con);
             }
         }
 
@@ -113,6 +162,24 @@ VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$ba
         $result_adds = mysqli_query($con, $add_shoes_log);
 
         if ($result_adds) {
+
+
+            $message = " shoes Delivery Canceled:\n";
+            $message .= "shoes Name: $shoes_name\n";
+            $message .= "Price: $price\n";
+            $message .= "Type: $type\n";
+            $message .= "Size: $size\n";
+            $message .= "Quantity: $quantity\n";
+            $message .= "status: $status\n";
+
+
+            $subject = "shoes Delivery Canceled";
+
+
+
+
+            sendMessageToSubscribers($message, $con);
+            sendEmailToSubscribers($message, $subject, $con);
 
 
 

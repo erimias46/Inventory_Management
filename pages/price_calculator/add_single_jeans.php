@@ -133,6 +133,9 @@ $subject="New Jeans Added";
         sendEmailToSubscribers($message,$subject, $con);
 
 
+        echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
+
+
       
 
 

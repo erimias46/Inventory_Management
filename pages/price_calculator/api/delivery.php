@@ -6,8 +6,10 @@ $side_link = "../../../";
 
 
 
-include $redirect_link . 'partials/main.php';
-include_once $redirect_link . 'include/db.php'; 
+
+
+
+
 $sale_id = $_POST['sales_id'];
 
 $jeans_name = $_POST['jeans_name'];
@@ -73,8 +75,24 @@ $sql = "UPDATE delivery SET status = 'Delivered', verifiy = 1 WHERE sales_id = $
 $result = mysqli_query($con, $sql);
 
 
-$message=$sale_id." Jeans has been delivered";
+$message = "Delivery Have been verified and delivered to customer\n";
+
+
+$message .= "Jeans Name: $jeans_name\n";
+$message .= "Price: $price\n";
+$message .= "Size: $size\n";
+$message .= "Quantity: $quantity\n";
+$message .= "Cash :  $cash\n";
+$message .= "Bank : $bank\n";
+
+
+
+$subject = "Sold Jeans Deliverd to Customer";
+
+
 sendMessageToSubscribers($message, $con);
+sendEmailToSubscribers($message, $subject, $con);
+
 
 
 

@@ -50,11 +50,6 @@ if ($result) {
         $deletesalejeans = ($module['deletesalejeans'] == 1) ? true : false;
         $exchangesalejeans = ($module['exchangesalejeans'] == 1) ? true : false;
         $refundsalejeans = ($module['refundsalejeans'] == 1) ? true : false;
-
-
-
-
-       
     } else {
         echo "No user found with the specified ID";
     }
@@ -135,14 +130,14 @@ if ($result) {
                                 <?php endif; ?>
 
 
-                              
-                                    <a href="export.php?type=sales&from_date=<?php echo $from_date; ?>&to_date=<?php echo $to_date; ?>"
-                                        class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
-                                        <i class="msr text-base me-2">picture_as_pdf</i>
-                                        Export
-                                    </a>
 
-                               
+                                <a href="export.php?type=sales&from_date=<?php echo $from_date; ?>&to_date=<?php echo $to_date; ?>"
+                                    class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
+                                    <i class="msr text-base me-2">picture_as_pdf</i>
+                                    Export
+                                </a>
+
+
                             </div>
                         </div>
                     </div>
@@ -410,6 +405,9 @@ if ($result) {
                                                                 <div class="grid grid-cols-3 md:grid-cols-2 gap-3">
                                                                     <input type="hidden" name="sales_id" value="<?= $row['sales_id']; ?>">
 
+
+
+
                                                                     <?php
                                                                     $sql2 = "SELECT * FROM sales WHERE sales_id = " . $row['sales_id'];
                                                                     $result2 = mysqli_query($con, $sql2);
@@ -418,7 +416,7 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Name</label>
-                                                                        <select name="jeans_name" class="search-select" id="jeans_name_select" disabled>
+                                                                        <select name="jeans_name" class="search-select" id="jeans_name_select" readonly>
                                                                             <?php
                                                                             $sql3 = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
                                                                             $result3 = mysqli_query($con, $sql3);
@@ -442,7 +440,7 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Size</label>
-                                                                        <select name="size" class="search-select" id="jeans_size_select" disabled>
+                                                                        <select name="size" class="search-select" id="jeans_size_select" readonly>
                                                                             <?php
                                                                             $sql4 = "SELECT * FROM jeansdb";
                                                                             $result4 = mysqli_query($con, $sql4);
@@ -501,7 +499,7 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Quantity</label>
-                                                                        <input type="text" name="quantity" class="form-input" required value="<?php echo $row['quantity'] ?>" disabled>
+                                                                        <input type="text" name="quantity" class="form-input" required value="<?php echo $row['quantity'] ?>" readonly>
                                                                     </div>
 
                                                                     <div>
@@ -792,6 +790,8 @@ if (isset($_POST['update'])) {
     $quantity = $_POST['quantity'];
 
 
+   
+
     if ($bank == 0) {
         $bank_name = null;
         $bank_id = null;
@@ -803,37 +803,39 @@ if (isset($_POST['update'])) {
         $bank_id = $row['id'];
     }
 
-
-    $sql = "UPDATE sales SET  price = '$price', cash = '$cash', bank = '$bank', update_date = '$date', user_id = '$user_id', bank_id = '$bank_id', bank_name = '$bank_name' WHERE sales_id = '$sales_id'";
+    // Update the sales record with all fields
+    $sql = "UPDATE sales SET jeans_name = '$jeans_name', size = '$size', quantity = '$quantity', price = '$price', cash = '$cash', bank = '$bank', update_date = '$date', user_id = '$user_id', bank_id = '$bank_id', bank_name = '$bank_name' WHERE sales_id = '$sales_id'";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
-        echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
+        // echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
 
-        $message="Sale Have been Updated";
-
-       
+        $message = "Sale has been updated\n";
         $message .= "Jeans Name: $jeans_name\n";
         $message .= "Price: $price\n";
-        $message .= "Type: $type\n";
         $message .= "Size: $size\n";
         $message .= "Quantity: $quantity\n";
+        $message .= "Cash: $cash\n";
+        $message .= "Bank: $bank\n";
+        $message .= "Method: $method\n";
 
 
         $subject = "Sale Updated";
 
-
+        // Send updates to subscribers
         sendMessageToSubscribers($message, $con);
         sendEmailToSubscribers($message, $subject, $con);
-
-
-
-
-
     } else {
         echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
     }
 }
+
+
+
+
+
+
+
 
 
 if (isset($_POST['add_data'])) {
@@ -975,7 +977,7 @@ if (isset($_POST['add_data'])) {
         $message .= "Size: $size\n";
         $message .= "Quantity: $quantity\n";
         $message .= "Cash :  $cash\n";
-        $message.="Bank : $bank\n";
+        $message .= "Bank : $bank\n";
 
 
 

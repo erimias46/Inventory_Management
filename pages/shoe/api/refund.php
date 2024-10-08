@@ -1,6 +1,17 @@
 <?php
 
-include "../../../include/db.php";
+
+
+$redirect_link = "../../../";
+$side_link = "../../../";
+
+
+
+include $redirect_link . 'partials/main.php';
+include_once $redirect_link . 'include/db.php'; // Include your database connection
+
+include_once $redirect_link . 'include/email.php';
+include_once $redirect_link . 'include/bot.php';
 
 $update_id = $_GET['id'];
 $from = $_GET['from'];
@@ -35,6 +46,22 @@ VALUES ('$shoes_id', '$size_id', '$shoes_name', '$size', '$price', '$cash', '$ba
 $result_adds = mysqli_query($con, $add_shoes_log);
 
 if($result_adds){
+
+
+    $subject = "Refund shoes";
+    $message = " Refund shoes\n";
+    $message .= "shoes Name: $shoes_name\n";
+    $message .= "Size: $size\n";
+    $message .= "Quantity: $quantity\n";
+    $message .= "Price: $price\n";
+    $message .= "Cash: $cash\n";
+    $message .= "Bank: $bank\n";
+    $message .= "Method: $method\n";
+    $message .= "Date: $date\n";
+
+
+    sendMessageToSubscribers($message, $con);
+    sendEmailToSubscribers($message, $subject, $con);
 
     
 

@@ -31,18 +31,12 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['custview'] == 1) ? true : false;
+       
 
 
-        $addButtonVisible = ($module['custadd'] == 1) ? true : false;
+        $emailButtonVisible = ($module['email'] == 1) ? true : false;
 
-        $deleteButtonVisible = ($module['custdelete'] == 1) ? true : false;
-
-
-        $updateButtonVisible = ($module['custedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['custgenerate'] == 1) ? true : false;
+       
     } else {
         echo "No user found with the specified ID";
     }
@@ -85,7 +79,7 @@ if ($result) {
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Add Email Accounts</h4>
                             <div>
 
-                                <?php if ($addButtonVisible) : ?>
+                                <?php if ($emailButtonVisible) : ?>
 
                                     <button type="button" data-fc-type="modal" data-fc-target="addModal"
                                         class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
@@ -94,15 +88,7 @@ if ($result) {
                                     </button>
                                 <?php endif; ?>
 
-                                <?php if ($generateButtonVisible) : ?>
-
-                                    <a href="<?php $redirect_link . 'pages/export.php?type=bankdb' ?>"
-                                        class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
-                                        <i class="msr text-base me-2">picture_as_pdf</i>
-                                        Export
-                                    </a>
-
-                                <?php endif; ?>
+                                
                             </div>
                         </div>
                     </div>
@@ -131,7 +117,7 @@ if ($result) {
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
 
-                                                        <?php if ($addButtonVisible) : ?>
+                                                        <?php if ($emailButtonVisible) : ?>
 
                                                             <a id="del-btn" href="remove.php?id=<?php echo $row['id']; ?>&from=email_subscribers"
                                                                 class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full"><i
@@ -139,7 +125,7 @@ if ($result) {
 
                                                         <?php endif; ?>
 
-                                                        <?php if ($updateButtonVisible) : ?>
+                                                        <?php if ($emailButtonVisible) : ?>
 
 
                                                             <button type="button" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"

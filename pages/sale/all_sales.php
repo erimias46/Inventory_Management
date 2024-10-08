@@ -30,7 +30,7 @@ $current_date = date('Y-m-d');
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
 
-                                        <table  data-order='[[ 0, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <table data-order='[[ 0, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
@@ -87,13 +87,11 @@ ORDER BY sales_date DESC;
                                                                 <i class="mgc_delete_2_line text-base me-2"></i> Delete
                                                             </a>
 
-                                                            <button type="button"
-                                                                class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
-                                                                data-fc-type="modal"
-                                                                data-fc-target="exchange<?= $row['sales_id'] ?>">
-                                                                <i class="mgc_pencil_line text-base me-2"></i>
-                                                                Exchange
-                                                            </button>
+                                                            <a id="del-btn" href="exchange.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
+                                                                <i class="mgc_delete_2_line text-base me-2"></i> Exchange
+                                                            </a>
+
+
                                                         </td>
                                                     </tr>
 
@@ -148,7 +146,7 @@ ORDER BY sales_date DESC;
                                                                                 <?php
                                                                                 // Select options based on ty
 
-                                                                                
+
                                                                                 $result3 = mysqli_query($con, $sql3);
                                                                                 if (mysqli_num_rows($result3) > 0) {
                                                                                     while ($row3 = mysqli_fetch_assoc($result3)) { ?>
@@ -165,7 +163,7 @@ ORDER BY sales_date DESC;
                                                                                 <?php
 
 
-                                                                               
+
 
                                                                                 // $sql4 = "SELECT * FROM jeansdb";
                                                                                 $result4 = mysqli_query($con, $sql4);

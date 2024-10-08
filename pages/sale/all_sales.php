@@ -93,6 +93,9 @@ ORDER BY sales_date DESC;
                                                             <a id="del-btn" href="exchange.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-info text-white hover:bg-warning hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_delete_2_line text-base me-2"></i> Refund
                                                             </a>
+                                                            <a id="del-btn" href="edit.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-success text-white hover:bg-warning hover:text-white btn-sm rounded-full">
+                                                                <i class="mgc_delete_2_line text-base me-2"></i> Edit
+                                                            </a>
 
 
                                                         </td>

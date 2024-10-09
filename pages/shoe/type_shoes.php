@@ -80,7 +80,7 @@ $current_date = date('Y-m-d');
                                                 ]; // Array of 10 different text colors to alternate between
                                                 $currentColorIndex = 0; // To toggle between colors
 
-                                                $sql = "SELECT shoes_name, GROUP_CONCAT(CONCAT('Size ', size, ' (', quantity, 'X)') SEPARATOR ', ') AS sizes, price, image, created_at, id 
+                                                $sql = "SELECT shoes_name, GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, price, image, created_at, id 
         FROM shoes
         WHERE quantity > 0 
         GROUP BY shoes_name, price, image  

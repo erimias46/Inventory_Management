@@ -237,13 +237,7 @@ if ($result) {
 
 
                                 <!-- Submit Button Section -->
-                                <div class="text-center mt-5">
-                                    <?php if ($add_button) : ?>
-                                        <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full px-4 py-2">
-                                            <i class="mgc_search_fill text-base me-2"></i> Search
-                                        </button>
-                                    <?php endif; ?>
-                                </div>
+                                
 
 
 

@@ -237,11 +237,11 @@ if ($result) {
 
 
                                 <!-- Submit Button Section -->
-                                
 
 
 
-                                <table border="1"  id="resultTable">
+
+                                <table border="1" id="resultTable">
                                     <thead>
                                         <tr>
                                             <th>Size</th>
@@ -281,6 +281,10 @@ if ($result) {
     <?php include $redirect_link . 'partials/customizer.php'; ?>
 
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
+
+
+
+    
 
 
 

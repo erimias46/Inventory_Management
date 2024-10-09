@@ -48,18 +48,18 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['constview'] == 1) ? true : false;
+        $calculateButtonVisible = ($module['constant'] == 1) ? true : false;
 
 
-        $addButtonVisible = ($module['constadd'] == 1) ? true : false;
+        $addButtonVisible = ($module['constant'] == 1) ? true : false;
 
 
-        $updateButtonVisible = ($module['constedit'] == 1) ? true : false;
+        $updateButtonVisible = ($module['constant'] == 1) ? true : false;
 
-        $deleteButtonVisible = ($module['constdelete'] == 1) ? true : false;
+        $deleteButtonVisible = ($module['constant'] == 1) ? true : false;
 
 
-        $generateButtonVisible = ($module['constgenerate'] == 1) ? true : false;
+        $generateButtonVisible = ($module['constant'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }

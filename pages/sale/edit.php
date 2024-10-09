@@ -17,12 +17,10 @@ $type = $_GET['type'];
 $sales_id = $_GET['sales_id'];
 
 
-if($type=='jeans'){
-    $sql="SELECT * FROM sales WHERE sales_id = $sales_id";
-}
-
-else{
-    $sql="SELECT * FROM {$type}_sales WHERE sales_id = $sales_id";
+if ($type == 'jeans') {
+    $sql = "SELECT * FROM sales WHERE sales_id = $sales_id";
+} else {
+    $sql = "SELECT * FROM {$type}_sales WHERE sales_id = $sales_id";
 }
 
 
@@ -61,24 +59,31 @@ if (isset($_GET['import_brocher_id'])) {
 
 ?>
 
-<?php
-if (isset($_POST['add'])) {
 
-    // Collect form data
+
+
+<?php
+
+
+if (isset($_POST['update'])) {
+
+
+
+    $sales_id = $_POST['sales_id'];
     $user_id = $_SESSION['user_id'];
-    $code_name = $_POST['code_name']; // Get the value of the selected item
-    $size = $_POST['size_name'];
+    $product_name = $_POST['product_name'];
+
+    $size = $_POST['size'];
     $price = $_POST['price'];
     $cash = $_POST['cash'];
     $bank = $_POST['bank'];
     $method = $_POST['method'];
-    $date = date('Y-m-d H:i:s');
-    $quantity = 1;
+    $date = $_POST['date'];
+    $quantity = $_POST['quantity'];
 
-    // Split the code_name into table and product name
-    list($table, $product_name) = explode('|', $code_name);
 
-    // Handle bank details
+
+
     if ($bank == 0) {
         $bank_name = null;
         $bank_id = null;
@@ -90,162 +95,31 @@ if (isset($_POST['add'])) {
         $bank_id = $row['id'];
     }
 
-    // Ensure product name and size are provided
-    if (!empty($product_name) && !empty($size)) {
-        // Get product details from the corresponding table
-        $sql = "SELECT * FROM $table WHERE {$table}_name = '$product_name' AND size = '$size'";
-        $result = mysqli_query($con, $sql);
-        $row = mysqli_fetch_assoc($result);
+    // Update the sales record with all fields
+    $sql = "UPDATE sales SET jeans_name = '$jeans_name', size = '$size', quantity = '$quantity', price = '$price', cash = '$cash', bank = '$bank', update_date = '$date', user_id = '$user_id', bank_id = '$bank_id', bank_name = '$bank_name' WHERE sales_id = '$sales_id'";
+    $result = mysqli_query($con, $sql);
 
-        if (!$row) {
-            // If no exact match for product name and size, get default product details (without size)
-            $sql = "SELECT * FROM $table WHERE {$table}_name = '$product_name'";
-            $result = mysqli_query($con, $sql);
-            $row = mysqli_fetch_assoc($result);
-            $price = $row['price'];
-            $image = $row['image'];
-            $type = $row['type'];
-            $type_id = $row['type_id'];
+    if ($result) {
+        // echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
 
-            $sql2 = "SELECT * FROM {$table}db WHERE size = '$size'";
-            $result2 = mysqli_query($con, $sql2);
-            $row2 = mysqli_fetch_assoc($result2);
-            $size_id = $row2['id'];
-
-            // Insert into verification table with error status
-            $add_product = "INSERT INTO `{$table}_verify`(`{$table}_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
-                          VALUES ('$product_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','1')";
-            $result_add = mysqli_query($con, $add_product);
-
-            if ($result_add) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_$table.php'; </script>";
-            }
-
-            exit;
-        }
-
-        // Get product details from the row
-        $product_id = $row['id'];
-        $size_id = $row['size_id'];
-        $current_quantity = $row['quantity'];
-
-        // Check quantity availability
-        if ($current_quantity < $quantity) {
-            // Insert into verification table with insufficient quantity error
-            $price = $row['price'];
-            $image = $row['image'];
-            $type = $row['type'];
-            $type_id = $row['type_id'];
-
-            $add_product = "INSERT INTO `{$table}_verify`(`{$table}_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
-                          VALUES ('$product_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','2')";
-            $result_add = mysqli_query($con, $add_product);
-
-            if ($result_add) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_$table.php'; </script>";
-                exit;
-            }
-
-            exit;
-        }
-
-        // Insert into delivery or sales table
-        if ($method == 'delivery') {
-            $status = "pending";
-
-            if ($table == 'jeans')
-                $delivery_table = 'delivery';
-            else
-                $delivery_table = $table . '_delivery';
-
-            $sql = "INSERT into {$delivery_table} ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status)
-                VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', '$status')";
-            $result = mysqli_query($con, $sql);
-
-            $new_quantity = $current_quantity - $quantity;
-            $update_quantity = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
-            $result_update = mysqli_query($con, $update_quantity);
-
-            if (!$result || !$result_update) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_$table.php'; </script>";
-                exit;
-            }
-        } else {
-
-            if ($table == 'jeans') {
-                $sales_table = 'sales';
-            } else {
-                $sales_table = $table . '_sales';
-            }
-
-
-            $add_sales = "INSERT INTO `$sales_table`(`{$table}_id`, `size_id`, `{$table}_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `bank_id`, `bank_name`, `status`) 
-                      VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', 'active')";
-            $result_add = mysqli_query($con, $add_sales);
-
-            $status = "sold";
-
-            if ($table == 'jeans') {
-                $sales_log = 'sales_log';
-            } else {
-                $sales_log = $table . '_sales_log';
-            }
-
-            $add_product_log = "INSERT INTO `$sales_log`(`{$table}_id`, `size_id`, `{$table}_name`, `size`, `price`, `cash`, `bank`, `method`, `sales_date`, `update_date`, `quantity`, `user_id`, `status`) 
-                            VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$status')";
-            $result_adds = mysqli_query($con, $add_product_log);
-
-            $new_quantity = $current_quantity - $quantity;
-            $update_quantity = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
-            $result_update = mysqli_query($con, $update_quantity);
-
-            if (!$result_add || !$result_adds || !$result_update) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_$table.php'; </script>";
-                exit;
-            }
-        }
-
-        // Notify subscribers for both delivery and sales
-        $subscribers_query = "SELECT chat_id FROM subscribers";
-        $subscribers_result = mysqli_query($con, $subscribers_query);
-        $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
-
-        $message = "New Sale Added:\n";
-        $message .= "Product Name: $product_name\n";
-        $message .= "Size: $size\n";
+        $message = "Sale has been updated\n";
+        $message .= "Jeans Name: $jeans_name\n";
         $message .= "Price: $price\n";
+        $message .= "Size: $size\n";
+        $message .= "Quantity: $quantity\n";
         $message .= "Cash: $cash\n";
         $message .= "Bank: $bank\n";
         $message .= "Method: $method\n";
-        $message .= "Date: $date\n";
-        $message .= "Quantity: $quantity\n";
 
 
+        $subject = "Sale Updated";
 
-
-
-
-
-
-
-        $subject = "Sold Product: $product_name";
-
-
+        // Send updates to subscribers
         sendMessageToSubscribers($message, $con);
         sendEmailToSubscribers($message, $subject, $con);
-
-
-
-        // Success redirect
-        echo "<script>window.location = 'action.php?status=success&redirect=sale_$table.php'; </script>";
+    } else {
+        echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
     }
-}
-?>
-
-<?php
-
-
-if (isset($_POST['update'])) {
 }
 
 ?>
@@ -296,7 +170,7 @@ if ($result) {
     <?php include $redirect_link . 'partials/head-css.php'; ?>
 
 
-   
+
 </head>
 
 
@@ -325,7 +199,7 @@ if ($result) {
                                 <!-- Jeans Name Field -->
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
-                                    <select name="code_name" id="code_name" class="w-full border border-gray-300 p-2 rounded-md search-select" onchange="fetchSizes()" required>
+                                    <select name="code_name" id="code_name" class="w-full border border-gray-300 p-2 rounded-md search-select" onchange="fetchSizes()" required readonly>
                                         <option value="">Select Name</option>
                                         <?php
                                         $sql3 = "SELECT * FROM `$type` GROUP BY `{$type}_name` ORDER BY `{$type}_name` ASC";
@@ -346,7 +220,7 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="size_name">Size</label>
-                                    <select name="size_name" id="size_name" class="form-select w-full border border-gray-300 p-2 rounded-md" required>
+                                    <select name="size_name" id="size_name" class="form-select w-full border border-gray-300 p-2 rounded-md" required readonly>
 
                                         <?php
                                         $sql4 = "SELECT * FROM `{$type}db`";
@@ -356,10 +230,10 @@ if ($result) {
 
                                                 // Check if the current option should be selected
                                                 $selected = ($row4['size'] == $size) ? 'selected' : '';
-                                                
-                                                ?>
+
+                                        ?>
                                                 <option value="<?= $row4['size'] ?>" <?= $selected ?>><?= $row4['size'] ?></option>
-                                               
+
                                         <?php }
                                         }
                                         ?>
@@ -371,11 +245,11 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
-                                    <input type="text" name="cash" id="cash" class="form-input w-full border border-gray-300 p-2 rounded-md" required  value="<?php echo $cash ;?>">
+                                    <input type="text" name="cash" id="cash" class="form-input w-full border border-gray-300 p-2 rounded-md" required value="<?php echo $cash; ?>">
                                 </div>
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
-                                   <input type="text" name="bank" id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required value='<?php echo $bank; ?>'>
+                                    <input type="text" name="bank" id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required value='<?php echo $bank; ?>'>
 
                                 </div>
 
@@ -400,14 +274,14 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Total Price</label>
-                                    <input type="text" name="price" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" readonly required  value="<?php echo $price; ?>" >
+                                    <input type="text" name="price" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" readonly required value="<?php echo $price; ?>">
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Method</label>
-                                    <select name="method" id="method" class="form-select w-full border border-gray-300 p-2 rounded-md" required>
-                                        <option value="shop">Shop</option>
-                                        <option value="delivery">Delivery</option>
+                                    <select name="method" class="selectize" readonly>
+                                        <option value="shop" <?php if (isset($row['method']) && $row['method'] == 'shop') echo 'selected'; ?>>Shop</option>
+                                        <option value="delivery" <?php if (isset($row['method']) && $row['method'] == 'delivery') echo 'selected'; ?>>Delivery</option>
                                     </select>
                                 </div>
 
@@ -422,7 +296,7 @@ if ($result) {
                                 <!-- Submit Button Section -->
                                 <div class="text-center mt-5">
                                     <?php if ($add_button) : ?>
-                                        <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full px-4 py-2">
+                                        <button name="update" type="submit" class="btn btn-sm bg-success text-white rounded-full px-4 py-2">
                                             <i class="mgc_add_fill text-base me-2"></i> Add Sale
                                         </button>
                                     <?php endif; ?>

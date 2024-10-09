@@ -124,45 +124,7 @@ if ($result) {
     <?php include $redirect_link . 'partials/head-css.php'; ?>
 
 
-    <style>
-        .image-preview {
-            display: inline-block;
-            margin-left: 20px;
-        }
 
-        .image-preview img {
-            max-width: 150px;
-            max-height: 150px;
-        }
-
-
-        /* Hide the default file input */
-        .choose-image {
-            display: none;
-        }
-
-        /* Style the custom file upload button */
-        .custom-file-upload {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            background-color: #4A90E2;
-            color: white;
-            padding: 10px 20px;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .custom-file-upload:hover {
-            background-color: #244bad;
-        }
-
-        .custom-file-label {
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 
@@ -241,7 +203,12 @@ if ($result) {
 
 
 
-                                <table border="1" id="resultTable">
+                                <div id="product-image" style="margin-bottom: 10px;">
+                                    <!-- The image will be inserted here dynamically -->
+                                </div>
+
+                                <!-- Table for displaying sizes and quantities -->
+                                <table id="size-table">
                                     <thead>
                                         <tr>
                                             <th>Size</th>
@@ -249,7 +216,7 @@ if ($result) {
                                         </tr>
                                     </thead>
                                     <tbody id="size-table-body">
-                                        <!-- This will be populated dynamically -->
+                                        <!-- The rows will be dynamically inserted here -->
                                     </tbody>
                                 </table>
 
@@ -265,6 +232,40 @@ if ($result) {
                     justify-content: center;
                     align-items: center;
                 }
+
+
+
+                #product-image {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+
+                #size-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    margin-bottom: 20px;
+                }
+
+                #size-table th,
+                #size-table td {
+                    padding: 12px;
+                    border-bottom: 2px solid #ddd;
+                    text-align: left;
+                }
+
+                #size-table th {
+                    
+                    font-size: 16px;
+                    
+                }
+
+                #size-table td {
+                    font-size: 14px;
+                    
+                }
+
+                
             </style>
 
 
@@ -284,7 +285,7 @@ if ($result) {
 
 
 
-    
+
 
 
 
@@ -353,6 +354,19 @@ if ($result) {
 
                         // Check if sizes data exists
                         if (data.sizes && data.sizes.length > 0) {
+                            // Add the image before the size and quantity rows
+                            if (data.image) {
+                                let imageContainer = document.getElementById("product-image");
+                                imageContainer.innerHTML = ''; // Clear previous image if any
+                                let image = document.createElement('img');
+                                image.src = '../../include/' + data.image; // Adjust this path based on your file structure
+
+                                image.alt = productName + ' image';
+                                image.style.width = '200px'; // Adjust the size as needed
+                                imageContainer.appendChild(image);
+                            }
+
+                            // Populate the table with sizes and quantities
                             data.sizes.forEach(sizeData => {
                                 let row = document.createElement('tr');
 
@@ -383,6 +397,7 @@ if ($result) {
                     });
             }
         }
+
 
 
 

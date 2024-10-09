@@ -9,9 +9,6 @@ include_once $redirect_link . 'include/db.php';
 $productType = $_GET['productType'];
 $productName = $_GET['productName'];
 
-
-
-
 // Make sure productType and productName are not empty
 if (empty($productType) || empty($productName)) {
     echo json_encode(['error' => 'Invalid product type or product name']);
@@ -19,7 +16,7 @@ if (empty($productType) || empty($productName)) {
 }
 
 // Prepare the query using productType dynamically and parameterize the productName
-$query = "SELECT size, quantity FROM `$productType` WHERE `{$productType}_name` = ?";
+$query = "SELECT size, quantity, image FROM `$productType` WHERE `{$productType}_name` = ?";
 $stmt = $con->prepare($query);
 
 // Check if the statement was prepared successfully
@@ -42,13 +39,19 @@ $result = $stmt->get_result();
 
 // Fetch the sizes and quantities into an array
 $sizes = [];
+$image = null; // To hold the image
+
 while ($row = $result->fetch_assoc()) {
     $sizes[] = ['size' => $row['size'], 'quantity' => $row['quantity']];
+    if ($image === null) {
+        // Set the image once (assuming all rows have the same image)
+        $image = $row['image'];
+    }
 }
 
-// Return the sizes and quantities as JSON
-echo json_encode(['sizes' => $sizes]);
+// Return the sizes, quantities, and image as JSON
+echo json_encode(['sizes' => $sizes, 'image' => $image]);
 
 // Close the statement and connection (optional but good practice)
-
-
+// $stmt->close();
+// $con->close();

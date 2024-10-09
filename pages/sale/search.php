@@ -197,11 +197,11 @@ if ($result) {
 
                                         <select id="product-type" name="product-type" onchange="loadProductNames()" class="form-input">
                                             <option value="">Select Product Type</option>
-                                            <option value="Jeans">Jeans</option>
-                                            <option value="Shoes">Shoes</option>
-                                            <option value="Top">Top</option>
-                                            <option value="Cosmetics">Cosmetics</option>
-                                            <option value="Accessory">Accessory</option>
+                                            <option value="jeans">Jeans</option>
+                                            <option value="shoes">Shoes</option>
+                                            <option value="top">Top</option>
+                                            <option value="cosmetics">Cosmetics</option>
+                                            <option value="accessory">Accessory</option>
                                         </select>
 
                                     </div>

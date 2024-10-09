@@ -3,7 +3,7 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
-include_once $redirect_link . 'include/mdb.php';
+
 $current_date = date('Y-m-d');
 
 $generate_button = '';
@@ -147,16 +147,10 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['calcview'] == 1) ? true : false;
+        
 
 
-        $addButtonVisible = ($module['calcadd'] == 1) ? true : false;
-
-
-        $updateButtonVisible = ($module['calcedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['calcgenerate'] == 1) ? true : false;
+        $updateButtonVisible = ($module['edittop'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -280,7 +274,7 @@ if ($result) {
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
-                                            <option value="<?php echo $row['id'] ?>" <?php
+                                            <option value="<?php echo $row['size'] ?>" <?php
                                                                                         if (isset($size)) {
                                                                                             if ($row['size'] == $size) {
                                                                                                 echo "selected";
@@ -309,7 +303,7 @@ if ($result) {
 
                                         <?php
 
-                                        $sql = "SELECT * FROM trouser_type_db";
+                                        $sql = "SELECT * FROM top_type_db";
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
@@ -376,7 +370,7 @@ if ($result) {
 
 
                                         <!-- Display the Calculate button if $calculateButtonVisible is true -->
-                                        <?php if ($calculateButtonVisible) : ?>
+                                        <?php if ($updateButtonVisible) : ?>
 
                                             <button name="update" type="submit" class="btn btn-sm bg-warning text-white rounded-full"> <i class="mgc_pencil_fill text-base me-2"></i> Update </button>
 

@@ -1,4 +1,4 @@
-
+   
 <?php 
 
 $current_date = date('Y-m-d');
@@ -24,7 +24,8 @@ include_once $redirect_link . 'include/bot.php';
     $cash = $_POST['cash'];
     $bank = $_POST['bank'];
     $method = $_POST['method'];
-    $date = $_POST['date'];
+   // $date = $_POST['date'];
+    $date = date('Y-m-d');
     $quantity = $_POST['quantity'];
     if($bank == 0){
         $bank_name = null; 

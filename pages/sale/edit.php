@@ -8,9 +8,41 @@ include_once $redirect_link . 'include/bot.php';
 
 
 
+
+
+
+
+
 $type = $_GET['type'];
 $sales_id = $_GET['sales_id'];
 
+
+if($type=='jeans'){
+    $sql="SELECT * FROM sales WHERE sales_id = $sales_id";
+}
+
+else{
+    $sql="SELECT * FROM {$type}_sales WHERE sales_id = $sales_id";
+}
+
+
+
+$result = mysqli_query($con, $sql);
+$row = mysqli_fetch_assoc($result);
+
+if ($row) {
+    $product_name = $row[$type . '_name'];
+    $size = $row['size'];
+    $price = $row['price'];
+    $cash = $row['cash'];
+    $bank = $row['bank'];
+    $method = $row['method'];
+    $bank_name = $row['bank_name'];
+    $status = $row['status'];
+    $price = $row['price'];
+} else {
+    echo "No product found with the specified ID";
+}
 
 
 $current_date = date('Y-m-d');
@@ -264,45 +296,7 @@ if ($result) {
     <?php include $redirect_link . 'partials/head-css.php'; ?>
 
 
-    <style>
-        .image-preview {
-            display: inline-block;
-            margin-left: 20px;
-        }
-
-        .image-preview img {
-            max-width: 150px;
-            max-height: 150px;
-        }
-
-
-        /* Hide the default file input */
-        .choose-image {
-            display: none;
-        }
-
-        /* Style the custom file upload button */
-        .custom-file-upload {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            background-color: #4A90E2;
-            color: white;
-            padding: 10px 20px;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .custom-file-upload:hover {
-            background-color: #244bad;
-        }
-
-        .custom-file-label {
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
+   
 </head>
 
 
@@ -331,31 +325,24 @@ if ($result) {
                                 <!-- Jeans Name Field -->
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
-                                    <select name="code_name" id="code_name" class=" w-full border border-gray-300 p-2 rounded-md  search-select" onchange="fetchSizes()" required>
+                                    <select name="code_name" id="code_name" class="w-full border border-gray-300 p-2 rounded-md search-select" onchange="fetchSizes()" required>
                                         <option value="">Select Name</option>
                                         <?php
-
-
-
                                         $sql3 = "SELECT * FROM `$type` GROUP BY `{$type}_name` ORDER BY `{$type}_name` ASC";
                                         $result3 = mysqli_query($con, $sql3);
 
-
-                                        $result3 = mysqli_query($con, $sql3);
                                         if (mysqli_num_rows($result3) > 0) {
-                                            while ($row3 = mysqli_fetch_assoc($result3)) { ?>
-                                                <option value="<?= $row3[$type . '_name'] ?>"><?= $row3[$type . '_name'] ?></option>
+                                            while ($row3 = mysqli_fetch_assoc($result3)) {
+                                                // Check if the current option should be selected
+                                                $selected = ($row3[$type . '_name'] == $product_name) ? 'selected' : '';
+                                        ?>
+                                                <option value="<?= $row3[$type . '_name'] ?>" <?= $selected ?>><?= $row3[$type . '_name'] ?></option>
                                         <?php }
                                         }
                                         ?>
-
-
-
-
-                                        ?>
-
                                     </select>
                                 </div>
+
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="size_name">Size</label>
@@ -365,8 +352,14 @@ if ($result) {
                                         $sql4 = "SELECT * FROM `{$type}db`";
                                         $result4 = mysqli_query($con, $sql4);
                                         if (mysqli_num_rows($result4) > 0) {
-                                            while ($row4 = mysqli_fetch_assoc($result4)) { ?>
-                                                <option value="<?= $row4['size'] ?>"><?= $row4['size'] ?></option>
+                                            while ($row4 = mysqli_fetch_assoc($result4)) {
+
+                                                // Check if the current option should be selected
+                                                $selected = ($row4['size'] == $size) ? 'selected' : '';
+                                                
+                                                ?>
+                                                <option value="<?= $row4['size'] ?>" <?= $selected ?>><?= $row4['size'] ?></option>
+                                               
                                         <?php }
                                         }
                                         ?>
@@ -378,11 +371,12 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
-                                    <input type="text" name="cash" id="cash" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
+                                    <input type="text" name="cash" id="cash" class="form-input w-full border border-gray-300 p-2 rounded-md" required  value="<?php echo $cash ;?>">
                                 </div>
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
-                                    <input type="text" name="bank" id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
+                                   <input type="text" name="bank" id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required value='<?php echo $bank; ?>'>
+
                                 </div>
 
                                 <div id="bankNameDiv">
@@ -406,7 +400,7 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Total Price</label>
-                                    <input type="text" name="price" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" readonly required>
+                                    <input type="text" name="price" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" readonly required  value="<?php echo $price; ?>" >
                                 </div>
 
                                 <div class="mb-3">

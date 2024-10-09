@@ -90,22 +90,22 @@ if ($result) {
         $constant = ($module['constant'] == 1) ? true : false;
         $backup = ($module['backup'] == 1) ? true : false;
         $email = ($module['email'] == 1) ? true : false;
-       
-        
 
 
 
 
 
-       
+
+
+
         // $constview = ($module['constview'] == 1) ? true : false;
         // $backview = ($module['backview'] == 1) ? true : false;
         // $profileview = ($module['profileview'] == 1) ? true : false;
 
-       
-       
-       
-       
+
+
+
+
     } else {
         echo "No user found with the specified ID";
     }
@@ -802,6 +802,13 @@ if ($result) {
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/all_sales.php" class="menu-link">
                                     <span class="menu-text">All Sales</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($logjeans) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/sale/sale_log.php" class="menu-link">
+                                    <span class="menu-text">All Sales Log</span>
                                 </a>
                             </li>
                         <?php endif; ?>

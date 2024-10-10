@@ -38,6 +38,9 @@ if ($row) {
     $bank_name = $row['bank_name'];
     $status = $row['status'];
     $price = $row['price'];
+
+
+  
 } else {
     echo "No product found with the specified ID";
 }
@@ -47,15 +50,6 @@ $current_date = date('Y-m-d');
 
 $generate_button = '';
 
-if (isset($_GET['import_brocher_id'])) {
-    $brocher_type = $_GET['brocher_type'];
-
-
-
-    $add_button = '<button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>';
-    $update_button = '<button name="update" type="submit" class="btn btn-sm bg-danger text-white rounded-full"> <i class="mgc_pencil_line text-base me-2"></i> Update </button>';
-    $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
-}
 
 ?>
 
@@ -67,59 +61,51 @@ if (isset($_GET['import_brocher_id'])) {
 
 if (isset($_POST['update'])) {
 
-
-
-    $sales_id = $_POST['sales_id'];
-    $user_id = $_SESSION['user_id'];
-    $product_name = $_POST['product_name'];
-
+    $product_name = $_POST['code_name'];
     $size = $_POST['size'];
-    $price = $_POST['price'];
     $cash = $_POST['cash'];
     $bank = $_POST['bank'];
     $method = $_POST['method'];
-    $date = $_POST['date'];
-    $quantity = $_POST['quantity'];
+    $bank_name = $_POST['bank_name'];
+    $price = $_POST['price'];
+    $date = date('Y-m-d');
+    $quantity = 1;
+    $type = $_GET['type'];
+    $sales_id = $_GET['sales_id'];
+
+
+    if ($type == 'jeans') {
+        $_POST['jeans_name'] = $_POST['code_name'];
+        $_POST['sales_id'] = $sales_id;
+
+        include('../../price_calculator/api/delivery.php');
+    } elseif ($type == 'shoes') {
+
+        $_POST['shoes_name'] = $_POST['code_name'];
+        $_POST['sales_id'] = $sales_id;
+
+
+        include('../../shoe/api/delivery.php');
+    } elseif ($type == 'top') {
+
+        $_POST['top_name'] = $_POST['code_name'];
+        $_POST['sales_id'] = $sales_id;
 
 
 
+        include('../../top/api/delivery.php');
+    } elseif ($type == 'accessory') {
 
-    if ($bank == 0) {
-        $bank_name = null;
-        $bank_id = null;
-    } else {
-        $bank_name = $_POST['bank_name'];
-        $sql = "SELECT * FROM bankdb WHERE bankname = '$bank_name'";
-        $result = mysqli_query($con, $sql);
-        $row = mysqli_fetch_assoc($result);
-        $bank_id = $row['id'];
+        $_POST['accessory_name'] = $_POST['code_name'];
+        $_POST['sales_id'] = $sales_id;
+        include('../../accessory/api/delivery.php');
+    } elseif ($type == 'complete') {
+
+        $_POST['complete_name'] = $_POST['code_name'];
+        $_POST['sales_id'] = $sales_id;
+        include('../../complete/api/delivery.php');
     }
-
-    // Update the sales record with all fields
-    $sql = "UPDATE sales SET jeans_name = '$jeans_name', size = '$size', quantity = '$quantity', price = '$price', cash = '$cash', bank = '$bank', update_date = '$date', user_id = '$user_id', bank_id = '$bank_id', bank_name = '$bank_name' WHERE sales_id = '$sales_id'";
-    $result = mysqli_query($con, $sql);
-
-    if ($result) {
-        // echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
-
-        $message = "Sale has been updated\n";
-        $message .= "Jeans Name: $jeans_name\n";
-        $message .= "Price: $price\n";
-        $message .= "Size: $size\n";
-        $message .= "Quantity: $quantity\n";
-        $message .= "Cash: $cash\n";
-        $message .= "Bank: $bank\n";
-        $message .= "Method: $method\n";
-
-
-        $subject = "Sale Updated";
-
-        // Send updates to subscribers
-        sendMessageToSubscribers($message, $con);
-        sendEmailToSubscribers($message, $subject, $con);
-    } else {
-        echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
-    }
+    
 }
 
 ?>
@@ -220,7 +206,7 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="size_name">Size</label>
-                                    <select name="size_name" id="size_name" class="form-select w-full border border-gray-300 p-2 rounded-md" required readonly>
+                                    <select name="size" id="size_name" class="form-select w-full border border-gray-300 p-2 rounded-md" required readonly>
 
                                         <?php
                                         $sql4 = "SELECT * FROM `{$type}db`";
@@ -280,7 +266,7 @@ if ($result) {
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Method</label>
                                     <select name="method" class="selectize" readonly>
-                                        <option value="shop" <?php if (isset($row['method']) && $row['method'] == 'shop') echo 'selected'; ?>>Shop</option>
+                                       
                                         <option value="delivery" <?php if (isset($row['method']) && $row['method'] == 'delivery') echo 'selected'; ?>>Delivery</option>
                                     </select>
                                 </div>

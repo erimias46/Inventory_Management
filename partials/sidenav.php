@@ -793,7 +793,14 @@ if ($result) {
                         <?php if ($salejeans) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/sale.php" class="menu-link">
-                                    <span class="menu-text">Sale</span>
+                                    <span class="menu-text">Single Sale</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($salejeans) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/sale/multi.php" class="menu-link">
+                                    <span class="menu-text">Multi Sale</span>
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -817,6 +824,22 @@ if ($result) {
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/search.php" class="menu-link">
                                     <span class="menu-text">Search Product</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($logjeans) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/sale/delivery.php" class="menu-link">
+                                    <span class="menu-text">Delivery</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($logjeans) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/sale/all_product_type.php" class="menu-link">
+                                    <span class="menu-text">All Product Types</span>
                                 </a>
                             </li>
                         <?php endif; ?>

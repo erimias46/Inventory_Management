@@ -332,13 +332,13 @@ if ($result) {
 
                                             echo "<optgroup label='$display_label'>";
 
-                                            $sql = "SELECT {$table}_name FROM $table GROUP BY {$table}_name";
+                                            $sql = "SELECT {$table}_name, quantity FROM $table GROUP BY {$table}_name";
                                             $result = mysqli_query($con, $sql);
                                             while ($row = mysqli_fetch_assoc($result)) {
                                                 $name_column = "{$table}_name";
                                         ?>
                                                 <option value="<?php echo $table . '|' . $row[$name_column]; ?>">
-                                                    <?php echo $row[$name_column]; ?>
+                                                    <?php echo $row[$name_column] .  ' QTY ' . $row['quantity'] ; ?>
                                                 </option>
                                         <?php
                                             }

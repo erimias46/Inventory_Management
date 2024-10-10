@@ -180,10 +180,8 @@ if ($result) {
                                     <!-- Size Dropdown -->
 
                                     <div class="mb-3">
-                                        <label for="size">Select Size:</label>
-                                        <select id="size" name="size" onchange="filterBySize()" class="form-input">
-                                            <option value="">Select Size</option>
-                                        </select>
+                                        <a href="search2.php" class="btn btn-sm bg-success text-white "> <i class="mgc_search_fill text-base me-2"></i> Search By Size </a>
+                                       
                                     </div>
                                 </form>
 

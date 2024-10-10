@@ -4,6 +4,9 @@ $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 $current_date = date('Y-m-d');
+
+
+$title="All Products";
 ?>
 
 <head>

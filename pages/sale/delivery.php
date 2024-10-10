@@ -135,13 +135,9 @@ ORDER BY sales_date DESC;
 
 
                                                                 <?php if ($row['verifiy'] != '1'): ?>
-                                                                    <button type="button"
-                                                                        class="btn bg-success/25 text-success hover:bg-warning hover:text-white btn-sm rounded-full"
-                                                                        data-fc-type="modal"
-                                                                        data-fc-target="verify<?= $row['sales_id'] ?>">
-                                                                        <i class="mgc_pencil_line text-base me-2"></i>
-                                                                        Verify
-                                                                    </button>
+                                                                    <a id="del-btn" href="api/verify.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-success text-white hover:bg-warning hover:text-white btn-sm rounded-full">
+                                                                        <i class="mgc_delete_2_line text-base me-2"></i> Verify
+                                                                    </a>
 
                                                                 <?php endif; ?>
                                                             <?php endif; ?>

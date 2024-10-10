@@ -845,6 +845,15 @@ if ($result) {
                         <?php endif; ?>
 
 
+                        <?php if ($logjeans) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/sale/search_multi.php" class="menu-link">
+                                    <span class="menu-text">Multiple Search</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+
 
 
                     </ul>

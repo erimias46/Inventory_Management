@@ -3,6 +3,8 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
+include_once $redirect_link . 'include/bot.php';
+include_once $redirect_link . 'include/email.php';
 
 $current_date = date('Y-m-d');
 
@@ -30,7 +32,7 @@ if (isset($_POST['add'])) {
     $quantities = $_POST['quantities']; // Array of quantities
     $type_id = $_POST['type'];
     $price = $_POST['price'];
-    
+
     $image = $_FILES['image']['name'];
 
     // Fetch type from the database
@@ -106,11 +108,31 @@ if (isset($_POST['add'])) {
     // Redirect after successful insertion
 
     if ($add_complete) {
+
+        $message = "New complete Added:\n";
+        $message .= "complete Name: $complete_name\n";
+        $message .= "Price: $price\n";
+        $message .= "Type: $type\n";
+
+        $message .= "Sizes and Quantities:\n";
+        for ($i = 0; $i < count($sizes); $i++) {
+            $size = $sizes[$i];
+            $quantity = $quantities[$i];
+            if ($quantity > 0) {
+                $message .= "$size: $quantity\n";
+            }
+        }
+
+
+
+        $subject = "New complete Added";
+
+        sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message, $subject, $con);
         echo "<script>window.location = 'action.php?status=success&redirect=add_complete.php';</script>";
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error adding complete to the database.&redirect=add_complete.php';</script>";
     }
-    
 }
 ?>
 
@@ -142,16 +164,7 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['calcview'] == 1) ? true : false;
-
-
-        $addButtonVisible = ($module['calcadd'] == 1) ? true : false;
-
-
-        $updateButtonVisible = ($module['calcedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['calcgenerate'] == 1) ? true : false;
+        $addButtonVisible = ($module['addcomplete'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -243,9 +256,9 @@ if ($result) {
 
 
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" >complete Name</label>
-                                    <input type="text" name="complete_name" id="complete_name"  class="form-input" list="jeans_types" required>
-                                    <datalist id="jeans_types">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">complete Name</label>
+                                    <input type="text" name="complete_name" id="complete_name" class="form-input" list="complete_types" required>
+                                    <datalist id="complete_types">
                                         <!-- Options will be populated here -->
                                     </datalist>
                                 </div>
@@ -260,7 +273,7 @@ if ($result) {
 
                                         <?php
 
-                                        $sql = "SELECT * FROM complete_type_db";
+                                        $sql = "SELECT * FROM shoe_type_db";
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
@@ -314,7 +327,7 @@ if ($result) {
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">complete Sizes and Quantities</label>
 
                                     <?php
-                                  
+
                                     $sql = "SELECT * FROM completedb";
                                     $result = mysqli_query($con, $sql);
                                     while ($row = mysqli_fetch_assoc($result)) {
@@ -350,7 +363,7 @@ if ($result) {
 
 
                                         <!-- Display the Calculate button if $calculateButtonVisible is true -->
-                                        <?php if ($calculateButtonVisible) : ?>
+                                        <?php if ($addButtonVisible) : ?>
 
                                             <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>
 
@@ -436,12 +449,12 @@ if ($result) {
 
 
 <script>
-    document.getElementById('jeans_types').addEventListener('focus', function() {
+    document.getElementById('complete_types').addEventListener('focus', function() {
         // Fetch suggestions from the server and populate the datalist
-        fetch('get_job_types.php?database=jeans')
+        fetch('get_job_types.php?database=complete')
             .then(response => response.json())
             .then(data => {
-                const datalist = document.getElementById('jeans_types');
+                const datalist = document.getElementById('complete_types');
                 datalist.innerHTML = ''; // Clear previous options
                 data.forEach(item => {
                     const option = document.createElement('option');

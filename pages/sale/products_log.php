@@ -4,7 +4,8 @@ $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 $current_date = date('Y-m-d');
-$title="All Jeans";
+
+$title = "Products Log";
 ?>
 
 <head>
@@ -12,13 +13,7 @@ $title="All Jeans";
 
     include $redirect_link . 'partials/title-meta.php'; ?>
     <?php include $redirect_link . 'partials/head-css.php'; ?>
-
-    <?php
-
-    $title = "All Jeans";
-
-
-    ?>
+</head>
 
 
 <?php
@@ -40,14 +35,9 @@ if ($result) {
         $privileged = $row['previledge'];
         $module = json_decode($row['module'], true);
 
-
-       
-
-
-        $updateButtonVisible = ($module['editjeans'] == 1) ? true : false;
-        $deleteButtonVisible = ($module['deletejeans'] == 1) ? true : false;
-
-
+        $sale_jeans = ($module['salejeans'] == 1) ? true : false;
+        $deliverysalejeans = ($module['deliverysalejeans'] == 1) ? true : false;
+        $deletesalejeans = ($module['deletesalejeans'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -58,21 +48,7 @@ if ($result) {
     // Handle the case where the query failed
     echo "Error executing query: " . mysqli_error($con);
 }
-
 ?>
-
-
-    <style>
-        .product-image {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            /* Ensures the image covers the entire area while maintaining aspect ratio */
-            border-radius: 5px;
-            /* Optional: Adds rounded corners to the image */
-        }
-    </style>
-</head>
 
 <body>
 
@@ -91,53 +67,61 @@ if ($result) {
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
 
-                                        <table id="zero_config" data-order='[[ 0, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <table id="zero_config" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Jeans Name</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                                                    <th class="p-2.5 text-left text-xs font-meduim text-gray-500 uppercase">Quantity</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Product Name</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
+
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Source</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
 
-                                                $sql = "SELECT * FROM jeans ORDER BY created_at DESC";
+                                                $sql = "
+Select * from products
+ORDER BY created_at DESC;
+";
+
+
                                                 $result22 = mysqli_query($con, $sql);
+                                                $num = 1;
                                                 while ($row = mysqli_fetch_assoc($result22)) {
 
+                                                    
 
                                                 ?>
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['id']; ?> </td>
-                                                        <td> <?php echo $row['jeans_name']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 text-ellipsis overflow-hidden" style="max-width: 32ch"> <?php echo $row['size']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['price']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['quantity'] ?></td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <Img width="100px" height="100px" src="../../include/<?php echo $row['image']; ?> " alt="Product Image" class="product-image" /> </td>
-
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $num ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['created_at']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
 
-                                                         <?php if ($deleteButtonVisible) : ?>
-                                                            <a id="del-btn" href="api/remove.php?id=<?php echo $row['id']; ?>&from=jeans" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
-                                                                <i class="mgc_delete_2_line text-base me-2"></i> Delete
-                                                            </a>
-                                                            <?php endif; ?>
 
-                                                             <?php if ($updateButtonVisible) : ?>
-                                                            <a id="edit-btn" href="edit_jeans.php?id=<?php echo $row['id']; ?>" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full">
-                                                                <i class="mgc_edit_2_line text-base me-2"></i> Edit
-                                                            </a>
-                                                            <?php endif; ?>
-                                                        </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['product_name']; ?> </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['size']; ?> </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['type']; ?> </td>
+
+
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['price']; ?> </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['quantity']; ?> </td>
+                                                       
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo ucfirst($row['source_table']); ?> </td>
+
+                                                        
                                                     </tr>
-                                                <?php } ?>
+
+
+
+
+                                                <?php
+                                                    $num++;
+                                                };
+                                                ?>
                                             </tbody>
                                         </table>
                                     </div>

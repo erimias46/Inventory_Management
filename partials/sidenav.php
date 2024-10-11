@@ -854,6 +854,23 @@ if ($result) {
                         <?php endif; ?>
 
 
+                        <?php if ($logjeans) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/sale/products_log.php" class="menu-link">
+                                    <span class="menu-text">Products Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($logjeans) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/sale/multi_log.php" class="menu-link">
+                                    <span class="menu-text">Multi Sale Log</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+
 
 
                     </ul>

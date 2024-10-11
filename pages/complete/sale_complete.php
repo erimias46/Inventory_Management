@@ -7,6 +7,9 @@ $side_link = "../../";
 
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
+include_once $redirect_link . 'include/email.php';
+include_once $redirect_link . 'include/bot.php';
+
 
 $user_id = $_SESSION['user_id'];
 
@@ -43,18 +46,11 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['saleview'] == 1) ? true : false;
-
-
-        $addButtonVisible = ($module['saleadd'] == 1) ? true : false;
-
-        $deleteButtonVisible = ($module['saledelete'] == 1) ? true : false;
-
-
-        $updateButtonVisible = ($module['saleedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['salegenerate'] == 1) ? true : false;
+        $sale_complete = ($module['salecomplete'] == 1) ? true : false;
+        $editsalecomplete = ($module['editsalecomplete'] == 1) ? true : false;
+        $deletesalecomplete = ($module['deletesalecomplete'] == 1) ? true : false;
+        $exchangesalecomplete = ($module['exchangesalecomplete'] == 1) ? true : false;
+        $refundsalecomplete = ($module['refundsalecomplete'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -124,7 +120,7 @@ if ($result) {
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Sales</h4>
                             <div>
 
-                                <?php if ($addButtonVisible) : ?>
+                                <?php if ($sale_complete) : ?>
 
                                     <button type="button" data-fc-type="modal" data-fc-target="addModal"
                                         class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
@@ -135,14 +131,7 @@ if ($result) {
                                 <?php endif; ?>
 
 
-                                <?php if ($generateButtonVisible) : ?>
-                                    <a href="export.php?type=sales&from_date=<?php echo $from_date; ?>&to_date=<?php echo $to_date; ?>"
-                                        class="btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
-                                        <i class="msr text-base me-2">picture_as_pdf</i>
-                                        Export
-                                    </a>
 
-                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -208,7 +197,7 @@ if ($result) {
                                                     <td
                                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
 
-                                                        <?php if ($deleteButtonVisible) : ?>
+                                                        <?php if ($deletesalecomplete) : ?>
 
                                                             <a id="del-btn"
                                                                 href="api/remove.php?id=<?php echo $row['sales_id']; ?>&from=complete_sales"
@@ -219,7 +208,7 @@ if ($result) {
 
 
 
-                                                        <?php if ($updateButtonVisible) : ?>
+                                                        <?php if ($editsalecomplete) : ?>
 
                                                             <button type="button"
                                                                 class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
@@ -230,7 +219,7 @@ if ($result) {
                                                             </button>
                                                         <?php endif; ?>
 
-                                                        <?php if ($deleteButtonVisible) : ?>
+                                                        <?php if ($refundsalecomplete) : ?>
 
                                                             <a id="del-btn"
                                                                 href="api/refund.php?id=<?php echo $row['sales_id']; ?>&from=complete_sales"
@@ -239,7 +228,7 @@ if ($result) {
 
                                                         <?php endif; ?>
 
-                                                        <?php if ($updateButtonVisible) : ?>
+                                                        <?php if ($exchangesalecomplete) : ?>
 
                                                             <button type="button"
                                                                 class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
@@ -288,7 +277,7 @@ if ($result) {
 
 
 
-                                                <!-- Modal for exchanging jeans -->
+                                                <!-- Modal for exchanging complete -->
                                                 <div id="exchange<?= $row['sales_id'] ?>" class="w-full h-full fixed top-0 left-0 z-50 transition-all duration-500 hidden">
                                                     <div class="fc-modal-open:mt-7 fc-modal-open:opacity-100 fc-modal-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-md sm:w-full m-3 sm:mx-auto bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
                                                         <div class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
@@ -417,7 +406,7 @@ if ($result) {
 
                                                                     <div>
                                                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">complete Name</label>
-                                                                        <select name="complete_name" class="search-select" id="jeans_name_select" disabled>
+                                                                        <select name="complete_name" class="search-select" id="complete_name_select" disabled>
                                                                             <?php
                                                                             $sql3 = "SELECT * FROM complete GROUP BY complete_name ORDER BY complete_name ASC";
                                                                             $result3 = mysqli_query($con, $sql3);
@@ -425,7 +414,7 @@ if ($result) {
                                                                                 while ($row3 = mysqli_fetch_assoc($result3)) { ?>
                                                                                     <option value="<?= $row3['complete_name'] ?>"
                                                                                         <?php
-                                                                                        // Check if the current jeans_name should be selected
+                                                                                        // Check if the current complete_name should be selected
                                                                                         if (isset($row['complete_name']) && $row['complete_name'] == $row3['complete_name']) {
                                                                                             echo "selected";
                                                                                         }
@@ -648,12 +637,12 @@ if ($result) {
 
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Cash</label>
-                                        <input type="text" name="cash"  id="cash" class="form-input" value="0" required onchange="calculateTotalPrice()">
+                                        <input type="text" name="cash" id="cash" class="form-input" value="0" required onchange="calculateTotalPrice()">
                                     </div>
 
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank</label>
-                                        <input type="text" name="bank"  id="bank" class="form-input" value="0" required id="bankInput" onchange="calculateTotalPrice();">
+                                        <input type="text" name="bank" id="bank" class="form-input" value="0" required id="bankInput" onchange="calculateTotalPrice();">
                                     </div>
 
                                     <div class="mb-3">
@@ -802,6 +791,23 @@ if (isset($_POST['update'])) {
 
     if ($result) {
         echo "<script>window.location = 'action.php?status=success&redirect=sale_complete.php'; </script>";
+
+
+        $message = "Sale has been updated\n";
+        $message .= "complete Name: $complete_name\n";
+        $message .= "Price: $price\n";
+        $message .= "Size: $size\n";
+        $message .= "Quantity: $quantity\n";
+        $message .= "Cash: $cash\n";
+        $message .= "Bank: $bank\n";
+        $message .= "Method: $method\n";
+
+
+        $subject = "Sale Updated";
+
+        // Send updates to subscribers
+        sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message, $subject, $con);
     } else {
         echo "<script>window.location = 'action.php?status=error&redirect=sale_complete.php'; </script>";
     }
@@ -939,41 +945,23 @@ if (isset($_POST['add_data'])) {
             }
         }
 
-        // Notify subscribers for both delivery and sales
-        $subscribers_query = "SELECT chat_id FROM subscribers";
-        $subscribers_result = mysqli_query($con, $subscribers_query);
-        $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
+        $message = "Sale Have been Made \n";
 
-        $message = "New Sale Added:\n";
+
         $message .= "complete Name: $complete_name\n";
-        $message .= "Size: $size\n";
         $message .= "Price: $price\n";
-        $message .= "Cash: $cash\n";
-        $message .= "Bank: $bank\n";
-        $message .= "Method: $method\n";
-        $message .= "Date: $date\n";
+        $message .= "Size: $size\n";
         $message .= "Quantity: $quantity\n";
+        $message .= "Cash :  $cash\n";
+        $message .= "Bank : $bank\n";
 
-        $botToken = "7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0"; // Replace with your bot token
-        $apiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
 
-        foreach ($subscribers as $subscriber) {
-            $chatId = $subscriber['chat_id'];
 
-            $data = [
-                'chat_id' => $chatId,
-                'text' => $message,
-                'parse_mode' => 'HTML' // Optional: Use HTML formatting
-            ];
+        $subject = "Sold complete";
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $apiUrl);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            curl_close($ch);
-        }
+
+        sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message, $subject, $con);
 
         // Success redirect
         echo "<script>window.location = 'action.php?status=success&redirect=sale_complete.php'; </script>";

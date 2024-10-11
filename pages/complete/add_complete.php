@@ -36,7 +36,7 @@ if (isset($_POST['add'])) {
     $image = $_FILES['image']['name'];
 
     // Fetch type from the database
-    $sql = "SELECT * FROM shoe_type_db WHERE id='$type_id'";
+    $sql = "SELECT * FROM complete_type_db WHERE id='$type_id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $type = $row['type'];
@@ -273,7 +273,7 @@ if ($result) {
 
                                         <?php
 
-                                        $sql = "SELECT * FROM shoe_type_db";
+                                        $sql = "SELECT * FROM complete_type_db";
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>

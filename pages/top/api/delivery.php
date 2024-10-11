@@ -74,6 +74,26 @@ $result = mysqli_query($con, $sql);
 
 
 
+$message = "Delivery Have been verified and delivered to customer\n";
+
+
+$message .= "top Name: $top_name\n";
+$message .= "Price: $price\n";
+$message .= "Size: $size\n";
+$message .= "Quantity: $quantity\n";
+$message .= "Cash :  $cash\n";
+$message .= "Bank : $bank\n";
+
+
+
+$subject = "Sold top Deliverd to Customer";
+
+
+sendMessageToSubscribers($message, $con);
+sendEmailToSubscribers($message, $subject, $con);
+
+
+
 if (!$result_add || !$result_adds || !$result) {
     echo "<script>window.location = 'action.php?status=error&redirect=sale_top.php'; </script>";
     exit;

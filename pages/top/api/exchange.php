@@ -10,7 +10,8 @@ $side_link = "../../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php'; // Include your database connection
 
-
+include_once $redirect_link . 'include/email.php';
+include_once $redirect_link . 'include/bot.php';
     $user_id = $_SESSION['user_id']; 
     $sales_id = $_POST['sales_id'];
 
@@ -136,6 +137,17 @@ include_once $redirect_link . 'include/db.php'; // Include your database connect
             $result_update = mysqli_query($con, $update_quantity);
 
 
+    $message = "Exchange To top\n";
+    $message .= "top Name: $top_name\n";
+    $message .= "Size: $size\n";
+    $message .= "Quantity: $quantity\n";
+    $message .= "Price: $price\n";
+    $message .= "Cash: $cash\n";
+    $message .= "Bank: $bank\n";
+    $message .= "Method: $method\n";
+    $message .= "Date: $date\n";
+
+
             $sql="SELECT * from top_sales where sales_id = '$sales_id'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
@@ -176,6 +188,24 @@ include_once $redirect_link . 'include/db.php'; // Include your database connect
 
             $sql="INSERT into exchange_top (before_sale_id, after_sale_id) VALUES ('$sales_id', '$sales_id_new')";
             $result = mysqli_query($con, $sql);
+
+
+
+    $message .= "Exchange  From top\n";
+    $message .= "top Name: $top_name\n";
+    $message .= "Size: $size\n";
+    $message .= "Quantity: $quantity\n";
+    $message .= "Price: $price\n";
+    $message .= "Cash: $cash\n";
+    $message .= "Bank: $bank\n";
+    $message .= "Method: $method\n";
+    $message .= "Date: $date\n";
+
+
+    $subject = "Exchange top";
+
+    sendMessageToSubscribers($message, $con);
+    sendEmailToSubscribers($message, $subject, $con);
 
 
 

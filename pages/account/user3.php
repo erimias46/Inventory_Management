@@ -1136,6 +1136,18 @@ if (isset($_POST['update_user'])) {
 
 
 
+    $viewjeans = (int) boolval($_POST['viewjeans']);
+    $viewshoes = (int) boolval($_POST['viewshoes']);
+    $viewtop = (int) boolval($_POST['viewtop']);
+    $viewcomplete = (int) boolval($_POST['viewcomplete']);
+    $viewaccessory = (int) boolval($_POST['viewaccessory']);
+    $viewwig = (int) boolval($_POST['viewwig']);
+    $viewcosmetics = (int) boolval($_POST['viewcosmetics']);
+
+
+
+
+
 
 
 

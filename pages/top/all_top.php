@@ -19,7 +19,6 @@ $current_date = date('Y-m-d');
 
     ?>
 
-
     <?php
     $id = $_SESSION['user_id'];
 
@@ -120,20 +119,18 @@ $current_date = date('Y-m-d');
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['created_at']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                           
-                                                         <?php if ($deleteButtonVisible) : ?>
-                                                        <a id="del-btn" href="api/remove.php?id=<?php echo $row['id']; ?>&from=top" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
-                                                                <i class="mgc_delete_2_line text-base me-2"></i> Delete
-                                                            </a>
-                                                        <?php endif; ?>
+                                                            <?php if ($deleteButtonVisible) : ?>
+                                                                <a id="del-btn" href="api/remove.php?id=<?php echo $row['id']; ?>&from=top" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
+                                                                    <i class="mgc_delete_2_line text-base me-2"></i> Delete
+                                                                </a>
+                                                            <?php endif; ?>
 
-                                                        <?php if ($updateButtonVisible) : ?>
-                                                            <a id="edit-btn" href="edit_top.php?id=<?php echo $row['id']; ?>" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full">
-                                                                <i class="mgc_edit_2_line text-base me-2"></i> Edit
-                                                            </a>
-                                                        <?php endif; ?>
+                                                            <?php if ($updateButtonVisible) : ?>
+                                                                <a id="edit-btn" href="edit_top.php?id=<?php echo $row['id']; ?>" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full">
+                                                                    <i class="mgc_edit_2_line text-base me-2"></i> Edit
+                                                                </a>
+                                                            <?php endif; ?>
                                                         </td>
-
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>

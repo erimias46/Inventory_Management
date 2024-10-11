@@ -27,21 +27,7 @@ if ($result) {
         $privileged = $row['previledge'];
         $module = json_decode($row['module'], true);
 
-
-        $calculateButtonVisible = ($module['payview'] == 1) ? true : false;
-
-
-        $addButtonVisible = ($module['payadd'] == 1) ? true : false;
-        $deleteButtonVisible = ($module['paydelete'] == 1) ? true : false;
-
-        $verifyButtonVisible = ($module['payverify'] == 1) ? true : false;
-
-
-
-        $updateButtonVisible = ($module['payedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['paygenerate'] == 1) ? true : false;
+        $verifyButtonVisible = ($module['verifyjeans'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -85,18 +71,13 @@ if ($result) {
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Verify</h4>
                             <div>
 
-                                <?php if ($generateButtonVisible) { ?>
-                                    <a href="<?= $redirect_link . 'pages/export.php?type=bank' ?>" class=" btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
-                                        <i class="msr text-base me-2">picture_as_pdf</i>
-                                        Export
-                                    </a>
-                                <?php } ?>
+
                             </div>
                         </div>
                     </div>
 
                     <div class="p-6">
-                        <form method="POST" >
+                        <form method="POST">
 
 
                             <div class="overflow-x-auto">
@@ -111,7 +92,7 @@ if ($result) {
                                                             <label for="table-checkbox-all" class="sr-only">Checkbox</label>
                                                         </div>
                                                     </th>
-                                                    
+
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">top Name</th>
@@ -140,16 +121,16 @@ if ($result) {
                                                             </div>
                                                         </td>
                                                         <td>
-                                                        <a href="api/verify.php?id=<?php echo $row['id']; ?>&from=top_verify" id="del-btn" class="btn bg-success/25 text-success hover:bg-success hover:text-white btn-sm rounded-full">
-                                                            <i class="mgc_check_circle_line text-base me-2"></i>
+                                                            <a href="api/verify.php?id=<?php echo $row['id']; ?>&from=top_verify" id="del-btn" class="btn bg-success/25 text-success hover:bg-success hover:text-white btn-sm rounded-full">
+                                                                <i class="mgc_check_circle_line text-base me-2"></i>
                                                                 Verify
                                                             </a>
-                                                        <a href="api/remove.php?id=<?php echo $row['id']; ?>&from=top_verify" id="del-btn" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
+                                                            <a href="api/remove.php?id=<?php echo $row['id']; ?>&from=top_verify" id="del-btn" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_delete_2_line text-base me-2"></i>
                                                                 Delete
                                                             </a>
 
-                                                           
+
 
                                                         </td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['id']; ?></td>
@@ -179,7 +160,7 @@ if ($result) {
                                                                 <span class="text-danger">No Quantity Found</span>
                                                             <?php } ?>
                                                         </td>
-                                                       
+
                                                     </tr>
                                                 <?php
                                                 }
@@ -197,11 +178,11 @@ if ($result) {
                                         verify
                                     </button>
                                 <?php } ?>
-                                
 
 
-                               
-                               
+
+
+
                             </div>
                         </form>
                     </div>
@@ -258,28 +239,28 @@ if (isset($_POST['verify'])) {
     if (isset($_POST['update'])) {
         foreach ($_POST['update'] as $update_id) {
 
-            $sql="SELECT * FROM top_verify WHERE id = $update_id";
+            $sql = "SELECT * FROM top_verify WHERE id = $update_id";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
             $top_name = $row['top_name'];
             $size = $row['size'];
-            $size_id=$row['size_id'];
-            $type_id=$row['type_id'];
-            $image=$row['image'];
+            $size_id = $row['size_id'];
+            $type_id = $row['type_id'];
+            $image = $row['image'];
             $type = $row['type'];
             $price = $row['price'];
             $quantity = $row['quantity'];
-           
+
             $active = $row['active'];
             $error = $row['error'];
 
 
-            if($error=='1'){
-                $active='1';
+            if ($error == '1') {
+                $active = '1';
                 $insert = "INSERT INTO `top`(`top_name`, `size`, `type`, `price`, `quantity`, `active`,`size_id`,`type_id`,`image`) VALUES ('$top_name','$size','$type','$price','$quantity','$active','$size_id','$type_id','$image')";
                 $result_insert = mysqli_query($con, $insert);
                 if ($result_insert) {
-                   
+
                     $delete = "DELETE FROM `top_verify` WHERE id = $update_id";
                     $result_delete = mysqli_query($con, $delete);
                     if ($result_delete) {
@@ -290,10 +271,9 @@ if (isset($_POST['verify'])) {
                 } else {
                     echo "<script>window.location = 'action.php?status=error&redirect=verify.php'; </script>";
                 }
-
             }
-            if($error=='2'){
-                $sql="SELECT * FROM top WHERE top_name = '$top_name' AND size = '$size' ";
+            if ($error == '2') {
+                $sql = "SELECT * FROM top WHERE top_name = '$top_name' AND size = '$size' ";
                 $result = mysqli_query($con, $sql);
                 $row = mysqli_fetch_assoc($result);
                 $quantity = $row['quantity'] + $quantity;
@@ -311,8 +291,6 @@ if (isset($_POST['verify'])) {
                     echo "<script>window.location = 'action.php?status=error&redirect=verify.php'; </script>";
                 }
             }
-
-            
         }
     }
 }

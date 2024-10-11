@@ -26,22 +26,6 @@ if ($result) {
         $password = $row['password'];
         $privileged = $row['previledge'];
         $module = json_decode($row['module'], true);
-
-
-        $calculateButtonVisible = ($module['payview'] == 1) ? true : false;
-
-
-        $addButtonVisible = ($module['payadd'] == 1) ? true : false;
-        $deleteButtonVisible = ($module['paydelete'] == 1) ? true : false;
-
-        $verifyButtonVisible = ($module['payverify'] == 1) ? true : false;
-
-
-
-        $updateButtonVisible = ($module['payedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['paygenerate'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -85,12 +69,7 @@ if ($result) {
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Refund Log</h4>
                             <div>
 
-                                <?php if ($generateButtonVisible) { ?>
-                                    <a href="<?= $redirect_link . 'pages/export.php?type=bank' ?>" class=" btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
-                                        <i class="msr text-base me-2">picture_as_pdf</i>
-                                        Export
-                                    </a>
-                                <?php } ?>
+
                             </div>
                         </div>
                     </div>
@@ -115,19 +94,19 @@ if ($result) {
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Method</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date Refunded</th>
-                                                    
+
 
 
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-$sql = "SELECT * FROM top_sales_log WHERE status = 'Refund' ORDER BY sales_id DESC";
+                                                $sql = "SELECT * FROM top_sales_log WHERE status = 'Refund' ORDER BY sales_id DESC";
 
                                                 $result = mysqli_query($con, $sql);
                                                 while ($row = mysqli_fetch_assoc($result)) {
 
-                                                   
+
 
                                                 ?>
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
@@ -140,7 +119,7 @@ $sql = "SELECT * FROM top_sales_log WHERE status = 'Refund' ORDER BY sales_id DE
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['price']; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['method']; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['update_date']; ?></td>
-                                                       
+
 
 
 
@@ -265,4 +244,4 @@ if (isset($_POST['verify'])) {
         }
     }
 }
-?>
+?>  

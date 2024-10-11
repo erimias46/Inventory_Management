@@ -676,7 +676,7 @@ if (isset($_POST['add_user'])) {
         'constant'=>$constant,
         'email'=>$email,
         'backup'=>$backup,
-        '$user'=>$user
+        'user'=>$user
 
 
 

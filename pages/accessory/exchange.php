@@ -26,22 +26,6 @@ if ($result) {
         $password = $row['password'];
         $privileged = $row['previledge'];
         $module = json_decode($row['module'], true);
-
-
-        $calculateButtonVisible = ($module['payview'] == 1) ? true : false;
-
-
-        $addButtonVisible = ($module['payadd'] == 1) ? true : false;
-        $deleteButtonVisible = ($module['paydelete'] == 1) ? true : false;
-
-        $verifyButtonVisible = ($module['payverify'] == 1) ? true : false;
-
-
-
-        $updateButtonVisible = ($module['payedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['paygenerate'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -85,12 +69,7 @@ if ($result) {
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Exchange Log</h4>
                             <div>
 
-                                <?php if ($generateButtonVisible) { ?>
-                                    <a href="<?= $redirect_link . 'pages/export.php?type=bank' ?>" class=" btn btn-sm rounded-full bg-success/25 text-success hover:bg-success hover:text-white">
-                                        <i class="msr text-base me-2">picture_as_pdf</i>
-                                        Export
-                                    </a>
-                                <?php } ?>
+
                             </div>
                         </div>
                     </div>
@@ -105,9 +84,9 @@ if ($result) {
                                         <table id="zero_config" data-order='[[ 1, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
-                                                    
 
-                                                   
+
+
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date Bought</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">accessory Name</th>
@@ -124,55 +103,55 @@ if ($result) {
                                             </thead>
                                             <tbody>
                                                 <?php
-    // Fetch all rows from exchange_accessory ordered by id
-    $sql = "SELECT * FROM exchange_accessory ORDER BY id DESC";
-    $result = mysqli_query($con, $sql);
+                                                // Fetch all rows from exchange_accessory ordered by id
+                                                $sql = "SELECT * FROM exchange_accessory ORDER BY id DESC";
+                                                $result = mysqli_query($con, $sql);
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        
-        // Fetch details for before_sale_id
-        $sql = "SELECT * FROM accessory_sales WHERE sales_id = ".$row['before_sale_id'];
-        $result2 = mysqli_query($con, $sql);
-        if ($row2 = mysqli_fetch_assoc($result2)) {
-            // If found, extract the values
-            $before_date = $row2['sales_date'];
-            $before_accessory_name = $row2['accessory_name'];
-            $before_size = $row2['size'];
-            $before_price = $row2['price'];
-        } else {
-            // If not found, skip or handle it (e.g., set default values)
-            $before_date = $before_accessory_name = $before_size = $before_price = 'Not found';
-        }
+                                                while ($row = mysqli_fetch_assoc($result)) {
 
-        // Fetch details for after_sale_id
-        $sql = "SELECT * FROM accessory_sales WHERE sales_id = ".$row['after_sale_id'];
-        $result2 = mysqli_query($con, $sql);
-        if ($row2 = mysqli_fetch_assoc($result2)) {
-            // If found, extract the values
-            $after_date = $row2['sales_date'];
-            $after_accessory_name = $row2['accessory_name'];
-            $after_size = $row2['size'];
-            $after_price = $row2['price'];
-        } else {
-            // If not found, skip or handle it (e.g., set default values)
-            $after_date = $after_accessory_name = $after_size = $after_price = 'Not found';
-        }
+                                                    // Fetch details for before_sale_id
+                                                    $sql = "SELECT * FROM accessory_sales WHERE sales_id = " . $row['before_sale_id'];
+                                                    $result2 = mysqli_query($con, $sql);
+                                                    if ($row2 = mysqli_fetch_assoc($result2)) {
+                                                        // If found, extract the values
+                                                        $before_date = $row2['sales_date'];
+                                                        $before_accessory_name = $row2['accessory_name'];
+                                                        $before_size = $row2['size'];
+                                                        $before_price = $row2['price'];
+                                                    } else {
+                                                        // If not found, skip or handle it (e.g., set default values)
+                                                        $before_date = $before_accessory_name = $before_size = $before_price = 'Not found';
+                                                    }
 
-        // Calculate price difference if both sales are found and have valid prices
-        if (is_numeric($after_price) && is_numeric($before_price)) {
-            $difference = $after_price - $before_price;
-        } else {
-            $difference = 'N/A'; // Handle if prices are not available or invalid
-        }
+                                                    // Fetch details for after_sale_id
+                                                    $sql = "SELECT * FROM accessory_sales WHERE sales_id = " . $row['after_sale_id'];
+                                                    $result2 = mysqli_query($con, $sql);
+                                                    if ($row2 = mysqli_fetch_assoc($result2)) {
+                                                        // If found, extract the values
+                                                        $after_date = $row2['sales_date'];
+                                                        $after_accessory_name = $row2['accessory_name'];
+                                                        $after_size = $row2['size'];
+                                                        $after_price = $row2['price'];
+                                                    } else {
+                                                        // If not found, skip or handle it (e.g., set default values)
+                                                        $after_date = $after_accessory_name = $after_size = $after_price = 'Not found';
+                                                    }
 
-        // Output or use the data as needed
-        // ...
-    
-?>
+                                                    // Calculate price difference if both sales are found and have valid prices
+                                                    if (is_numeric($after_price) && is_numeric($before_price)) {
+                                                        $difference = $after_price - $before_price;
+                                                    } else {
+                                                        $difference = 'N/A'; // Handle if prices are not available or invalid
+                                                    }
+
+                                                    // Output or use the data as needed
+                                                    // ...
+
+                                                ?>
 
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
-                                                        
-                                                       
+
+
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['id']; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $before_date; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $before_accessory_name; ?></td>
@@ -183,9 +162,9 @@ if ($result) {
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $after_size; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $after_price; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $difference; ?></td>
-                                                        
-                                                        
-                                                        
+
+
+
 
                                                     </tr>
                                                 <?php
@@ -196,7 +175,7 @@ if ($result) {
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </form>
                     </div>
                 </div>

@@ -3,6 +3,8 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
+include_once $redirect_link . 'include/bot.php';
+include_once $redirect_link . 'include/email.php';
 
 $current_date = date('Y-m-d');
 
@@ -30,11 +32,11 @@ if (isset($_POST['add'])) {
     $quantities = $_POST['quantities']; // Array of quantities
     $type_id = $_POST['type'];
     $price = $_POST['price'];
-    
+
     $image = $_FILES['image']['name'];
 
     // Fetch type from the database
-    $sql = "SELECT * FROM shoe_type_db WHERE id='$type_id'";
+    $sql = "SELECT * FROM accessory_type_db WHERE id='$type_id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $type = $row['type'];
@@ -106,11 +108,31 @@ if (isset($_POST['add'])) {
     // Redirect after successful insertion
 
     if ($add_accessory) {
+
+        $message = "New accessory Added:\n";
+        $message .= "accessory Name: $accessory_name\n";
+        $message .= "Price: $price\n";
+        $message .= "Type: $type\n";
+
+        $message .= "Sizes and Quantities:\n";
+        for ($i = 0; $i < count($sizes); $i++) {
+            $size = $sizes[$i];
+            $quantity = $quantities[$i];
+            if ($quantity > 0) {
+                $message .= "$size: $quantity\n";
+            }
+        }
+
+
+
+        $subject = "New accessory Added";
+
+        sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message, $subject, $con);
         echo "<script>window.location = 'action.php?status=success&redirect=add_accessory.php';</script>";
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error adding accessory to the database.&redirect=add_accessory.php';</script>";
     }
-    
 }
 ?>
 
@@ -142,16 +164,7 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['calcview'] == 1) ? true : false;
-
-
-        $addButtonVisible = ($module['calcadd'] == 1) ? true : false;
-
-
-        $updateButtonVisible = ($module['calcedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['calcgenerate'] == 1) ? true : false;
+        $addButtonVisible = ($module['addaccessory'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -243,9 +256,9 @@ if ($result) {
 
 
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" >accessory Name</label>
-                                    <input type="text" name="accessory_name" id="accessory_name"  class="form-input" list="jeans_types" required>
-                                    <datalist id="jeans_types">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">accessory Name</label>
+                                    <input type="text" name="accessory_name" id="accessory_name" class="form-input" list="accessory_types" required>
+                                    <datalist id="accessory_types">
                                         <!-- Options will be populated here -->
                                     </datalist>
                                 </div>
@@ -314,7 +327,7 @@ if ($result) {
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">accessory Sizes and Quantities</label>
 
                                     <?php
-                                  
+
                                     $sql = "SELECT * FROM accessorydb";
                                     $result = mysqli_query($con, $sql);
                                     while ($row = mysqli_fetch_assoc($result)) {
@@ -350,7 +363,7 @@ if ($result) {
 
 
                                         <!-- Display the Calculate button if $calculateButtonVisible is true -->
-                                        <?php if ($calculateButtonVisible) : ?>
+                                        <?php if ($addButtonVisible) : ?>
 
                                             <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>
 
@@ -436,12 +449,12 @@ if ($result) {
 
 
 <script>
-    document.getElementById('jeans_types').addEventListener('focus', function() {
+    document.getElementById('accessory_types').addEventListener('focus', function() {
         // Fetch suggestions from the server and populate the datalist
-        fetch('get_job_types.php?database=jeans')
+        fetch('get_job_types.php?database=accessory')
             .then(response => response.json())
             .then(data => {
-                const datalist = document.getElementById('jeans_types');
+                const datalist = document.getElementById('accessory_types');
                 datalist.innerHTML = ''; // Clear previous options
                 data.forEach(item => {
                     const option = document.createElement('option');

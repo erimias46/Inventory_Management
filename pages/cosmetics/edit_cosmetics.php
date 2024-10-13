@@ -3,20 +3,14 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
-include_once $redirect_link . 'include/mdb.php';
-$current_date = date('Y-m-d');
+
+    include_once $redirect_link . 'include/email.php';
+    include_once $redirect_link . 'include/bot.php';
+    $current_date = date('Y-m-d');
 
 $generate_button = '';
 
-if (isset($_GET['import_brocher_id'])) {
-    $brocher_type = $_GET['brocher_type'];
 
-
-
-    $add_button = '<button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>';
-    $update_button = '<button name="update" type="submit" class="btn btn-sm bg-danger text-white rounded-full"> <i class="mgc_pencil_line text-base me-2"></i> Update </button>';
-    $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
-}
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -48,14 +42,14 @@ if (isset($_POST['update'])) {
     $image = $_FILES['image']['name'];
 
     // Fetch the old image from the database if no new image is uploaded
-    $id = $_GET['id']; // Assuming `jeans_id` is passed for identifying the record
+    $id = $_GET['id']; // Assuming `cosmetics_id` is passed for identifying the record
     $sql = "SELECT image FROM cosmetics WHERE id='$id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $old_image = $row['image'];  // The current image in the database
 
     // Fetch type from the database
-    $sql = "SELECT * FROM trouser_type_db WHERE id='$type_id'";
+    $sql = "SELECT * FROM shoe_type_db WHERE id='$type_id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $type = $row['type'];
@@ -110,12 +104,31 @@ if (isset($_POST['update'])) {
         $image_path = $old_image;
     }
 
-    // Update the jeans record with the new or old image
+    // Update the cosmetics record with the new or old image
     $sql = "UPDATE cosmetics SET cosmetics_name='$cosmetics_name', size='$size', type='$type', price='$price', quantity='$quantity', image='$image_path' WHERE id='$id'";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
         echo "<script>window.location = 'action.php?status=success&redirect=all_cosmetics.php';</script>";
+
+        $message = " cosmetics Updated:\n";
+        $message .= "cosmetics Name: $cosmetics_name\n";
+        $message .= "Price: $price\n";
+        $message .= "Type: $type\n";
+        $message .= "Size: $size\n";
+        $message .= "Quantity: $quantity\n";
+
+
+        $subject = "cosmetics Updated";
+
+
+
+
+
+
+
+        sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message, $subject, $con);
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error updating cosmetics in the database.&redirect=all.php';</script>";
     }
@@ -147,16 +160,8 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        $calculateButtonVisible = ($module['calcview'] == 1) ? true : false;
+        $updateButtonVisible = ($module['editcosmetics'] == 1) ? true : false;
 
-
-        $addButtonVisible = ($module['calcadd'] == 1) ? true : false;
-
-
-        $updateButtonVisible = ($module['calcedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['calcgenerate'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -264,8 +269,8 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">cosmetics Name</label>
-                                    <input type="text" name="cosmetics_name"  class="form-input" list="jeans_types" required  value="<?php echo $cosmetics_name ?>">
-                                    <datalist id="jeans_types">
+                                    <input type="text" name="cosmetics_name"  class="form-input" list="cosmetics_types" required  value="<?php echo $cosmetics_name ?>">
+                                    <datalist id="cosmetics_types">
                                         <!-- Options will be populated here -->
                                     </datalist>
                                 </div>
@@ -280,7 +285,7 @@ if ($result) {
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
-                                            <option value="<?php echo $row['id'] ?>" <?php
+                                            <option value="<?php echo $row['size'] ?>" <?php
                                                                                         if (isset($size)) {
                                                                                             if ($row['size'] == $size) {
                                                                                                 echo "selected";
@@ -309,7 +314,7 @@ if ($result) {
 
                                         <?php
 
-                                        $sql = "SELECT * FROM trouser_type_db";
+                                        $sql = "SELECT * FROM shoe_type_db";
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
@@ -376,7 +381,7 @@ if ($result) {
 
 
                                         <!-- Display the Calculate button if $calculateButtonVisible is true -->
-                                        <?php if ($calculateButtonVisible) : ?>
+                                        <?php if ($updateButtonVisible) : ?>
 
                                             <button name="update" type="submit" class="btn btn-sm bg-warning text-white rounded-full"> <i class="mgc_pencil_fill text-base me-2"></i> Update </button>
 

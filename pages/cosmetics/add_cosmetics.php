@@ -3,6 +3,8 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
+include_once $redirect_link . 'include/bot.php';
+include_once $redirect_link . 'include/email.php';
 
 $current_date = date('Y-m-d');
 
@@ -109,6 +111,33 @@ if (isset($_POST['add'])) {
     // Redirect after successful insertion
 
     if ($add_cosmetics) {
+
+
+
+        $message = "New cosmetics Added:\n";
+        $message .= "cosmetics Name: $cosmetics_name\n";
+        $message .= "Price: $price\n";
+        $message .= "Type: $type\n";
+
+        $message .= "Sizes and Quantities:\n";
+        for ($i = 0; $i < count($sizes); $i++) {
+            $size = $sizes[$i];
+            $quantity = $quantities[$i];
+            if ($quantity > 0) {
+                $message .= "$size: $quantity\n";
+            }
+        }
+
+
+
+        $subject = "New cosmetics Added";
+
+        sendMessageToSubscribers($message, $con);
+        sendEmailToSubscribers($message, $subject, $con);
+
+
+
+
         echo "<script>window.location = 'action.php?status=success&redirect=add_cosmetics.php';</script>";
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error adding cosmetics to the database.&redirect=add_cosmetics.php';</script>";
@@ -143,17 +172,12 @@ if ($result) {
         $privileged = $row['previledge'];
         $module = json_decode($row['module'], true);
 
-
-        $calculateButtonVisible = ($module['calcview'] == 1) ? true : false;
-
-
-        $addButtonVisible = ($module['calcadd'] == 1) ? true : false;
+        
+        $addButtonVisible = ($module['addcosmetics'] == 1) ? true : false;
 
 
-        $updateButtonVisible = ($module['calcedit'] == 1) ? true : false;
 
-
-        $generateButtonVisible = ($module['calcgenerate'] == 1) ? true : false;
+       
     } else {
         echo "No user found with the specified ID";
     }
@@ -354,7 +378,7 @@ if ($result) {
 
 
                                         <!-- Display the Calculate button if $calculateButtonVisible is true -->
-                                        <?php if ($calculateButtonVisible) : ?>
+                                        <?php if ($addButtonVisible) : ?>
 
                                             <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>
 

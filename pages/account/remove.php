@@ -2,7 +2,7 @@
     $redirect_link = "../../";
     $side_link = "../../";
     include_once '../../include/db.php';
-    include_once '../../include/mdb.php';
+    
     $current_date = date('Y-m-d');
 
 

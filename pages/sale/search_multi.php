@@ -90,7 +90,7 @@ include_once $redirect_link . 'include/bot.php';
                                     <tr>
                                         <th>Product Name</th>
                                         <th>Size</th>
-                                        <th>Quantity</th>
+                                        
                                         <th>Image</th>
                                     </tr>
                                 </thead>

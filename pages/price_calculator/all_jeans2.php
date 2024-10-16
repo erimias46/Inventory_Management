@@ -125,7 +125,8 @@ $title = "All Jeans";
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['created_at']; ?> </td>
                                                             <!-- Actions column with accordion trigger -->
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                <button onclick="toggleGroup('<?php echo $groupId; ?>')" class="btn bg-primary/25 text-primary hover:bg-primary hover:text-white btn-sm rounded-full">
+                                                                <button onclick="toggleGroup('<?php echo $groupId; ?>', this.closest('tr'))" class="btn bg-primary/25 text-primary hover:bg-primary hover:text-white btn-sm rounded-full">
+
                                                                     <i class="mgc_arrow_down_2_line text-base me-2"></i> Expand
                                                                 </button>
                                                             </td>
@@ -134,7 +135,8 @@ $title = "All Jeans";
                                                     } // End of accordion header
                                                     ?>
                                                     <!-- Hidden rows for the rest of the group -->
-                                                    <tr class="group-<?php echo $groupId; ?> hidden odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                    <tr class="group-<?php echo $groupId; ?> hidden group-row">
+
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['id']; ?> </td>
                                                         <td> <?php echo $row['jeans_name']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 text-ellipsis overflow-hidden" style="max-width: 32ch"> <?php echo $row['size']; ?> </td>
@@ -200,11 +202,31 @@ $title = "All Jeans";
 
 <script>
     // Function to toggle visibility of group rows
-    function toggleGroup(groupId) {
+    function toggleGroup(groupId, currentRow) {
         // Get all rows with the matching group class (e.g., group-1)
         var elements = document.querySelectorAll('.group-' + groupId);
-        elements.forEach(function(element) {
-            element.classList.toggle('hidden');
-        });
+
+        // If already expanded, collapse them
+        if (!elements[0].classList.contains('hidden')) {
+            elements.forEach(function(element) {
+                element.classList.add('hidden');
+            });
+        } else {
+            // Collapse any other expanded rows
+            document.querySelectorAll('.group-row').forEach(function(element) {
+                element.classList.add('hidden');
+            });
+
+            // Ensure the current group's rows are expanded right below the current row
+            elements.forEach(function(element) {
+                element.classList.remove('hidden');
+            });
+
+            // Scroll into view for better UX (optional)
+            currentRow.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
     }
 </script>

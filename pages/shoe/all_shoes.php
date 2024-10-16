@@ -4,6 +4,7 @@ $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 $current_date = date('Y-m-d');
+$title = "All shoes";
 ?>
 
 <head>
@@ -14,10 +15,11 @@ $current_date = date('Y-m-d');
 
     <?php
 
-    $title = "All Shoes";
+    $title = "All shoes";
 
 
     ?>
+
 
     <?php
     $id = $_SESSION['user_id'];
@@ -79,22 +81,20 @@ $current_date = date('Y-m-d');
 
             <?php include $redirect_link . 'partials/topbar.php'; ?>
             <main class="flex-grow p-6">
-
                 <div class="card">
                     <div class="card mt-3">
                         <div class="p-6">
                             <div class="overflow-x-auto">
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
-
                                         <table id="zero_config" data-order='[[ 0, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Shoes Name</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">shoes Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                                                    <th class="p-2.5 text-left text-xs font-meduim text-gray-500 uppercase">Quantity</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
@@ -102,21 +102,49 @@ $current_date = date('Y-m-d');
                                             </thead>
                                             <tbody>
                                                 <?php
-
                                                 $sql = "SELECT * FROM shoes ORDER BY created_at DESC";
                                                 $result22 = mysqli_query($con, $sql);
+                                                $previousName = '';
+                                                $groupId = 0;
                                                 while ($row = mysqli_fetch_assoc($result22)) {
-
-
+                                                    // Increment groupId for each unique group of shoes_name
+                                                    if ($previousName != $row['shoes_name']) {
+                                                        $groupId++; // Unique ID for each group
+                                                        $previousName = $row['shoes_name'];
                                                 ?>
-                                                    <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
+                                                        <!-- Accordion header (first row of the group) -->
+                                                        <tr class="cursor-pointer">
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['id']; ?> </td>
+                                                            <td> <?php echo $row['shoes_name']; ?> </td>
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['size']; ?> </td>
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['price']; ?> </td>
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['quantity'] ?></td>
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                <img width="100px" height="100px" src="../../include/<?php echo $row['image']; ?>" alt="Product Image" class="product-image" />
+                                                            </td>
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['created_at']; ?> </td>
+                                                            <!-- Actions column with accordion trigger -->
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                <button onclick="toggleGroup('<?php echo $groupId; ?>', this.closest('tr'))" class="btn bg-primary/25 text-primary hover:bg-primary hover:text-white btn-sm rounded-full">
+
+                                                                    <i class="mgc_arrow_down_2_line text-base me-2"></i> Expand
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    <?php
+                                                    } // End of accordion header
+                                                    ?>
+                                                    <!-- Hidden rows for the rest of the group -->
+                                                    <tr class="group-<?php echo $groupId; ?> hidden group-row">
+
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['id']; ?> </td>
                                                         <td> <?php echo $row['shoes_name']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 text-ellipsis overflow-hidden" style="max-width: 32ch"> <?php echo $row['size']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['price']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['quantity'] ?></td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <Img width="100px" height="100px" src="../../include/<?php echo $row['image']; ?> " alt="Product Image" class="product-image" /> </td>
-
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                            <img width="100px" height="100px" src="../../include/<?php echo $row['image']; ?>" alt="Product Image" class="product-image" />
+                                                        </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['created_at']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                             <?php if ($deleteButtonVisible) : ?>
@@ -124,7 +152,6 @@ $current_date = date('Y-m-d');
                                                                     <i class="mgc_delete_2_line text-base me-2"></i> Delete
                                                                 </a>
                                                             <?php endif; ?>
-
                                                             <?php if ($updateButtonVisible) : ?>
                                                                 <a id="edit-btn" href="edit_shoes.php?id=<?php echo $row['id']; ?>" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full">
                                                                     <i class="mgc_edit_2_line text-base me-2"></i> Edit
@@ -171,3 +198,35 @@ $current_date = date('Y-m-d');
 </script>
 
 </html>
+
+
+<script>
+    // Function to toggle visibility of group rows
+    function toggleGroup(groupId, currentRow) {
+        // Get all rows with the matching group class (e.g., group-1)
+        var elements = document.querySelectorAll('.group-' + groupId);
+
+        // If already expanded, collapse them
+        if (!elements[0].classList.contains('hidden')) {
+            elements.forEach(function(element) {
+                element.classList.add('hidden');
+            });
+        } else {
+            // Collapse any other expanded rows
+            document.querySelectorAll('.group-row').forEach(function(element) {
+                element.classList.add('hidden');
+            });
+
+            // Ensure the current group's rows are expanded right below the current row
+            elements.forEach(function(element) {
+                element.classList.remove('hidden');
+            });
+
+            // Scroll into view for better UX (optional)
+            currentRow.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+</script>

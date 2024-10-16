@@ -5,7 +5,7 @@ include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 $current_date = date('Y-m-d');
 
-$title="Type Jeans";
+$title = "Type Jeans";
 ?>
 
 <head>
@@ -61,6 +61,7 @@ $title="Type Jeans";
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
 
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
 
 
                                                 </tr>
@@ -82,11 +83,11 @@ $title="Type Jeans";
                                                 ]; // Array of 10 different text colors to alternate between
                                                 $currentColorIndex = 0; // To toggle between colors
 
-    $sql = "SELECT jeans_name, 
+                                                $sql = "SELECT jeans_name, 
                GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
                price, image, created_at, id 
         FROM jeans 
-        WHERE quantity > 0 
+       
         GROUP BY jeans_name, price, image  
         ORDER BY created_at DESC";
 
@@ -118,6 +119,10 @@ $title="Type Jeans";
                                                         </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                             <img width="100px" height="100px" src="../../include/<?php echo $row['image']; ?>" alt="Product Image" class="product-image" />
+                                                        </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                            <a href="editprice.php?id=<?php echo $row['id']; ?>" class="btn bg-primary/25 text-primary hover:bg-primary hover:text-white btn-sm rounded-full">Set Price</a>
+
                                                         </td>
                                                     </tr>
                                                 <?php

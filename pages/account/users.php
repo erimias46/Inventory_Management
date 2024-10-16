@@ -324,7 +324,8 @@ if ($result) {
                                                         'constant'=>['constant'],
                                                         'email'=>['email'],
                                                         'backup'=>['backup'],
-                                                        'user'=>['user']
+                                                        'user'=>['user'],
+                                                        'editbuyprice'=>['editbuyprice'],
 
 
                                                     ];
@@ -547,6 +548,7 @@ if (isset($_POST['add_user'])) {
     $email = (int) boolval($_POST['email']);
     $backup = (int) boolval($_POST['backup']);
     $user = (int) boolval($_POST['user']);
+    $editbuyprice = (int) boolval($_POST['editbuyprice']);
 
    
 
@@ -676,7 +678,8 @@ if (isset($_POST['add_user'])) {
         'constant'=>$constant,
         'email'=>$email,
         'backup'=>$backup,
-        'user'=>$user
+        'user'=>$user,
+        'editbuyprice'=>$editbuyprice,
 
 
 

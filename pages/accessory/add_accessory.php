@@ -302,7 +302,7 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
-                                    <input type="number" step="0.0000001" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
+                                    <input type="number" min="0" step="0.01" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
                                 </div>
 
 

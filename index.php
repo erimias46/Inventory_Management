@@ -210,14 +210,7 @@ $to_date = empty($_GET['to']) ? "3000-01-01" : $_GET['to'];
                                                     </div>
                                                 </div>
                                                 <?php
-                                                $query = "
-    SELECT COUNT(*) as danger_zone 
-    FROM (
-        SELECT stock_quantity FROM stock WHERE stock_quantity < dangerzone
-        UNION ALL
-        SELECT stock_quantity FROM office_stock WHERE stock_quantity < dangerzone
-    ) as combined_stock
-";
+                                                $query = "SELECT COUNT(*) as danger_zone FROM sales WHERE status='refund'";
 
                                                 $result = mysqli_query($con, $query);
                                                 $row = mysqli_fetch_assoc($result);

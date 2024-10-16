@@ -325,7 +325,7 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
-                                    <input type="number" step="0.0000001" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
+                                    <input type="number" min="0" step="0.01" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
                                 </div>
 
 
@@ -367,7 +367,7 @@ if ($result) {
                                             <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
 
                                             <!-- Quantity Input -->
-                                            <input type="number" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
+                                            <input type="number"  min="0" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
                                         </div>
                                     <?php
                                     }

@@ -247,12 +247,12 @@ if ($result) {
                         <div class="p-6">
                             <h2 class="text-4xl font-bold text-white-700 text-center mb-10">MULTI SALE DATA ENTRY</h2>
                             <form method="post" enctype="multipart/form-data" id="saleForm" class="grid grid-cols-7 gap-5">
-                                <div id="salesEntries" class="col-span-2">
+                                <div id="salesEntries" class="col-span-3">
                                     <div class="sale-entry grid grid-cols-5 gap-5 mb-5   ">
                                         <!-- Code Name Field -->
                                         <div class="mb-3">
                                             <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
-                                            <select name="code_name[]" class="code_name w-full border border-gray-300 p-2 rounded-md search-select" onchange="fetchSizes(this)" required>
+                                            <select name="code_name[]" class="code_name w-full border border-gray-300 p-2 rounded-md " onchange="fetchSizes(this)" required>
                                                 <option value="">Select Name</option>
                                                 <?php
                                                 $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
@@ -303,6 +303,7 @@ if ($result) {
 
                                     </div>
                                 </div>
+                                
 
 
                                 <!-- Add Sale Entry Button -->
@@ -314,7 +315,7 @@ if ($result) {
                                 <!-- Other Fields -->
 
 
-                                <div id="bankNameDiv">
+                                <div id="bankNameDiv"  class="">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank Name</label>
                                     <select name="bank_name" id="bankNameInput" class="selectize">
                                         <option value="">Select</option>
@@ -434,16 +435,7 @@ if ($result) {
 
 
 
-    <script>
-        $(document).ready(function() {
-            // Apply Select2 to the select element
-            $('.code_name').select2({
-                placeholder: "Select a Code Name",
-                allowClear: true,
-                width: '100%' // This ensures it adapts to the width of the container
-            });
-        });
-    </script>
+    
 
 
 

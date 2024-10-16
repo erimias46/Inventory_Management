@@ -308,7 +308,7 @@ if ($result) {
 
                                 <!-- Add Sale Entry Button -->
                                 <div class="mb-3 text-center">
-                                    <button type="button" class="btn bg-blue-500 text-white px-4 py-2 rounded-md" onclick="addSaleEntry()">Add More</button>
+                                    <button type="button" class="btn bg-info text-white px-4 py-2 rounded-md" onclick="addSaleEntry()">Add More</button>
 
                                 </div>
 

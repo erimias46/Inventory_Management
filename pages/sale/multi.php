@@ -47,6 +47,10 @@ if (isset($_POST['add'])) {
     $method = $_POST['method'];
     $date = date('Y-m-d H:i:s');
 
+    // Counter for successful sales
+    $successful_sales_count = 0;
+    $sales_ids = []; // Array to hold sales IDs for multi sale logging
+
     // Iterate through all sales entries
     for ($i = 0; $i < count($code_names); $i++) {
         $code_name = $code_names[$i];
@@ -110,11 +114,9 @@ if (isset($_POST['add'])) {
                         VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', 'active')";
 
                 if (mysqli_query($con, $sql)) {
+                    $successful_sales_count++; // Increment count for successful sales
                     $sales_id = mysqli_insert_id($con); // Get inserted sale ID
-
-                    // Insert into multi_sale
-                    $multi_log = "INSERT INTO multi_sale (multi_id, sales_id) VALUES ('$number', '$sales_id')";
-                    mysqli_query($con, $multi_log);
+                    $sales_ids[] = $sales_id; // Store sales ID for multi sale logging
 
                     // Insert into sales log (only one log insert per sale)
                     $sales_log = ($table == 'jeans') ? 'sales_log' : $table . '_sales_log';
@@ -122,13 +124,22 @@ if (isset($_POST['add'])) {
                     $sql_log = "INSERT INTO $sales_log ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, status)
                                 VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', 'sold')";
                     mysqli_query($con, $sql_log);
+
+                    // Update the quantity in the product table
+                    $new_quantity = $current_quantity - $quantity;
+                    $sql_update = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
+                    mysqli_query($con, $sql_update);
                 }
             }
+        }
+    }
 
-            // Update the quantity in the product table
-            $new_quantity = $current_quantity - $quantity;
-            $sql_update = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
-            mysqli_query($con, $sql_update);
+    // If more than one sale was successful, insert into multi_sale
+    if ($successful_sales_count > 1) {
+        $from = $table;
+        foreach ($sales_ids as $sales_id) {
+            $multi_log = "INSERT INTO multi_sale (multi_id, sales_id, from_table) VALUES ('$number', '$sales_id', '$from')";
+            mysqli_query($con, $multi_log);
         }
     }
 
@@ -152,17 +163,12 @@ if (isset($_POST['add'])) {
     echo "<script>window.location = 'action.php?status=success&redirect=multi.php';</script>";
 }
 
-
 ?>
 
 
-<?php
 
 
-if (isset($_POST['update'])) {
-}
 
-?>
 
 <?php
 $id = $_SESSION['user_id'];
@@ -213,7 +219,7 @@ if ($result) {
 
     <!-- Include jQuery -->
     <!-- Load jQuery -->
-    
+
 
 
 
@@ -303,7 +309,7 @@ if ($result) {
 
                                     </div>
                                 </div>
-                                
+
 
 
                                 <!-- Add Sale Entry Button -->
@@ -315,7 +321,7 @@ if ($result) {
                                 <!-- Other Fields -->
 
 
-                                <div id="bankNameDiv"  class="">
+                                <div id="bankNameDiv" class="">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank Name</label>
                                     <select name="bank_name" id="bankNameInput" class="selectize">
                                         <option value="">Select</option>
@@ -435,7 +441,7 @@ if ($result) {
 
 
 
-    
+
 
 
 

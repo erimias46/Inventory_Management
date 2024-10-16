@@ -70,6 +70,11 @@ $title = "All Jeans";
             /* Optional: Adds rounded corners to the image */
         }
     </style>
+
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 </head>
 
 <body>
@@ -229,4 +234,23 @@ $title = "All Jeans";
             });
         }
     }
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        // Destroy the existing DataTable instance, if it exists
+        if ($.fn.DataTable.isDataTable('#zero_config')) {
+            $('#zero_config').DataTable().destroy();
+        }
+
+        // Initialize the DataTable
+        $('#zero_config').DataTable({
+            // Your DataTable options
+            paging: false, // Disable pagination
+            order: [
+                [0, "desc"]
+            ], // Default ordering
+        });
+    });
 </script>

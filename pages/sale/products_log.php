@@ -5,7 +5,7 @@ include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 $current_date = date('Y-m-d');
 
-$title = "Products Log";
+$title = "Added Products Log";
 ?>
 
 <head>
@@ -66,6 +66,8 @@ if ($result) {
                             <div class="overflow-x-auto">
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
+
+                                    <p class="text-2xl text-grey font-semibold text-center">Added Products Log</p>
 
                                         <table id="zero_config" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>

@@ -83,7 +83,7 @@ ORDER BY sales_date DESC;
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['source']; ?> </td>
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            <a id="del-btn" href="delete_recent.php?type=<?= $type ?>&key=<?php echo $row['sales_id']; ?>&from=<?= $type ?>" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
+                                                            <a id="del-btn" href="api/remove.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>&from=<?php  echo $type.'_sales' ?>" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_delete_2_line text-base me-2"></i> Delete
                                                             </a>
 

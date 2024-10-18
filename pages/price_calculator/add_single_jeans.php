@@ -33,7 +33,7 @@ if (isset($_POST['add'])) {
     $quantities = $_POST['quantities']; // Array of quantities
     $type_id = $_POST['type'];
     $price = $_POST['price'];
-    
+
     $image = $_FILES['image']['name'];
 
     // Fetch type from the database
@@ -110,12 +110,12 @@ if (isset($_POST['add'])) {
     // Redirect after successful insertion
 
     if ($add_jeans) {
-        
+
         $message = "New Jeans Added:\n";
         $message .= "Jeans Name: $jeans_name\n";
         $message .= "Price: $price\n";
         $message .= "Type: $type\n";
-       
+
         $message .= "Sizes and Quantities:\n";
         for ($i = 0; $i < count($sizes); $i++) {
             $size = $sizes[$i];
@@ -125,34 +125,20 @@ if (isset($_POST['add'])) {
             }
         }
 
-        
 
-$subject="New Jeans Added";
+
+        $subject = "New Jeans Added";
 
         sendMessageToSubscribers($message, $con);
-        sendEmailToSubscribers($message,$subject, $con);
+        sendEmailToSubscribers($message, $subject, $con);
 
 
         echo "<script>window.location = 'action.php?status=success&redirect=add_single_jeans.php';</script>";
-
-
-      
-
-
-        
-
-        }
-
-
-
-
-
-    else {
+    } else {
         echo "<script>window.location = 'action.php?status=error&message=Error adding jeans to the database.&redirect=add_single_jeans.php';</script>";
     }
-
 }
-    
+
 
 ?>
 
@@ -185,9 +171,6 @@ if ($result) {
 
 
         $addButtonVisible = ($module['addjeans'] == 1) ? true : false;
-
-
-       
     } else {
         echo "No user found with the specified ID";
     }
@@ -280,140 +263,154 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="Jeans names">Jeans Name</label>
-                                    <input type="text" name="jeans_name" id="jeans_name" value="<?php if (isset($jeans_name)) echo  $jeans_name ?>" class="form-input" list="jeans_types" required>
+                                    <input type="text" name="jeans_name" id="jeans_name" value="<?php if (isset($jeans_name)) echo $jeans_name ?>" class="form-input" list="jeans_types" required>
                                     <datalist id="jeans_types">
-                                        <!-- Options will be populated here -->
-                                    </datalist>
-                                </div>
-
-
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Type</label>
-
-                                    <select name="type" class="search-select" required>
-
                                         <?php
+                                        
+                                        $sql10 = "SELECT DISTINCT jeans_name FROM jeans"; // Modify 'jeans_table' to your table name
+                                        $result10 = $con->query($sql10);
 
-                                        $sql = "SELECT * FROM trouser_type_db";
-                                        $result = mysqli_query($con, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                        ?>
-                                            <option value="<?php echo $row['id'] ?>" <?php
-                                                                                        if (isset($type)) {
-                                                                                            if ($row['type'] == $type) {
-                                                                                                echo "selected";
-                                                                                            }
-                                                                                        }
-                                                                                        ?>>
-                                                <?php echo $row['type']; ?>
-                                            </option>
-                                        <?php
+                                        // Populate the datalist with jeans names
+                                        if ($result10->num_rows > 0) {
+                                            while ($row10 = $result10->fetch_assoc()) {
+                                                echo "<option value='" . htmlspecialchars($row10['jeans_name']) . "'></option>";
+                                            }
                                         }
+
+                                        // Close connection
+                                       
                                         ?>
-
-
-
-
-                                    </select>
-
-                                </div>
-
-
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
-                                    <input type="number" min="0" step="0.01" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
-                                </div>
-
-
-
-
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Product Image</label>
-                                    <div class="custom-file-upload">
-                                        <label for="fileInput" class="custom-file-label">Choose Image</label>
-                                        <input type="file" name="image" class="form-input  choose-image" id="fileInput" onchange="previewImage(event)">
+                                    </datalist>
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="image-preview" id="imagePreview">
-                                        <!-- The selected image will be displayed here -->
-                                        <img src="../../include/uploads/defaultjeans.jpg" />
-                                    </div>
-                                </div>
 
 
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Sizes and Quantities</label>
+
+
+                                    <div class="mb-3">
+                                <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Type</label>
+
+                                <select name="type" class="search-select" required>
 
                                     <?php
-                                    // Fetch all sizes from the `jeansdb` table
-                                    $sql = "SELECT * FROM jeansdb";
+
+                                    $sql = "SELECT * FROM trouser_type_db";
                                     $result = mysqli_query($con, $sql);
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        $size = $row['size'];
                                     ?>
-                                        <div class="flex items-center mb-2 justify-around">
-                                            <!-- Size Label -->
-                                            <label class="text-gray-800 text-sm font-medium flex-1"><?php echo $size; ?></label>
-
-                                            <!-- Hidden input for size ID -->
-                                            <input type="hidden" name="size_ids[]" value="<?php echo $row['id']; ?>">
-
-                                            <!-- Hidden input for size value -->
-                                            <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
-
-                                            <!-- Quantity Input -->
-                                            <input type="number"  min="0" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
-                                        </div>
+                                        <option value="<?php echo $row['id'] ?>" <?php
+                                                                                    if (isset($type)) {
+                                                                                        if ($row['type'] == $type) {
+                                                                                            echo "selected";
+                                                                                        }
+                                                                                    }
+                                                                                    ?>>
+                                            <?php echo $row['type']; ?>
+                                        </option>
                                     <?php
                                     }
                                     ?>
-                                </div>
 
 
 
 
+                                </select>
 
-
-
-
-                                <div class="col-span-1 sm:col-span-2 md:col-span-3 text-end">
-                                    <div class="mt-3">
-
-
-                                        <!-- Display the Calculate button if $calculateButtonVisible is true -->
-                                        <?php if ($addButtonVisible) : ?>
-
-                                            <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>
-
-                                        <?php endif; ?>
-
-                                        <!-- Display the Add button if $addButtonVisible is true -->
-
-                                    </div>
-                                </div>
-                            </form>
                         </div>
+
+
+
+
+                        <div class="mb-3">
+                            <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
+                            <input type="number" min="0" step="0.01" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
+                        </div>
+
+
+
+
+                        <div class="mb-3">
+                            <label class="text-gray-800 text-sm font-medium inline-block mb-2">Product Image</label>
+                            <div class="custom-file-upload">
+                                <label for="fileInput" class="custom-file-label">Choose Image</label>
+                                <input type="file" name="image" class="form-input  choose-image" id="fileInput" onchange="previewImage(event)">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="image-preview" id="imagePreview">
+                                <!-- The selected image will be displayed here -->
+                                <img src="../../include/uploads/defaultjeans.jpg" />
+                            </div>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Sizes and Quantities</label>
+
+                            <?php
+                            // Fetch all sizes from the `jeansdb` table
+                            $sql = "SELECT * FROM jeansdb";
+                            $result = mysqli_query($con, $sql);
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $size = $row['size'];
+                            ?>
+                                <div class="flex items-center mb-2 justify-around">
+                                    <!-- Size Label -->
+                                    <label class="text-gray-800 text-sm font-medium flex-1"><?php echo $size; ?></label>
+
+                                    <!-- Hidden input for size ID -->
+                                    <input type="hidden" name="size_ids[]" value="<?php echo $row['id']; ?>">
+
+                                    <!-- Hidden input for size value -->
+                                    <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
+
+                                    <!-- Quantity Input -->
+                                    <input type="number" min="0" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
+                                </div>
+                            <?php
+                            }
+                            ?>
+                        </div>
+
+
+
+
+
+
+
+
+                        <div class="col-span-1 sm:col-span-2 md:col-span-3 text-end">
+                            <div class="mt-3">
+
+
+                                <!-- Display the Calculate button if $calculateButtonVisible is true -->
+                                <?php if ($addButtonVisible) : ?>
+
+                                    <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>
+
+                                <?php endif; ?>
+
+                                <!-- Display the Add button if $addButtonVisible is true -->
+
+                            </div>
+                        </div>
+                        </form>
                     </div>
-
                 </div>
-
-
-
-
-            </main>
-
-            <?php include $redirect_link . 'partials/footer.php'; ?>
 
         </div>
 
-        <!-- ============================================================== -->
-        <!-- End Page content -->
-        <!-- ============================================================== -->
+
+
+
+        </main>
+
+        <?php include $redirect_link . 'partials/footer.php'; ?>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- End Page content -->
+    <!-- ============================================================== -->
 
     </div>
 

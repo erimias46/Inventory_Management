@@ -7,11 +7,6 @@ $side_link = "../../../";
 
 
 
-include $redirect_link . 'partials/main.php';
-include_once $redirect_link . 'include/db.php'; // Include your database connection
-
-include_once $redirect_link . 'include/email.php';
-include_once $redirect_link . 'include/bot.php';
 
 
     $user_id = $_SESSION['user_id']; 
@@ -123,8 +118,17 @@ include_once $redirect_link . 'include/bot.php';
             $update_sales = "UPDATE `sales` SET `status` = 'Exchange Sell' WHERE sales_id = '$sales_id'";
             $result_update = mysqli_query($con, $update_sales);
 
+
+
+
             if($result_add && $result_update) {
-                echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
+
+                if(isset($place)) {
+                    echo "<script>window.location = '../sale/action.php?status=success&redirect=all_sales.php'; </script>";
+                } else {
+                    echo "<script>window.location = 'action.php?status=success&redirect=sale_jeans.php'; </script>";
+                }
+                
             } else {
                 echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
             }

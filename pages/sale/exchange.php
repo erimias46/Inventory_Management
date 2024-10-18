@@ -75,65 +75,58 @@ if (isset($_POST['add'])) {
     $quantity = 1;
     $type = $_GET['type'];
     $sales_id = $_GET['sales_id'];
+    $quantity = 1;
 
 
     if ($type == 'jeans') {
         $_POST['jeans_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $_POST['quantity'] = $quantity;
 
-        include('../price_calculator/api/exchange.php');}
-elseif ($type == 'shoes') {
+        $place = 'all_sales.php';
 
-    $_POST['shoes_name'] = $_POST['code_name'];
+        include('../price_calculator/api/exchange.php');
+    } elseif ($type == 'shoes') {
+
+        $_POST['shoes_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $_POST['quantity'] = $quantity;
+        $place = 'all_sales.php';
 
 
-            include('../shoe/api/exchange.php');
-        }
+        include('../shoe/api/exchange.php');
+    } elseif ($type == 'top') {
 
-        elseif ($type == 'top') {
-
-            $_POST['top_name'] = $_POST['code_name'];
+        $_POST['top_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $_POST['quantity'] = $quantity;
+        $place = 'all_sales.php';
 
 
-            
-            include('../top/api/exchange.php');
-        }
-        elseif ($type == 'accessory') {
 
-            $_POST['accessory_name'] = $_POST['code_name'];
+        include('../top/api/exchange.php');
+    } elseif ($type == 'accessory') {
+
+        $_POST['accessory_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
-            include('../accessory/api/exchange.php');
-        }
+        $_POST['quantity'] = $quantity;
+        $place = 'all_sales.php';
+        include('../accessory/api/exchange.php');
+    } elseif ($type == 'complete') {
 
-        elseif ($type == 'complete') {
-
-            $_POST['complete_name'] = $_POST['code_name'];
+        $_POST['complete_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
-            include('../complete/api/exchange.php');
-        }
-
-
-
-    
-    
-
-
-
-
-
-
-   
-
-        // Notify subscribers for both delivery and sales
-        
-
-
-
-        // Success redirect
-        echo "<script>window.location = 'action.php?status=success&redirect=sale_$table.php'; </script>";
+        $_POST['quantity'] = $quantity;
+        $place = 'all_sales.php';
+        include('../complete/api/exchange.php');
     }
+
+
+
+
+
+    echo "<script>window.location = 'action.php?status=success&redirect=all_sales.php'; </script>";
+}
 
 ?>
 
@@ -215,7 +208,18 @@ if ($result) {
                     <div class="card bg-white shadow-md rounded-md p-6 mx-lg max-w-lg">
 
                         <div class="p-6">
-                            <h2 class="text-4xl	 font-bold text-white-700 text-center mb-10">EXCHANGE <?php echo ucfirst($type) ; ?> </h2>
+
+
+
+                            <h2 class="text-4xl	 font-bold text-white-700 text-center mb-10">EXCHANGE <?php echo ucfirst($type); ?> </h2>
+
+                            <p class="text-center text-red-500"> The product to be exchanged </p>
+                            <p class="text-center text-red-500"> Product Name: <?php echo $product_name; ?> </p>
+                            <p class="text-center text-red-500"> Size: <?php echo $size; ?> </p>
+                            <p class="text-center text-red-500"> Price: <?php echo $price; ?> </p>
+
+
+
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-2 gap-5">
                                 <!-- Jeans Name Field -->
                                 <div class="mb-3">
@@ -266,11 +270,11 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
-                                    <input type="text" name="cash" id="cash" class="form-input w-full border border-gray-300 p-2 rounded-md" required >
+                                    <input type="text" name="cash" id="cash" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
-                                    <input type="text" name="bank" id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required >
+                                    <input type="text" name="bank" id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
 
                                 </div>
 
@@ -295,7 +299,7 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Total Price</label>
-                                    <input type="text" name="price" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" readonly required >
+                                    <input type="text" name="price" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" readonly required>
                                 </div>
 
                                 <div class="mb-3">

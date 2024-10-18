@@ -7,10 +7,7 @@ $side_link = "../../../";
 
 
 
-include $redirect_link . 'partials/main.php';
-include_once $redirect_link . 'include/db.php'; // Include your database connection
-include_once $redirect_link . 'include/email.php';
-include_once $redirect_link . 'include/bot.php';
+
 
 $user_id = $_SESSION['user_id'];
 $sales_id = $_POST['sales_id'];

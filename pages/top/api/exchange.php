@@ -121,7 +121,14 @@ include_once $redirect_link . 'include/bot.php';
             $result_update = mysqli_query($con, $update_sales);
 
             if($result_add && $result_update) {
+
+        if (isset($place)) {
+            echo "<script>window.location = '../sale/action.php?status=success&redirect=all_sales.php'; </script>";
+        } else {
+
+
                 echo "<script>window.location = 'action.php?status=success&redirect=sale_top.php'; </script>";
+        }
             } else {
                 echo "<script>window.location = 'action.php?status=error&redirect=sale_top.php'; </script>";
             }

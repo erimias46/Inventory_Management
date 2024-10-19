@@ -602,7 +602,7 @@ if ($result) {
 
 
 
-            <!-- <?php if ($viewwig) : ?>
+            <?php if ($viewwig) : ?>
 
 
                 <li class="menu-item">
@@ -775,7 +775,7 @@ if ($result) {
 
                     </ul>
                 </li>
-            <?php endif; ?> -->
+            <?php endif; ?>
 
 
             <?php if ($salejeans) : ?>

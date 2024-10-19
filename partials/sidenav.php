@@ -124,14 +124,14 @@ if ($result) {
     <a href=" <?php echo $redirect_link ?>index.php" class="logo-box">
         <!-- Light Brand Logo -->
         <div class="logo-light">
-            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.JPG" class="logo-lg" style="height: 40px; width: 40px;" alt="Light Logo">
-            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.JPG" class="logo-sm" style="height: 40px; width: 40px;" alt="Small Light Logo">
+            <img src="<?php echo $redirect_link ?>assets/images/zuqemens.JPG" class="logo-lg" style="height: 40px; width: 40px;" alt="Light Logo">
+            <img src="<?php echo $redirect_link ?>assets/images/zuqemens.JPG" class="logo-sm" style="height: 40px; width: 40px;" alt="Small Light Logo">
         </div>
 
         <!-- Dark Brand Logo -->
         <div class="logo-dark">
-            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.JPG" class="logo-lg" style="height: 40px; width: 40px;" alt="Dark Logo">
-            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.JPG" class="logo-sm" style="height: 40px; width: 40px;" alt="Small Dark Logo">
+            <img src="<?php echo $redirect_link ?>assets/images/zuqemens.JPG" class="logo-lg" style="height: 40px; width: 40px;" alt="Dark Logo">
+            <img src="<?php echo $redirect_link ?>assets/images/zuqemens.JPG" class="logo-sm" style="height: 40px; width: 40px;" alt="Small Dark Logo">
         </div>
 
     </a>

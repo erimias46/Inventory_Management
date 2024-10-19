@@ -72,8 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="card overflow-hidden sm:rounded-md rounded-none">
                     <form class="p-6" method="POST">
                         <a href="index.php" class="block mb-8">
-                            <img class="h-50 w-50 block mx-auto dark:hidden" src="assets/images/yunasbrand.JPG" alt="">
-                            <img class="h-50 w-50 hidden mx-auto dark:block" src="assets/images/yunasbrand.JPG" alt="">
+                            <img class="h-50 w-50 block mx-auto dark:hidden" src="assets/images/zuqemens.JPG" alt="">
+                            <img class="h-50 w-50 hidden mx-auto dark:block" src="assets/images/zuqemens.JPG" alt="">
                             <!-- <img class="h-14 w-14 block dark:hidden" src="assets/images/logo2.png" alt="">
                             <img class="h-14 w-14 hidden dark:block" src="assets/images/logo2.png" alt=""> -->
 

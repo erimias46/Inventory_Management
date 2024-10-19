@@ -124,14 +124,14 @@ if ($result) {
     <a href=" <?php echo $redirect_link ?>index.php" class="logo-box">
         <!-- Light Brand Logo -->
         <div class="logo-light">
-            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.jpg" class="logo-lg h-10" alt="Light logo">
-            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.jpg" class="logo-sm" alt="Small logo">
+            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.JPG" class="logo-lg h-10" alt="Light logo">
+            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.JPG" class="logo-sm" alt="Small logo">
         </div>
 
         <!-- Dark Brand Logo -->
         <div class="logo-dark">
-            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.jpg" class="logo-lg h-6" alt="Dark logo">
-            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.jpg" class="logo-sm" alt="Small logo">
+            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.JPG" class="logo-lg h-6" alt="Dark logo">
+            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.JPG" class="logo-sm" alt="Small logo">
         </div>
     </a>
 

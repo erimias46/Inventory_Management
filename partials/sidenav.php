@@ -123,16 +123,20 @@ if ($result) {
     <!-- Sidenav Brand Logo -->
     <a href=" <?php echo $redirect_link ?>index.php" class="logo-box">
         <!-- Light Brand Logo -->
-        <div class="logo-light">
-            <img src="<?php echo $redirect_link ?>assets/images/logo2.png" class="logo-lg h-10" alt="Light logo">
-            <img src="<?php echo $redirect_link ?>assets/images/logo2.png" class="logo-sm" alt="Small logo">
+        <div class="logo-container">
+            <!-- Light Brand Logo -->
+            <div class="logo-light">
+                <img src="<?php echo $redirect_link; ?>assets/images/yunasbrand.jpg" class="logo-xl h-20 w-20" alt="Light Logo">
+                <img src="<?php echo $redirect_link; ?>assets/images/yunasbrand.jpg" class="logo-sm" alt="Small Light Logo">
+            </div>
+
+            <!-- Dark Brand Logo -->
+            <div class="logo-dark">
+                <img src="<?php echo $redirect_link; ?>assets/images/yunasbrand.png" class="logo-xl h-40 w-40" alt="Dark Logo">
+                <img src="<?php echo $redirect_link; ?>assets/images/yunasbrand.png" class="logo-sm" alt="Small Dark Logo">
+            </div>
         </div>
 
-        <!-- Dark Brand Logo -->
-        <div class="logo-dark">
-            <img src="<?php echo $redirect_link ?>assets/images/logo2.png" class="logo-lg h-6" alt="Dark logo">
-            <img src="<?php echo $redirect_link ?>assets/images/logo2.png" class="logo-sm" alt="Small logo">
-        </div>
     </a>
 
     <!-- Sidenav Menu Toggle Button -->

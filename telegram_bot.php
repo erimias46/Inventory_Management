@@ -6,7 +6,7 @@ require 'vendor/autoload.php'; // Ensure you have installed the Telegram SDK
 use Telegram\Bot\Api;
 
 // Create a new instance of the Telegram API
-$telegram = new Api('7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0'); // Replace with your Bot Token
+$telegram = new Api('7535344872:AAFoyqpzsXU_c-USN5HOuEV6bV9IYQERb0o'); // Replace with your Bot Token
 
 // Database connection
 include('include/db.php'); // Update this

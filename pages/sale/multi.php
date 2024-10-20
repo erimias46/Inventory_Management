@@ -306,6 +306,10 @@ if ($result) {
                                             <input type="text" name="bank[]" id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
                                         </div>
 
+                                        <div class="mb-3">
+                                            <button type="button" class="btn bg-red-500 text-white px-4 py-2 rounded-md remove-entry" onclick="removeSaleEntry(this)">Remove</button>
+                                        </div>
+
 
                                     </div>
                                 </div>
@@ -385,6 +389,12 @@ if ($result) {
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
 
     <script>
+        function removeSaleEntry(button) {
+            // Remove the sale entry when the remove button is clicked
+            const saleEntry = button.closest('.sale-entry');
+            saleEntry.remove();
+        }
+
         function addSaleEntry() {
             // Clone the sale entry div
             const saleEntry = document.querySelector('.sale-entry').cloneNode(true);

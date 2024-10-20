@@ -35,11 +35,12 @@ if (isset($_POST['update'])) {
 
     $accessory_name = $_POST['accessory_name'];
     $buy_price = $_POST['buy_price'];
+    $selling_price = $_POST['price'];
 
    
 
     // Update the accessory record with the new or old image
-    $sql = "UPDATE accessory SET buy_price='$buy_price' where accessory_name='$accessory_name'"; 
+    $sql = "UPDATE accessory SET buy_price = '$buy_price', price = '$selling_price' WHERE id = $id";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
@@ -47,13 +48,13 @@ if (isset($_POST['update'])) {
 
         //send notification
 
-        $message = " accessory Price Updated:\n";
-        $message .= "accessory Name: " . $accessory_name . "\n";
-        $message .= "Price: " . $price . "\n";
+        $message = " Accessory Price Updated:\n";
+        $message .= "Accessory Name: " . $accessory_name . "\n";
+        $message .= "Selling Price: " . $selling_price . "\n";
         $message .= "Buy Price: " . $buy_price . "\n";
        
 
-        $subject = "accessory Updated";
+        $subject = "Accessory Updated";
 
 
 

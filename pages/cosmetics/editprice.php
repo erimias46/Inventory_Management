@@ -14,10 +14,10 @@ $generate_button = '';
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $sql = "SELECT * FROM jeans WHERE id = $id";
+    $sql = "SELECT * FROM cosmetics WHERE id = $id";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
-    $jeans_name = $row['jeans_name'];
+    $cosmetics_name = $row['cosmetics_name'];
     $size = $row['size'];
     $type = $row['type'];
     $price = $row['price'];
@@ -33,27 +33,28 @@ if (isset($_GET['id'])) {
 
 if (isset($_POST['update'])) {
 
-    $jeans_name = $_POST['jeans_name'];
+    $cosmetics_name = $_POST['cosmetics_name'];
     $buy_price = $_POST['buy_price'];
+    $selling_price = $_POST['price'];
 
    
 
-    // Update the jeans record with the new or old image
-    $sql = "UPDATE jeans SET buy_price='$buy_price' where jeans_name='$jeans_name'"; 
+    // Update the cosmetics record with the new or old image
+    $sql = "UPDATE cosmetics SET buy_price = '$buy_price', price = '$selling_price' WHERE id = $id";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
-        echo "<script>window.location = 'action.php?status=success&redirect=type_jeans.php';</script>";
+        echo "<script>window.location = 'action.php?status=success&redirect=type_cosmetics.php';</script>";
 
         //send notification
 
-        $message = " Jeans Price Updated:\n";
-        $message .= "Jeans Name: " . $jeans_name . "\n";
-        $message .= "Price: " . $price . "\n";
+        $message = " Cosmetics Price Updated:\n";
+        $message .= "Cosmetics Name: " . $cosmetics_name . "\n";
+        $message .= "Selling Price: " . $selling_price . "\n";
         $message .= "Buy Price: " . $buy_price . "\n";
        
 
-        $subject = "Jeans Updated";
+        $subject = "Cosmetics Updated";
 
 
 
@@ -64,7 +65,7 @@ if (isset($_POST['update'])) {
         sendMessageToSubscribers($message, $con);
         sendEmailToSubscribers($message, $subject, $con);
     } else {
-        echo "<script>window.location = 'action.php?status=error&message=Error updating jeans in the database.&redirect=all.php';</script>";
+        echo "<script>window.location = 'action.php?status=error&message=Error updating cosmetics in the database.&redirect=all.php';</script>";
     }
 }
 
@@ -157,9 +158,9 @@ if ($result) {
 
 
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="Jeans names">Jeans Name</label>
-                                    <input type="text" name="jeans_name" id="jeans_name" value="<?php if (isset($jeans_name)) echo  $jeans_name ?>" class="form-input" list="jeans_types" required>
-                                    <datalist id="jeans_types">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cosmetics names">cosmetics Name</label>
+                                    <input type="text" name="cosmetics_name" id="cosmetics_name" value="<?php if (isset($cosmetics_name)) echo  $cosmetics_name ?>" class="form-input" list="cosmetics_types" required>
+                                    <datalist id="cosmetics_types">
                                         <!-- Options will be populated here -->
                                     </datalist>
                                 </div>
@@ -182,7 +183,7 @@ if ($result) {
                                 <div class="mb-3">
                                     <div class="image-preview" id="imagePreview">
                                         <!-- The initial image will be displayed here -->
-                                        <img id="previewImg" src="<?php echo !empty($image) ? $image : 'uploads/defaultjeans.jpg'; ?>" alt="Product Image" width="200" />
+                                        <img id="previewImg" src="<?php echo !empty($image) ? $image : 'uploads/defaultcosmetics.jpg'; ?>" alt="Product Image" width="200" />
                                     </div>
                                 </div>
 

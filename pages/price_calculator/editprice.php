@@ -35,11 +35,12 @@ if (isset($_POST['update'])) {
 
     $jeans_name = $_POST['jeans_name'];
     $buy_price = $_POST['buy_price'];
+    $selling_price = $_POST['price'];
 
    
 
     // Update the jeans record with the new or old image
-    $sql = "UPDATE jeans SET buy_price='$buy_price' where jeans_name='$jeans_name'"; 
+   $sql = "UPDATE jeans SET buy_price = '$buy_price', price = '$selling_price' WHERE id = $id";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
@@ -49,7 +50,7 @@ if (isset($_POST['update'])) {
 
         $message = " Jeans Price Updated:\n";
         $message .= "Jeans Name: " . $jeans_name . "\n";
-        $message .= "Price: " . $price . "\n";
+        $message .= "Price: " . $selling_price . "\n";
         $message .= "Buy Price: " . $buy_price . "\n";
        
 

@@ -9,7 +9,7 @@ function sendMessageToSubscribers($message, $con)
     $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
 
     // Bot Token
-    $botToken = "7048538445:AAFH9g9L2EHfmH8mHK7N8CPt82INxhdzev0"; // Replace with your bot token
+    $botToken = "7535344872:AAFoyqpzsXU_c-USN5HOuEV6bV9IYQERb0o"; // Replace with your bot token
     $apiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
 
     // Loop through each subscriber and send the message

@@ -32,7 +32,7 @@ $title = "All Sales";
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
 
-                                        <table  id="zero_config"  class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <table id="zero_config" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
@@ -43,6 +43,7 @@ $title = "All Sales";
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                                    <th class=" p-2.5 text-left text-xs font-medium text-gray-500 uppercase"> Image</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -85,7 +86,7 @@ ORDER BY sales_date DESC;
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['source']; ?> </td>
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            <a id="del-btn" href="api/remove.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>&from=<?php  echo $type.'_sales' ?>" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
+                                                            <a id="del-btn" href="api/remove.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>&from=<?php echo $type . '_sales' ?>" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_delete_2_line text-base me-2"></i> Delete
                                                             </a>
 
@@ -99,6 +100,19 @@ ORDER BY sales_date DESC;
                                                                 <i class="mgc_delete_2_line text-base me-2"></i> Edit
                                                             </a>
 
+
+                                                        </td>
+                                                        <td>
+                                                            <?php  
+                                                            $type_name = $type . '_name';
+                                                            $product_name = $row['Name'];
+                                                            $size = $row['size'];
+                                                            $sql5= "SELECT * FROM $type WHERE $type_name = '$product_name' AND size = '$size'";
+                                                            $result5 = mysqli_query($con, $sql5);
+                                                            $row5 = mysqli_fetch_assoc($result5);
+                                                            $image = $row5['image'];
+                                                            ?>
+                                                            <img src="../../include/<?= $image ?>" alt="" class="w-30 h-20">
 
                                                         </td>
                                                     </tr>

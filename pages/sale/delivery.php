@@ -78,7 +78,9 @@ if ($result) {
 
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                                    <th class=" p-2.5 text-left text-xs font-medium text-gray-500 uppercase"> Image</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -145,6 +147,19 @@ ORDER BY created_at DESC;
                                                                 <?php endif; ?>
                                                             <?php endif; ?>
 
+
+                                                        </td>
+                                                        <td>
+                                                            <?php
+                                                            $type_name = $type . '_name';
+                                                            $product_name = $row['Name'];
+                                                            $size = $row['size'];
+                                                            $sql5 = "SELECT * FROM $type WHERE $type_name = '$product_name' AND size = '$size'";
+                                                            $result5 = mysqli_query($con, $sql5);
+                                                            $row5 = mysqli_fetch_assoc($result5);
+                                                            $image = $row5['image'];
+                                                            ?>
+                                                            <img src="../../include/<?= $image ?>" alt="" class="w-30 h-20">
 
                                                         </td>
                                                     </tr>

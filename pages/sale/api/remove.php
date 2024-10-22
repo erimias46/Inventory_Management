@@ -153,7 +153,13 @@ VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', 
             sendMessageToSubscribers($message, $con);
             sendEmailToSubscribers($message, $subject, $con);
         }
-    } elseif ($from == 'accessory_delivery') {
+    } elseif ($from == 'delivery') {
+
+        
+
+
+
+
         $sql = "SELECT * FROM accessory_delivery WHERE sales_id='$id'";
         $res = mysqli_query($con, $sql);
         $row = mysqli_fetch_assoc($res);

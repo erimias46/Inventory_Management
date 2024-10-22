@@ -63,6 +63,7 @@ if ($result) {
                 <div class="card">
                     <div class="card mt-3">
                         <div class="p-6">
+                            <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200 text-center">Delivery</h2>
                             <div class="overflow-x-auto">
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
@@ -85,19 +86,19 @@ if ($result) {
 
                                                 $sql = "
 SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,verifiy,created_at
-FROM shoes_delivery
+FROM shoes_delivery where verifiy = 0
 UNION ALL
 SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size,verifiy,created_at
-FROM top_delivery
+FROM top_delivery where verifiy = 0
 UNION ALL
 SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size,verifiy,created_at
-FROM complete_delivery
+FROM complete_delivery where verifiy = 0
 UNION ALL
 SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size,verifiy,created_at
-FROM accessory_delivery
+FROM accessory_delivery where verifiy = 0
 UNION ALL
 SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size,verifiy,created_at
-FROM delivery
+FROM delivery where verifiy = 0
 ORDER BY created_at DESC;
 ";
 
@@ -123,7 +124,7 @@ ORDER BY created_at DESC;
                                                             <?php if ($deletesalejeans) : ?>
 
                                                                 <a id="del-btn"
-                                                                    href="api/remove.php?id=<?php echo $row['sales_id']; ?>&from=delivery"
+                                                                    href="api/delivery_remove.php?id=<?php echo $row['sales_id']; ?>&from=delivery&source=<?php echo $row['source']; ?>"
                                                                     class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full"><i
                                                                         class="mgc_delete_2_line text-base me-2"></i> Delete</a>
 

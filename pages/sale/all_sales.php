@@ -39,9 +39,12 @@ $title = "All Sales";
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Product Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Cash</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Bank</th>
 
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Method</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                                                     <th class=" p-2.5 text-left text-xs font-medium text-gray-500 uppercase"> Image</th>
                                                 </tr>
@@ -50,19 +53,19 @@ $title = "All Sales";
                                                 <?php
 
                                                 $sql = "
-SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size
+SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,cash,bank,method
 FROM shoes_sales
 UNION ALL
-SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size
+SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size,cash,bank,method
 FROM top_sales
 UNION ALL
-SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size
+SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size,cash,bank,method
 FROM complete_sales
 UNION ALL
-SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size
+SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size,cash,bank,method
 FROM accessory_sales
 UNION ALL
-SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size
+SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size,cash,bank,method
 FROM sales
 ORDER BY sales_date DESC;
 ";
@@ -82,8 +85,12 @@ ORDER BY sales_date DESC;
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['Name']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['size']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['price']; ?> </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['cash']; ?> </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['bank']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['sales_date']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['source']; ?> </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['method']; ?> </td>
+
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                             <a id="del-btn" href="api/remove.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>&from=<?php echo $type . '_sales' ?>" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
@@ -103,11 +110,11 @@ ORDER BY sales_date DESC;
 
                                                         </td>
                                                         <td>
-                                                            <?php  
+                                                            <?php
                                                             $type_name = $type . '_name';
                                                             $product_name = $row['Name'];
                                                             $size = $row['size'];
-                                                            $sql5= "SELECT * FROM $type WHERE $type_name = '$product_name' AND size = '$size'";
+                                                            $sql5 = "SELECT * FROM $type WHERE $type_name = '$product_name' AND size = '$size'";
                                                             $result5 = mysqli_query($con, $sql5);
                                                             $row5 = mysqli_fetch_assoc($result5);
                                                             $image = $row5['image'];

@@ -11,15 +11,7 @@ $current_date = date('Y-m-d');
 
 $generate_button = '';
 
-if (isset($_GET['import_brocher_id'])) {
-    $brocher_type = $_GET['brocher_type'];
 
-
-
-    $add_button = '<button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>';
-    $update_button = '<button name="update" type="submit" class="btn btn-sm bg-danger text-white rounded-full"> <i class="mgc_pencil_line text-base me-2"></i> Update </button>';
-    $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
-}
 
 ?>
 
@@ -84,6 +76,50 @@ if (isset($_POST['add'])) {
 
             if (!$row) {
                 // Handle missing product and size details (if necessary)
+
+
+                // If no exact match for product name and size, get default product details (without size)
+                $sql = "SELECT * FROM $table WHERE {$table}_name = '$product_name'";
+                $result = mysqli_query($con, $sql);
+                $row = mysqli_fetch_assoc($result);
+                $price = $row['price'];
+                $image = $row['image'];
+                $type = $row['type'];
+                $type_id = $row['type_id'];
+
+                $sql2 = "SELECT * FROM {$table}db WHERE size = '$size'";
+                $result2 = mysqli_query($con, $sql2);
+                $row2 = mysqli_fetch_assoc($result2);
+                $size_id = $row2['id'];
+
+                // Insert into verification table with error status
+                $add_product = "INSERT INTO `{$table}_verify`(`{$table}_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
+                          VALUES ('$product_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','1')";
+                $result_add = mysqli_query($con, $add_product);
+
+                if ($result_add) {
+
+                    $message = "Verify Needed For a product\n";
+                    $message .= "Product Name: $product_name\n";
+                    $message .= "Price: $price\n";
+                    $message .= "Size: $size\n";
+                    $message .= "Quantity: $quantity\n";
+                    $message .= "Cash: $cash\n";
+                    $message .= "Bank: $bank\n";
+                    $message .= "Reason: Size not found\n";
+                   
+
+
+                    $subject = "Verify Needed";
+
+                    // Send updates to subscribers
+                    sendMessageToSubscribers($message, $con);
+                    sendEmailToSubscribers($message, $subject, $con);
+
+                    echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
+                }
+
+              
                 continue;
             }
 
@@ -95,6 +131,42 @@ if (isset($_POST['add'])) {
             // Check quantity availability
             if ($current_quantity < $quantity) {
                 // Handle insufficient quantity error (if necessary)
+
+
+                $price = $row['price'];
+                $image = $row['image'];
+                $type = $row['type'];
+                $type_id = $row['type_id'];
+
+                $add_product = "INSERT INTO `{$table}_verify`(`{$table}_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
+                          VALUES ('$product_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','2')";
+                $result_add = mysqli_query($con, $add_product);
+
+                if ($result_add) {
+
+
+
+                    $message = "Verify Needed For a product\n";
+                    $message .= "Product Name: $product_name\n";
+                    $message .= "Price: $price\n";
+                    $message .= "Size: $size\n";
+                    $message .= "Quantity: $quantity\n";
+                    $message .= "Cash: $cash\n";
+                    $message .= "Bank: $bank\n";
+                    $message .= "Reason: Quantity Not found\n";
+
+
+
+                    $subject = "Verify Needed";
+
+                    // Send updates to subscribers
+                    sendMessageToSubscribers($message, $con);
+                    sendEmailToSubscribers($message, $subject, $con);
+                    echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
+                   
+                }
+                echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
+                
                 continue;
             }
 
@@ -106,6 +178,24 @@ if (isset($_POST['add'])) {
                 $sql = "INSERT INTO $delivery_table ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status)
                         VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', '$status')";
                 mysqli_query($con, $sql);
+
+
+               
+
+
+                $new_quantity=$current_quantity-$quantity;
+                $update_quantity="UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
+                $result_update = mysqli_query($con, $update_quantity);
+
+                if (!$result || !$result_update) {
+                    echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                    continue;
+                }
+
+                
+
+
+
             } else {
                 $sales_table = ($table == 'jeans') ? 'sales' : $table . '_sales';
 
@@ -254,12 +344,13 @@ if ($result) {
                             <h2 class="text-4xl font-bold text-white-700 text-center mb-10">MULTI SALE DATA ENTRY</h2>
                             <form method="post" enctype="multipart/form-data" id="saleForm" class="grid grid-cols-7 gap-5">
                                 <div id="salesEntries" class="col-span-3">
-                                    <div class="sale-entry grid grid-cols-5 gap-5 mb-5   ">
+                                    <div class="sale-entry grid grid-cols-5 gap-5 mb-5">
                                         <!-- Code Name Field -->
                                         <div class="mb-3">
                                             <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
-                                            <select name="code_name[]" class="code_name w-full border border-gray-300 p-2 rounded-md " onchange="fetchSizes(this)" required>
+                                            <select name="code_name[]" class="code_name w-full border border-gray-300 p-2 rounded-md" onchange="fetchSizes(this)" required>
                                                 <option value="">Select Name</option>
+                                                <!-- PHP for fetching product names -->
                                                 <?php
                                                 $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
                                                 foreach ($tables as $table) {
@@ -281,7 +372,6 @@ if ($result) {
                                             </select>
                                         </div>
 
-
                                         <!-- Size Field -->
                                         <div class="mb-3">
                                             <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="size_name">Size</label>
@@ -291,41 +381,39 @@ if ($result) {
                                         </div>
 
                                         <!-- Price Field -->
-                                        <div class="mb-3">
-                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Price</label>
-                                            <input type="text" name="price[]" class="price form-input w-full border border-gray-300 p-2 rounded-md" required>
-                                        </div>
-                                        <div class="mb-3">
 
+
+                                        <!-- Cash Field -->
+                                        <div class="mb-3">
                                             <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
-                                            <input type="text" name="cash[]" id="cash" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
+                                            <input type="number" value="0" step="0.01" name="cash[]" class="cash form-input w-full border border-gray-300 p-2 rounded-md" oninput="updatePrice(this)" required>
                                         </div>
 
+                                        <!-- Bank Field -->
                                         <div class="mb-3">
                                             <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
-                                            <input type="text" name="bank[]" id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
+                                            <input type="number" value="0" step="0.01" name="bank[]" class="bank form-input w-full border border-gray-300 p-2 rounded-md" oninput="updatePrice(this)" required>
                                         </div>
 
+                                        <div class="mb-3">
+                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Price</label>
+                                            <input type="number" value="0" step="0.01" name="price[]" class="price form-input w-full border border-gray-300 p-2 rounded-md" required readonly>
+                                        </div>
+
+                                        <!-- Remove Entry Button -->
                                         <div class="mb-3">
                                             <button type="button" class="btn bg-red-500 text-white px-4 py-2 rounded-md remove-entry" onclick="removeSaleEntry(this)">Remove</button>
                                         </div>
-
-
                                     </div>
                                 </div>
-
-
 
                                 <!-- Add Sale Entry Button -->
                                 <div class="mb-3 text-center">
                                     <button type="button" class="btn bg-info text-white px-4 py-2 rounded-md" onclick="addSaleEntry()">Add More</button>
-
                                 </div>
 
-                                <!-- Other Fields -->
-
-
-                                <div id="bankNameDiv" class="">
+                                <!-- Bank Name Field -->
+                                <div id="bankNameDiv">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank Name</label>
                                     <select name="bank_name" id="bankNameInput" class="selectize">
                                         <option value="">Select</option>
@@ -343,12 +431,19 @@ if ($result) {
                                     </select>
                                 </div>
 
+                                <!-- Method Field -->
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Method</label>
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="method">Method</label>
                                     <select name="method" id="method" class="form-select w-full border border-gray-300 p-2 rounded-md" required>
                                         <option value="shop">Shop</option>
                                         <option value="delivery">Delivery</option>
                                     </select>
+                                </div>
+
+                                <!-- Total Price Display -->
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price</label>
+                                    <input type="number" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" value="0" readonly>
                                 </div>
 
                                 <!-- Submit Button -->
@@ -364,6 +459,7 @@ if ($result) {
                     </div>
                 </div>
             </main>
+
 
             <style>
                 .card {
@@ -389,22 +485,58 @@ if ($result) {
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
 
     <script>
-        function removeSaleEntry(button) {
-            // Remove the sale entry when the remove button is clicked
-            const saleEntry = button.closest('.sale-entry');
-            saleEntry.remove();
+        // Function to update price based on cash and bank input
+        function updatePrice(element) {
+            var saleEntry = element.closest('.sale-entry');
+            var cashInput = saleEntry.querySelector('.cash').value || 0;
+            var bankInput = saleEntry.querySelector('.bank').value || 0;
+            var priceInput = saleEntry.querySelector('.price');
+
+            // Calculate price as sum of cash and bank
+            var totalPrice = parseFloat(cashInput) + parseFloat(bankInput);
+            priceInput.value = totalPrice.toFixed(2);
+
+            // Update overall total price
+            updateTotalPrice();
         }
 
+        // Function to update the total price for all sale entries
+        function updateTotalPrice() {
+            var totalPrice = 0;
+            var priceInputs = document.querySelectorAll('.price');
+
+            // Sum all individual prices
+            priceInputs.forEach(function(input) {
+                totalPrice += parseFloat(input.value || 0);
+            });
+
+            // Update total price display
+            document.getElementById('totalPrice').value = totalPrice.toFixed(2);
+        }
+
+        // Function to add a new sale entry row (as you already have)
         function addSaleEntry() {
-            // Clone the sale entry div
-            const saleEntry = document.querySelector('.sale-entry').cloneNode(true);
-            // Clear the inputs in the cloned sale entry
-            saleEntry.querySelectorAll('input, select').forEach(input => {
+            // Clone the existing sale-entry and append to salesEntries div
+            var saleEntry = document.querySelector('.sale-entry');
+            var newEntry = saleEntry.cloneNode(true);
+
+            // Clear input values for new entry
+            newEntry.querySelectorAll('input').forEach(function(input) {
                 input.value = '';
             });
-            // Append the cloned sale entry to the salesEntries div
-            document.getElementById('salesEntries').appendChild(saleEntry);
+
+            document.getElementById('salesEntries').appendChild(newEntry);
         }
+
+        // Function to remove a sale entry
+        function removeSaleEntry(button) {
+            var saleEntry = button.closest('.sale-entry');
+            saleEntry.remove();
+
+            // Recalculate total price after removal
+            updateTotalPrice();
+        }
+
 
         function fetchSizes(element) {
             const codeNameSelect = element.value;

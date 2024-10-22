@@ -4,6 +4,7 @@ $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 $current_date = date('Y-m-d');
+$title = "Delivery";
 ?>
 
 <head>
@@ -15,6 +16,7 @@ $current_date = date('Y-m-d');
 
 
 <?php
+
 $id = $_SESSION['user_id'];
 
 $result = mysqli_query($con, "SELECT * FROM user WHERE user_id = $id");
@@ -82,21 +84,21 @@ if ($result) {
                                                 <?php
 
                                                 $sql = "
-SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,verifiy
+SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,verifiy,created_at
 FROM shoes_delivery
 UNION ALL
-SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size,verifiy
+SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size,verifiy,created_at
 FROM top_delivery
 UNION ALL
-SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size,verifiy
+SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size,verifiy,created_at
 FROM complete_delivery
 UNION ALL
-SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size,verifiy
+SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size,verifiy,created_at
 FROM accessory_delivery
 UNION ALL
-SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size,verifiy
+SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size,verifiy,created_at
 FROM delivery
-ORDER BY sales_date DESC;
+ORDER BY created_at DESC;
 ";
 
 

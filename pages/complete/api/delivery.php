@@ -76,7 +76,7 @@ $result = mysqli_query($con, $sql);
 $message = "Delivery Have been verified and delivered to customer\n";
 
 
-$message .= "Complete Name: $complete_name\n";
+$message .= "complete Name: $complete_name\n";
 $message .= "Price: $price\n";
 $message .= "Size: $size\n";
 $message .= "Quantity: $quantity\n";
@@ -94,10 +94,17 @@ sendEmailToSubscribers($message, $subject, $con);
 
 
 if (!$result_add || !$result_adds || !$result) {
-    echo "<script>window.location = 'action.php?status=error&redirect=sale_complete.php'; </script>";
+    if (isset($place)) {
+        echo "<script>window.location = '../../sale/action.php?status=success&redirect=delivery.php'; </script>";
+    } else {
+        echo "<script>window.location = 'action.php?status=error&redirect=sale_complete.php'; </script>";
+    }
     exit;
 }
 
 
-
-echo "<script>window.location = 'action.php?status=success&redirect=sale_complete.php'; </script>";
+if (isset($place)) {
+    echo "<script>window.location = '../../sale/action.php?status=success&redirect=delivery.php'; </script>";
+} else {
+    echo "<script>window.location = 'action.php?status=success&redirect=sale_complete.php'; </script>";
+}

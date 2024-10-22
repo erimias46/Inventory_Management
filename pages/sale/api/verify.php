@@ -77,12 +77,14 @@ if (isset($_POST['update'])) {
     if ($type == 'jeans') {
         $_POST['jeans_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $place = 'all_sales.php';
 
         include('../../price_calculator/api/delivery.php');
     } elseif ($type == 'shoes') {
 
         $_POST['shoes_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $place = 'all_sales.php';
 
 
         include('../../shoe/api/delivery.php');
@@ -90,6 +92,7 @@ if (isset($_POST['update'])) {
 
         $_POST['top_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $place = 'all_sales.php';
 
 
 
@@ -98,11 +101,13 @@ if (isset($_POST['update'])) {
 
         $_POST['accessory_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $place = 'all_sales.php';
         include('../../accessory/api/delivery.php');
     } elseif ($type == 'complete') {
 
         $_POST['complete_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $place = 'all_sales.php';
         include('../../complete/api/delivery.php');
     }
     

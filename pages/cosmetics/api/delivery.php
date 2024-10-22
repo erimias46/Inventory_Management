@@ -11,7 +11,7 @@ $sale_id = $_POST['sales_id'];
 
 $cosmetics_name = $_POST['cosmetics_name'];
 
-$sql="SELECT * from cosmetics WHERE cosmetics_name = '$cosmetics_name'";
+$sql = "SELECT * from cosmetics WHERE cosmetics_name = '$cosmetics_name'";
 $result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 
@@ -20,7 +20,7 @@ $cosmetics_id = $row['cosmetics_id'];
 $size = $_POST['size'];
 
 
-$sql="SELECT * from cosmeticsdb WHERE size = '$size'";
+$sql = "SELECT * from cosmeticsdb WHERE size = '$size'";
 $result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 
@@ -36,12 +36,12 @@ $user_id = $_SESSION['user_id'];
 $bank_id = $_POST['bank_id'];
 $bank_name = $_POST['bank_name'];
 
-if($bank == 0){
-    $bank_name = null; 
+if ($bank == 0) {
+    $bank_name = null;
     $bank_id = null;
 } else {
     $bank_name = $_POST['bank_name'];
-    $sql="SELECT * FROM bankdb WHERE bankname = '$bank_name'";
+    $sql = "SELECT * FROM bankdb WHERE bankname = '$bank_name'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $bank_id = $row['id'];
@@ -94,13 +94,17 @@ sendEmailToSubscribers($message, $subject, $con);
 
 
 if (!$result_add || !$result_adds || !$result) {
-    echo "<script>window.location = 'action.php?status=error&redirect=sale_cosmetics.php'; </script>";
+    if (isset($place)) {
+        echo "<script>window.location = '../../sale/action.php?status=success&redirect=delivery.php'; </script>";
+    } else {
+        echo "<script>window.location = 'action.php?status=error&redirect=sale_cosmetics.php'; </script>";
+    }
     exit;
 }
 
 
-
-echo "<script>window.location = 'action.php?status=success&redirect=sale_cosmetics.php'; </script>";
-
-?>
-
+if (isset($place)) {
+    echo "<script>window.location = '../../sale/action.php?status=success&redirect=delivery.php'; </script>";
+} else {
+    echo "<script>window.location = 'action.php?status=success&redirect=sale_cosmetics.php'; </script>";
+}

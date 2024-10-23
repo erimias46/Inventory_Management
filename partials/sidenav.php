@@ -879,6 +879,14 @@ if ($result) {
                             </li>
                         <?php endif; ?>
 
+                        <?php if ($logjeans) : ?>
+                            <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/sale/verify_products.php" class="menu-link">
+                                    <span class="menu-text">Verify Products</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
 
 
 

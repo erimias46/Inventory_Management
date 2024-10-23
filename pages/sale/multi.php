@@ -187,6 +187,18 @@ if (isset($_POST['add'])) {
                 $update_quantity="UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
                 $result_update = mysqli_query($con, $update_quantity);
 
+
+                $message = " From $table  is going out for a delivery  \n";
+                $message .= "Product Name: $product_name\n";
+                $message .= "Price: $price\n";
+                $message .= "Size: $size\n";
+
+
+                $subject = "Delivery $table";
+                
+
+
+
                 if (!$result || !$result_update) {
                     echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
                     continue;
@@ -219,6 +231,26 @@ if (isset($_POST['add'])) {
                     $new_quantity = $current_quantity - $quantity;
                     $sql_update = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
                     mysqli_query($con, $sql_update);
+
+
+
+                    $message = "Sale Have been Made \n";
+
+
+                    $message .= "Product Name: $product_name\n";
+                    $message .= "Price: $price\n";
+                    $message .= "Size: $size\n";
+                    $message .= "Quantity: $quantity\n";
+                    $message .= "Cash :  $cash\n";
+                    $message .= "Bank : $bank\n";
+
+
+
+                    $subject = "Sold $table";
+
+
+                    sendMessageToSubscribers($message, $con);
+                    sendEmailToSubscribers($message, $subject, $con);
                 }
             }
         }

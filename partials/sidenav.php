@@ -792,11 +792,21 @@ if ($result) {
 
                         <?php if ($addjeans) : ?>
                             <li class="menu-item">
+                                <a href="<?php echo $redirect_link ?>pages/sale/main.php" class="menu-link">
+                                    <span class="menu-text">Main</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php if ($addjeans) : ?>
+                            <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/add/add_product.php" class="menu-link">
                                     <span class="menu-text">Add Product</span>
                                 </a>
                             </li>
                         <?php endif; ?>
+
+
 
 
                         <?php if ($salejeans) : ?>

@@ -122,7 +122,7 @@ $current_date = date('Y-m-d');
                             <div class="text-center relative w-full">
                                 <div class="p-6">
                                     <h3 class="text-4xl drop-shadow-lg font-bold font-semibold mb-3">
-                                        Multi Search Product
+                                        Multi Search 
                                     </h3>
                                     <a class="btn btn-sm border-info text-info hover:bg-info hover:text-white" href="search_multi.php">
                                         Go To Search product
@@ -139,9 +139,9 @@ $current_date = date('Y-m-d');
                             <div class="text-center relative w-full">
                                 <div class="p-6">
                                     <h3 class="text-4xl drop-shadow-lg font-bold font-semibold mb-3">
-                                        Banner out Source
+                                        Delivery
                                     </h3>
-                                    <a class="btn btn-sm border-info text-info hover:bg-info hover:text-white" href="database.php?type=banner_out">
+                                    <a class="btn btn-sm border-info text-info hover:bg-info hover:text-white" href="delivery.php">
                                         Go To Banner
                                         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ms-2" viewBox="0 0 24 24">
                                             <path d="M5 12h14M12 5l7 7-7 7"></path>
@@ -156,10 +156,10 @@ $current_date = date('Y-m-d');
                             <div class="text-center relative w-full">
                                 <div class="p-6">
                                     <h3 class="text-4xl drop-shadow-lg font-bold font-semibold mb-3">
-                                        Design
+                                        Verify Product
                                     </h3>
-                                    <a class="btn btn-sm border-info text-info hover:bg-info hover:text-white" href="database.php?type=design">
-                                        Go To Design
+                                    <a class="btn btn-sm border-info text-info hover:bg-info hover:text-white" href="verify_products.php">
+                                        Verify Product
                                         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ms-2" viewBox="0 0 24 24">
                                             <path d="M5 12h14M12 5l7 7-7 7"></path>
                                         </svg>
@@ -173,10 +173,10 @@ $current_date = date('Y-m-d');
                             <div class="text-center relative w-full">
                                 <div class="p-6">
                                     <h3 class="text-4xl drop-shadow-lg font-bold font-semibold mb-3">
-                                        Single Page Digital
+                                        Multi Sale Log
                                     </h3>
-                                    <a class="btn btn-sm border-info text-info hover:bg-info hover:text-white" href="database.php?type=single_page">
-                                        Go To Design
+                                    <a class="btn btn-sm border-info text-info hover:bg-info hover:text-white" href="multi_log.php">
+                                        Multi Sale Log
                                         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ms-2" viewBox="0 0 24 24">
                                             <path d="M5 12h14M12 5l7 7-7 7"></path>
                                         </svg>
@@ -185,23 +185,7 @@ $current_date = date('Y-m-d');
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="flex overflow-hidden flex-wrap w-full relative  bg-dark-100 hover:shadow-lg shadow-sm rounded-xl    dark:bg-gray-800 dark:shadow-slate-600/[.7]">
-                            <div class="text-center relative w-full">
-                                <div class="p-6">
-                                    <h3 class="text-4xl drop-shadow-lg font-bold font-semibold mb-3">
-                                        Multi Page Digital
-                                    </h3>
-                                    <a class="btn btn-sm border-info text-info hover:bg-info hover:text-white" href="database.php?type=multi_page">
-                                        Go To Design
-                                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ms-2" viewBox="0 0 24 24">
-                                            <path d="M5 12h14M12 5l7 7-7 7"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </main>
 

@@ -7,7 +7,7 @@ include 'partials/main.php';
 
 include 'include/db.php';
 
-$redirect="pages/sale/multi.php";
+$redirect="pages/sale/main.php";
 header("Location: $redirect");
 
 

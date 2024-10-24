@@ -45,7 +45,7 @@ $current_date = date('Y-m-d');
                     <div class="card">
                         <div class="flex justify-between items-center w-full bg-slate-900 p-4 rounded-xl">
                             <div>
-                                <h3 class="text-2xl text-white font-bold mb-1">Sale</h3>
+                                <h3 class="text-2xl text-grey font-bold mb-1">Sale</h3>
                                 <p class="text-gray-400 text-sm">Go to sale details</p>
                             </div>
                             <a href="sale.php" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
@@ -69,7 +69,7 @@ $current_date = date('Y-m-d');
                     <div class="card">
                         <div class="flex justify-between items-center w-full bg-slate-900 p-4 rounded-xl">
                             <div>
-                                <h3 class="text-2xl text-white font-bold mb-1">All Sale Log</h3>
+                                <h3 class="text-2xl text-grey font-bold mb-1">All Sale Log</h3>
                                 <p class="text-gray-400 text-sm">View detailed sales logs</p>
                             </div>
                             <a href="sale_log.hp" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
@@ -93,7 +93,7 @@ $current_date = date('Y-m-d');
                     <div class="card">
                         <div class="flex justify-between items-center w-full bg-slate-900 p-4 rounded-xl">
                             <div>
-                                <h3 class="text-2xl text-white font-bold mb-1">Multi Search</h3>
+                                <h3 class="text-2xl text-grey font-bold mb-1">Multi Search</h3>
                                 <p class="text-gray-400 text-sm">Advanced search options</p>
                             </div>
                             <a href="search_multi.php" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
@@ -117,7 +117,7 @@ $current_date = date('Y-m-d');
                     <div class="card">
                         <div class="flex justify-between items-center w-full bg-slate-900 p-4 rounded-xl">
                             <div>
-                                <h3 class="text-2xl text-white font-bold mb-1">Verify Product</h3>
+                                <h3 class="text-2xl text-grey font-bold mb-1">Verify Product</h3>
                                 <p class="text-gray-400 text-sm">Product verification tools</p>
                             </div>
                             <a href="verify_products.php" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
@@ -145,7 +145,7 @@ $current_date = date('Y-m-d');
                     <!-- Shopify Order Breakdown -->
                     <div class=" card bg-slate-900 rounded-lg overflow-hidden">
                         <div class="p-4">
-                            <h2 class="text-xl text-white font-semibold text-center">Daily Sales</h2>
+                            <h2 class="text-xl text-grey font-semibold text-center">Daily Sales</h2>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm">
@@ -218,7 +218,7 @@ FROM sales  Where sales_date = '$current_date'
                     <!-- Ecommerce Advertising Breakdown -->
                     <div class=" card bg-slate-800 rounded-lg overflow-hidden">
                         <div class="p-4">
-                            <h2 class="text-xl text-white font-semibold text-center">Summary Information</h2>
+                            <h2 class="text-xl text-grey font-semibold text-center">Summary Information</h2>
                         </div>
                         <div class="grid grid-cols-3 gap-4 p-4">
                             <!-- Google Stats -->

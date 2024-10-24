@@ -79,15 +79,36 @@ if ($result) {
 
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
+                                                   
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Source</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
 
-                                                $sql = "
-Select * from products
+                                                $sql = "SELECT 
+    p.product_name,
+    p.product_type,
+    GROUP_CONCAT(
+        CONCAT(p.size, ' (', p.quantity, ')')
+        ORDER BY p.size
+        SEPARATOR ', '
+    ) as sizes,
+    p.type,
+    p.price,
+    p.warehouse,
+    p.image,
+    MAX(p.created_at) as created_at,
+    p.source_table
+FROM products p
+GROUP BY 
+    p.product_name,
+    p.product_type,
+    p.type,
+    p.price,
+    p.warehouse,
+    p.image,
+    p.source_table
 ORDER BY created_at DESC;
 ";
 
@@ -105,12 +126,12 @@ ORDER BY created_at DESC;
 
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['product_name']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['size']; ?> </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['sizes']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['type']; ?> </td>
 
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['price']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['quantity']; ?> </td>
+                                                       
                                                        
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo ucfirst($row['source_table']); ?> </td>
 

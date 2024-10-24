@@ -111,6 +111,8 @@ if (isset($_POST['add'])) {
 
     if ($add_jeans) {
 
+        echo "<script>window.location = 'action.php?status=success&redirect=add_product.php';</script>";
+
         $message = "New Jeans Added:\n";
         $message .= "Jeans Name: $jeans_name\n";
         $message .= "Price: $price\n";
@@ -133,7 +135,7 @@ if (isset($_POST['add'])) {
         sendEmailToSubscribers($message, $subject, $con);
 
 
-        echo "<script>window.location = 'action.php?status=success&redirect=add_product.php';</script>";
+       
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error adding jeans to the database.&redirect=add_product.php';</script>";
     }

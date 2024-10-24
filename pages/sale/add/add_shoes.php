@@ -108,6 +108,7 @@ if (isset($_POST['add'])) {
     // Redirect after successful insertion
 
     if ($add_shoes) {
+        echo "<script>window.location = 'action.php?status=success&redirect=add_shoes.php';</script>";
 
         $message = "New shoes Added:\n";
         $message .= "shoes Name: $shoes_name\n";
@@ -129,7 +130,7 @@ if (isset($_POST['add'])) {
 
         sendMessageToSubscribers($message, $con);
         sendEmailToSubscribers($message, $subject, $con);
-        echo "<script>window.location = 'action.php?status=success&redirect=add_shoes.php';</script>";
+       
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error adding Shoes to the database.&redirect=add_shoes.php';</script>";
     }

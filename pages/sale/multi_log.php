@@ -40,12 +40,13 @@ $title = "Sale Log";
                                         <table id="zero_config" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Product Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Method</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Multi ID</th>
                                                 </tr>
                                             </thead>
@@ -87,12 +88,13 @@ $title = "Sale Log";
                                                         }
                                                 ?>
                                                         <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $created_at; ?></td>
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $num ?></td>
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $product_name; ?></td>
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $size; ?></td>
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $price ?></td>
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo ucfirst($method); ?></td>
-                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $created_at; ?></td>
+
                                                             <!-- Apply color only to the Multi ID column -->
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium <?php echo $colors[$color_index]; ?> text-white"> <?php echo $multi_id; ?></td>
                                                         </tr>

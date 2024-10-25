@@ -124,6 +124,16 @@ if ($result) {
     <?php include $redirect_link . 'partials/head-css.php'; ?>
 
 
+    <!-- Select2 CSS -->
+    <!-- jQuery -->
+    
+
+    <!-- Select2 CSS -->
+    
+
+
+
+
 
 </head>
 
@@ -171,7 +181,8 @@ if ($result) {
                                     <!-- Product Name Dropdown -->
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Select Product Name:</label>
-                                        <select id="product-name" name="product-name" onchange="loadSizes()" class="form-input">
+
+                                        <select id="product-name" name="product-name" onchange="loadSizes()" class="form-input select2">
                                             <option value="">Select Product Name</option>
                                         </select>
 
@@ -181,7 +192,7 @@ if ($result) {
 
                                     <div class="mb-3">
                                         <a href="search2.php" class="btn btn-sm bg-success text-white "> <i class="mgc_search_fill text-base me-2"></i> Search By Size </a>
-                                       
+
                                     </div>
                                 </form>
 
@@ -253,17 +264,15 @@ if ($result) {
                 }
 
                 #size-table th {
-                    
+
                     font-size: 16px;
-                    
+
                 }
 
                 #size-table td {
                     font-size: 14px;
-                    
-                }
 
-                
+                }
             </style>
 
 
@@ -313,6 +322,8 @@ if ($result) {
             text-align: left;
         }
     </style>
+
+
 
 
 

@@ -24,8 +24,9 @@ if (isset($_POST['product_type']) && isset($_POST['sizes'])) {
                        image 
                 FROM {$productType} 
                 WHERE size IN ($placeholders) 
+                and quantity > 0
                 GROUP BY {$productType}_name 
-                HAVING COUNT(DISTINCT size) = ?";
+                HAVING COUNT(DISTINCT size) = ?  ";
 
         $stmt = $con->prepare($sql);
 

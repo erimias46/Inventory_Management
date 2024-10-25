@@ -93,13 +93,15 @@ if ($result) {
                                                         </div>
                                                     </th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Item Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Active</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Error Type</th>
                                                 </tr>
@@ -139,13 +141,21 @@ if ($result) {
                                                                 Delete
                                                             </a>
                                                         </td>
+
+                                                        <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                            <?php
+                                                            // Assuming $row['created_at'] contains the date string
+                                                            $date = new DateTime($row['created_at']);
+                                                            echo $date->format('d-M-Y'); // Output format: 17-Oct-2024
+                                                            ?>
+                                                        </td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['id']; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['item_name']; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['size']; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['type']; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['price']; ?></td>
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['quantity']; ?></td>
-                                                        <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['created_at']; ?></td>
+
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                             <?php
                                                             if ($row['active'] == 1) {

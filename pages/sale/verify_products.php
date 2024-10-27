@@ -136,7 +136,7 @@ if ($result) {
                                                                 <i class="mgc_check_circle_line text-base me-2"></i>
                                                                 Verify
                                                             </a>
-                                                            <a href="api/remove.php?id=<?php echo $row['id']; ?>&from=<?php echo strtolower($row['item_type']); ?>_verify" id="del-btn" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
+                                                            <a href="api/verify_products.php?id=<?php echo $row['id']; ?>&from=<?php echo strtolower($row['item_type']); ?>&delete=delete" id="del-btn" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_delete_2_line text-base me-2"></i>
                                                                 Delete
                                                             </a>

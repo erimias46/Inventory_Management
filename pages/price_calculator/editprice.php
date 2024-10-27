@@ -37,10 +37,10 @@ if (isset($_POST['update'])) {
     $buy_price = $_POST['buy_price'];
     $selling_price = $_POST['price'];
 
-   
 
-    // Update the jeans record with the new or old image
-   $sql = "UPDATE jeans SET buy_price = '$buy_price', price = '$selling_price' WHERE id = $id";
+
+   
+    $sql = "UPDATE jeans SET buy_price = '$buy_price', price = '$selling_price' WHERE jeans_name = '$jeans_name'";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
@@ -50,14 +50,11 @@ if (isset($_POST['update'])) {
 
         $message = " Jeans Price Updated:\n";
         $message .= "Jeans Name: " . $jeans_name . "\n";
-        $message .= "Price: " . $selling_price . "\n";
+        $message .= "Selling Price: " . $selling_price . "\n";
         $message .= "Buy Price: " . $buy_price . "\n";
        
 
         $subject = "Jeans Updated";
-
-
-
 
 
 
@@ -160,9 +157,7 @@ if ($result) {
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="Jeans names">Jeans Name</label>
                                     <input type="text" name="jeans_name" id="jeans_name" value="<?php if (isset($jeans_name)) echo  $jeans_name ?>" class="form-input" list="jeans_types" required>
-                                    <datalist id="jeans_types">
-                                        <!-- Options will be populated here -->
-                                    </datalist>
+                                  
                                 </div>
 
                                 <div class="mb-3">

@@ -37,10 +37,10 @@ if (isset($_POST['update'])) {
     $buy_price = $_POST['buy_price'];
     $selling_price = $_POST['price'];
 
-   
+
 
     // Update the shoes record with the new or old image
-    $sql = "UPDATE shoes SET buy_price = '$buy_price', price = '$selling_price' WHERE id = $id";
+    $sql = "UPDATE shoes SET buy_price = '$buy_price', price = '$selling_price' WHERE shoes_name = '$shoes_name'";
     $result = mysqli_query($con, $sql);
 
     if ($result) {

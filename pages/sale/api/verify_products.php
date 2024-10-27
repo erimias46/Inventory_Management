@@ -10,6 +10,20 @@ include_once $redirect_link . 'include/bot.php';
 $update_id = $_GET['id'];
 $from = $_GET['from'];
 
+$delete = isset($_GET['delete'])? $_GET['delete'] : '';
+
+
+
+if ($delete == 'delete') {
+
+    $remove= "DELETE FROM {$from}_verify WHERE id = $update_id";
+   
+    $remove_res = mysqli_query($con, $remove);
+    if ($remove_res) {
+        echo "<script>window.location.href='../verify_products.php?status=success';</script>";
+    }
+}
+
 if (isset($update_id) && isset($from)) {
 
 
@@ -108,4 +122,8 @@ if (isset($update_id) && isset($from)) {
             echo "<script>window.location = '../action.php?status=error&redirect=verify_products.php'; </script>";
         }
     }
-}
+} 
+
+
+
+

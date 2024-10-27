@@ -83,25 +83,26 @@ if ($result) {
 
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                                                     <th class=" p-2.5 text-left text-xs font-medium text-gray-500 uppercase"> Image</th>
+                                                    <th class=" p-2.5 text-left text-xs font-medium text-gray-500 uppercase"> Reason </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
 
                                                 $sql = "
-SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,verifiy,created_at
+SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,verifiy,created_at,reason
 FROM shoes_delivery where verifiy = 0
 UNION ALL
-SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size,verifiy,created_at
+SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size,verifiy,created_at,reason
 FROM top_delivery where verifiy = 0
 UNION ALL
-SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size,verifiy,created_at
+SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size,verifiy,created_at,reason
 FROM complete_delivery where verifiy = 0
 UNION ALL
-SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size,verifiy,created_at
+SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size,verifiy,created_at,reason
 FROM accessory_delivery where verifiy = 0
 UNION ALL
-SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size,verifiy,created_at
+SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size,verifiy,created_at,reason
 FROM delivery where verifiy = 0
 ORDER BY created_at DESC;
 ";
@@ -163,6 +164,9 @@ ORDER BY created_at DESC;
                                                             ?>
                                                             <img src="../../include/<?= $image ?>" alt="" class="w-30 h-20">
 
+                                                        </td>
+                                                        <td>
+                                                            <?php echo $row['reason']; ?>
                                                         </td>
                                                     </tr>
 

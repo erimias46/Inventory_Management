@@ -107,7 +107,7 @@ if (isset($_POST['add'])) {
                     $message .= "Cash: $cash\n";
                     $message .= "Bank: $bank\n";
                     $message .= "Reason: Size not found\n";
-                   
+
 
 
                     $subject = "Verify Needed";
@@ -119,7 +119,7 @@ if (isset($_POST['add'])) {
                     echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
                 }
 
-              
+
                 continue;
             }
 
@@ -163,28 +163,28 @@ if (isset($_POST['add'])) {
                     sendMessageToSubscribers($message, $con);
                     sendEmailToSubscribers($message, $subject, $con);
                     echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
-                   
                 }
                 echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
-                
+
                 continue;
             }
 
             // Insert into delivery or sales table
             if ($method == 'delivery') {
                 $status = "pending";
+                $reason= $_POST['reason'];
                 $delivery_table = ($table == 'jeans') ? 'delivery' : $table . '_delivery';
 
-                $sql = "INSERT INTO $delivery_table ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status)
-                        VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', '$status')";
+                $sql = "INSERT INTO $delivery_table ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status,reason)
+                        VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', '$status','$reason')";
                 mysqli_query($con, $sql);
 
 
-               
 
 
-                $new_quantity=$current_quantity-$quantity;
-                $update_quantity="UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
+
+                $new_quantity = $current_quantity - $quantity;
+                $update_quantity = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
                 $result_update = mysqli_query($con, $update_quantity);
 
 
@@ -195,7 +195,7 @@ if (isset($_POST['add'])) {
 
 
                 $subject = "Delivery $table";
-                
+
 
 
 
@@ -203,11 +203,6 @@ if (isset($_POST['add'])) {
                     echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
                     continue;
                 }
-
-                
-
-
-
             } else {
                 $sales_table = ($table == 'jeans') ? 'sales' : $table . '_sales';
 
@@ -348,9 +343,6 @@ if ($result) {
 
 
 
-
-
-
 </head>
 
 
@@ -370,136 +362,201 @@ if ($result) {
             <?php include $redirect_link . 'partials/topbar.php'; ?>
 
             <main class="flex-grow p-6">
-                <div class="grid grid-cols-1 gap-3">
-                    <div class="card bg-white shadow-md rounded-md p-6 mx-lg max-w-lg">
-                        <div class="p-6">
-                            <h2 class="text-4xl font-bold text-white-700 text-center mb-10">MULTI SALE DATA ENTRY</h2>
-                            <form method="post" enctype="multipart/form-data" id="saleForm" class="grid grid-cols-7 gap-5">
-                                <div id="salesEntries" class="col-span-3">
-                                    <div class="sale-entry grid grid-cols-5 gap-5 mb-5">
-                                        <!-- Code Name Field -->
-                                        <div class="mb-3">
-                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
-                                            <select name="code_name[]" class="code_name w-full border border-gray-300 p-2 rounded-md" onchange="fetchSizes(this)" required>
-                                                <option value="">Select Name</option>
-                                                <!-- PHP for fetching product names -->
-                                                <?php
-                                                $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
-                                                foreach ($tables as $table) {
-                                                    $display_label = ucfirst($table);
-                                                    echo "<optgroup label='$display_label'>";
-                                                    $sql = "SELECT {$table}_name FROM $table GROUP BY {$table}_name";
-                                                    $result = mysqli_query($con, $sql);
-                                                    while ($row = mysqli_fetch_assoc($result)) {
-                                                        $name_column = "{$table}_name";
-                                                ?>
-                                                        <option value="<?php echo $table . '|' . $row[$name_column]; ?>">
-                                                            <?php echo $row[$name_column]; ?>
-                                                        </option>
-                                                <?php
-                                                    }
-                                                    echo "</optgroup>";
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="card col-span-1 bg-white shadow-md rounded-md p-6 mx-lg max-w-lg">
+                        <form method="post" enctype="multipart/form-data" id="saleForm">
+
+
+
+
+                            <!-- Bank Name Field -->
+                            <div id="bankNameDiv">
+                                <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank Name</label>
+                                <select name="bank_name" id="bankNameInput" class="selectize">
+                                    <option value="">Select</option>
+                                    <?php
+                                    $sql5 = "SELECT * FROM bankdb";
+                                    $result5 = mysqli_query($con, $sql5);
+                                    if (mysqli_num_rows($result5) > 0) {
+                                        while ($row5 = mysqli_fetch_assoc($result5)) { ?>
+                                            <option value="<?= $row5['bankname'] ?>">
+                                                <?= $row5['bankname'] ?>
+                                            </option>
+                                    <?php }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
+                            <!-- Method Field -->
+                            <div class="mb-3">
+                                <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="method">Method</label>
+                                <select name="method" id="method" class="form-select w-full border border-gray-300 p-2 rounded-md" required onchange="toggleReasonField()">
+                                    <option value="shop">Shop</option>
+                                    <option value="delivery">Delivery</option>
+                                </select>
+                            </div>
+
+                            <!-- Reason field, initially hidden -->
+                            <div class="mb-3" id="reasonField" style="display: none;">
+                                <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="reason">Reason</label>
+                                <input type="text" name="reason" id="reason" class="form-input w-full border border-gray-300 p-2 rounded-md" placeholder="Please provide a reason">
+                            </div>
+
+                            <script>
+                                function toggleReasonField() {
+                                    const methodSelect = document.getElementById("method");
+                                    const reasonField = document.getElementById("reasonField");
+
+                                    // Show the reason field only if "delivery" is selected
+                                    if (methodSelect.value === "delivery") {
+                                        reasonField.style.display = "block";
+                                    } else {
+                                        reasonField.style.display = "none";
+                                    }
+                                }
+                            </script>
+
+                            <!-- Total Price Display -->
+                            <div class="mb-3">
+                                <label class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price</label>
+                                <input type="number" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" value="0" readonly>
+                            </div>
+
+                            <div class="text-center mt-5">
+                                <?php if ($add_button) : ?>
+                                    <button name="add" type="submit" class="btn bg-green-500 text-white px-4 py-2 rounded-md">
+                                        Sale
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+
+
+                    </div>
+
+                    <div class="card col-span-3 bg-white shadow-md rounded-md p-6 mx-lg max-w-lg">
+
+                        <h2 class="text-4xl font-bold text-white-700 text-center mb-10">SALE DATA ENTRY</h2>
+
+                        <div>
+                            <div id="salesEntries">
+                                <div class="sale-entry  grid grid-cols-5 gap-5">
+                                    <!-- Code Name Field -->
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
+                                        <!-- Search input to filter options -->
+
+
+                                        <!-- Select dropdown -->
+                                        <select name="code_name[]" id="codeNameSelect" class="code_name w-full form-select-sm border border-gray-300 p-2 rounded-md " onchange="fetchSizes(this)" required>
+                                            <option value="">Select Name</option>
+                                            <!-- PHP for fetching product names -->
+                                            <?php
+                                            $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
+                                            foreach ($tables as $table) {
+                                                $display_label = ucfirst($table);
+                                                echo "<optgroup label='$display_label'>";
+                                                $sql = "SELECT {$table}_name FROM $table GROUP BY {$table}_name";
+                                                $result = mysqli_query($con, $sql);
+                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                    $name_column = "{$table}_name";
+                                            ?>
+                                                    <option value="<?php echo $table . '|' . $row[$name_column]; ?>">
+                                                        <?php echo $row[$name_column]; ?>
+                                                    </option>
+                                            <?php
                                                 }
-                                                ?>
-                                            </select>
+                                                echo "</optgroup>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+
+
+
+                                    <!-- Size Field -->
+                                    <!-- Size Field -->
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="size_name">Size</label>
+                                        <select name="size_name[]" class="size_name  w-full border border-gray-300 form-input rounded-md" onchange="fetchProductPrice(this)" required>
+                                            <option value="">Select Size</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Price Field -->
+
+
+                                    <!-- Cash Field -->
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
+                                        <input type="number" min="0" value="0" step="0.01" name="cash[]" class="cash  form-input w-full border border-gray-300  rounded-md" oninput="updatePrice(this)" onblur="setDefault(this)" required>
+                                    </div>
+
+                                    <!-- Bank Field -->
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
+                                        <input type="number" min="0" value="0" step="0.01" name="bank[]" class="bank w-full form-input border border-gray-300 p-2 rounded-md" oninput="updatePrice(this)" onblur="setDefault(this)" required>
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Price</label>
+                                        <input type="number" value="0" step="0.01" name="price[]" class="price w-full form-input  border border-gray-300 p-2 rounded-md" required readonly>
+                                    </div>
+
+
+
+
+                                    <!-- Existing code name, size, cash, bank, price fields remain the same -->
+
+                                    <!-- Add a new product details display section -->
+                                    <div class=" product-details hidden border rounded-md p-4 bg-gray-50">
+                                        <div class="grid grid-cols-4 gap-4">
+                                            <div>
+                                                <img src="" alt="Product Image" class="product-image w-24 h-24 object-cover">
+                                            </div>
+                                            <div>
+                                                <p class="font-medium">Price: <span class="listed-price text-green-600">0.00</span></p>
+                                                <p class="font-medium">Quantity: <span class="product-quantity text-blue-600">0</span></p>
+                                            </div>
+                                            <div class="col-span-2">
+                                                <div class="payment-status hidden rounded-md p-2 text-sm">
+                                                    <p>Payment Status: <span class="status-text"></span></p>
+                                                    <p>Difference: <span class="price-difference"></span></p>
+                                                </div>
+                                            </div>
                                         </div>
-
-                                        <!-- Size Field -->
-                                        <div class="mb-3">
-                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="size_name">Size</label>
-                                            <select name="size_name[]" class="size_name form-select w-full border border-gray-300 p-2 rounded-md" required>
-                                                <option value="">Select Size</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Price Field -->
+                                    </div>
 
 
-                                        <!-- Cash Field -->
-                                        <div class="mb-3">
-                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
-                                            <input type="number" value="0" step="0.01" name="cash[]" class="cash form-input w-full border border-gray-300 p-2 rounded-md" oninput="updatePrice(this)" required>
-                                        </div>
-
-                                        <!-- Bank Field -->
-                                        <div class="mb-3">
-                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
-                                            <input type="number" value="0" step="0.01" name="bank[]" class="bank form-input w-full border border-gray-300 p-2 rounded-md" oninput="updatePrice(this)" required>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Price</label>
-                                            <input type="number" value="0" step="0.01" name="price[]" class="price form-input w-full border border-gray-300 p-2 rounded-md" required readonly>
-                                        </div>
-
-                                        <!-- Remove Entry Button -->
-                                        <div class="mb-3">
-                                            <button type="button" class="btn bg-red-500 text-white px-4 py-2 rounded-md remove-entry" onclick="removeSaleEntry(this)">Remove</button>
-                                        </div>
+                                    <!-- Remove Entry Button -->
+                                    <div class="mb-3">
+                                        <button type="button" class="btn bg-red-500 text-white px-4 py-2 rounded-md remove-entry" onclick="removeSaleEntry(this)">Remove</button>
                                     </div>
                                 </div>
 
+
                                 <!-- Add Sale Entry Button -->
-                                <div class="mb-3 text-center">
-                                    <button type="button" class="btn bg-info text-white px-4 py-2 rounded-md" onclick="addSaleEntry()">Add More</button>
-                                </div>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button type="button" class="btn bg-info text-white px-4 py-2 rounded-md" onclick="addSaleEntry()">Add More</button>
+                            </div>
 
-                                <!-- Bank Name Field -->
-                                <div id="bankNameDiv">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank Name</label>
-                                    <select name="bank_name" id="bankNameInput" class="selectize">
-                                        <option value="">Select</option>
-                                        <?php
-                                        $sql5 = "SELECT * FROM bankdb";
-                                        $result5 = mysqli_query($con, $sql5);
-                                        if (mysqli_num_rows($result5) > 0) {
-                                            while ($row5 = mysqli_fetch_assoc($result5)) { ?>
-                                                <option value="<?= $row5['bankname'] ?>">
-                                                    <?= $row5['bankname'] ?>
-                                                </option>
-                                        <?php }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-
-                                <!-- Method Field -->
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="method">Method</label>
-                                    <select name="method" id="method" class="form-select w-full border border-gray-300 p-2 rounded-md" required>
-                                        <option value="shop">Shop</option>
-                                        <option value="delivery">Delivery</option>
-                                    </select>
-                                </div>
-
-                                <!-- Total Price Display -->
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price</label>
-                                    <input type="number" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" value="0" readonly>
-                                </div>
-
-                                <!-- Submit Button -->
-                                <div class="text-center mt-5">
-                                    <?php if ($add_button) : ?>
-                                        <button name="add" type="submit" class="btn bg-green-500 text-white px-4 py-2 rounded-md">
-                                            Sale
-                                        </button>
-                                    <?php endif; ?>
-                                </div>
-                            </form>
                         </div>
+
+                        <!-- Bank Name Field -->
+
+
+                        <!-- Submit Button -->
+
+                        </form>
                     </div>
+
                 </div>
             </main>
 
 
-            <style>
-                .card {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-            </style>
+
 
 
             <?php include $redirect_link . 'partials/footer.php'; ?>
@@ -515,6 +572,122 @@ if ($result) {
     <?php include $redirect_link . 'partials/customizer.php'; ?>
 
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
+
+
+    <script>
+        function fetchProductPrice(element) {
+            const saleEntry = element.closest('.sale-entry');
+            const codeNameSelect = saleEntry.querySelector('.code_name');
+            const [table, codeName] = codeNameSelect.value.split('|');
+            const size = element.value;
+            const productDetails = saleEntry.querySelector('.product-details');
+
+            if (table && codeName && size) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'fetch_price.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (this.status === 200) {
+                        const response = JSON.parse(this.responseText);
+                        if (response.error) {
+                            console.log('Error:', response.error);
+                            return;
+                        }
+
+                        if (response.price) {
+                            // Show product details section
+                            productDetails.classList.remove('hidden');
+
+                            // Update product details
+                            const listedPrice = productDetails.querySelector('.listed-price');
+                            const quantity = productDetails.querySelector('.product-quantity');
+                            const priceInput = saleEntry.querySelector('.price');
+
+                            listedPrice.textContent = response.price.toFixed(2);
+                            quantity.textContent = response.stock;
+
+                            // Store the actual price for validation
+                            priceInput.dataset.actualPrice = response.price;
+
+                            // Update product image if available
+                            const productImage = productDetails.querySelector('.product-image');
+                            if (response.image) {
+                                productImage.src = '../../include/' + response.image;
+                            } else {
+                                productImage.src = '/api/placeholder/100/100';
+                            }
+                        }
+                    }
+                };
+                xhr.send(`table=${table}&code_name=${encodeURIComponent(codeName)}&size=${encodeURIComponent(size)}`);
+            }
+        }
+
+        function updatePrice(element) {
+            const saleEntry = element.closest('.sale-entry');
+            const cashInput = parseFloat(saleEntry.querySelector('.cash').value) || 0;
+            const bankInput = parseFloat(saleEntry.querySelector('.bank').value) || 0;
+            const priceInput = saleEntry.querySelector('.price');
+            const actualPrice = parseFloat(priceInput.dataset.actualPrice) || 0;
+            const paymentStatus = saleEntry.querySelector('.payment-status');
+            const statusText = paymentStatus.querySelector('.status-text');
+            const priceDifference = paymentStatus.querySelector('.price-difference');
+
+            // Calculate total payment
+            const totalPayment = cashInput + bankInput;
+            priceInput.value = totalPayment.toFixed(2);
+
+            // Show payment status
+            paymentStatus.classList.remove('hidden');
+            const difference = totalPayment - actualPrice;
+
+            if (Math.abs(difference) < 0.01) { // Using small epsilon for floating-point comparison
+                paymentStatus.className = 'payment-status bg-green-100 rounded-md p-2 text-sm';
+                statusText.textContent = 'Correct Payment';
+                statusText.className = 'status-text text-green-600 font-medium';
+                priceDifference.textContent = '';
+            } else {
+                paymentStatus.className = 'payment-status bg-red-100 rounded-md p-2 text-sm';
+                statusText.textContent = difference > 0 ? 'Overpayment' : 'Underpayment';
+                statusText.className = 'status-text text-red-600 font-medium';
+                priceDifference.textContent = Math.abs(difference).toFixed(2);
+            }
+
+            // Update overall total
+            updateTotalPrice();
+        }
+
+        // Update the form submission validation
+        document.getElementById('saleForm').addEventListener('submit', function(e) {
+            let isValid = true;
+            const saleEntries = document.querySelectorAll('.sale-entry');
+
+            saleEntries.forEach(entry => {
+                const cashInput = parseFloat(entry.querySelector('.cash').value) || 0;
+                const bankInput = parseFloat(entry.querySelector('.bank').value) || 0;
+                const actualPrice = parseFloat(entry.querySelector('.price').dataset.actualPrice) || 0;
+                const totalPayment = cashInput + bankInput;
+
+                if (Math.abs(totalPayment - actualPrice) >= 0.01) { // Using small epsilon for floating-point comparison
+                    isValid = false;
+                    entry.querySelector('.price').classList.add('border-red-500');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please ensure all payments match the listed prices exactly.');
+            }
+        });
+    </script>
+
+    <script>
+        function setDefault(element) {
+            if (element.value === "") {
+                element.value = 0;
+            }
+        }
+    </script>
 
     <script>
         // Function to update price based on cash and bank input
@@ -547,19 +720,38 @@ if ($result) {
         }
 
         // Function to add a new sale entry row (as you already have)
-        function addSaleEntry() {
-            // Clone the existing sale-entry and append to salesEntries div
-            var saleEntry = document.querySelector('.sale-entry');
-            var newEntry = saleEntry.cloneNode(true);
+        let entryCount = 1; // Initialize a counter for entries
 
-            // Clear input values for new entry
-            newEntry.querySelectorAll('input').forEach(function(input) {
+        function addSaleEntry() {
+            const saleEntry = document.querySelector('.sale-entry');
+            const newEntry = saleEntry.cloneNode(true);
+
+            // Increment the entry counter to ensure unique IDs
+            entryCount++;
+
+            // Set unique IDs for inputs inside the cloned entry
+            newEntry.querySelectorAll('input, select').forEach((input) => {
+                // Generate a new ID using the entry count and the input's name attribute
+                const newId = input.getAttribute('name') + '_' + entryCount;
+                input.setAttribute('id', newId);
+
+                // Reset the input value for cloned elements
                 input.value = '';
+
+                // Update any necessary attributes (such as 'for' attributes in labels) if required
+                const label = newEntry.querySelector(`label[for="${input.getAttribute('id')}"]`);
+                if (label) {
+                    label.setAttribute('for', newId);
+                }
             });
 
+            // Reset the product details section in the new entry
+            newEntry.querySelector('.product-details').classList.add('hidden');
+            newEntry.querySelector('.payment-status').classList.add('hidden');
+
+            // Add the newly cloned entry to the form
             document.getElementById('salesEntries').appendChild(newEntry);
         }
-
         // Function to remove a sale entry
         function removeSaleEntry(button) {
             var saleEntry = button.closest('.sale-entry');

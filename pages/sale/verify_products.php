@@ -131,6 +131,7 @@ if ($result) {
                                                                 <label for="table-checkbox-5" class="sr-only">Checkbox</label>
                                                             </div>
                                                         </td>
+
                                                         <td>
                                                             <a href="api/verify_products.php?id=<?php echo $row['id']; ?>&from=<?php echo strtolower($row['item_type']); ?>" id="del-btn" class="btn bg-success/25 text-success hover:bg-success hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_check_circle_line text-base me-2"></i>
@@ -139,6 +140,10 @@ if ($result) {
                                                             <a href="api/verify_products.php?id=<?php echo $row['id']; ?>&from=<?php echo strtolower($row['item_type']); ?>&delete=delete" id="del-btn" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_delete_2_line text-base me-2"></i>
                                                                 Delete
+                                                            </a>
+                                                            <a href="api/verify_products.php?id=<?php echo $row['id']; ?>&from=<?php echo strtolower($row['item_type']); ?>&delete=delete" id="del-btn" class="btn bg-info/25 text-info hover:bg-info hover:text-white btn-sm rounded-full">
+                                                                <i class="mgc_edit_line text-base me-2"></i>
+                                                                Edit 
                                                             </a>
                                                         </td>
 

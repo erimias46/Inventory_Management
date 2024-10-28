@@ -30,7 +30,7 @@ $current_date = date('Y-m-d');
             <?php include $redirect_link . 'partials/topbar.php'; ?>
 
             <main class="flex-grow p-6">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                     <div class="card">
                         <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
                             <div>
@@ -66,17 +66,7 @@ $current_date = date('Y-m-d');
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="flex justify-between items-center w-full bg-slate-900 p-4 rounded-xl">
-                            <div>
-                                <h3 class="text-2xl text-grey font-bold mb-1">All Sale Log</h3>
-                                <p class="text-gray-400 text-sm">View detailed sales logs</p>
-                            </div>
-                            <a href="sale_log.hp" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
-                                Now
-                            </a>
-                        </div>
-                    </div>
+                    
 
                     <div class="card">
                         <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
@@ -114,29 +104,7 @@ $current_date = date('Y-m-d');
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="flex justify-between items-center w-full bg-slate-900 p-4 rounded-xl">
-                            <div>
-                                <h3 class="text-2xl text-grey font-bold mb-1">Verify Product</h3>
-                                <p class="text-gray-400 text-sm">Product verification tools</p>
-                            </div>
-                            <a href="verify_products.php" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
-                                Now
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
-                            <div>
-                                <h3 class="text-2xl text-white font-bold mb-1">Multi Sale Log</h3>
-                                <p class="text-blue-100 text-sm">Advanced sales reporting</p>
-                            </div>
-                            <a href="multi_log.php" class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
-                                Now
-                            </a>
-                        </div>
-                    </div>
+                    
 
                 </div>
 

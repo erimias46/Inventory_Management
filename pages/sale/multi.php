@@ -172,7 +172,7 @@ if (isset($_POST['add'])) {
             // Insert into delivery or sales table
             if ($method == 'delivery') {
                 $status = "pending";
-                $reason= $_POST['reason'];
+                $reason = $_POST['reason'];
                 $delivery_table = ($table == 'jeans') ? 'delivery' : $table . '_delivery';
 
                 $sql = "INSERT INTO $delivery_table ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status,reason)
@@ -444,13 +444,8 @@ if ($result) {
                                     <!-- Code Name Field -->
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
-                                        <!-- Search input to filter options -->
-
-
-                                        <!-- Select dropdown -->
-                                        <select name="code_name[]" id="codeNameSelect" class="code_name w-full form-select-sm border border-gray-300 p-2 rounded-md " onchange="fetchSizes(this)" required>
+                                        <select name="code_name[]" id="codeNameSelect" class="code_name w-full" required>
                                             <option value="">Select Name</option>
-                                            <!-- PHP for fetching product names -->
                                             <?php
                                             $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
                                             foreach ($tables as $table) {
@@ -472,6 +467,30 @@ if ($result) {
                                         </select>
                                     </div>
 
+                                    <script>
+                                        function initializeNiceSelect(container) {
+                                            const selects = container.querySelectorAll('.code_name');
+                                            selects.forEach(select => {
+                                                // Destroy existing nice-select if it exists
+                                                if (select.nextElementSibling && select.nextElementSibling.classList.contains('nice-select')) {
+                                                    select.nextElementSibling.remove();
+                                                }
+
+                                                // Initialize new nice-select
+                                                NiceSelect.bind(select, {
+                                                    searchable: true,
+                                                    placeholder: 'Search...',
+                                                    searchtext: 'Search...',
+                                                    selectedtext: 'selected'
+                                                });
+
+                                                // Add change event listener
+                                                select.addEventListener('change', function() {
+                                                    fetchSizes(this);
+                                                });
+                                            });
+                                        }
+                                    </script>
 
 
                                     <!-- Size Field -->
@@ -723,35 +742,32 @@ if ($result) {
         let entryCount = 1; // Initialize a counter for entries
 
         function addSaleEntry() {
-            const saleEntry = document.querySelector('.sale-entry');
-            const newEntry = saleEntry.cloneNode(true);
+            const salesEntries = document.getElementById('salesEntries');
+            const firstEntry = salesEntries.querySelector('.sale-entry');
+            const newEntry = firstEntry.cloneNode(true);
 
-            // Increment the entry counter to ensure unique IDs
-            entryCount++;
-
-            // Set unique IDs for inputs inside the cloned entry
-            newEntry.querySelectorAll('input, select').forEach((input) => {
-                // Generate a new ID using the entry count and the input's name attribute
-                const newId = input.getAttribute('name') + '_' + entryCount;
-                input.setAttribute('id', newId);
-
-                // Reset the input value for cloned elements
-                input.value = '';
-
-                // Update any necessary attributes (such as 'for' attributes in labels) if required
-                const label = newEntry.querySelector(`label[for="${input.getAttribute('id')}"]`);
-                if (label) {
-                    label.setAttribute('for', newId);
-                }
+            // Reset values in the cloned entry
+            newEntry.querySelectorAll('input').forEach(input => {
+                input.value = input.type === 'number' ? '0' : '';
+            });
+            newEntry.querySelectorAll('select').forEach(select => {
+                select.value = '';
             });
 
-            // Reset the product details section in the new entry
-            newEntry.querySelector('.product-details').classList.add('hidden');
-            newEntry.querySelector('.payment-status').classList.add('hidden');
+            // Clear any existing nice-select elements
+            newEntry.querySelectorAll('.nice-select').forEach(el => el.remove());
 
-            // Add the newly cloned entry to the form
-            document.getElementById('salesEntries').appendChild(newEntry);
+            // Add the new entry to the container
+            salesEntries.appendChild(newEntry);
+
+            // Initialize NiceSelect2 for the new entry
+            initializeNiceSelect(newEntry);
         }
+
+        // Initialize NiceSelect2 for existing entries on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNiceSelect(document.getElementById('salesEntries'));
+        });
         // Function to remove a sale entry
         function removeSaleEntry(button) {
             var saleEntry = button.closest('.sale-entry');

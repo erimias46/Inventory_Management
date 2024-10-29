@@ -132,3 +132,58 @@
 [2024-10-29 10:39:51] Code name: New Product
 [2024-10-29 10:39:51] Type retrieved: 2
 [2024-10-29 10:39:51] Sizes found: 35, 40
+[2024-10-29 12:13:28] Table selected: jeans
+[2024-10-29 12:13:28] Size table used: jeansdb
+[2024-10-29 12:13:28] Code name: Gucci Test
+[2024-10-29 12:13:28] Type retrieved: 2
+[2024-10-29 12:13:28] Sizes found: 35, 40
+[2024-10-29 12:13:36] Table selected: jeans
+[2024-10-29 12:13:36] Size table used: jeansdb
+[2024-10-29 12:13:36] Code name: dsds
+[2024-10-29 12:13:36] Type retrieved: 1
+[2024-10-29 12:13:36] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-29 12:14:52] Table selected: jeans
+[2024-10-29 12:14:52] Size table used: jeansdb
+[2024-10-29 12:14:52] Code name: New Product
+[2024-10-29 12:14:52] Type retrieved: 2
+[2024-10-29 12:14:52] Sizes found: 35, 40
+[2024-10-29 12:14:55] Table selected: jeans
+[2024-10-29 12:14:55] Size table used: jeansdb
+[2024-10-29 12:14:55] Code name: Gucci Test
+[2024-10-29 12:14:55] Type retrieved: 2
+[2024-10-29 12:14:55] Sizes found: 35, 40
+[2024-10-29 12:15:06] Table selected: jeans
+[2024-10-29 12:15:06] Size table used: jeansdb
+[2024-10-29 12:15:06] Code name: New Product
+[2024-10-29 12:15:06] Type retrieved: 2
+[2024-10-29 12:15:06] Sizes found: 35, 40
+[2024-10-29 12:15:26] Table selected: jeans
+[2024-10-29 12:15:26] Size table used: jeansdb
+[2024-10-29 12:15:26] Code name: Gucci Test
+[2024-10-29 12:15:26] Type retrieved: 2
+[2024-10-29 12:15:26] Sizes found: 35, 40
+[2024-10-29 12:16:19] Table selected: jeans
+[2024-10-29 12:16:19] Size table used: jeansdb
+[2024-10-29 12:16:19] Code name: Gucci Test
+[2024-10-29 12:16:19] Type retrieved: 2
+[2024-10-29 12:16:19] Sizes found: 35, 40
+[2024-10-29 12:20:05] Table selected: jeans
+[2024-10-29 12:20:05] Size table used: jeansdb
+[2024-10-29 12:20:05] Code name: Gucci Test
+[2024-10-29 12:20:05] Type retrieved: 2
+[2024-10-29 12:20:05] Sizes found: 35, 40
+[2024-10-29 12:23:25] Table selected: jeans
+[2024-10-29 12:23:25] Size table used: jeansdb
+[2024-10-29 12:23:25] Code name: Gucci Test
+[2024-10-29 12:23:25] Type retrieved: 2
+[2024-10-29 12:23:25] Sizes found: 35, 40
+[2024-10-29 12:23:32] Table selected: jeans
+[2024-10-29 12:23:32] Size table used: jeansdb
+[2024-10-29 12:23:32] Code name: dsds
+[2024-10-29 12:23:32] Type retrieved: 1
+[2024-10-29 12:23:32] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-29 12:24:01] Table selected: jeans
+[2024-10-29 12:24:01] Size table used: jeansdb
+[2024-10-29 12:24:01] Code name: Guccii
+[2024-10-29 12:24:01] Type retrieved: 1
+[2024-10-29 12:24:01] Sizes found: 36, 37, 38, SMALL, Large, XXL

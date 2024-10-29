@@ -9,17 +9,7 @@ include_once $redirect_link . 'include/bot.php';
 
 $current_date = date('Y-m-d');
 
-$generate_button = '';
 
-if (isset($_GET['import_brocher_id'])) {
-    $brocher_type = $_GET['brocher_type'];
-
-
-
-    $add_button = '<button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>';
-    $update_button = '<button name="update" type="submit" class="btn btn-sm bg-danger text-white rounded-full"> <i class="mgc_pencil_line text-base me-2"></i> Update </button>';
-    $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
-}
 
 ?>
 
@@ -126,10 +116,24 @@ if ($result) {
 
     <!-- Select2 CSS -->
     <!-- jQuery -->
-    
+
 
     <!-- Select2 CSS -->
-    
+
+
+
+    <!-- Select2 CSS -->
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+
 
 
 
@@ -182,7 +186,7 @@ if ($result) {
                                     <div class="mb-3">
                                         <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Select Product Name:</label>
 
-                                        <select id="product-name" name="product-name" onchange="loadSizes()" class="form-input select2">
+                                        <select id="product-name" name="product-name" onchange="loadSizes()" class="form-input">
                                             <option value="">Select Product Name</option>
                                         </select>
 
@@ -328,9 +332,30 @@ if ($result) {
 
 
     <script>
-        // Load product names based on the selected product type
+        let currentNiceSelect = null;
+
+        function initializeNiceSelect() {
+            const productDropdown = document.getElementById("product-name");
+
+            // First destroy if there's an existing instance
+            if (currentNiceSelect) {
+                currentNiceSelect.destroy();
+            }
+
+            // Create new instance using bind
+            currentNiceSelect = NiceSelect.bind(productDropdown, {
+                searchable: true
+            });
+        }
+
         function loadProductNames() {
-            var productType = document.getElementById("product-type").value;
+            const productType = document.getElementById("product-type").value;
+
+            // Destroy existing NiceSelect before modifying options
+            if (currentNiceSelect) {
+                currentNiceSelect.destroy();
+                currentNiceSelect = null;
+            }
 
             if (productType !== "") {
                 fetch('api/searchapi/loadProductNames.php?productType=' + productType)
@@ -345,12 +370,30 @@ if ($result) {
                             option.text = product.name;
                             productDropdown.appendChild(option);
                         });
+
+                        // Initialize Nice Select after loading new options
+                        initializeNiceSelect();
+                    })
+                    .catch(error => {
+                        console.error('Error loading product names:', error);
                     });
+            } else {
+                // Reset dropdown if no product type is selected
+                let productDropdown = document.getElementById("product-name");
+                productDropdown.innerHTML = '<option value="">Select Product Name</option>';
+                initializeNiceSelect();
             }
         }
 
+        // Initialize the first NiceSelect when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNiceSelect();
+        });
+
         // Load sizes and quantities based on the selected product name
         function loadSizes() {
+
+
             var productType = document.getElementById("product-type").value;
             var productName = document.getElementById("product-name").value;
 
@@ -506,22 +549,7 @@ if ($result) {
     </script>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fetch suggestions for customer names from the server and populate the datalist
-            fetch('getcust.php')
-                .then(response => response.json())
-                .then(data => {
-                    const datalist = document.getElementById('customer_names');
-                    datalist.innerHTML = ''; // Clear previous options
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item; // Customer name
-                        datalist.appendChild(option);
-                    });
-                });
-        });
-    </script>
+
 </body>
 
 </html>

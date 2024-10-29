@@ -23,6 +23,7 @@ if (isset($_POST['add'])) {
     $quantities = $_POST['quantities']; // Array of quantities
     $type_id = $_POST['type'];
     $price = $_POST['price'];
+    $size_t = $_POST['size_t'];
 
     $image = $_FILES['image']['name'];
 
@@ -115,8 +116,8 @@ if (isset($_POST['add'])) {
                 mysqli_stmt_execute($stmt);
             } else {
 
-                $add_jeans = "INSERT INTO jeans(jeans_name, size, size_id, image, price,type_id, type, quantity,active) 
-                          VALUES ('$jeans_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1')";
+                $add_jeans = "INSERT INTO jeans(jeans_name, size, size_id, image, price,type_id, type, quantity,active,size_t) 
+                          VALUES ('$jeans_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1','$size_t')";
                 mysqli_query($con, $add_jeans);
             }
         }
@@ -405,9 +406,10 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Size Type</label>
-                                    <select name="size_type" class="search-select" required>
-                                        <option value="1">Numeric</option>
-                                        <option value="2">Alphabetic</option>
+                                    <select name="size_t" class="search-select" required>
+                                        <option value="">Select Size Type</option>
+                                        <option value="1">Type 1</option>
+                                        <option value="2">Type 2</option>
                                     </select>
                                 </div>
 
@@ -483,7 +485,7 @@ if ($result) {
 
 
     <script>
-        document.querySelector('select[name="size_type"]').addEventListener('change', function() {
+        document.querySelector('select[name="size_t"]').addEventListener('change', function() {
             const sizeType = this.value;
 
             // Create an AJAX request

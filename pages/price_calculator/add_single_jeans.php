@@ -273,227 +273,231 @@ if ($result) {
                         </div>
                         <div class="p-6">
 
-                            <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                            <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
 
 
                                 <div class="relative mb-3">
-                                <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="jeans_name">Jeans Name</label>
-                                <div class="relative">
-                                    <input
-                                        type="text"
-                                        name="jeans_name"
-                                        id="jeans_name"
-                                        value="<?php if (isset($jeans_name)) echo $jeans_name ?>"
-                                        class="form-input w-full"
-                                        autocomplete="off"
-                                        required
-                                        oninput="filterOptions(this.value)"
-                                        onblur="handleBlur()">
-                                    <div id="dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto hidden">
-                                        <?php
-                                        $sql10 = "SELECT DISTINCT jeans_name FROM jeans";
-                                        $result10 = $con->query($sql10);
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="jeans_name">Jeans Name</label>
+                                    <div class="relative">
+                                        <input
+                                            type="text"
+                                            name="jeans_name"
+                                            id="jeans_name"
+                                            value="<?php if (isset($jeans_name)) echo $jeans_name ?>"
+                                            class="form-input w-full"
+                                            autocomplete="off"
+                                            required
+                                            oninput="filterOptions(this.value)"
+                                            onblur="handleBlur()">
+                                        <div id="dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto hidden">
+                                            <?php
+                                            $sql10 = "SELECT DISTINCT jeans_name FROM jeans";
+                                            $result10 = $con->query($sql10);
 
-                                        if ($result10->num_rows > 0) {
-                                            while ($row10 = $result10->fetch_assoc()) {
-                                                echo "<div class='option px-4 py-2 hover:bg-gray-100 cursor-pointer' onclick='selectOption(this.innerText)'>" .
-                                                    htmlspecialchars($row10['jeans_name']) .
-                                                    "</div>";
+                                            if ($result10->num_rows > 0) {
+                                                while ($row10 = $result10->fetch_assoc()) {
+                                                    echo "<div class='option px-4 py-2 hover:bg-gray-100 cursor-pointer' onclick='selectOption(this.innerText)'>" .
+                                                        htmlspecialchars($row10['jeans_name']) .
+                                                        "</div>";
+                                                }
                                             }
-                                        }
-                                        ?>
+                                            ?>
+                                        </div>
                                     </div>
                                 </div>
-                        </div>
 
 
-                        <script>
-                            function filterOptions(searchText) {
-                                const dropdown = document.getElementById('dropdown');
-                                const options = dropdown.getElementsByClassName('option');
+                                <script>
+                                    function filterOptions(searchText) {
+                                        const dropdown = document.getElementById('dropdown');
+                                        const options = dropdown.getElementsByClassName('option');
 
-                                dropdown.classList.remove('hidden');
+                                        dropdown.classList.remove('hidden');
 
-                                for (let option of options) {
-                                    const text = option.innerText.toLowerCase();
-                                    const search = searchText.toLowerCase();
+                                        for (let option of options) {
+                                            const text = option.innerText.toLowerCase();
+                                            const search = searchText.toLowerCase();
 
-                                    if (text.includes(search)) {
-                                        option.style.display = '';
-                                    } else {
-                                        option.style.display = 'none';
+                                            if (text.includes(search)) {
+                                                option.style.display = '';
+                                            } else {
+                                                option.style.display = 'none';
+                                            }
+                                        }
                                     }
-                                }
-                            }
 
-                            function selectOption(value) {
-                                document.getElementById('jeans_name').value = value;
-                                document.getElementById('dropdown').classList.add('hidden');
-                            }
+                                    function selectOption(value) {
+                                        document.getElementById('jeans_name').value = value;
+                                        document.getElementById('dropdown').classList.add('hidden');
+                                    }
 
-                            function handleBlur() {
-                                // Delay hiding dropdown to allow click events to register
-                                setTimeout(() => {
-                                    document.getElementById('dropdown').classList.add('hidden');
-                                }, 200);
-                            }
+                                    function handleBlur() {
+                                        // Delay hiding dropdown to allow click events to register
+                                        setTimeout(() => {
+                                            document.getElementById('dropdown').classList.add('hidden');
+                                        }, 200);
+                                    }
 
-                            // Show dropdown when clicking input
-                            document.getElementById('jeans_name').addEventListener('click', function() {
-                                document.getElementById('dropdown').classList.remove('hidden');
-                                filterOptions(this.value);
-                            });
-                        </script>
+                                    // Show dropdown when clicking input
+                                    document.getElementById('jeans_name').addEventListener('click', function() {
+                                        document.getElementById('dropdown').classList.remove('hidden');
+                                        filterOptions(this.value);
+                                    });
+                                </script>
 
-                        <style>
-                            .form-input {
-                                width: 100%;
-                                padding: 0.5rem;
-                                border: 1px solid #e2e8f0;
-                                border-radius: 0.375rem;
-                            }
+                                <style>
+                                    .form-input {
+                                        width: 100%;
+                                        padding: 0.5rem;
+                                        border: 1px solid #e2e8f0;
+                                        border-radius: 0.375rem;
+                                    }
 
-                            .form-input:focus {
-                                outline: none;
-                                border-color: #4f46e5;
-                                box-shadow: 0 0 0 1px #4f46e5;
-                            }
-                        </style>
+                                    .form-input:focus {
+                                        outline: none;
+                                        border-color: #4f46e5;
+                                        box-shadow: 0 0 0 1px #4f46e5;
+                                    }
+                                </style>
 
 
 
 
-                        <div class="mb-3">
-                            <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Type</label>
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Type</label>
 
-                            <select name="type" class="search-select" required>
+                                    <select name="type" class="search-select" required>
 
-                                <?php
+                                        <?php
 
-                                $sql = "SELECT * FROM trouser_type_db";
-                                $result = mysqli_query($con, $sql);
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                ?>
-                                    <option value="<?php echo $row['id'] ?>" <?php
-                                                                                if (isset($type)) {
-                                                                                    if ($row['type'] == $type) {
-                                                                                        echo "selected";
-                                                                                    }
-                                                                                }
-                                                                                ?>>
-                                        <?php echo $row['type']; ?>
-                                    </option>
-                                <?php
-                                }
-                                ?>
-
-
-
-
-                            </select>
-
-                        </div>
+                                        $sql = "SELECT * FROM trouser_type_db";
+                                        $result = mysqli_query($con, $sql);
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                            <option value="<?php echo $row['id'] ?>" <?php
+                                                                                        if (isset($type)) {
+                                                                                            if ($row['type'] == $type) {
+                                                                                                echo "selected";
+                                                                                            }
+                                                                                        }
+                                                                                        ?>>
+                                                <?php echo $row['type']; ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
 
 
 
 
-                        <div class="mb-3">
-                            <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
-                            <input type="number" min="0" value="0" step="0.01" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
-                        </div>
+                                    </select>
 
-
-
-
-                        <div class="mb-3">
-                            <label class="text-gray-800 text-sm font-medium inline-block mb-2">Product Image</label>
-                            <div class="custom-file-upload">
-                                <label for="fileInput" class="custom-file-label">Choose Image</label>
-                                <input type="file" name="image" class="form-input  choose-image" id="fileInput" onchange="previewImage(event)">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="image-preview" id="imagePreview">
-                                <!-- The selected image will be displayed here -->
-                                <img src="../../include/uploads/defaultjeans.jpg" />
-                            </div>
-                        </div>
-
-
-                        <div class="mb-3">
-                            <label class="text-gray-800 text-sm font-medium inline-block mb-2">Jeans Sizes and Quantities</label>
-
-                            <?php
-                            // Fetch all sizes from the `jeansdb` table
-                            $sql = "SELECT * FROM jeansdb";
-                            $result = mysqli_query($con, $sql);
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                $size = $row['size'];
-                            ?>
-                                <div class="flex items-center mb-2 justify-around">
-                                    <!-- Size Label -->
-                                    <label class="text-gray-800 text-sm font-medium flex-1"><?php echo $size; ?></label>
-
-                                    <!-- Hidden input for size ID -->
-                                    <input type="hidden" name="size_ids[]" value="<?php echo $row['id']; ?>">
-
-                                    <!-- Hidden input for size value -->
-                                    <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
-
-                                    <!-- Quantity Input -->
-                                    <input type="number" min="0" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
                                 </div>
-                            <?php
-                            }
-                            ?>
+
+
+
+
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
+                                    <input type="number" min="0" value="0" step="0.01" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Size Type</label>
+                                    <select name="size_type" class="search-select" required>
+                                        <option value="1">Numeric</option>
+                                        <option value="2">Alphabetic</option>
+                                    </select>
+                                </div>
+
+
+
+
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Product Image</label>
+                                    <div class="custom-file-upload">
+                                        <label for="fileInput" class="custom-file-label">Choose Image</label>
+                                        <input type="file" name="image" class="form-input  choose-image" id="fileInput" onchange="previewImage(event)">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="image-preview" id="imagePreview">
+                                        <!-- The selected image will be displayed here -->
+                                        <img src="../../include/uploads/defaultjeans.jpg" />
+                                    </div>
+                                </div>
+
+
+                                <div id="sizeQuantityContainer" class="mb-3">
+                                    <!-- Dynamic sizes will be loaded here based on size_type selection -->
+                                </div>
+
+
+
+
+
+
+
+
+
+                                <div class="col-span-1 sm:col-span-2 md:col-span-3 text-end">
+                                    <div class="mt-3">
+
+
+                                        <!-- Display the Calculate button if $calculateButtonVisible is true -->
+                                        <?php if ($addButtonVisible) : ?>
+
+                                            <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>
+
+                                        <?php endif; ?>
+
+                                        <!-- Display the Add button if $addButtonVisible is true -->
+
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-
-
-
-
-
-
-
-
-                        <div class="col-span-1 sm:col-span-2 md:col-span-3 text-end">
-                            <div class="mt-3">
-
-
-                                <!-- Display the Calculate button if $calculateButtonVisible is true -->
-                                <?php if ($addButtonVisible) : ?>
-
-                                    <button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>
-
-                                <?php endif; ?>
-
-                                <!-- Display the Add button if $addButtonVisible is true -->
-
-                            </div>
-                        </div>
-                        </form>
                     </div>
+
                 </div>
+
+
+
+
+            </main>
+
+            <?php include $redirect_link . 'partials/footer.php'; ?>
 
         </div>
 
-
-
-
-        </main>
-
-        <?php include $redirect_link . 'partials/footer.php'; ?>
-
-    </div>
-
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
 
     </div>
 
     <?php include $redirect_link . 'partials/customizer.php'; ?>
 
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
+
+
+    <script>
+        document.querySelector('select[name="size_type"]').addEventListener('change', function() {
+            const sizeType = this.value;
+
+            // Create an AJAX request
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'fetch_sizes.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    document.getElementById('sizeQuantityContainer').innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send('size_type=' + sizeType);
+        });
+    </script>
 
 
     <script>
@@ -514,22 +518,7 @@ if ($result) {
     </script>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fetch suggestions for customer names from the server and populate the datalist
-            fetch('getcust.php')
-                .then(response => response.json())
-                .then(data => {
-                    const datalist = document.getElementById('customer_names');
-                    datalist.innerHTML = ''; // Clear previous options
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item; // Customer name
-                        datalist.appendChild(option);
-                    });
-                });
-        });
-    </script>
+   
 </body>
 
 </html>

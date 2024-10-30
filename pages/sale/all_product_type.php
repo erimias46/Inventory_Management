@@ -88,7 +88,7 @@ $title = "All Products";
                                                 $currentColorIndex = 0; // To toggle between colors
 
                                                 $sql = "
-    SELECT 'Jeans' AS category, 
+    SELECT 'jeans' AS category, 
        jeans_name AS product_name, 
        GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
        SUM(quantity) AS total_quantity, 
@@ -99,7 +99,7 @@ GROUP BY jeans_name, price, image
 
 UNION ALL
 
-SELECT 'Shoes' AS category, 
+SELECT 'shoes' AS category, 
        shoes_name AS product_name, 
        GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
        SUM(quantity) AS total_quantity, 
@@ -110,7 +110,7 @@ GROUP BY shoes_name, price, image
 
 UNION ALL
 
-SELECT 'Accessory' AS category, 
+SELECT 'accessory' AS category, 
        accessory_name AS product_name, 
        GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
        SUM(quantity) AS total_quantity, 
@@ -121,7 +121,7 @@ GROUP BY accessory_name, price, image
 
 UNION ALL
 
-SELECT 'Top' AS category, 
+SELECT 'top' AS category, 
        top_name AS product_name, 
        GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
        SUM(quantity) AS total_quantity, 
@@ -132,7 +132,7 @@ GROUP BY top_name, price, image
 
 UNION ALL
 
-SELECT 'Complete' AS category, 
+SELECT 'complete' AS category, 
        complete_name AS product_name, 
        GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
        SUM(quantity) AS total_quantity, 
@@ -174,7 +174,7 @@ ORDER BY created_at DESC;
                                                     $category = $row['category'];
                                                     file_put_contents("log.txt", "Category: $category\n", FILE_APPEND);
 
-                                                    if ($category == 'Jeans') {
+                                                    if ($category == 'jeans') {
                                                         $sql6 = "SELECT COUNT(*) AS total_sales 
              FROM sales 
              WHERE jeans_name = '$product_name'  and status= 'active' || status= 'Exchange Sell'";

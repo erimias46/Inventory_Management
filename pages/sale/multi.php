@@ -529,7 +529,7 @@ if ($result) {
                                     <!-- Existing code name, size, cash, bank, price fields remain the same -->
 
                                     <!-- Add a new product details display section -->
-                                    <div class=" product-details hidden border rounded-md p-4 bg-gray-50">
+                                    <div class=" product-details hidden border rounded-md p-4 bg-gray-50 mb-3">
                                         <div class="grid grid-cols-4 gap-4">
                                             <div>
                                                 <img src="" alt="Product Image" class="product-image w-24 h-24 object-cover">

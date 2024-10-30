@@ -66,7 +66,7 @@ $current_date = date('Y-m-d');
                         </div>
                     </div>
 
-                    
+
 
                     <div class="card">
                         <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
@@ -104,7 +104,7 @@ $current_date = date('Y-m-d');
                         </div>
                     </div>
 
-                    
+
 
                 </div>
 
@@ -119,7 +119,7 @@ $current_date = date('Y-m-d');
                             <table class="w-full text-sm">
                                 <thead class="bg-slate-700 text-gray-300">
                                     <tr>
-                                        <th class="p-3 text-left">PRODUCT Name</th>
+                                        <th class="p-3 text-left">PRODUCT NAME</th>
                                         <th class="p-3 text-left">SIZE</th>
                                         <th class="p-3 text-left">PRICE</th>
                                         <th class="p-3 text-left">CASH</th>
@@ -192,39 +192,108 @@ FROM sales  Where sales_date = '$current_date'
                             <!-- Google Stats -->
                             <div class="bg-white p-4 rounded-lg text-center">
                                 <?php
-                                $sql = "SELECT SUM(price) AS total_price, SUM(cash) AS total_cash, SUM(bank) AS total_bank FROM sales WHERE sales_date = '$current_date'";
+
+
+                                $current_date = date('Y-m-d');
+
+                                $array =
+                                    $sql = "SELECT SUM(price) AS total_price, SUM(cash) AS total_cash, SUM(bank) AS total_bank FROM sales WHERE sales_date = '$current_date'";
 
                                 $result = mysqli_query($con, $sql);
                                 $row = mysqli_fetch_array($result);
                                 $total_price = $row['total_price'];
                                 $total_cash = $row['total_cash'];
                                 $total_bank = $row['total_bank'];
+
+
+                                $sql2 = "SELECT 
+    'shoes' AS source,
+    COUNT(sales_id) AS total_sales,
+    SUM(price) AS total_price,
+    SUM(cash) AS total_cash,
+    SUM(bank) AS total_bank
+FROM shoes_sales
+WHERE sales_date = '$current_date'
+
+UNION ALL
+
+SELECT 
+    'top' AS source,
+    COUNT(sales_id) AS total_sales,
+    SUM(price) AS total_price,
+    SUM(cash) AS total_cash,
+    SUM(bank) AS total_bank
+FROM top_sales
+WHERE sales_date = '$current_date'
+
+UNION ALL
+
+SELECT 
+    'complete' AS source,
+    COUNT(sales_id) AS total_sales,
+    SUM(price) AS total_price,
+    SUM(cash) AS total_cash,
+    SUM(bank) AS total_bank
+FROM complete_sales
+WHERE sales_date = '$current_date'
+
+UNION ALL
+
+SELECT 
+    'accessory' AS source,
+    COUNT(sales_id) AS total_sales,
+    SUM(price) AS total_price,
+    SUM(cash) AS total_cash,
+    SUM(bank) AS total_bank
+FROM accessory_sales
+WHERE sales_date = '$current_date'
+
+UNION ALL
+
+SELECT 
+    'jeans' AS source,
+    COUNT(sales_id) AS total_sales,
+    SUM(price) AS total_price,
+    SUM(cash) AS total_cash,
+    SUM(bank) AS total_bank
+FROM sales
+WHERE sales_date = '$current_date';
+
+";
+                                $result2 = mysqli_query($con, $sql2);
+                                $row2 = mysqli_fetch_array($result2);
+                                $total_price2 = $row2['total_price'];
+                                $total_cash2 = $row2['total_cash'];
+                                $total_bank2 = $row2['total_bank'];
+                                $total_sales2 = $row2['total_sales'];
+
+
                                 ?>
 
 
                                 <div class="text-2xl font-bold"> $
-                                    <?php echo isset($total_price) ? $total_price : 0; ?>
+                                    <?php echo isset($total_price2) ? $total_price2 : 0; ?>
                                 </div>
                                 <div class="text-gray-500 text-sm">Daily Sales Amount</div>
-                                <div class="mt-4 text-2xl font-bold">12</div>
+                                <div class="mt-4 text-2xl font-bold"><?php echo  $total_sales2 ?></div>
                                 <div class="text-gray-500 text-sm">Number of Sales</div>
                             </div>
 
                             <!-- FB Stats -->
                             <div class="bg-blue-600 p-4 rounded-lg text-center text-white">
-                                <div class="text-2xl font-bold">$53.00</div>
-                                <div class="text-blue-100 text-sm">FB Ads Cost Per Purchase</div>
-                                <div class="mt-4 text-2xl font-bold">15</div>
-                                <div class="text-blue-100 text-sm">FB Ads Purchases</div>
+                                <div class="text-2xl font-bold"><?php echo  isset($total_bank2) ? $total_bank2 : 0; ?> Birr</div>
+                                <div class="text-blue-100 text-sm">Bank</div>
+                                <div class="mt-4 text-2xl font-bold"><?php echo  isset($total_cash2) ? $total_cash2 : 0; ?> Birr</div>
+                                <div class="text-blue-100 text-sm">Cash</div>
                             </div>
 
                             <!-- Snapchat Stats -->
-                            <div class="bg-white p-4 rounded-lg text-center">
+                            <!-- <div class="bg-white p-4 rounded-lg text-center">
                                 <div class="text-2xl font-bold">$40.99</div>
                                 <div class="text-gray-500 text-sm">Snapchat Ads Purchases Value</div>
                                 <div class="mt-4 text-2xl font-bold">12</div>
                                 <div class="text-gray-500 text-sm">Snapchat Ads Purchases</div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

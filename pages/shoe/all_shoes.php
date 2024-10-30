@@ -92,7 +92,7 @@ $title = "All shoes";
                             <div class="overflow-x-auto">
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
-                                        <table id="zero_config" data-order='[[ 0, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <table id="zero_config"  class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
@@ -280,7 +280,7 @@ $title = "All shoes";
             // Your DataTable options
             paging: false, // Disable pagination
             order: [
-                [0, "desc"]
+               
             ], // Default ordering
         });
     });

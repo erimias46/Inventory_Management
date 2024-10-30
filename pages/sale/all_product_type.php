@@ -6,7 +6,7 @@ include_once $redirect_link . 'include/db.php';
 $current_date = date('Y-m-d');
 
 
-$title="All Products";
+$title = "All Products";
 ?>
 
 <head>
@@ -61,6 +61,9 @@ $title="All Products";
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+<th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Now</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Sold</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Recived</th>
 
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
 
@@ -86,57 +89,60 @@ $title="All Products";
 
                                                 $sql = "
     SELECT 'Jeans' AS category, 
-           jeans_name AS product_name, 
-           GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
-           price, image, created_at, id 
-    FROM jeans 
-    WHERE quantity > 0 
-    GROUP BY jeans_name, price, image
+       jeans_name AS product_name, 
+       GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
+       SUM(quantity) AS total_quantity, 
+       price, image, created_at, id 
+FROM jeans 
+WHERE quantity > 0 
+GROUP BY jeans_name, price, image
 
-    UNION ALL
+UNION ALL
 
-    SELECT 'Shoes' AS category, 
-           shoes_name AS product_name, 
-           GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
-           price, image, created_at, id 
-    FROM shoes 
-    WHERE quantity > 0 
-    GROUP BY shoes_name, price, image
+SELECT 'Shoes' AS category, 
+       shoes_name AS product_name, 
+       GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
+       SUM(quantity) AS total_quantity, 
+       price, image, created_at, id 
+FROM shoes 
+WHERE quantity > 0 
+GROUP BY shoes_name, price, image
 
-    UNION ALL
+UNION ALL
 
-    SELECT 'Accessory' AS category, 
-           accessory_name AS product_name, 
-           GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
-           price, image, created_at, id 
-    FROM accessory 
-    WHERE quantity > 0 
-    GROUP BY accessory_name, price, image
+SELECT 'Accessory' AS category, 
+       accessory_name AS product_name, 
+       GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
+       SUM(quantity) AS total_quantity, 
+       price, image, created_at, id 
+FROM accessory 
+WHERE quantity > 0 
+GROUP BY accessory_name, price, image
 
-    UNION ALL
+UNION ALL
 
-    SELECT 'Top' AS category, 
-           top_name AS product_name, 
-           GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
-           price, image, created_at, id 
-    FROM top 
-    WHERE quantity > 0 
-    GROUP BY top_name, price, image
+SELECT 'Top' AS category, 
+       top_name AS product_name, 
+       GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
+       SUM(quantity) AS total_quantity, 
+       price, image, created_at, id 
+FROM top 
+WHERE quantity > 0 
+GROUP BY top_name, price, image
 
-    UNION ALL
+UNION ALL
 
+SELECT 'Complete' AS category, 
+       complete_name AS product_name, 
+       GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
+       SUM(quantity) AS total_quantity, 
+       price, image, created_at, id
+FROM complete
+WHERE quantity > 0
+GROUP BY complete_name, price, image
 
-    SELECT 'Complete' AS category, 
-           complete_name AS product_name, 
-           GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
-           price, image, created_at, id
-    FROM complete
-    WHERE quantity > 0
-    GROUP BY complete_name, price, image
+ORDER BY created_at DESC;
 
-    
-
-    ORDER BY created_at DESC
 ";
 
 
@@ -153,6 +159,59 @@ $title="All Products";
 
                                                     // Update previous date tracker
                                                     $prevDate = $currentDate;
+
+
+                                                    $product_name = $row['product_name'];
+                                                    $total_quantity_now = $row['total_quantity'];
+
+
+                                                    $sql4 = "SELECT product_name, SUM(quantity) AS total_quantity FROM products where product_name='$product_name'  ";
+                                                    $result4 = mysqli_query($con, $sql4);
+                                                    $row4 = mysqli_fetch_assoc($result4);
+                                                    $total_quantity = $row4['total_quantity'];
+
+
+                                                    $category = $row['category'];
+                                                    file_put_contents("log.txt", "Category: $category\n", FILE_APPEND);
+
+                                                    if ($category == 'Jeans') {
+                                                        $sql6 = "SELECT COUNT(*) AS total_sales 
+             FROM sales 
+             WHERE jeans_name = '$product_name'  and status= 'active' || status= 'Exchange Sell'";
+
+                                                        $result6 = mysqli_query($con, $sql6);
+                                                        $row6 = mysqli_fetch_assoc($result6);
+
+                                                        // Set $total_quantity_sold to 0 if no result is found
+                                                        $total_quantity_sold = $row6 ? $row6['total_sales'] : 0;
+
+                                                        // Log the product name if total sales count is 0
+                                                     
+                                                        
+                                                        
+                                                    }else {
+                                                        $category_sales = $row['category'] . '_sales';
+                                                        $product_names = $row['category'] . '_name';
+
+                                                        // Construct the SQL query to count the occurrences
+                                                        $sql5 = "SELECT COUNT(*) AS total_sales 
+         FROM $category_sales 
+         WHERE $product_names = '$product_name' and status= 'active' || status= 'Exchange Sell'";
+
+                                                        // Execute the query
+                                                        $result5 = mysqli_query($con, $sql5);
+                                                        $row5 = mysqli_fetch_assoc($result5);
+                                                        $total_quantity_sold = $row5? $row5['total_sales'] : 0;
+                                                    }
+
+
+
+
+
+
+
+
+
                                                 ?>
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium <?php echo $dateTextColor; ?>">
@@ -169,6 +228,17 @@ $title="All Products";
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                             <?php echo $row['price']; ?>
                                                         </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                            <?php echo $total_quantity_now ?>
+                                                        </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                            <?php echo $total_quantity_sold ?>
+                                                        </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                            <?php echo $total_quantity ?>
+                                                        </td>
+
+
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                             <img width="100px" height="100px" src="../../include/<?php echo $row['image']; ?>" alt="Product Image" class="product-image" />
                                                         </td>

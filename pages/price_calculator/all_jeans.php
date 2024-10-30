@@ -92,7 +92,7 @@ $title = "All Jeans";
                             <div class="overflow-x-auto">
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
-                                        <table id="zero_config" data-order='[[ 0, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <table id="zero_config"  class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
@@ -107,7 +107,7 @@ $title = "All Jeans";
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sql = "SELECT * FROM jeans ORDER BY jeans_name, created_at DESC";
+                                                $sql = "SELECT * FROM jeans ORDER BY jeans_name";
                                                 $result22 = mysqli_query($con, $sql);
 
                                                 // Define colors with better contrast and opacity for readability
@@ -280,7 +280,7 @@ $title = "All Jeans";
             // Your DataTable options
             paging: false, // Disable pagination
             order: [
-                [0, "desc"]
+               
             ], // Default ordering
         });
     });

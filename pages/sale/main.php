@@ -206,60 +206,64 @@ FROM sales  Where sales_date = '$current_date'
                                 $total_bank = $row['total_bank'];
 
 
-                                $sql2 = "SELECT 
-    'shoes' AS source,
-    COUNT(sales_id) AS total_sales,
-    SUM(price) AS total_price,
-    SUM(cash) AS total_cash,
-    SUM(bank) AS total_bank
-FROM shoes_sales
-WHERE sales_date = '$current_date'
+   // Example date, set this dynamically as needed
 
-UNION ALL
-
+    $sql2 = "
 SELECT 
-    'top' AS source,
-    COUNT(sales_id) AS total_sales,
-    SUM(price) AS total_price,
-    SUM(cash) AS total_cash,
-    SUM(bank) AS total_bank
-FROM top_sales
-WHERE sales_date = '$current_date'
+    'total' AS source,
+    SUM(total_sales) AS total_sales,
+    SUM(total_price) AS total_price,
+    SUM(total_cash) AS total_cash,
+    SUM(total_bank) AS total_bank
+FROM (
+    SELECT 
+        COUNT(sales_id) AS total_sales,
+        SUM(price) AS total_price,
+        SUM(cash) AS total_cash,
+        SUM(bank) AS total_bank
+    FROM shoes_sales
+    WHERE sales_date = '$current_date'
 
-UNION ALL
+    UNION ALL
 
-SELECT 
-    'complete' AS source,
-    COUNT(sales_id) AS total_sales,
-    SUM(price) AS total_price,
-    SUM(cash) AS total_cash,
-    SUM(bank) AS total_bank
-FROM complete_sales
-WHERE sales_date = '$current_date'
+    SELECT 
+        COUNT(sales_id),
+        SUM(price),
+        SUM(cash),
+        SUM(bank)
+    FROM top_sales
+    WHERE sales_date = '$current_date'
 
-UNION ALL
+    UNION ALL
 
-SELECT 
-    'accessory' AS source,
-    COUNT(sales_id) AS total_sales,
-    SUM(price) AS total_price,
-    SUM(cash) AS total_cash,
-    SUM(bank) AS total_bank
-FROM accessory_sales
-WHERE sales_date = '$current_date'
+    SELECT 
+        COUNT(sales_id),
+        SUM(price),
+        SUM(cash),
+        SUM(bank)
+    FROM complete_sales
+    WHERE sales_date = '$current_date'
 
-UNION ALL
+    UNION ALL
 
-SELECT 
-    'jeans' AS source,
-    COUNT(sales_id) AS total_sales,
-    SUM(price) AS total_price,
-    SUM(cash) AS total_cash,
-    SUM(bank) AS total_bank
-FROM sales
-WHERE sales_date = '$current_date';
+    SELECT 
+        COUNT(sales_id),
+        SUM(price),
+        SUM(cash),
+        SUM(bank)
+    FROM accessory_sales
+    WHERE sales_date = '$current_date'
 
-";
+    UNION ALL
+
+    SELECT 
+        COUNT(sales_id),
+        SUM(price),
+        SUM(cash),
+        SUM(bank)
+    FROM sales
+    WHERE sales_date = '$current_date'
+) AS all_sales";
                                 $result2 = mysqli_query($con, $sql2);
                                 $row2 = mysqli_fetch_array($result2);
                                 $total_price2 = $row2['total_price'];

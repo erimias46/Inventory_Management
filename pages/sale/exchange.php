@@ -220,11 +220,17 @@ if ($result) {
 
 
 
+                            <div class="text-center mb-4">
+                                <img id="productImage" src="" alt="Product Image" class="w-32 h-32 object-cover mx-auto hidden" />
+                            </div>
+
+
+
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-2 gap-5">
                                 <!-- Jeans Name Field -->
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name"><?php echo ucfirst($type) ?> Name</label>
-                                    <select name="code_name" id="code_name" class="w-full border border-gray-300 p-2 rounded-md search-select" onchange="fetchSizes()" required>
+                                    <select name="code_name" id="code_name" class="w-full border border-gray-300 p-2 rounded-md search-select" onchange="fetchSizes(); fetchImage()" required>
                                         <option value="">Select Name</option>
                                         <?php
                                         $sql3 = "SELECT * FROM `$type` GROUP BY `{$type}_name` ORDER BY `{$type}_name` ASC";
@@ -232,7 +238,6 @@ if ($result) {
 
                                         if (mysqli_num_rows($result3) > 0) {
                                             while ($row3 = mysqli_fetch_assoc($result3)) {
-                                                // Check if the current option should be selected
                                                 $selected = ($row3[$type . '_name'] == $product_name) ? 'selected' : '';
                                         ?>
                                                 <option value="<?= $row3[$type . '_name'] ?>" <?= $selected ?>><?= $row3[$type . '_name'] ?></option>
@@ -354,6 +359,33 @@ if ($result) {
     <?php include $redirect_link . 'partials/customizer.php'; ?>
 
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
+
+
+
+
+    <script>
+        // JavaScript function to fetch image
+        function fetchImage() {
+            const codeName = document.getElementById('code_name').value;
+            const productImage = document.getElementById('productImage');
+
+            if (codeName) {
+                fetch(`fetch_image.php?type=<?php echo $type; ?>&name=${codeName}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            productImage.src ="../../include/"+ data.image;
+                            productImage.classList.remove('hidden');
+                        } else {
+                            productImage.classList.add('hidden');
+                        }
+                    })
+                    .catch(error => console.error('Error fetching image:', error));
+            } else {
+                productImage.classList.add('hidden');
+            }
+        }
+    </script>
 
 
 

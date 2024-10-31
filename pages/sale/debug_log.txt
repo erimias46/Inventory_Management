@@ -227,3 +227,181 @@
 [2024-10-30 15:19:14] Code name: Gucci Test
 [2024-10-30 15:19:14] Type retrieved: 2
 [2024-10-30 15:19:14] Sizes found: 35, 40
+[2024-10-30 18:23:18] Table selected: jeans
+[2024-10-30 18:23:18] Size table used: jeansdb
+[2024-10-30 18:23:18] Code name: Gucci Test
+[2024-10-30 18:23:18] Type retrieved: 2
+[2024-10-30 18:23:18] Sizes found: 35, 40
+[2024-10-30 18:23:25] Table selected: jeans
+[2024-10-30 18:23:25] Size table used: jeansdb
+[2024-10-30 18:23:25] Code name: dsds
+[2024-10-30 18:23:25] Type retrieved: 1
+[2024-10-30 18:23:25] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 18:23:39] Table selected: jeans
+[2024-10-30 18:23:39] Size table used: jeansdb
+[2024-10-30 18:23:39] Code name: Verscase 
+[2024-10-30 18:23:39] Type retrieved: 1
+[2024-10-30 18:23:39] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 18:30:07] Table selected: jeans
+[2024-10-30 18:30:07] Size table used: jeansdb
+[2024-10-30 18:30:07] Code name: Fike Jeans
+[2024-10-30 18:30:07] Type retrieved: 1
+[2024-10-30 18:30:07] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 18:30:23] Table selected: jeans
+[2024-10-30 18:30:23] Size table used: jeansdb
+[2024-10-30 18:30:23] Code name: Fike Jeans
+[2024-10-30 18:30:23] Type retrieved: 1
+[2024-10-30 18:30:23] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 18:38:40] Table selected: jeans
+[2024-10-30 18:38:40] Size table used: jeansdb
+[2024-10-30 18:38:40] Code name: Fike Jeans
+[2024-10-30 18:38:40] Type retrieved: 1
+[2024-10-30 18:38:40] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 18:38:50] Table selected: jeans
+[2024-10-30 18:38:50] Size table used: jeansdb
+[2024-10-30 18:38:50] Code name: Fike Jeans
+[2024-10-30 18:38:50] Type retrieved: 1
+[2024-10-30 18:38:50] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 18:42:55] Table selected: jeans
+[2024-10-30 18:42:55] Size table used: jeansdb
+[2024-10-30 18:42:55] Code name: Fike Jeans
+[2024-10-30 18:42:55] Type retrieved: 1
+[2024-10-30 18:42:55] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 18:43:14] Table selected: jeans
+[2024-10-30 18:43:14] Size table used: jeansdb
+[2024-10-30 18:43:14] Code name: Fike Jeans
+[2024-10-30 18:43:14] Type retrieved: 1
+[2024-10-30 18:43:14] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 18:45:24] Table selected: jeans
+[2024-10-30 18:45:24] Size table used: jeansdb
+[2024-10-30 18:45:24] Code name: Fike Jeans
+[2024-10-30 18:45:24] Type retrieved: 1
+[2024-10-30 18:45:24] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 18:45:32] Table selected: jeans
+[2024-10-30 18:45:32] Size table used: jeansdb
+[2024-10-30 18:45:32] Code name: Fike Jeans
+[2024-10-30 18:45:32] Type retrieved: 1
+[2024-10-30 18:45:32] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 18:45:42] === Starting New Transaction ===
+[2024-10-30 18:45:42] POST Data: Array
+(
+    [bank_name] => 
+    [method] => delivery
+    [reason] => yess
+    [add] => 
+    [code_name] => Array
+        (
+            [0] => jeans|Fike Jeans
+        )
+
+    [size_name] => Array
+        (
+            [0] => 36
+        )
+
+    [cash] => Array
+        (
+            [0] => 5000
+        )
+
+    [bank] => Array
+        (
+            [0] => 0
+        )
+
+    [price] => Array
+        (
+            [0] => 5000.00
+        )
+
+)
+
+[2024-10-30 18:45:42] Method: delivery
+[2024-10-30 18:45:42] Number of items: 1
+[2024-10-30 18:45:42] Code names: Array
+(
+    [0] => jeans|Fike Jeans
+)
+
+[2024-10-30 18:45:42] Sizes: Array
+(
+    [0] => 36
+)
+
+[2024-10-30 18:45:42] 
+--- Processing Item 0 ---
+[2024-10-30 18:45:42] Item details - Code: jeans|Fike Jeans, Size: 36, Price: 5000.00
+[2024-10-30 18:45:42] Table: jeans, Product: Fike Jeans
+[2024-10-30 18:45:42] No bank selected
+[2024-10-30 18:45:42] Product query: SELECT * FROM jeans WHERE jeans_name = 'Fike Jeans' AND size = '36'
+[2024-10-30 18:45:42] Product found - ID: 33, Size ID: 2, Quantity: 2
+[2024-10-30 18:45:42] Processing as delivery - Table: delivery
+[2024-10-30 18:45:42] Delivery insert query: INSERT INTO delivery 
+                (jeans_id, size_id, jeans_name, size, price, cash, bank, method, 
+                sales_date, update_date, quantity, user_id, bank_id, bank_name, status, reason)
+                VALUES 
+                ('33', '2', 'Fike Jeans', '36', '5000.00', '5000', '0',
+                'delivery', '2024-10-30 18:45:42', '2024-10-30 18:45:42', '1', '25', NULL, NULL, 'pending', 'yess')
+[2024-10-30 18:45:42] Successfully inserted delivery with ID: 9
+[2024-10-30 18:45:42] Successfully updated quantity for product ID: 33
+[2024-10-30 18:45:42] === Processing Complete ===
+[2024-10-30 18:45:42] Successful count: 1
+[2024-10-30 18:45:42] Has errors: No
+[2024-10-30 18:45:42] Redirecting with status: success
+
+
+[2024-10-30 18:54:08] Table selected: jeans
+[2024-10-30 18:54:08] Size table used: jeansdb
+[2024-10-30 18:54:08] Code name: Fike Jeans
+[2024-10-30 18:54:08] Type retrieved: 1
+[2024-10-30 18:54:08] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 18:54:16] Table selected: jeans
+[2024-10-30 18:54:16] Size table used: jeansdb
+[2024-10-30 18:54:16] Code name: Fike Jeans
+[2024-10-30 18:54:16] Type retrieved: 1
+[2024-10-30 18:54:16] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 19:33:58] Table selected: jeans
+[2024-10-30 19:33:58] Size table used: jeansdb
+[2024-10-30 19:33:58] Code name: Fike Jeans
+[2024-10-30 19:33:58] Type retrieved: 1
+[2024-10-30 19:33:58] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 19:34:08] Table selected: jeans
+[2024-10-30 19:34:08] Size table used: jeansdb
+[2024-10-30 19:34:08] Code name: Fike Jeans
+[2024-10-30 19:34:08] Type retrieved: 1
+[2024-10-30 19:34:08] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 20:00:17] Table selected: jeans
+[2024-10-30 20:00:17] Size table used: jeansdb
+[2024-10-30 20:00:17] Code name: Fike Jeans
+[2024-10-30 20:00:17] Type retrieved: 1
+[2024-10-30 20:00:17] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 20:00:24] Table selected: jeans
+[2024-10-30 20:00:24] Size table used: jeansdb
+[2024-10-30 20:00:24] Code name: Fike Jeans
+[2024-10-30 20:00:24] Type retrieved: 1
+[2024-10-30 20:00:24] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 20:12:19] Table selected: jeans
+[2024-10-30 20:12:19] Size table used: jeansdb
+[2024-10-30 20:12:19] Code name: Fike Jeans
+[2024-10-30 20:12:19] Type retrieved: 1
+[2024-10-30 20:12:19] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-30 20:12:28] Table selected: jeans
+[2024-10-30 20:12:28] Size table used: jeansdb
+[2024-10-30 20:12:28] Code name: Fike Jeans
+[2024-10-30 20:12:28] Type retrieved: 1
+[2024-10-30 20:12:28] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-31 09:41:49] Table selected: jeans
+[2024-10-31 09:41:49] Size table used: jeansdb
+[2024-10-31 09:41:49] Code name: Gucci Test
+[2024-10-31 09:41:49] Type retrieved: 2
+[2024-10-31 09:41:49] Sizes found: 35, 40
+[2024-10-31 09:41:56] Table selected: jeans
+[2024-10-31 09:41:56] Size table used: jeansdb
+[2024-10-31 09:41:56] Code name: dsds
+[2024-10-31 09:41:56] Type retrieved: 1
+[2024-10-31 09:41:56] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-31 09:54:36] Table selected: jeans
+[2024-10-31 09:54:36] Size table used: jeansdb
+[2024-10-31 09:54:36] Code name: dsds
+[2024-10-31 09:54:36] Type retrieved: 1
+[2024-10-31 09:54:36] Sizes found: 36, 37, 38, SMALL, Large, XXL

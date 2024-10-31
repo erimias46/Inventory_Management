@@ -36,7 +36,7 @@ if (isset($_POST['add'])) {
     $prices = $_POST['price']; // Multiple prices
     $cash_values = $_POST['cash']; // Multiple cash values
     $banks = $_POST['bank']; // Multiple banks
-    $method = $_POST['method'];
+    $methods = $_POST['method'];
     $date = date('Y-m-d H:i:s');
 
     // Counter for successful sales
@@ -50,7 +50,9 @@ if (isset($_POST['add'])) {
         $price = $prices[$i];
         $cash = $cash_values[$i];
         $bank = $banks[$i];
+        $method = $methods[0];
         $quantity = 1;
+        
 
         // Split the code_name into table and product name
         list($table, $product_name) = explode('|', $code_name);
@@ -173,37 +175,37 @@ if (isset($_POST['add'])) {
             if ($method == 'delivery') {
                 $status = "pending";
                 $reason = $_POST['reason'];
+                
                 $delivery_table = ($table == 'jeans') ? 'delivery' : $table . '_delivery';
 
-                $sql = "INSERT INTO $delivery_table ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status,reason)
-                        VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', '$status','$reason')";
-                mysqli_query($con, $sql);
+                $sql = "INSERT INTO $delivery_table ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status, reason)
+            VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', '$status','$reason')";
 
+                if (mysqli_query($con, $sql)) {
+                    $sales_id = mysqli_insert_id($con);
+                    $sales_ids[] = $sales_id; // Store sales ID for multi-sale logging
 
+                    // Update product quantity after successful insert
+                    $new_quantity = $current_quantity - $quantity;
+                    $update_quantity = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
+                    $result_update = mysqli_query($con, $update_quantity);
 
+                    if (!$result_update) {
+                        echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
+                        continue; // Move to the next item if update fails
+                    }
 
+                    $message = "From $table is going out for delivery\n";
+                    $message .= "Product Name: $product_name\n";
+                    $message .= "Price: $price\n";
+                    $message .= "Size: $size\n";
+                    $subject = "Delivery $table";
 
-                $new_quantity = $current_quantity - $quantity;
-                $update_quantity = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
-                $result_update = mysqli_query($con, $update_quantity);
-
-
-                $message = " From $table  is going out for a delivery  \n";
-                $message .= "Product Name: $product_name\n";
-                $message .= "Price: $price\n";
-                $message .= "Size: $size\n";
-
-
-                $subject = "Delivery $table";
-
-
-
-
-                if (!$result || !$result_update) {
-                    echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
-                    continue;
+                    sendMessageToSubscribers($message, $con);
+                    sendEmailToSubscribers($message, $subject, $con);
                 }
-            } else {
+            }
+ else {
                 $sales_table = ($table == 'jeans') ? 'sales' : $table . '_sales';
 
                 // Insert into sales table
@@ -227,20 +229,13 @@ if (isset($_POST['add'])) {
                     $sql_update = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
                     mysqli_query($con, $sql_update);
 
-
-
                     $message = "Sale Have been Made \n";
-
-
                     $message .= "Product Name: $product_name\n";
                     $message .= "Price: $price\n";
                     $message .= "Size: $size\n";
                     $message .= "Quantity: $quantity\n";
                     $message .= "Cash :  $cash\n";
                     $message .= "Bank : $bank\n";
-
-
-
                     $subject = "Sold $table";
 
 
@@ -261,20 +256,7 @@ if (isset($_POST['add'])) {
     }
 
     // Notify subscribers about the sales (optional)
-    $subscribers_query = "SELECT chat_id FROM subscribers";
-    $subscribers_result = mysqli_query($con, $subscribers_query);
-    $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
-
-    foreach ($subscribers as $subscriber) {
-        $message = "New Sale Added:\n";
-        $message .= "Product Name: $product_name\n";
-        $message .= "Size: $size\n";
-        $message .= "Price: $price\n";
-        $message .= "Cash: $cash\n";
-        $message .= "Bank: $bank\n";
-        $message .= "Method: $method\n";
-        // Send notification to each subscriber (Telegram bot integration here)
-    }
+  
 
     // Redirect on success
     echo "<script>window.location = 'action.php?status=success&redirect=multi.php';</script>";
@@ -391,7 +373,7 @@ if ($result) {
                             <!-- Method Field -->
                             <div class="mb-3">
                                 <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="method">Method</label>
-                                <select name="method" id="method" class="form-select w-full border border-gray-300 p-2 rounded-md" required onchange="toggleReasonField()">
+                                <select name="method[]" id="method" class="form-select w-full border border-gray-300 p-2 rounded-md" required onchange="toggleReasonField()">
                                     <option value="shop">Shop</option>
                                     <option value="delivery">Delivery</option>
                                 </select>

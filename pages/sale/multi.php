@@ -390,7 +390,7 @@ if ($result) {
                                         <!-- Code Name Field -->
                                         <div class="mb-3">
                                             <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
-                                            <select name="code_name[]" id="codeNameSelect" class="code_name w-full" required>
+                                            <select name="code_name[]" id="codeNameSelect" class="code_name w-full" required onchange="fetchProductPriceN(this)">
                                                 <option value="">Select Name</option>
                                                 <?php
                                                 $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
@@ -477,16 +477,16 @@ if ($result) {
                                         <!-- Existing code name, size, cash, bank, price fields remain the same -->
 
                                         <!-- Add a new product details display section -->
-                                        <div class=" product-details hidden border rounded-md p-4 bg-gray-50 mb-3">
+                                        <div class=" product-details hidden border rounded-md p-4 bg-gray-50 mb-3  col-span-2">
                                             <div class="grid grid-cols-4 gap-4">
-                                                <div>
-                                                    <img src="" alt="Product Image" class="product-image w-24 h-24 object-cover">
+                                                <div class="col-span-2">
+                                                    <img src="" alt="Product Image" class="product-image w-40 h-40 object-cover">
                                                 </div>
                                                 <div>
                                                     <p class="font-medium">Price: <span class="listed-price text-green-600">0.00</span></p>
                                                     <p class="font-medium">Quantity: <span class="product-quantity text-blue-600">0</span></p>
                                                 </div>
-                                                <div class="col-span-2">
+                                                <div class="col-span-1">
                                                     <div class="payment-status hidden rounded-md p-2 text-sm">
                                                         <p>Payment Status: <span class="status-text"></span></p>
                                                         <p>Difference: <span class="price-difference"></span></p>
@@ -661,6 +661,55 @@ if ($result) {
                     }
                 };
                 xhr.send(`table=${table}&code_name=${encodeURIComponent(codeName)}&size=${encodeURIComponent(size)}`);
+            }
+        }
+
+
+        function fetchProductPriceN(element) {
+            const saleEntry = element.closest('.sale-entry');
+            const codeNameSelect = saleEntry.querySelector('.code_name');
+            const [table, codeName] = codeNameSelect.value.split('|');
+            const size = element.value;
+            const productDetails = saleEntry.querySelector('.product-details');
+
+            if (table && codeName && size) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'fetch_price2.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (this.status === 200) {
+                        const response = JSON.parse(this.responseText);
+                        if (response.error) {
+                            console.log('Error:', response.error);
+                            return;
+                        }
+
+                        if (response.price) {
+                            // Show product details section
+                            productDetails.classList.remove('hidden');
+
+                            // Update product details
+                            const listedPrice = productDetails.querySelector('.listed-price');
+                            const quantity = productDetails.querySelector('.product-quantity');
+                            const priceInput = saleEntry.querySelector('.price');
+
+                            listedPrice.textContent = response.price.toFixed(2);
+                            quantity.textContent = response.stock;
+
+                            // Store the actual price for validation
+                            priceInput.dataset.actualPrice = response.price;
+
+                            // Update product image if available
+                            const productImage = productDetails.querySelector('.product-image');
+                            if (response.image) {
+                                productImage.src = '../../include/' + response.image;
+                            } else {
+                                productImage.src = '/api/placeholder/100/100';
+                            }
+                        }
+                    }
+                };
+                xhr.send(`table=${table}&code_name=${encodeURIComponent(codeName)}`);
             }
         }
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $redirect_link = "../../";
 $side_link = "../../";
@@ -13,7 +13,7 @@ ini_set('display_errors', 1);
 // Get POST parameters
 $table = mysqli_real_escape_string($con, $_POST['table']);
 $code_name = mysqli_real_escape_string($con, $_POST['code_name']);
-$size = mysqli_real_escape_string($con, $_POST['size']);
+
 
 // Initialize response array
 $response = array();
@@ -28,13 +28,8 @@ if (!in_array($table, $allowed_tables)) {
 
 try {
     // SQL query based on your table structure
-    $sql = "SELECT 
-                price,
-                quantity,
-                image
-            FROM $table 
-            WHERE {$table}_name = ? 
-            AND size = ?";
+    $sql = "SELECT SUM(quantity) AS total_quantity, price, image FROM $table WHERE {$table}_name = ?";
+
 
     // Prepare and bind
     $stmt = mysqli_prepare($con, $sql);
@@ -42,7 +37,7 @@ try {
         throw new Exception("Error preparing statement: " . mysqli_error($con));
     }
 
-    mysqli_stmt_bind_param($stmt, "ss", $code_name, $size);
+    mysqli_stmt_bind_param($stmt, "s", $code_name);
 
     // Execute query
     if (!mysqli_stmt_execute($stmt)) {
@@ -56,15 +51,11 @@ try {
         // Format response
         $response = array(
             'price' => floatval($row['price']),
-            'stock' => intval($row['quantity']),
+            'stock' => intval($row['total_quantity']),
             'image' => $row['image'] ?? null
         );
     } else {
-        $response = array(
-            'price' => '0',
-            'stock' => '0',
-            'image' => null
-        );
+        $response['error'] = 'Product not found';
     }
 
     // Close statement
@@ -77,4 +68,3 @@ try {
     header('Content-Type: application/json');
     echo json_encode($response);
 }
-?>

@@ -31,12 +31,24 @@ if (isset($_POST['add'])) {
 
     // Collect form data
     $user_id = $_SESSION['user_id'];
-    $code_names = $_POST['code_name']; // Multiple code names
+    $code_names = $_POST['code_name'];
+
+
+
+    $debugFile = 'debug.txt';
+    $logMessage = "Code names: " . implode(", ", $code_names) . "\n";
+    file_put_contents($debugFile, $logMessage, FILE_APPEND);
+
+
+
+    // Multiple code names
     $sizes = $_POST['size_name']; // Multiple sizes
+
+    file_put_contents($debugFile, "Sizes: " . implode(", ", $sizes) . "\n", FILE_APPEND);
     $prices = $_POST['price']; // Multiple prices
     $cash_values = $_POST['cash']; // Multiple cash values
     $banks = $_POST['bank']; // Multiple banks
-    $methods = $_POST['method'];
+    $method = $_POST['method'];
     $date = date('Y-m-d H:i:s');
 
     // Counter for successful sales
@@ -50,9 +62,7 @@ if (isset($_POST['add'])) {
         $price = $prices[$i];
         $cash = $cash_values[$i];
         $bank = $banks[$i];
-        $method = $methods[0];
         $quantity = 1;
-        
 
         // Split the code_name into table and product name
         list($table, $product_name) = explode('|', $code_name);
@@ -175,37 +185,37 @@ if (isset($_POST['add'])) {
             if ($method == 'delivery') {
                 $status = "pending";
                 $reason = $_POST['reason'];
-                
                 $delivery_table = ($table == 'jeans') ? 'delivery' : $table . '_delivery';
 
-                $sql = "INSERT INTO $delivery_table ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status, reason)
-            VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', '$status','$reason')";
+                $sql = "INSERT INTO $delivery_table ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status,reason)
+                        VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', '$status','$reason')";
+                mysqli_query($con, $sql);
 
-                if (mysqli_query($con, $sql)) {
-                    $sales_id = mysqli_insert_id($con);
-                    $sales_ids[] = $sales_id; // Store sales ID for multi-sale logging
 
-                    // Update product quantity after successful insert
-                    $new_quantity = $current_quantity - $quantity;
-                    $update_quantity = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
-                    $result_update = mysqli_query($con, $update_quantity);
 
-                    if (!$result_update) {
-                        echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
-                        continue; // Move to the next item if update fails
-                    }
 
-                    $message = "From $table is going out for delivery\n";
-                    $message .= "Product Name: $product_name\n";
-                    $message .= "Price: $price\n";
-                    $message .= "Size: $size\n";
-                    $subject = "Delivery $table";
 
-                    sendMessageToSubscribers($message, $con);
-                    sendEmailToSubscribers($message, $subject, $con);
+                $new_quantity = $current_quantity - $quantity;
+                $update_quantity = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
+                $result_update = mysqli_query($con, $update_quantity);
+
+
+                $message = " From $table  is going out for a delivery  \n";
+                $message .= "Product Name: $product_name\n";
+                $message .= "Price: $price\n";
+                $message .= "Size: $size\n";
+
+
+                $subject = "Delivery $table";
+
+
+
+
+                if (!$result || !$result_update) {
+                    echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                    continue;
                 }
-            }
- else {
+            } else {
                 $sales_table = ($table == 'jeans') ? 'sales' : $table . '_sales';
 
                 // Insert into sales table
@@ -229,13 +239,20 @@ if (isset($_POST['add'])) {
                     $sql_update = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
                     mysqli_query($con, $sql_update);
 
+
+
                     $message = "Sale Have been Made \n";
+
+
                     $message .= "Product Name: $product_name\n";
                     $message .= "Price: $price\n";
                     $message .= "Size: $size\n";
                     $message .= "Quantity: $quantity\n";
                     $message .= "Cash :  $cash\n";
                     $message .= "Bank : $bank\n";
+
+
+
                     $subject = "Sold $table";
 
 
@@ -256,7 +273,20 @@ if (isset($_POST['add'])) {
     }
 
     // Notify subscribers about the sales (optional)
-  
+    $subscribers_query = "SELECT chat_id FROM subscribers";
+    $subscribers_result = mysqli_query($con, $subscribers_query);
+    $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
+
+    foreach ($subscribers as $subscriber) {
+        $message = "New Sale Added:\n";
+        $message .= "Product Name: $product_name\n";
+        $message .= "Size: $size\n";
+        $message .= "Price: $price\n";
+        $message .= "Cash: $cash\n";
+        $message .= "Bank: $bank\n";
+        $message .= "Method: $method\n";
+        // Send notification to each subscriber (Telegram bot integration here)
+    }
 
     // Redirect on success
     echo "<script>window.location = 'action.php?status=success&redirect=multi.php';</script>";
@@ -345,213 +375,223 @@ if ($result) {
 
             <main class="flex-grow p-6">
                 <div class="grid grid-cols-4 gap-3">
-                    <div class="card col-span-1 bg-white shadow-md rounded-md p-6 mx-lg max-w-lg">
-                        <form method="post" enctype="multipart/form-data" id="saleForm">
 
 
 
-
-                            <!-- Bank Name Field -->
-                            <div id="bankNameDiv">
-                                <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank Name</label>
-                                <select name="bank_name" id="bankNameInput" class="selectize">
-                                    <option value="">Select</option>
-                                    <?php
-                                    $sql5 = "SELECT * FROM bankdb";
-                                    $result5 = mysqli_query($con, $sql5);
-                                    if (mysqli_num_rows($result5) > 0) {
-                                        while ($row5 = mysqli_fetch_assoc($result5)) { ?>
-                                            <option value="<?= $row5['bankname'] ?>">
-                                                <?= $row5['bankname'] ?>
-                                            </option>
-                                    <?php }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-
-                            <!-- Method Field -->
-                            <div class="mb-3">
-                                <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="method">Method</label>
-                                <select name="method[]" id="method" class="form-select w-full border border-gray-300 p-2 rounded-md" required onchange="toggleReasonField()">
-                                    <option value="shop">Shop</option>
-                                    <option value="delivery">Delivery</option>
-                                </select>
-                            </div>
-
-                            <!-- Reason field, initially hidden -->
-                            <div class="mb-3" id="reasonField" style="display: none;">
-                                <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="reason">Reason</label>
-                                <input type="text" name="reason" id="reason" class="form-input w-full border border-gray-300 p-2 rounded-md" placeholder="Please provide a reason">
-                            </div>
-
-                            <script>
-                                function toggleReasonField() {
-                                    const methodSelect = document.getElementById("method");
-                                    const reasonField = document.getElementById("reasonField");
-
-                                    // Show the reason field only if "delivery" is selected
-                                    if (methodSelect.value === "delivery") {
-                                        reasonField.style.display = "block";
-                                    } else {
-                                        reasonField.style.display = "none";
-                                    }
-                                }
-                            </script>
-
-                            <!-- Total Price Display -->
-                            <div class="mb-3">
-                                <label class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price</label>
-                                <input type="number" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" value="0" readonly>
-                            </div>
-
-                            <div class="text-center mt-5">
-                                <?php if ($add_button) : ?>
-                                    <button name="add" type="submit" class="btn bg-green-500 text-white px-4 py-2 rounded-md">
-                                        Sale
-                                    </button>
-                                <?php endif; ?>
-                            </div>
-
-
-                    </div>
 
                     <div class="card col-span-3 bg-white shadow-md rounded-md p-6 mx-lg max-w-lg">
+                        <form method="post" enctype="multipart/form-data" id="saleForm">
 
-                        <h2 class="text-4xl font-bold text-white-700 text-center mb-10">SALE DATA ENTRY</h2>
+                            <h2 class="text-4xl font-bold text-white-700 text-center mb-10">SALE DATA ENTRY</h2>
 
-                        <div>
-                            <div id="salesEntries">
-                                <div class="sale-entry  grid grid-cols-5 gap-5">
-                                    <!-- Code Name Field -->
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
-                                        <select name="code_name[]" id="codeNameSelect" class="code_name w-full" required>
-                                            <option value="">Select Name</option>
-                                            <?php
-                                            $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
-                                            foreach ($tables as $table) {
-                                                $display_label = ucfirst($table);
-                                                echo "<optgroup label='$display_label'>";
-                                                $sql = "SELECT {$table}_name FROM $table GROUP BY {$table}_name";
-                                                $result = mysqli_query($con, $sql);
-                                                while ($row = mysqli_fetch_assoc($result)) {
-                                                    $name_column = "{$table}_name";
-                                            ?>
-                                                    <option value="<?php echo $table . '|' . $row[$name_column]; ?>">
-                                                        <?php echo $row[$name_column]; ?>
-                                                    </option>
-                                            <?php
+                            <div>
+                                <div id="salesEntries">
+                                    <div class="sale-entry  grid grid-cols-5 gap-5">
+                                        <!-- Code Name Field -->
+                                        <div class="mb-3">
+                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
+                                            <select name="code_name[]" id="codeNameSelect" class="code_name w-full" required>
+                                                <option value="">Select Name</option>
+                                                <?php
+                                                $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
+                                                foreach ($tables as $table) {
+                                                    $display_label = ucfirst($table);
+                                                    echo "<optgroup label='$display_label'>";
+                                                    $sql = "SELECT {$table}_name FROM $table GROUP BY {$table}_name";
+                                                    $result = mysqli_query($con, $sql);
+                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                                        $name_column = "{$table}_name";
+                                                ?>
+                                                        <option value="<?php echo $table . '|' . $row[$name_column]; ?>">
+                                                            <?php echo $row[$name_column]; ?>
+                                                        </option>
+                                                <?php
+                                                    }
+                                                    echo "</optgroup>";
                                                 }
-                                                echo "</optgroup>";
+                                                ?>
+                                            </select>
+                                        </div>
+
+
+
+                                        <script>
+                                            function initializeNiceSelect(container) {
+                                                const selects = container.querySelectorAll('.code_name');
+                                                selects.forEach(select => {
+                                                    // Destroy existing nice-select if it exists
+                                                    if (select.nextElementSibling && select.nextElementSibling.classList.contains('nice-select')) {
+                                                        select.nextElementSibling.remove();
+                                                    }
+
+                                                    // Initialize new nice-select
+                                                    NiceSelect.bind(select, {
+                                                        searchable: true,
+                                                        placeholder: 'Search...',
+                                                        searchtext: 'Search...',
+                                                        selectedtext: 'selected'
+                                                    });
+
+                                                    // Add change event listener
+                                                    select.addEventListener('change', function() {
+                                                        fetchSizes(this);
+                                                    });
+                                                });
                                             }
-                                            ?>
-                                        </select>
-                                    </div>
-
-                                    <script>
-                                        function initializeNiceSelect(container) {
-                                            const selects = container.querySelectorAll('.code_name');
-                                            selects.forEach(select => {
-                                                // Destroy existing nice-select if it exists
-                                                if (select.nextElementSibling && select.nextElementSibling.classList.contains('nice-select')) {
-                                                    select.nextElementSibling.remove();
-                                                }
-
-                                                // Initialize new nice-select
-                                                NiceSelect.bind(select, {
-                                                    searchable: true,
-                                                    placeholder: 'Search...',
-                                                    searchtext: 'Search...',
-                                                    selectedtext: 'selected'
-                                                });
-
-                                                // Add change event listener
-                                                select.addEventListener('change', function() {
-                                                    fetchSizes(this);
-                                                });
-                                            });
-                                        }
-                                    </script>
+                                        </script>
 
 
-                                    <!-- Size Field -->
-                                    <!-- Size Field -->
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="size_name">Size</label>
-                                        <select name="size_name[]" class="size_name  w-full border border-gray-300 form-input rounded-md" onchange="fetchProductPrice(this)" required>
-                                            <option value="">Select Size</option>
-                                        </select>
-                                    </div>
+                                        <!-- Size Field -->
+                                        <!-- Size Field -->
+                                        <div class="mb-3">
+                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="size_name">Size</label>
+                                            <select name="size_name[]" class="size_name  w-full border border-gray-300 form-input rounded-md" onchange="fetchProductPrice(this)" required>
+                                                <option value="">Select Size</option>
+                                            </select>
+                                        </div>
 
-                                    <!-- Price Field -->
-
-
-                                    <!-- Cash Field -->
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
-                                        <input type="number" min="0" value="0" step="0.01" name="cash[]" class="cash  form-input w-full border border-gray-300  rounded-md" oninput="updatePrice(this)" onblur="setDefault(this)" required>
-                                    </div>
-
-                                    <!-- Bank Field -->
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
-                                        <input type="number" min="0" value="0" step="0.01" name="bank[]" class="bank w-full form-input border border-gray-300 p-2 rounded-md" oninput="updatePrice(this)" onblur="setDefault(this)" required>
-                                    </div>
+                                        <!-- Price Field -->
 
 
-                                    <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Price</label>
-                                        <input type="number" value="0" step="0.01" name="price[]" class="price w-full form-input  border border-gray-300 p-2 rounded-md" required readonly>
-                                    </div>
+                                        <!-- Cash Field -->
+                                        <div class="mb-3">
+                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
+                                            <input type="number" min="0" value="0" step="0.01" name="cash[]" class="cash  form-input w-full border border-gray-300  rounded-md" oninput="updatePrice(this)" onblur="setDefault(this)" required>
+                                        </div>
+
+                                        <!-- Bank Field -->
+                                        <div class="mb-3">
+                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
+                                            <input type="number" min="0" value="0" step="0.01" name="bank[]" class="bank w-full form-input border border-gray-300 p-2 rounded-md" oninput="updatePrice(this)" onblur="setDefault(this)" required>
+                                        </div>
+
+
+                                        <div class="mb-3">
+                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Price</label>
+                                            <input type="number" value="0" step="0.01" name="price[]" class="price w-full form-input  border border-gray-300 p-2 rounded-md" required readonly>
+                                        </div>
 
 
 
 
-                                    <!-- Existing code name, size, cash, bank, price fields remain the same -->
+                                        <!-- Existing code name, size, cash, bank, price fields remain the same -->
 
-                                    <!-- Add a new product details display section -->
-                                    <div class=" product-details hidden border rounded-md p-4 bg-gray-50 mb-3">
-                                        <div class="grid grid-cols-4 gap-4">
-                                            <div>
-                                                <img src="" alt="Product Image" class="product-image w-24 h-24 object-cover">
-                                            </div>
-                                            <div>
-                                                <p class="font-medium">Price: <span class="listed-price text-green-600">0.00</span></p>
-                                                <p class="font-medium">Quantity: <span class="product-quantity text-blue-600">0</span></p>
-                                            </div>
-                                            <div class="col-span-2">
-                                                <div class="payment-status hidden rounded-md p-2 text-sm">
-                                                    <p>Payment Status: <span class="status-text"></span></p>
-                                                    <p>Difference: <span class="price-difference"></span></p>
+                                        <!-- Add a new product details display section -->
+                                        <div class=" product-details hidden border rounded-md p-4 bg-gray-50 mb-3">
+                                            <div class="grid grid-cols-4 gap-4">
+                                                <div>
+                                                    <img src="" alt="Product Image" class="product-image w-24 h-24 object-cover">
+                                                </div>
+                                                <div>
+                                                    <p class="font-medium">Price: <span class="listed-price text-green-600">0.00</span></p>
+                                                    <p class="font-medium">Quantity: <span class="product-quantity text-blue-600">0</span></p>
+                                                </div>
+                                                <div class="col-span-2">
+                                                    <div class="payment-status hidden rounded-md p-2 text-sm">
+                                                        <p>Payment Status: <span class="status-text"></span></p>
+                                                        <p>Difference: <span class="price-difference"></span></p>
+                                                    </div>
                                                 </div>
                                             </div>
+                                        </div>
+
+
+                                        <!-- Remove Entry Button -->
+                                        <div class="mb-3">
+                                            <button type="button" class="btn bg-red-500 text-white px-4 py-2 rounded-md remove-entry" onclick="removeSaleEntry(this)">Remove</button>
                                         </div>
                                     </div>
 
 
-                                    <!-- Remove Entry Button -->
-                                    <div class="mb-3">
-                                        <button type="button" class="btn bg-red-500 text-white px-4 py-2 rounded-md remove-entry" onclick="removeSaleEntry(this)">Remove</button>
-                                    </div>
+                                    <!-- Add Sale Entry Button -->
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <button type="button" class="btn bg-info text-white px-4 py-2 rounded-md" onclick="addSaleEntry()">Add More</button>
                                 </div>
 
-
-                                <!-- Add Sale Entry Button -->
-                            </div>
-                            <div class="mb-3 text-center">
-                                <button type="button" class="btn bg-info text-white px-4 py-2 rounded-md" onclick="addSaleEntry()">Add More</button>
                             </div>
 
-                        </div>
+                            <!-- Bank Name Field -->
+
+
+                            <!-- Submit Button -->
+
+
+                    </div>
+
+                    <div class="card col-span-1 bg-white shadow-md rounded-md p-6 mx-lg max-w-lg">
+
+
+
+
+
+
 
                         <!-- Bank Name Field -->
+                        <div id="bankNameDiv">
+                            <label class="text-gray-800 text-sm font-medium inline-block mb-2">Bank Name</label>
+                            <select name="bank_name" id="bankNameInput" class="selectize">
+                                <option value="">Select</option>
+                                <?php
+                                $sql5 = "SELECT * FROM bankdb";
+                                $result5 = mysqli_query($con, $sql5);
+                                if (mysqli_num_rows($result5) > 0) {
+                                    while ($row5 = mysqli_fetch_assoc($result5)) { ?>
+                                        <option value="<?= $row5['bankname'] ?>">
+                                            <?= $row5['bankname'] ?>
+                                        </option>
+                                <?php }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <!-- Method Field -->
+                        <div class="mb-3">
+                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="method">Method</label>
+                            <select name="method" id="method" class="form-select w-full border border-gray-300 p-2 rounded-md" required onchange="toggleReasonField()">
+                                <option value="shop">Shop</option>
+                                <option value="delivery">Delivery</option>
+                            </select>
+                        </div>
+
+                        <!-- Reason field, initially hidden -->
+                        <div class="mb-3" id="reasonField" style="display: none;">
+                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="reason">Reason</label>
+                            <input type="text" name="reason" id="reason" class="form-input w-full border border-gray-300 p-2 rounded-md" placeholder="Please provide a reason">
+                        </div>
+
+                        <script>
+                            function toggleReasonField() {
+                                const methodSelect = document.getElementById("method");
+                                const reasonField = document.getElementById("reasonField");
+
+                                // Show the reason field only if "delivery" is selected
+                                if (methodSelect.value === "delivery") {
+                                    reasonField.style.display = "block";
+                                } else {
+                                    reasonField.style.display = "none";
+                                }
+                            }
+                        </script>
+
+                        <!-- Total Price Display -->
+                        <div class="mb-3">
+                            <label class="text-gray-800 text-sm font-medium inline-block mb-2">Total Price</label>
+                            <input type="number" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" value="0" readonly>
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <?php if ($add_button) : ?>
+                                <button name="add" type="submit" class="btn bg-green-500 text-white px-4 py-2 rounded-md">
+                                    Sale
+                                </button>
+                            <?php endif; ?>
+                        </div>
 
 
-                        <!-- Submit Button -->
-
-                        </form>
                     </div>
+                    </form>
 
                 </div>
             </main>

@@ -771,7 +771,8 @@ if ($result) {
                 const actualPrice = parseFloat(entry.querySelector('.price').dataset.actualPrice) || 0;
                 const totalPayment = cashInput + bankInput;
 
-                if (Math.abs(totalPayment - actualPrice) >= 0.01) { // Using small epsilon for floating-point comparison
+                // Check if totalPayment is less than actualPrice (indicating underpayment)
+                if (totalPayment < actualPrice) {
                     isValid = false;
                     entry.querySelector('.price').classList.add('border-red-500');
                 }
@@ -779,7 +780,7 @@ if ($result) {
 
             if (!isValid) {
                 e.preventDefault();
-                alert('Please ensure all payments match the listed prices exactly.');
+                alert('Please ensure all payments are at least equal to the listed prices.');
             }
         });
     </script>

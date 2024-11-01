@@ -10,3 +10,9 @@ Code names:
 Sizes: 
 Code names: jeans|Ermi Jeans, jeans|Ermi Jeans
 Sizes: 36, 37
+Code names: jeans|dsds
+Sizes: 37
+Code names: jeans|dsds, jeans|dsds
+Sizes: 36, 36
+Code names: jeans|Ermi Jeans, jeans|Ermi Jeans
+Sizes: 36, 36

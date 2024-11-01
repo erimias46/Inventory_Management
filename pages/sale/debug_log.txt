@@ -228,3 +228,58 @@
 [2024-10-31 19:22:19] Code name: tryr
 [2024-10-31 19:22:19] Type retrieved: 1
 [2024-10-31 19:22:19] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-01 19:25:08] Table selected: jeans
+[2024-11-01 19:25:08] Size table used: jeansdb
+[2024-11-01 19:25:08] Code name: Gucci Test
+[2024-11-01 19:25:08] Type retrieved: 2
+[2024-11-01 19:25:08] Sizes found: 35, 40
+[2024-11-01 19:25:12] Table selected: jeans
+[2024-11-01 19:25:12] Size table used: jeansdb
+[2024-11-01 19:25:12] Code name: Gucci Test
+[2024-11-01 19:25:12] Type retrieved: 2
+[2024-11-01 19:25:12] Sizes found: 35, 40
+[2024-11-01 19:25:15] Table selected: jeans
+[2024-11-01 19:25:15] Size table used: jeansdb
+[2024-11-01 19:25:15] Code name: dsds
+[2024-11-01 19:25:15] Type retrieved: 1
+[2024-11-01 19:25:15] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-01 19:25:18] Table selected: jeans
+[2024-11-01 19:25:18] Size table used: jeansdb
+[2024-11-01 19:25:18] Code name: dsds
+[2024-11-01 19:25:18] Type retrieved: 1
+[2024-11-01 19:25:18] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-01 19:28:45] Table selected: jeans
+[2024-11-01 19:28:45] Size table used: jeansdb
+[2024-11-01 19:28:45] Code name: Gucci Test
+[2024-11-01 19:28:45] Type retrieved: 2
+[2024-11-01 19:28:45] Sizes found: 35, 40
+[2024-11-01 19:28:53] Table selected: jeans
+[2024-11-01 19:28:53] Size table used: jeansdb
+[2024-11-01 19:28:53] Code name: Gucci Test
+[2024-11-01 19:28:53] Type retrieved: 2
+[2024-11-01 19:28:53] Sizes found: 35, 40
+[2024-11-01 19:28:55] Table selected: jeans
+[2024-11-01 19:28:55] Size table used: jeansdb
+[2024-11-01 19:28:55] Code name: dsds
+[2024-11-01 19:28:55] Type retrieved: 1
+[2024-11-01 19:28:55] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-01 19:29:09] Table selected: jeans
+[2024-11-01 19:29:09] Size table used: jeansdb
+[2024-11-01 19:29:09] Code name: dsds
+[2024-11-01 19:29:09] Type retrieved: 1
+[2024-11-01 19:29:09] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-01 19:29:27] Table selected: jeans
+[2024-11-01 19:29:27] Size table used: jeansdb
+[2024-11-01 19:29:27] Code name: dsds
+[2024-11-01 19:29:27] Type retrieved: 1
+[2024-11-01 19:29:27] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-01 19:30:16] Table selected: jeans
+[2024-11-01 19:30:16] Size table used: jeansdb
+[2024-11-01 19:30:16] Code name: Ermi Jeans
+[2024-11-01 19:30:16] Type retrieved: 1
+[2024-11-01 19:30:16] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-01 19:30:28] Table selected: jeans
+[2024-11-01 19:30:28] Size table used: jeansdb
+[2024-11-01 19:30:28] Code name: Ermi Jeans
+[2024-11-01 19:30:28] Type retrieved: 1
+[2024-11-01 19:30:28] Sizes found: 36, 37, 38, SMALL, Large, XXL

@@ -183,3 +183,48 @@
 [2024-10-31 16:27:33] Code name: Verscase 
 [2024-10-31 16:27:33] Type retrieved: 1
 [2024-10-31 16:27:33] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-31 19:18:04] Table selected: jeans
+[2024-10-31 19:18:04] Size table used: jeansdb
+[2024-10-31 19:18:04] Code name: dsds
+[2024-10-31 19:18:04] Type retrieved: 1
+[2024-10-31 19:18:04] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-31 19:19:10] Table selected: jeans
+[2024-10-31 19:19:10] Size table used: jeansdb
+[2024-10-31 19:19:10] Code name: New Jeans 
+[2024-10-31 19:19:10] Type retrieved: 1
+[2024-10-31 19:19:10] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-31 19:19:38] Table selected: jeans
+[2024-10-31 19:19:38] Size table used: jeansdb
+[2024-10-31 19:19:38] Code name: Gucci Test
+[2024-10-31 19:19:38] Type retrieved: 2
+[2024-10-31 19:19:38] Sizes found: 35, 40
+[2024-10-31 19:19:43] Table selected: jeans
+[2024-10-31 19:19:43] Size table used: jeansdb
+[2024-10-31 19:19:43] Code name: tryr
+[2024-10-31 19:19:43] Type retrieved: 1
+[2024-10-31 19:19:43] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-31 19:20:14] Table selected: jeans
+[2024-10-31 19:20:14] Size table used: jeansdb
+[2024-10-31 19:20:14] Code name: Gucci Test
+[2024-10-31 19:20:14] Type retrieved: 2
+[2024-10-31 19:20:14] Sizes found: 35, 40
+[2024-10-31 19:20:19] Table selected: jeans
+[2024-10-31 19:20:19] Size table used: jeansdb
+[2024-10-31 19:20:19] Code name: tryr
+[2024-10-31 19:20:19] Type retrieved: 1
+[2024-10-31 19:20:19] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-31 19:22:08] Table selected: jeans
+[2024-10-31 19:22:08] Size table used: jeansdb
+[2024-10-31 19:22:08] Code name: dsds
+[2024-10-31 19:22:08] Type retrieved: 1
+[2024-10-31 19:22:08] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-31 19:22:12] Table selected: jeans
+[2024-10-31 19:22:12] Size table used: jeansdb
+[2024-10-31 19:22:12] Code name: Guccii
+[2024-10-31 19:22:12] Type retrieved: 1
+[2024-10-31 19:22:12] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-10-31 19:22:19] Table selected: jeans
+[2024-10-31 19:22:19] Size table used: jeansdb
+[2024-10-31 19:22:19] Code name: tryr
+[2024-10-31 19:22:19] Type retrieved: 1
+[2024-10-31 19:22:19] Sizes found: 36, 37, 38, SMALL, Large, XXL

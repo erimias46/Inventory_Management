@@ -52,7 +52,7 @@ $title = "All Products";
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
 
-                                        <table id="zero_config" data-order='[[ 0, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <table id="zero_configs" data-order='[[ 0, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
@@ -61,11 +61,11 @@ $title = "All Products";
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-<th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Now</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Now</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Sold</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Recived</th>
 
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
+                                                   
 
 
                                                 </tr>
@@ -186,10 +186,10 @@ ORDER BY created_at DESC;
                                                         $total_quantity_sold = $row6 ? $row6['total_sales'] : 0;
 
                                                         // Log the product name if total sales count is 0
-                                                     
-                                                        
-                                                        
-                                                    }else {
+
+
+
+                                                    } else {
                                                         $category_sales = $row['category'] . '_sales';
                                                         $product_names = $row['category'] . '_name';
 
@@ -201,7 +201,7 @@ ORDER BY created_at DESC;
                                                         // Execute the query
                                                         $result5 = mysqli_query($con, $sql5);
                                                         $row5 = mysqli_fetch_assoc($result5);
-                                                        $total_quantity_sold = $row5? $row5['total_sales'] : 0;
+                                                        $total_quantity_sold = $row5 ? $row5['total_sales'] : 0;
                                                     }
 
 
@@ -214,8 +214,20 @@ ORDER BY created_at DESC;
 
                                                 ?>
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium <?php echo $dateTextColor; ?>">
-                                                            <?php echo $row['created_at']; ?>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-sm <?php echo $dateTextColor; ?>">
+                                                            <?php
+                                                    $createdAt = $row['created_at'];
+
+                                                    // Create a DateTime object
+                                                    $dateTime = new DateTime($createdAt);
+
+                                                    // Format the date as "19-Oct-2024"
+                                                    $formattedDate = $dateTime->format('d-M-Y');
+
+                                                    // Format the time as "23:22:38"
+                                                    $formattedTime = $dateTime->format('H:i:s');
+
+                                                    echo $formattedDate . " - " . $formattedTime; ?>
                                                         </td>
                                                         <td> <?php echo $row['id']; ?> </td>
                                                         <td> <?php echo $row['product_name']; ?> </td>
@@ -239,9 +251,7 @@ ORDER BY created_at DESC;
                                                         </td>
 
 
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                            <img width="100px" height="100px" src="../../include/<?php echo $row['image']; ?>" alt="Product Image" class="product-image" />
-                                                        </td>
+                                                       
                                                     </tr>
                                                 <?php
                                                 }
@@ -282,6 +292,19 @@ ORDER BY created_at DESC;
                     window.location.href = row.dataset.href;
                 }
             });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#zero_configs').DataTable({
+            "pageLength": -1,
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            "paging": false,
         });
     });
 </script>

@@ -800,7 +800,7 @@ if ($result) {
 
                         <?php if ($addjeans) : ?>
                             <li class="menu-item">
-                                <a href="<?php echo $redirect_link ?>pages/sale/add/add_product.php" class="menu-link">
+                                <a href="<?php echo $redirect_link ?>pages/sale/add/add_shoes.php" class="menu-link">
                                     <span class="menu-text">Add Product</span>
                                 </a>
                             </li>
@@ -876,7 +876,7 @@ if ($result) {
                         <?php if ($logjeans) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/products_log.php" class="menu-link">
-                                    <span class="menu-text">Products Log</span>
+                                    <span class="menu-text">Products In</span>
                                 </a>
                             </li>
                         <?php endif; ?>

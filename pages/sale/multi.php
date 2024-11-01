@@ -390,7 +390,7 @@ if ($result) {
                                         <!-- Code Name Field -->
                                         <div class="mb-3">
                                             <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
-                                            <select name="code_name[]" id="codeNameSelect" class="code_name w-full" required onchange="fetchProductPriceN(this)">
+                                            <select name="code_name[]" id="codeNameSelect" class="code_name  w-full" required onchange="fetchProductPriceN(this)">
                                                 <option value="">Select Name</option>
                                                 <?php
                                                 $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
@@ -439,6 +439,19 @@ if ($result) {
                                                 });
                                             }
                                         </script>
+
+                                        <style>
+                                            /* Ensure the select element maintains a minimum width */
+                                            .nice-select {
+                                                width: 100%;
+                                                /* Full width to fit container */
+                                                min-width: 150px;
+                                                /* Minimum width for short labels */
+                                                max-width: 100%;
+                                                /* Ensures no overflow from container */
+                                                box-sizing: border-box;
+                                            }
+                                        </style>
 
 
                                         <!-- Size Field -->

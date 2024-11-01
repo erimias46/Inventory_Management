@@ -37,7 +37,7 @@ $title = "Sale Log";
 
                                         ?>
 
-                                        <table id="zero_config" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <table id="zero_config" data-order='[[ 0, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
@@ -52,11 +52,11 @@ $title = "Sale Log";
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sql = "SELECT * FROM multi_sale";
+                                                $sql = "SELECT * FROM multi_sale  ORDER BY created_at DESC";
                                                 $result22 = mysqli_query($con, $sql);
                                                 $num = 1;
                                                 $prev_multi_id = null; // Store previous multi_id
-                                                $colors = ['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500']; // Array of 5 strong colors
+                                                $colors = ['bg-red-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500']; // Array of 5 strong colors
                                                 $color_index = 0; // Index to keep track of current color
 
                                                 while ($row = mysqli_fetch_assoc($result22)) {
@@ -88,7 +88,19 @@ $title = "Sale Log";
                                                         }
                                                 ?>
                                                         <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
-                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $created_at; ?></td>
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php
+                                                                                                                                                            $createdAt = $row['created_at'];
+
+                                                                                                                                                            // Create a DateTime object
+                                                                                                                                                            $dateTime = new DateTime($createdAt);
+
+                                                                                                                                                            // Format the date as "19-Oct-2024"
+                                                                                                                                                            $formattedDate = $dateTime->format('d-M-Y');
+
+                                                                                                                                                            // Format the time as "23:22:38"
+                                                                                                                                                            $formattedTime = $dateTime->format('H:i:s');
+
+                                                                                                                                                            echo $formattedDate . " - " . $formattedTime; ?></td>
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $num ?></td>
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $product_name; ?></td>
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $size; ?></td>

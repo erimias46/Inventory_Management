@@ -67,7 +67,7 @@ if ($result) {
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
 
-                                    <p class="text-2xl text-grey font-semibold text-center">Added Products Log</p>
+                                    <p class="text-2xl text-grey font-semibold text-center">Added Products</p>
 
                                         <table id="zero_config" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
@@ -76,6 +76,7 @@ if ($result) {
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Product Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
 
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
@@ -86,20 +87,22 @@ if ($result) {
                                             <tbody>
                                                 <?php
 
-                                                $sql = "SELECT 
+                                                $sql = "
+SELECT 
     p.product_name,
     p.product_type,
     GROUP_CONCAT(
         CONCAT(p.size, ' (', p.quantity, ')')
         ORDER BY p.size
         SEPARATOR ', '
-    ) as sizes,
+    ) AS sizes,
     p.type,
     p.price,
     p.warehouse,
     p.image,
-    MAX(p.created_at) as created_at,
-    p.source_table
+    MAX(p.created_at) AS created_at,
+    p.source_table,
+    SUM(p.quantity) AS total_quantity
 FROM products p
 GROUP BY 
     p.product_name,
@@ -122,11 +125,24 @@ ORDER BY created_at DESC;
                                                 ?>
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $num ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['created_at']; ?> </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php
+                                                    $createdAt = $row['created_at'];
+
+                                                    // Create a DateTime object
+                                                    $dateTime = new DateTime($createdAt);
+
+                                                    // Format the date as "19-Oct-2024"
+                                                    $formattedDate = $dateTime->format('d-M-Y');
+
+                                                    // Format the time as "23:22:38"
+                                                    $formattedTime = $dateTime->format('H:i:s');
+
+                                                    echo $formattedDate . " - " . $formattedTime; ?> </td>
 
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['product_name']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['sizes']; ?> </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['total_quantity']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['type']; ?> </td>
 
 

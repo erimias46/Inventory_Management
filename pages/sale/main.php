@@ -31,78 +31,88 @@ $current_date = date('Y-m-d');
 
             <main class="flex-grow p-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-                    <div class="card">
-                        <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
-                            <div>
-                                <h3 class="text-2xl text-white font-bold mb-1">Add Product</h3>
-                                <p class="text-blue-100 text-sm">Add Products</p>
+                    <a href="add/add_shoes.php" class="block">
+                        <div class="card">
+                            <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
+                                <div>
+                                    <h3 class="text-2xl text-white font-bold mb-1">Add Product</h3>
+                                    <p class="text-blue-100 text-sm">Add Products</p>
+                                </div>
+                                <span class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
+                                    Now
+                                </span>
                             </div>
-                            <a href="add/add_product.php" class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
-                                Now
-                            </a>
                         </div>
-                    </div>
-                    <div class="card">
-                        <div class="flex justify-between items-center w-full bg-slate-900 p-4 rounded-xl">
-                            <div>
-                                <h3 class="text-2xl text-grey font-bold mb-1">Sale</h3>
-                                <p class="text-gray-400 text-sm">Go to sale details</p>
+                    </a>
+                    <a href="multi.php" class="block">
+                        <div class="card">
+                            <div class="flex justify-between items-center w-full bg-slate-900 p-4 rounded-xl">
+                                <div>
+                                    <h3 class="text-2xl text-grey font-bold mb-1">Sale</h3>
+                                    <p class="text-gray-400 text-sm">Go to sale details</p>
+                                </div>
+                                <span class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
+                                    Now
+                                </span>
                             </div>
-                            <a href="sale.php" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
-                                Now
-                            </a>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="card">
-                        <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
-                            <div>
-                                <h3 class="text-2xl text-white font-bold mb-1">All Sales</h3>
-                                <p class="text-blue-100 text-sm">View all sales history</p>
+                    <a href="all_sales.php" class="block">
+                        <div class="card">
+                            <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
+                                <div>
+                                    <h3 class="text-2xl text-white font-bold mb-1">All Sales</h3>
+                                    <p class="text-blue-100 text-sm">View all sales history</p>
+                                </div>
+                                <span class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
+                                    Now
+                                </span>
                             </div>
-                            <a href="all_sales.php" class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
-                                Now
-                            </a>
                         </div>
-                    </div>
+                    </a>
 
-
-
-                    <div class="card">
-                        <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
-                            <div>
-                                <h3 class="text-2xl text-white font-bold mb-1">Search Product</h3>
-                                <p class="text-blue-100 text-sm">Find specific products</p>
+                    <a href="search.php" class="block">
+                        <div class="card">
+                            <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
+                                <div>
+                                    <h3 class="text-2xl text-white font-bold mb-1">Search Product</h3>
+                                    <p class="text-blue-100 text-sm">Find specific products</p>
+                                </div>
+                                <span class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
+                                    Now
+                                </span>
                             </div>
-                            <a href="search.php" class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
-                                Now
-                            </a>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="card">
-                        <div class="flex justify-between items-center w-full bg-slate-900 p-4 rounded-xl">
-                            <div>
-                                <h3 class="text-2xl text-grey font-bold mb-1">Multi Search</h3>
-                                <p class="text-gray-400 text-sm">Advanced search options</p>
+                    <a href="search_multi.php" class="block">
+                        <div class="card">
+                            <div class="flex justify-between items-center w-full bg-slate-900 p-4 rounded-xl">
+                                <div>
+                                    <h3 class="text-2xl text-grey font-bold mb-1">Multi Search</h3>
+                                    <p class="text-gray-400 text-sm">Advanced search options</p>
+                                </div>
+                                <span class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
+                                    Now
+                                </span>
                             </div>
-                            <a href="search_multi.php" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
-                                Now
-                            </a>
                         </div>
-                    </div>
+                    </a>
 
-                    <div class="card">
-                        <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
-                            <div>
-                                <h3 class="text-2xl text-white font-bold mb-1">Delivery</h3>
-                                <p class="text-blue-100 text-sm">Manage deliveries</p>
+                    <a href="delivery.php" class="block">
+                        <div class="card">
+                            <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
+                                <div>
+                                    <h3 class="text-2xl text-white font-bold mb-1">Delivery</h3>
+                                    <p class="text-blue-100 text-sm">Manage deliveries</p>
+                                </div>
+                                <span class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
+                                    Now
+                                </span>
                             </div>
-                            <a href="delivery.php" class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
-                                Now
-                            </a>
                         </div>
-                    </div>
+                    </a>
 
 
 
@@ -206,9 +216,9 @@ FROM sales  Where sales_date = '$current_date'
                                 $total_bank = $row['total_bank'];
 
 
-   // Example date, set this dynamically as needed
+                                // Example date, set this dynamically as needed
 
-    $sql2 = "
+                                $sql2 = "
 SELECT 
     'total' AS source,
     SUM(total_sales) AS total_sales,

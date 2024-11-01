@@ -176,8 +176,9 @@ ORDER BY created_at DESC;
 
                                                     if ($category == 'jeans') {
                                                         $sql6 = "SELECT COUNT(*) AS total_sales 
-             FROM sales 
-             WHERE jeans_name = '$product_name'  and status= 'active' || status= 'Exchange Sell'";
+         FROM sales 
+         WHERE jeans_name = '$product_name' AND (status = 'active' OR status = 'Exchange Sell')";
+
 
                                                         $result6 = mysqli_query($con, $sql6);
                                                         $row6 = mysqli_fetch_assoc($result6);
@@ -196,7 +197,7 @@ ORDER BY created_at DESC;
                                                         // Construct the SQL query to count the occurrences
                                                         $sql5 = "SELECT COUNT(*) AS total_sales 
          FROM $category_sales 
-         WHERE $product_names = '$product_name' and status= 'active' || status= 'Exchange Sell'";
+         WHERE $product_names = '$product_name' AND (status = 'active' OR status = 'Exchange Sell')";
 
                                                         // Execute the query
                                                         $result5 = mysqli_query($con, $sql5);

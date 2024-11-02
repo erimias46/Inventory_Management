@@ -208,6 +208,10 @@ if (isset($_POST['add'])) {
 
                 $subject = "Delivery $table";
 
+                sendMessageToSubscribers($message, $con);
+                sendEmailToSubscribers($message, $subject, $con);
+                
+
 
 
 

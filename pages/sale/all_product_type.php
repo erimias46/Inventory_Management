@@ -231,7 +231,7 @@ ORDER BY created_at DESC;
                                                             echo $formattedDate . " - " . $formattedTime; ?>
                                                         </td>
 
-                                                        <td> <?php echo $row['product_name']; ?> <p class="text text-red-200">hello</p>
+                                                        <td> <?php echo $row['product_name']; ?> 
                                                         </td>
 
                                                         <td> <?php echo $row['category']; ?> </td>

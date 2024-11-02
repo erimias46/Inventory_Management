@@ -22,7 +22,7 @@ if (isset($_GET['id'])) {
     $type = $row['type'];
     $price = $row['price'];
     $quantity = $row['quantity'];
-    $buy_price=$row['buy_price'];
+    $buy_price = $row['buy_price'];
     $image = $row['image'];
 
     $image = "../../include/" . $image;
@@ -36,11 +36,71 @@ if (isset($_POST['update'])) {
     $top_name = $_POST['top_name'];
     $buy_price = $_POST['buy_price'];
     $selling_price = $_POST['price'];
+    $image = $_FILES['image']['name'];
+
+
+    $id = $_GET['id']; // Assuming `top_id` is passed for identifying the record
+    $sql = "SELECT image FROM top WHERE id='$id'";
+    $result = mysqli_query($con, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $old_image = $row['image'];
 
 
 
-    // Update the top record with the new or old image
-    $sql = "UPDATE top SET buy_price = '$buy_price', price = '$selling_price' WHERE top_name = '$top_name'";
+    $target_dir = $redirect_link . "include/uploads/";
+
+    // Check if an image was uploaded
+    if (!empty($image)) {
+        $target_file = $target_dir . basename($image);
+        $uploadOk = 1;
+
+        // Validate if the file is an image
+        $check = getimagesize($_FILES['image']['tmp_name']);
+        if ($check !== false) {
+            $uploadOk = 1;
+        } else {
+            $uploadOk = 0;
+            $error_message = "File is not an image.";
+        }
+
+        // Allow only specific file formats
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+        if (!in_array($imageFileType, $allowed_extensions)) {
+            $uploadOk = 0;
+            $error_message = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        }
+
+        // Check file size (500 KB limit)
+        if ($_FILES['image']['size'] > 500000) {
+            $uploadOk = 0;
+            $error_message = "Sorry, your file is too large.";
+        }
+
+        // Attempt to upload the file if no issues
+        if ($uploadOk == 1) {
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+                $image_path = 'uploads/' . basename($image);  // Use the new image path
+            } else {
+                $uploadOk = 0;
+                $error_message = "Sorry, there was an error uploading your file.";
+            }
+        }
+    } else {
+        // No new image uploaded, keep the old image
+        $image_path = $old_image;
+    }
+
+    // If image upload failed, use the old image
+    if ($uploadOk == 0 && empty($image_path)) {
+        $image_path = $old_image;
+    }
+
+
+
+
+
+    $sql = "UPDATE top SET buy_price = '$buy_price', price = '$selling_price',image='$image_path' WHERE top_name = '$top_name'";
     $result = mysqli_query($con, $sql);
 
     if ($result) {
@@ -52,12 +112,9 @@ if (isset($_POST['update'])) {
         $message .= "top Name: " . $top_name . "\n";
         $message .= "Selling Price: " . $selling_price . "\n";
         $message .= "Buy Price: " . $buy_price . "\n";
-       
+
 
         $subject = "top Updated";
-
-
-
 
 
 
@@ -160,9 +217,7 @@ if ($result) {
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="top names">top Name</label>
                                     <input type="text" name="top_name" id="top_name" value="<?php if (isset($top_name)) echo  $top_name ?>" class="form-input" list="top_types" required>
-                                    <datalist id="top_types">
-                                        <!-- Options will be populated here -->
-                                    </datalist>
+
                                 </div>
 
                                 <div class="mb-3">
@@ -172,6 +227,12 @@ if ($result) {
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2">Buying Price</label>
                                     <input type="number" step="0.01" min="0" name="buy_price" class="form-input" required value="<?php if (isset($buy_price)) echo  $buy_price ?>">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Image</label>
+                                    <input type="file" name="image" id="image" class="form-input" accept="image/*" onchange="previewImage(event)">
+
                                 </div>
 
 
@@ -186,6 +247,9 @@ if ($result) {
                                         <img id="previewImg" src="<?php echo !empty($image) ? $image : 'uploads/defaulttop.jpg'; ?>" alt="Product Image" width="200" />
                                     </div>
                                 </div>
+
+
+
 
 
 

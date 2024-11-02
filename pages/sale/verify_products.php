@@ -141,10 +141,7 @@ if ($result) {
                                                                 <i class="mgc_delete_2_line text-base me-2"></i>
                                                                 Delete
                                                             </a>
-                                                            <a href="api/verify_products.php?id=<?php echo $row['id']; ?>&from=<?php echo strtolower($row['item_type']); ?>&delete=delete" id="del-btn" class="btn bg-info/25 text-info hover:bg-info hover:text-white btn-sm rounded-full">
-                                                                <i class="mgc_edit_line text-base me-2"></i>
-                                                                Edit 
-                                                            </a>
+                                                            
                                                         </td>
 
                                                         <td class="px-2.5 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">

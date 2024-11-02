@@ -54,6 +54,22 @@ $title = "All Sales";
                                             <tbody>
                                                 <?php
 
+
+                                                $prevDate = ''; // Variable to track the previous date (Y-m-d)
+                                                $colors = [
+                                                    'text-red-800',
+                                                    'text-green-500',
+                                                   
+                                                    'text-yellow-500',
+                                                    
+                                                    'text-pink-500',
+                                                    'text-indigo-500',
+                                                    'text-orange-500',
+                                                    'text-teal-500',
+                                                    'text-gray-500'
+                                                ]; // Array of 10 different text colors to alternate between
+                                                $currentColorIndex = 0;
+
                                                 $sql = "
 SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,cash,bank,method
 FROM shoes_sales
@@ -77,12 +93,24 @@ ORDER BY sales_date DESC;
                                                 $num = 1;
                                                 while ($row = mysqli_fetch_assoc($result22)) {
 
+
+                                                    $currentDate = date('Y-m-d', strtotime($row['sales_date']));
+
+                                                    // Check if the current row's date matches the previous row's date
+                                                    if ($currentDate != $prevDate) {
+                                                        $currentColorIndex = ($currentColorIndex + 1) % count($colors); // Cycle through colors
+                                                    }
+                                                    $dateTextColor = $colors[$currentColorIndex]; // Assign the text color based on the index
+
+                                                    // Update previous date tracker
+                                                    $prevDate = $currentDate;
+
                                                     $type = $row['source'];
 
                                                 ?>
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $num ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-sm <?php echo $dateTextColor; ?>">
                                                             <?php echo date('d-M-Y', strtotime($row['sales_date'])); ?>
                                                         </td>
 

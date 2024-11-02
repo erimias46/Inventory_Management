@@ -52,11 +52,11 @@ $title = "All Products";
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
 
-                                        <table id="zero_configs" data-order='[[ 0, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <table id="zero_configs" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
+                                                   
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Product Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
@@ -230,7 +230,7 @@ ORDER BY created_at DESC;
 
                                                     echo $formattedDate . " - " . $formattedTime; ?>
                                                         </td>
-                                                        <td> <?php echo $row['id']; ?> </td>
+                                                       
                                                         <td> <?php echo $row['product_name']; ?> </td>
 
                                                         <td> <?php echo $row['category']; ?> </td>
@@ -300,6 +300,7 @@ ORDER BY created_at DESC;
 <script>
     $(document).ready(function() {
         $('#zero_configs').DataTable({
+            "order":"desc",
             "pageLength": -1,
             "lengthMenu": [
                 [10, 25, 50, -1],

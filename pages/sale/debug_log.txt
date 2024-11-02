@@ -3,3 +3,103 @@
 [2024-11-02 13:28:17] Code name: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb bbbbbbbbbb
 [2024-11-02 13:28:17] Type retrieved: 1
 [2024-11-02 13:28:17] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 13:43:10] Table selected: jeans
+[2024-11-02 13:43:10] Size table used: jeansdb
+[2024-11-02 13:43:10] Code name: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb bbbbbbbbbb
+[2024-11-02 13:43:10] Type retrieved: 1
+[2024-11-02 13:43:10] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 13:44:12] Table selected: jeans
+[2024-11-02 13:44:12] Size table used: jeansdb
+[2024-11-02 13:44:12] Code name: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb bbbbbbbbbb
+[2024-11-02 13:44:12] Type retrieved: 1
+[2024-11-02 13:44:12] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 13:59:03] Table selected: jeans
+[2024-11-02 13:59:03] Size table used: jeansdb
+[2024-11-02 13:59:03] Code name: Gucci Test
+[2024-11-02 13:59:03] Type retrieved: 2
+[2024-11-02 13:59:03] Sizes found: 35, 40
+[2024-11-02 14:00:37] Table selected: jeans
+[2024-11-02 14:00:37] Size table used: jeansdb
+[2024-11-02 14:00:37] Code name: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb bbbbbbbbbb
+[2024-11-02 14:00:37] Type retrieved: 1
+[2024-11-02 14:00:37] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:01:38] Table selected: jeans
+[2024-11-02 14:01:38] Size table used: jeansdb
+[2024-11-02 14:01:38] Code name: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb bbbbbbbbbb
+[2024-11-02 14:01:38] Type retrieved: 1
+[2024-11-02 14:01:38] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:02:38] Table selected: jeans
+[2024-11-02 14:02:38] Size table used: jeansdb
+[2024-11-02 14:02:38] Code name: dsds
+[2024-11-02 14:02:38] Type retrieved: 1
+[2024-11-02 14:02:38] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:02:41] Table selected: jeans
+[2024-11-02 14:02:41] Size table used: jeansdb
+[2024-11-02 14:02:41] Code name: Verscase 
+[2024-11-02 14:02:41] Type retrieved: 1
+[2024-11-02 14:02:41] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:02:43] Table selected: jeans
+[2024-11-02 14:02:43] Size table used: jeansdb
+[2024-11-02 14:02:43] Code name: tryr
+[2024-11-02 14:02:43] Type retrieved: 1
+[2024-11-02 14:02:43] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:02:46] Table selected: jeans
+[2024-11-02 14:02:46] Size table used: jeansdb
+[2024-11-02 14:02:46] Code name: tryr
+[2024-11-02 14:02:46] Type retrieved: 1
+[2024-11-02 14:02:46] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:03:55] Table selected: jeans
+[2024-11-02 14:03:55] Size table used: jeansdb
+[2024-11-02 14:03:55] Code name: tryr
+[2024-11-02 14:03:55] Type retrieved: 1
+[2024-11-02 14:03:55] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:04:04] Table selected: jeans
+[2024-11-02 14:04:04] Size table used: jeansdb
+[2024-11-02 14:04:04] Code name: tryr
+[2024-11-02 14:04:04] Type retrieved: 1
+[2024-11-02 14:04:04] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:04:11] Table selected: jeans
+[2024-11-02 14:04:11] Size table used: jeansdb
+[2024-11-02 14:04:11] Code name: tryr
+[2024-11-02 14:04:11] Type retrieved: 1
+[2024-11-02 14:04:11] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:04:15] Table selected: jeans
+[2024-11-02 14:04:15] Size table used: jeansdb
+[2024-11-02 14:04:15] Code name: tryr
+[2024-11-02 14:04:15] Type retrieved: 1
+[2024-11-02 14:04:15] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:07:11] Table selected: jeans
+[2024-11-02 14:07:11] Size table used: jeansdb
+[2024-11-02 14:07:11] Code name: Gucci Test
+[2024-11-02 14:07:11] Type retrieved: 2
+[2024-11-02 14:07:11] Sizes found: 35, 40
+[2024-11-02 14:08:05] Table selected: jeans
+[2024-11-02 14:08:05] Size table used: jeansdb
+[2024-11-02 14:08:05] Code name: Gucci Test
+[2024-11-02 14:08:05] Type retrieved: 2
+[2024-11-02 14:08:05] Sizes found: 35, 40
+[2024-11-02 14:11:16] Table selected: jeans
+[2024-11-02 14:11:16] Size table used: jeansdb
+[2024-11-02 14:11:16] Code name: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb bbbbbbbbbb
+[2024-11-02 14:11:16] Type retrieved: 1
+[2024-11-02 14:11:16] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:13:03] Table selected: jeans
+[2024-11-02 14:13:03] Size table used: jeansdb
+[2024-11-02 14:13:03] Code name: Gucci Test
+[2024-11-02 14:13:03] Type retrieved: 2
+[2024-11-02 14:13:03] Sizes found: 35, 40
+[2024-11-02 14:16:38] Table selected: jeans
+[2024-11-02 14:16:38] Size table used: jeansdb
+[2024-11-02 14:16:38] Code name: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb bbbbbbbbbb
+[2024-11-02 14:16:38] Type retrieved: 1
+[2024-11-02 14:16:38] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 14:16:44] Table selected: jeans
+[2024-11-02 14:16:44] Size table used: jeansdb
+[2024-11-02 14:16:44] Code name: Gucci Test
+[2024-11-02 14:16:44] Type retrieved: 2
+[2024-11-02 14:16:44] Sizes found: 35, 40
+[2024-11-02 14:16:48] Table selected: jeans
+[2024-11-02 14:16:48] Size table used: jeansdb
+[2024-11-02 14:16:48] Code name: Verscase 
+[2024-11-02 14:16:48] Type retrieved: 1
+[2024-11-02 14:16:48] Sizes found: 36, 37, 38, SMALL, Large, XXL

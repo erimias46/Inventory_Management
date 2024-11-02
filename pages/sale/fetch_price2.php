@@ -50,12 +50,16 @@ try {
     if ($row = mysqli_fetch_assoc($result)) {
         // Format response
         $response = array(
-            'price' => floatval($row['price']),
+            'price' => floatval($row['price'])??0,
             'stock' => intval($row['total_quantity']),
             'image' => $row['image'] ?? null
         );
     } else {
-        $response['error'] = 'Product not found';
+        $response = array(
+            'price' => floatval($row['price']) ?? 0.00,
+            'stock' => intval($row['total_quantity']) ??0,
+            'image' => $row['image'] ?? null
+        );
     }
 
     // Close statement

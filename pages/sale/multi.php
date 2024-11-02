@@ -204,8 +204,8 @@ if (isset($_POST['add'])) {
                 $message .= "Product Name: $product_name\n";
                 $message .= "Price: $price\n";
                 $message .= "Size: $size\n";
-                $message .="Reason: $reason\n";
-                
+                $message .= "Reason: $reason\n";
+
 
 
                 $subject = "Delivery $table";
@@ -394,9 +394,9 @@ if ($result) {
                                 <div id="salesEntries">
                                     <div class="sale-entry  grid grid-cols-5 gap-5">
                                         <!-- Code Name Field -->
-                                        <div class="mb-3">
+                                        <div class="mb-3 col-span-2 ">
                                             <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Code Name</label>
-                                            <select name="code_name[]" id="codeNameSelect" class="code_name  w-full" required onchange="fetchProductPriceN(this)">
+                                            <select name="code_name[]" id="codeNameSelect" class="code_name w-48 border border-gray-300 p-2 rounded-md" style="width: 200px;" required onchange="fetchProductPriceN(this)">
                                                 <option value="">Select Name</option>
                                                 <?php
                                                 $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
@@ -451,11 +451,11 @@ if ($result) {
                                             .nice-select {
                                                 width: 100%;
                                                 /* Full width to fit container */
-                                                min-width: 150px;
+                                                min-width: 100px;
                                                 /* Minimum width for short labels */
                                                 max-width: 100%;
                                                 /* Ensures no overflow from container */
-                                                box-sizing: border-box;
+
                                             }
                                         </style>
 
@@ -469,26 +469,38 @@ if ($result) {
                                             </select>
                                         </div>
 
+
+
+
                                         <!-- Price Field -->
 
 
                                         <!-- Cash Field -->
-                                        <div class="mb-3">
-                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
-                                            <input type="number" min="0" value="0" step="0.01" name="cash[]" class="cash  form-input w-full border border-gray-300  rounded-md" oninput="updatePrice(this)" onblur="setDefault(this)" required>
+
+                                        <div class="col-span-2">
+                                            <div class="mb-3 flex space-x-4 items-end">
+                                                <!-- Cash Field -->
+                                                <div>
+                                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
+                                                    <input type="number" min="0" value="0" step="0.01" name="cash[]" class="cash form-input border border-gray-300 rounded-md" oninput="updatePrice(this)" onblur="setDefault(this)" required>
+                                                </div>
+
+                                                <!-- Bank Field -->
+                                                <div>
+                                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
+                                                    <input type="number" min="0" value="0" step="0.01" name="bank[]" class="bank form-input border border-gray-300 rounded-md" oninput="updatePrice(this)" onblur="setDefault(this)" required>
+                                                </div>
+
+                                                <div>
+                                                    <label for="price" class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
+                                                    <input type="number" value="0" step="0.01" name="price[]" class="price  form-input  border border-gray-300 p-2 rounded-md" required readonly>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        <!-- Bank Field -->
-                                        <div class="mb-3">
-                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
-                                            <input type="number" min="0" value="0" step="0.01" name="bank[]" class="bank w-full form-input border border-gray-300 p-2 rounded-md" oninput="updatePrice(this)" onblur="setDefault(this)" required>
-                                        </div>
 
 
-                                        <div class="mb-3">
-                                            <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Price</label>
-                                            <input type="number" value="0" step="0.01" name="price[]" class="price w-full form-input  border border-gray-300 p-2 rounded-md" required readonly>
-                                        </div>
+                                       
 
 
 

@@ -1,0 +1,5 @@
+[2024-11-02 13:28:17] Table selected: jeans
+[2024-11-02 13:28:17] Size table used: jeansdb
+[2024-11-02 13:28:17] Code name: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb bbbbbbbbbb
+[2024-11-02 13:28:17] Type retrieved: 1
+[2024-11-02 13:28:17] Sizes found: 36, 37, 38, SMALL, Large, XXL

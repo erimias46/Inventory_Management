@@ -89,6 +89,24 @@ if ($result) {
                                             <tbody>
                                                 <?php
 
+
+                                                $prevDate = ''; // Variable to track the previous date (Y-m-d)
+                                                $colors = [
+                                                    'text-red-800',
+                                                    'text-green-500',
+
+                                                    'text-yellow-500',
+
+                                                    'text-pink-500',
+
+
+                                                    'text-teal-500'
+
+                                                ]; // Array of 10 different text colors to alternate between
+                                                $currentColorIndex = 0;
+
+
+
                                                 $sql = "
 SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,verifiy,created_at,reason
 FROM shoes_delivery where verifiy = 0
@@ -111,6 +129,18 @@ ORDER BY created_at DESC;
                                                 $result22 = mysqli_query($con, $sql);
                                                 $num = 1;
                                                 while ($row = mysqli_fetch_assoc($result22)) {
+
+
+                                                    $currentDate = $row['reason'];
+
+                                                    // Check if the current row's date matches the previous row's date
+                                                    if ($currentDate != $prevDate) {
+                                                        $currentColorIndex = ($currentColorIndex + 1) % count($colors); // Cycle through colors
+                                                    }
+                                                    $dateTextColor = $colors[$currentColorIndex]; // Assign the text color based on the index
+
+                                                    // Update previous date tracker
+                                                    $prevDate = $currentDate;
 
                                                     $type = $row['source'];
 
@@ -165,7 +195,7 @@ ORDER BY created_at DESC;
                                                             <img src="../../include/<?= $image ?>" alt="" class="w-30 h-20">
 
                                                         </td>
-                                                        <td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-sm <?php echo $dateTextColor; ?>">
                                                             <?php echo $row['reason']; ?>
                                                         </td>
                                                     </tr>

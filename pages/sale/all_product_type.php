@@ -52,11 +52,11 @@ $title = "All Products";
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
 
-                                        <table id="zero_configs" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <table id="zero_configss" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                                                   
+
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Product Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
@@ -65,7 +65,7 @@ $title = "All Products";
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Sold</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Recived</th>
 
-                                                   
+
 
 
                                                 </tr>
@@ -217,20 +217,20 @@ ORDER BY created_at DESC;
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-sm <?php echo $dateTextColor; ?>">
                                                             <?php
-                                                    $createdAt = $row['created_at'];
+                                                            $createdAt = $row['created_at'];
 
-                                                    // Create a DateTime object
-                                                    $dateTime = new DateTime($createdAt);
+                                                            // Create a DateTime object
+                                                            $dateTime = new DateTime($createdAt);
 
-                                                    // Format the date as "19-Oct-2024"
-                                                    $formattedDate = $dateTime->format('d-M-Y');
+                                                            // Format the date as "19-Oct-2024"
+                                                            $formattedDate = $dateTime->format('d-M-Y');
 
-                                                    // Format the time as "23:22:38"
-                                                    $formattedTime = $dateTime->format('H:i:s');
+                                                            // Format the time as "23:22:38"
+                                                            $formattedTime = $dateTime->format('H:i:s');
 
-                                                    echo $formattedDate . " - " . $formattedTime; ?>
+                                                            echo $formattedDate . " - " . $formattedTime; ?>
                                                         </td>
-                                                       
+
                                                         <td> <?php echo $row['product_name']; ?> </td>
 
                                                         <td> <?php echo $row['category']; ?> </td>
@@ -252,7 +252,7 @@ ORDER BY created_at DESC;
                                                         </td>
 
 
-                                                       
+
                                                     </tr>
                                                 <?php
                                                 }
@@ -283,32 +283,41 @@ ORDER BY created_at DESC;
     <?php include $redirect_link . 'partials/customizer.php'; ?>
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
 </body>
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables library -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<!-- Moment.js for date handling -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+<!-- DataTables Moment.js plugin for sorting dates -->
+<script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"></script>
+
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const rows = document.querySelectorAll('tr[data-href]');
-        rows.forEach(row => {
-            row.addEventListener('click', function(e) {
-                // Check if the clicked element is not the delete button or a child of the delete button
-                if (!e.target.closest('#del-btn')) {
-                    window.location.href = row.dataset.href;
-                }
-            });
+    $(document).ready(function() {
+        // Initialize moment.js with the format you are using
+        $.fn.dataTable.moment('DD-MMM-YYYY - HH:mm:ss'); // This should match your date format exactly
+
+        $('#zero_configss').DataTable({
+            "order": [
+                [0, "desc"]
+            ], // Orders the first column (date column) in descending order
+            "searching": true, // Enables the search functionality
+            "pageLength": -1, // Default number of entries to show per page
+            "lengthMenu": [
+                [10, 25, 50, -1], // Options for entries per page
+                [10, 25, 50, "All"]
+            ],
+            "paging": false // Enables pagination
         });
     });
 </script>
 
-<script>
-    $(document).ready(function() {
-        $('#zero_configs').DataTable({
-            "order":"desc",
-            "pageLength": -1,
-            "lengthMenu": [
-                [10, 25, 50, -1],
-                [10, 25, 50, "All"]
-            ],
-            "paging": false,
-        });
-    });
-</script>
+
 
 </html>

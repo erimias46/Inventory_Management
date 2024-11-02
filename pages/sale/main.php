@@ -38,9 +38,7 @@ $current_date = date('Y-m-d');
                                     <h3 class="text-2xl text-white font-bold mb-1">Add Product</h3>
                                     <p class="text-blue-100 text-sm">Add Products</p>
                                 </div>
-                                <span class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
-                                    Now
-                                </span>
+
                             </div>
                         </div>
                     </a>
@@ -51,9 +49,7 @@ $current_date = date('Y-m-d');
                                     <h3 class="text-2xl text-grey font-bold mb-1">Sale</h3>
                                     <p class="text-gray-400 text-sm">Go to sale details</p>
                                 </div>
-                                <span class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
-                                    Now
-                                </span>
+
                             </div>
                         </div>
                     </a>
@@ -65,9 +61,7 @@ $current_date = date('Y-m-d');
                                     <h3 class="text-2xl text-white font-bold mb-1">All Sales</h3>
                                     <p class="text-blue-100 text-sm">View all sales history</p>
                                 </div>
-                                <span class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
-                                    Now
-                                </span>
+
                             </div>
                         </div>
                     </a>
@@ -79,9 +73,7 @@ $current_date = date('Y-m-d');
                                     <h3 class="text-2xl text-white font-bold mb-1">Search Product</h3>
                                     <p class="text-blue-100 text-sm">Find specific products</p>
                                 </div>
-                                <span class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
-                                    Now
-                                </span>
+
                             </div>
                         </div>
                     </a>
@@ -93,26 +85,24 @@ $current_date = date('Y-m-d');
                                     <h3 class="text-2xl text-grey font-bold mb-1">Multi Search</h3>
                                     <p class="text-gray-400 text-sm">Advanced search options</p>
                                 </div>
-                                <span class="px-4 py-2 bg-red-500 text-white rounded-full text-sm hover:bg-red-600">
-                                    Now
-                                </span>
+
                             </div>
                         </div>
                     </a>
 
-                    <a href="delivery.php" class="block">
-                        <div class="card">
+
+                    <a href="delivery.php" class="block   ">
+                        <div class="card flex items-center justify-center ">
                             <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
-                                <div>
+                                <div class="text-center">
                                     <h3 class="text-2xl text-white font-bold mb-1">Delivery</h3>
                                     <p class="text-blue-100 text-sm">Manage deliveries</p>
                                 </div>
-                                <span class="px-4 py-2 bg-green-500 text-white rounded-full text-sm hover:bg-green-600">
-                                    Now
-                                </span>
                             </div>
                         </div>
                     </a>
+
+
 
 
 

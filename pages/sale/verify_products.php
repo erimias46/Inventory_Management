@@ -185,20 +185,7 @@ if ($result) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-4 flex justify-between items-center">
-
-                                <?php if ($verifyButtonVisible) { ?>
-                                    <button type="submit" name="verify" class="btn bg-success text-white rounded-full">
-                                        <i class="mgc_check_circle_line text-base me-2"></i>
-                                        verify
-                                    </button>
-                                <?php } ?>
-
-
-
-
-
-                            </div>
+                            
                         </form>
                     </div>
                 </div>

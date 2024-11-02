@@ -97,7 +97,7 @@ SELECT
         SEPARATOR ', '
     ) AS sizes,
     p.type,
-    p.price,
+    MAX(p.price) as price,
     p.warehouse,
     p.image,
     MAX(p.created_at) AS created_at,
@@ -107,10 +107,8 @@ FROM products p
 GROUP BY 
     p.product_name,
     p.product_type,
-    p.type,
-    p.price,
-    p.warehouse,
-    p.image,
+   
+   
     p.source_table
 ORDER BY created_at DESC;
 ";

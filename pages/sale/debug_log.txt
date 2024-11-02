@@ -283,3 +283,8 @@
 [2024-11-01 19:30:28] Code name: Ermi Jeans
 [2024-11-01 19:30:28] Type retrieved: 1
 [2024-11-01 19:30:28] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-02 08:46:51] Table selected: jeans
+[2024-11-02 08:46:51] Size table used: jeansdb
+[2024-11-02 08:46:51] Code name: Wrangler Jeans
+[2024-11-02 08:46:51] Type retrieved: 1
+[2024-11-02 08:46:51] Sizes found: 36, 37, 38, SMALL, Large, XXL

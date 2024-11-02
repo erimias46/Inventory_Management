@@ -16,3 +16,5 @@ Code names: jeans|dsds, jeans|dsds
 Sizes: 36, 36
 Code names: jeans|Ermi Jeans, jeans|Ermi Jeans
 Sizes: 36, 36
+Code names: jeans|Wrangler Jeans
+Sizes: 36

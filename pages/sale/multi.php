@@ -204,13 +204,15 @@ if (isset($_POST['add'])) {
                 $message .= "Product Name: $product_name\n";
                 $message .= "Price: $price\n";
                 $message .= "Size: $size\n";
+                $message .="Reason: $reason\n";
+                
 
 
                 $subject = "Delivery $table";
 
                 sendMessageToSubscribers($message, $con);
                 sendEmailToSubscribers($message, $subject, $con);
-                
+
 
 
 

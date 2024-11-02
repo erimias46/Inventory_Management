@@ -88,20 +88,20 @@ if ($result) {
                                                 <?php
 
 
-    $prevDate = ''; // Variable to track the previous date (Y-m-d)
-    $colors = [
-        'text-red-800',
-        'text-green-500',
-        
-        'text-yellow-500',
-        
-        'text-pink-500',
-       
-       
-        'text-teal-500'
-        
-    ]; // Array of 10 different text colors to alternate between
-    $currentColorIndex = 0;
+                                                $prevDate = ''; // Variable to track the previous date (Y-m-d)
+                                                $colors = [
+                                                    'text-red-800',
+                                                    'text-green-500',
+
+                                                    'text-yellow-500',
+
+                                                    'text-pink-500',
+
+
+                                                    'text-teal-500'
+
+                                                ]; // Array of 10 different text colors to alternate between
+                                                $currentColorIndex = 0;
 
                                                 $sql = "
 SELECT 
@@ -167,7 +167,54 @@ ORDER BY created_at DESC;
 
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['product_name']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['sizes']; ?> </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+
+                                                            <?php
+                                                            // Check if getRedShade() is already declared
+                                                            if (!function_exists('getRedShade')) {
+                                                                function getRedShade($quantity)
+                                                                {
+                                                                    // Define the color steps
+                                                                    $colors = [
+                                                                        0 => '#ffcccc', // Very light red (zero)
+                                                                        1 => '#ff9999', // Light red
+                                                                        2 => '#ff6666', // Medium red
+                                                                        3 => '#ff3333', // Bright red
+                                                                        4 => '#ff0000', // Full red
+                                                                        5 => '#cc0000'  // Deep red (5 and above)
+                                                                    ];
+
+                                                                    // Clamp quantity to 5 maximum
+                                                                    $index = min(5, max(0, $quantity));
+
+                                                                    return $colors[$index];
+                                                                }
+                                                            }
+
+                                                            // Split the sizes string by ", " to get individual size-quantity pairs
+                                                            $sizes = explode(', ', $row['sizes']);
+
+                                                            // Display each size with its quantity-based color
+                                                            foreach ($sizes as $sizeQty) {
+                                                                // Updated regex pattern to match the SQL GROUP_CONCAT format
+                                                                if (preg_match('/(.+?)\s*\((\d+)\)/', $sizeQty, $matches)) {
+                                                                    $size = trim($matches[1]); // Extract the size name and trim whitespace
+                                                                    $quantity = (int)$matches[2]; // Extract the quantity
+
+                                                                    // Get background color based on quantity
+                                                                    $backgroundColor = getRedShade($quantity);
+
+                                                                    // Set text color (black for lighter backgrounds, white for darker ones)
+                                                                    $textColor = ($quantity <= 2) ? '#000000' : '#ffffff';
+
+                                                                    // Display the size and quantity
+                                                                    echo "<span><span style=\"background-color: $backgroundColor; color: $textColor; padding: 1px 3px; border-radius: 2px; margin-right: 4px;\">$size ($quantity)</span></span> ";
+                                                                }
+                                                            }
+                                                            ?>
+
+
+                                                        </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['total_quantity']; ?> </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['type']; ?> </td>
 

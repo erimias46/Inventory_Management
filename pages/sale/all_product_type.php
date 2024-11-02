@@ -241,52 +241,41 @@ ORDER BY created_at DESC;
                                                             <?php
                                                             // Check if getRedShade() is already declared
                                                             if (!function_exists('getRedShade')) {
-                                                                function getRedShade($quantity, $maxQuantity)
+                                                                function getRedShade($quantity)
                                                                 {
-                                                                    // Calculate the intensity based on quantity relative to the maximum
-                                                                    $intensity = ($quantity / $maxQuantity) * 255; // Scale to 255 for RGB
+                                                                    // Define the color steps
+                                                                    $colors = [
+                                                                        0 => '#ffcccc', // Very light red (zero)
+                                                                        1 => '#ff9999', // Light red
+                                                                        2 => '#ff6666', // Medium red
+                                                                        3 => '#ff3333', // Bright red
+                                                                        4 => '#ff0000', // Full red
+                                                                        5 => '#cc0000'  // Deep red (5 and above)
+                                                                    ];
 
-                                                                    // Ensure intensity is within the range of 0 to 255
-                                                                    $intensity = min(255, max(0, $intensity));
+                                                                    // Clamp quantity to 5 maximum
+                                                                    $index = min(5, max(0, $quantity));
 
-                                                                    // Generate the red color with varying intensity
-                                                                    return $intensity; // Return just the intensity value
+                                                                    return $colors[$index];
                                                                 }
                                                             }
 
                                                             // Split the sizes string by ", " to get individual size-quantity pairs
                                                             $sizes = explode(', ', $row['sizes']);
 
-                                                            // Initialize maximum quantity
-                                                            $maxQuantity = 0;
-
-                                                            // First loop to determine the maximum quantity
-                                                            foreach ($sizes as $sizeQty) {
-                                                                if (preg_match('/(\w+)\((\d+)\)/', $sizeQty, $matches)) {
-                                                                    $quantity = (int)$matches[2];
-                                                                    if ($quantity > $maxQuantity) {
-                                                                        $maxQuantity = $quantity; // Update max quantity
-                                                                    }
-                                                                }
-                                                            }
-
-                                                            // Second loop to display each size with its respective red shade background for the quantity
+                                                            // Display each size with its quantity-based color
                                                             foreach ($sizes as $sizeQty) {
                                                                 if (preg_match('/(\w+)\((\d+)\)/', $sizeQty, $matches)) {
                                                                     $size = $matches[1]; // Extract the size name
                                                                     $quantity = (int)$matches[2]; // Extract the quantity
 
-                                                                    // Get the intensity of red
-                                                                    $intensity = getRedShade($quantity, $maxQuantity);
+                                                                    // Get background color based on quantity
+                                                                    $backgroundColor = getRedShade($quantity);
 
-                                                                    // Determine text color based on background intensity
-                                                                    // Use white text for darker backgrounds, black for lighter backgrounds
-                                                                    $textColor = $intensity > 128 ? '#000000' : '#ffffff';
+                                                                    // Set text color (black for lighter backgrounds, white for darker ones)
+                                                                    $textColor = ($quantity <= 2) ? '#000000' : '#ffffff';
 
-                                                                    // Create the background color with the calculated intensity
-                                                                    $backgroundColor = "rgb($intensity, 0, 0)";
-
-                                                                    // Display the size and quantity, with background color on the quantity
+                                                                    // Display the size and quantity
                                                                     echo "<span><span style=\"background-color: $backgroundColor; color: $textColor; padding: 1px 3px; border-radius: 2px;\">$size [$quantity]</span></span> ";
                                                                 }
                                                             }

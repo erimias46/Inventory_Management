@@ -231,13 +231,70 @@ ORDER BY created_at DESC;
                                                             echo $formattedDate . " - " . $formattedTime; ?>
                                                         </td>
 
-                                                        <td> <?php echo $row['product_name']; ?> </td>
+                                                        <td> <?php echo $row['product_name']; ?> <p class="text text-red-200">hello</p>
+                                                        </td>
 
                                                         <td> <?php echo $row['category']; ?> </td>
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 text-ellipsis overflow-hidden">
-                                                            <?php echo $row['sizes']; ?>
+
+                                                            <?php
+                                                            // Check if getRedShade() is already declared
+                                                            if (!function_exists('getRedShade')) {
+                                                                function getRedShade($quantity, $maxQuantity)
+                                                                {
+                                                                    // Calculate the intensity based on quantity relative to the maximum
+                                                                    $intensity = ($quantity / $maxQuantity) * 255; // Scale to 255 for RGB
+
+                                                                    // Ensure intensity is within the range of 0 to 255
+                                                                    $intensity = min(255, max(0, $intensity));
+
+                                                                    // Generate the red color with varying intensity
+                                                                    return $intensity; // Return just the intensity value
+                                                                }
+                                                            }
+
+                                                            // Split the sizes string by ", " to get individual size-quantity pairs
+                                                            $sizes = explode(', ', $row['sizes']);
+
+                                                            // Initialize maximum quantity
+                                                            $maxQuantity = 0;
+
+                                                            // First loop to determine the maximum quantity
+                                                            foreach ($sizes as $sizeQty) {
+                                                                if (preg_match('/(\w+)\((\d+)\)/', $sizeQty, $matches)) {
+                                                                    $quantity = (int)$matches[2];
+                                                                    if ($quantity > $maxQuantity) {
+                                                                        $maxQuantity = $quantity; // Update max quantity
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            // Second loop to display each size with its respective red shade background for the quantity
+                                                            foreach ($sizes as $sizeQty) {
+                                                                if (preg_match('/(\w+)\((\d+)\)/', $sizeQty, $matches)) {
+                                                                    $size = $matches[1]; // Extract the size name
+                                                                    $quantity = (int)$matches[2]; // Extract the quantity
+
+                                                                    // Get the intensity of red
+                                                                    $intensity = getRedShade($quantity, $maxQuantity);
+
+                                                                    // Determine text color based on background intensity
+                                                                    // Use white text for darker backgrounds, black for lighter backgrounds
+                                                                    $textColor = $intensity > 128 ? '#000000' : '#ffffff';
+
+                                                                    // Create the background color with the calculated intensity
+                                                                    $backgroundColor = "rgb($intensity, 0, 0)";
+
+                                                                    // Display the size and quantity, with background color on the quantity
+                                                                    echo "<span><span style=\"background-color: $backgroundColor; color: $textColor; padding: 1px 3px; border-radius: 2px;\">$size [$quantity]</span></span> ";
+                                                                }
+                                                            }
+                                                            ?>
                                                         </td>
+
+
+
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                             <?php echo $row['price']; ?>
                                                         </td>

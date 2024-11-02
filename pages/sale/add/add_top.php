@@ -113,6 +113,16 @@ if (isset($_POST['add'])) {
                 $stmt = mysqli_prepare($con, $update_query);
                 mysqli_stmt_bind_param($stmt, "ii", $new_quantity, $row['id']);
                 mysqli_stmt_execute($stmt);
+
+                // Update the product table
+                $source_table="top";
+                $product_type = "top";
+
+
+
+                $add_jeans_product = "INSERT INTO product(product_name, product_type, size, `type`, image, price, quantity, source_table) 
+                      VALUES ('$top_name', '$product_type', '$size', '$type', '$image_path', '$price', '$quantity', '$source_table')";
+                mysqli_query($con, $add_jeans_product);
             } else {
 
                 $add_top = "INSERT INTO top(top_name, size, size_id, image, price,type_id, type, quantity,active) 

@@ -67,7 +67,7 @@ if ($result) {
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
 
-                                    <p class="text-2xl text-grey font-semibold text-center">Added Products</p>
+                                        <p class="text-2xl text-grey font-semibold text-center">Added Products</p>
 
                                         <table id="zero_config" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
@@ -80,12 +80,28 @@ if ($result) {
 
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                                                   
+
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Source</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
+
+
+    $prevDate = ''; // Variable to track the previous date (Y-m-d)
+    $colors = [
+        'text-red-800',
+        'text-green-500',
+        
+        'text-yellow-500',
+        
+        'text-pink-500',
+       
+       
+        'text-teal-500'
+        
+    ]; // Array of 10 different text colors to alternate between
+    $currentColorIndex = 0;
 
                                                 $sql = "
 SELECT 
@@ -118,24 +134,36 @@ ORDER BY created_at DESC;
                                                 $num = 1;
                                                 while ($row = mysqli_fetch_assoc($result22)) {
 
-                                                    
+
+                                                    $currentDate = date('Y-m-d', strtotime($row['created_at']));
+
+                                                    // Check if the current row's date matches the previous row's date
+                                                    if ($currentDate != $prevDate) {
+                                                        $currentColorIndex = ($currentColorIndex + 1) % count($colors); // Cycle through colors
+                                                    }
+                                                    $dateTextColor = $colors[$currentColorIndex]; // Assign the text color based on the index
+
+                                                    // Update previous date tracker
+                                                    $prevDate = $currentDate;
+
+
 
                                                 ?>
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $num ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php
-                                                    $createdAt = $row['created_at'];
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-sm <?php echo $dateTextColor; ?>"> <?php
+                                                                                                                                                    $createdAt = $row['created_at'];
 
-                                                    // Create a DateTime object
-                                                    $dateTime = new DateTime($createdAt);
+                                                                                                                                                    // Create a DateTime object
+                                                                                                                                                    $dateTime = new DateTime($createdAt);
 
-                                                    // Format the date as "19-Oct-2024"
-                                                    $formattedDate = $dateTime->format('d-M-Y');
+                                                                                                                                                    // Format the date as "19-Oct-2024"
+                                                                                                                                                    $formattedDate = $dateTime->format('d-M-Y');
 
-                                                    // Format the time as "23:22:38"
-                                                    $formattedTime = $dateTime->format('H:i:s');
+                                                                                                                                                    // Format the time as "23:22:38"
+                                                                                                                                                    $formattedTime = $dateTime->format('H:i:s');
 
-                                                    echo $formattedDate . " - " . $formattedTime; ?> </td>
+                                                                                                                                                    echo $formattedDate . " - " . $formattedTime; ?> </td>
 
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['product_name']; ?> </td>
@@ -145,11 +173,11 @@ ORDER BY created_at DESC;
 
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['price']; ?> </td>
-                                                       
-                                                       
+
+
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo ucfirst($row['source_table']); ?> </td>
 
-                                                        
+
                                                     </tr>
 
 

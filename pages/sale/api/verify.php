@@ -38,6 +38,14 @@ if ($row) {
     $bank_name = $row['bank_name'];
     $status = $row['status'];
     $price = $row['price'];
+    
+
+    $sql2= "SELECT * FROM {$type} WHERE {$type}_name = '$product_name'";
+    $result2 = mysqli_query($con, $sql2);
+    $row2 = mysqli_fetch_assoc($result2);
+    $image = $row2['image'];
+
+    $image="../../../include/".$image;
 
 
   
@@ -275,6 +283,12 @@ if ($result) {
                                         <option value="delivery" <?php if (isset($row['method']) && $row['method'] == 'delivery') echo 'selected'; ?>>Delivery</option>
                                     </select>
                                 </div>
+                               <div class="mb-3">
+
+                               <img src="<?php echo $image; ?>" alt="product image" class="w-40 h-40 object-cover rounded-md">
+
+
+                               </div>
 
 
 
@@ -285,10 +299,10 @@ if ($result) {
 
 
                                 <!-- Submit Button Section -->
-                                <div class="text-center mt-5">
+                                <div class="text-center ">
                                     <?php if ($add_button) : ?>
-                                        <button name="update" type="submit" class="btn btn-sm bg-info text-white rounded-full px-4 py-2">
-                                            <i class="mgc_add_fill text-base me-2"></i> Verify Delivery
+                                        <button name="update" type="submit" class="btn btn-xxl bg-success text-white rounded-full px-4 py-2">
+                                             Verify Delivery
                                         </button>
                                     <?php endif; ?>
                                 </div>

@@ -91,6 +91,16 @@ if ($result) {
         $backup = ($module['backup'] == 1) ? true : false;
         $email = ($module['email'] == 1) ? true : false;
 
+        $addproduct = ($module['addproduct'] == 1) ? true : false;
+        $fullsale = ($module['fullsale'] == 1) ? true : false;
+        $allsale = ($module['allsale'] == 1) ? true : false;
+        $logsale = ($module['logsale'] == 1) ? true : false;
+        $searchproduct = ($module['searchproduct'] == 1) ? true : false;
+        $deliverysale = ($module['deliverysale'] == 1) ? true : false;
+        $producttypes = ($module['producttypes'] == 1) ? true : false;
+        $productsin= ($module['productsin'] == 1) ? true : false;
+        $verifyproducts= ($module['verifyproducts'] == 1) ? true : false;
+
 
 
 
@@ -778,7 +788,7 @@ if ($result) {
             <?php endif; ?>
 
 
-            <?php if ($salejeans) : ?>
+            
 
 
                 <li class="menu-item">
@@ -790,15 +800,15 @@ if ($result) {
 
                     <ul class="sub-menu hidden">
 
-                        <?php if ($addjeans) : ?>
+                        
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/main.php" class="menu-link">
                                     <span class="menu-text">Main</span>
                                 </a>
                             </li>
-                        <?php endif; ?>
+                       
 
-                        <?php if ($addjeans) : ?>
+                        <?php if ($addproduct) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/add/add_shoes.php" class="menu-link">
                                     <span class="menu-text">Add Product</span>
@@ -809,29 +819,23 @@ if ($result) {
 
 
 
-                        <?php if ($salejeans) : ?>
-                            <li class="menu-item">
-                                <a href="<?php echo $redirect_link ?>pages/sale/sale.php" class="menu-link">
-                                    <span class="menu-text">Single Sale</span>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                        <?php if ($salejeans) : ?>
+                       
+                        <?php if ($fullsale) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/multi.php" class="menu-link">
-                                    <span class="menu-text">Multi Sale</span>
+                                    <span class="menu-text">Sale</span>
                                 </a>
                             </li>
                         <?php endif; ?>
 
-                        <?php if ($logjeans) : ?>
+                        <?php if ($allsale) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/all_sales.php" class="menu-link">
                                     <span class="menu-text">All Sales</span>
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <?php if ($logjeans) : ?>
+                        <?php if ($logsale) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/sale_log.php" class="menu-link">
                                     <span class="menu-text">All Sales Log</span>
@@ -839,7 +843,7 @@ if ($result) {
                             </li>
                         <?php endif; ?>
 
-                        <?php if ($logjeans) : ?>
+                        <?php if ($searchproduct) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/search.php" class="menu-link">
                                     <span class="menu-text">Search Product</span>
@@ -847,7 +851,7 @@ if ($result) {
                             </li>
                         <?php endif; ?>
 
-                        <?php if ($logjeans) : ?>
+                        <?php if ($deliverysale) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/delivery.php" class="menu-link">
                                     <span class="menu-text">Delivery</span>
@@ -855,7 +859,7 @@ if ($result) {
                             </li>
                         <?php endif; ?>
 
-                        <?php if ($logjeans) : ?>
+                        <?php if ($producttypes) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/all_product_type.php" class="menu-link">
                                     <span class="menu-text">All Product Types</span>
@@ -864,7 +868,7 @@ if ($result) {
                         <?php endif; ?>
 
 
-                        <?php if ($logjeans) : ?>
+                        <?php if ($searchproduct) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/search_multi.php" class="menu-link">
                                     <span class="menu-text">Multiple Search</span>
@@ -873,7 +877,7 @@ if ($result) {
                         <?php endif; ?>
 
 
-                        <?php if ($logjeans) : ?>
+                        <?php if ($productsin) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/products_log.php" class="menu-link">
                                     <span class="menu-text">Products In</span>
@@ -881,7 +885,7 @@ if ($result) {
                             </li>
                         <?php endif; ?>
 
-                        <?php if ($logjeans) : ?>
+                        <?php if ($logsale) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/multi_log.php" class="menu-link">
                                     <span class="menu-text">Multi Sale Log</span>
@@ -889,7 +893,7 @@ if ($result) {
                             </li>
                         <?php endif; ?>
 
-                        <?php if ($logjeans) : ?>
+                        <?php if ($verifyproducts) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/verify_products.php" class="menu-link">
                                     <span class="menu-text">Verify Products</span>
@@ -902,7 +906,7 @@ if ($result) {
 
                     </ul>
                 </li>
-            <?php endif; ?>
+            
 
 
             <?php if ($constant) : ?>

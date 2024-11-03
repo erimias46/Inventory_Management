@@ -176,11 +176,11 @@ ORDER BY created_at DESC;
                                                                 {
                                                                     // Define the color steps
                                                                     $colors = [
-                                                                        0 => '#ffcccc', // Very light red (zero)
-                                                                        1 => '#ff9999', // Light red
-                                                                        2 => '#ff6666', // Medium red
-                                                                        3 => '#ff3333', // Bright red
-                                                                        4 => '#ff0000', // Full red
+                                                                        0 => '#ffffff', // Very light red (zero)
+                                                                        1 => '#ffeeee', // Light red
+                                                                        2 => '#ffbbbb', // Medium red
+                                                                        3 => '#ff8888', // Bright red
+                                                                        4 => '#ff5555', // Full red
                                                                         5 => '#cc0000'  // Deep red (5 and above)
                                                                     ];
 

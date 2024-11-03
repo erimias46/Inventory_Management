@@ -245,14 +245,13 @@ ORDER BY created_at DESC;
                                                                 {
                                                                     // Define the color steps
                                                                     $colors = [
-                                                                        0 => '#ffcccc', // Very light red (zero)
-                                                                        1 => '#ff9999', // Light red
-                                                                        2 => '#ff6666', // Medium red
-                                                                        3 => '#ff3333', // Bright red
-                                                                        4 => '#ff0000', // Full red
-                                                                        5 => '#cc0000'  // Deep red (5 and above)
+                                                                        0 => '#ffffff', // Very light red (zero)
+                                                                        1 => '#ffeeee', // Light red
+                                                                        2 => '#ffb0b0', // Medium red
+                                                                        3 => '#ff8080', // Bright red
+                                                                        4 => '#ff4d4d', // Full red
+                                                                        5 => '#cc0000'
                                                                     ];
-
                                                                     // Clamp quantity to 5 maximum
                                                                     $index = min(5, max(0, $quantity));
 

@@ -175,13 +175,15 @@ ORDER BY created_at DESC;
                                                                 function getRedShade($quantity)
                                                                 {
                                                                     // Define the color steps
+
+                                                                    
                                                                     $colors = [
                                                                         0 => '#ffffff', // Very light red (zero)
                                                                         1 => '#ffeeee', // Light red
-                                                                        2 => '#ffbbbb', // Medium red
-                                                                        3 => '#ff8888', // Bright red
-                                                                        4 => '#ff5555', // Full red
-                                                                        5 => '#cc0000'  // Deep red (5 and above)
+                                                                        2 => '#ffb0b0', // Medium red
+                                                                        3 => '#ff8080', // Bright red
+                                                                        4 => '#ff4d4d', // Full red
+                                                                        5 => '#cc0000'  
                                                                     ];
 
                                                                     // Clamp quantity to 5 maximum

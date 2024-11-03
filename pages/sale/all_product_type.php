@@ -273,7 +273,7 @@ ORDER BY created_at DESC;
                                                                     $backgroundColor = getRedShade($quantity);
 
                                                                     // Set text color (black for lighter backgrounds, white for darker ones)
-                                                                    $textColor = ($quantity <= 2) ? '#000000' : '#ffffff';
+                                                                    $textColor = ($quantity <= 2) ? '#000000' : '#000000';
 
                                                                     // Display the size and quantity
                                                                     echo "<span><span style=\"background-color: $backgroundColor; color: $textColor; padding: 1px 3px; border-radius: 2px;\">$size [$quantity]</span></span> ";

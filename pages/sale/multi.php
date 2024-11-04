@@ -32,30 +32,18 @@ if (isset($_POST['add'])) {
     // Collect form data
     $user_id = $_SESSION['user_id'];
     $code_names = $_POST['code_name'];
-
-
-
-    $debugFile = 'debug.txt';
-    $logMessage = "Code names: " . implode(", ", $code_names) . "\n";
-    file_put_contents($debugFile, $logMessage, FILE_APPEND);
-
-
-
-    // Multiple code names
-    $sizes = $_POST['size_name']; // Multiple sizes
-
-    file_put_contents($debugFile, "Sizes: " . implode(", ", $sizes) . "\n", FILE_APPEND);
-    $prices = $_POST['price']; // Multiple prices
-    $cash_values = $_POST['cash']; // Multiple cash values
-    $banks = $_POST['bank']; // Multiple banks
+    $sizes = $_POST['size_name'];
+    $prices = $_POST['price'];
+    $cash_values = $_POST['cash'];
+    $banks = $_POST['bank'];
     $method = $_POST['method'];
     $date = date('Y-m-d H:i:s');
 
-    // Counter for successful sales
     $successful_sales_count = 0;
-    $sales_ids = []; // Array to hold sales IDs for multi sale logging
+    $sales_ids = [];
+    $multi_sale_message = ""; // Combined message for multiple sales or deliveries
+    $multi_delivery_message = ""; // Combined message for multiple deliveries
 
-    // Iterate through all sales entries
     for ($i = 0; $i < count($code_names); $i++) {
         $code_name = $code_names[$i];
         $size = $sizes[$i];
@@ -68,116 +56,34 @@ if (isset($_POST['add'])) {
         list($table, $product_name) = explode('|', $code_name);
 
         // Handle bank details
-        if ($bank == 0) {
-            $bank_name = null;
-            $bank_id = null;
-        } else {
-            $bank_name = $_POST['bank_name'];
-            $sql = "SELECT * FROM bankdb WHERE bankname = '$bank_name'";
+        $bank_name = $bank == 0 ? null : $_POST['bank_name'];
+        if ($bank !== 0) {
+            $sql = "SELECT id FROM bankdb WHERE bankname = '$bank_name'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
-            $bank_id = $row['id'];
+            $bank_id = $row['id'] ?? null;
         }
 
-        // Ensure product name and size are provided
         if (!empty($product_name) && !empty($size)) {
-            // Get product details from the corresponding table
+            // Check product and size details
             $sql = "SELECT * FROM $table WHERE {$table}_name = '$product_name' AND size = '$size'";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
 
             if (!$row) {
-                // Handle missing product and size details (if necessary)
-
-
-                // If no exact match for product name and size, get default product details (without size)
-                $sql = "SELECT * FROM $table WHERE {$table}_name = '$product_name'";
-                $result = mysqli_query($con, $sql);
-                $row = mysqli_fetch_assoc($result);
-                $price = $row['price'];
-                $image = $row['image'];
-                $type = $row['type'];
-                $type_id = $row['type_id'];
-
-                $sql2 = "SELECT * FROM {$table}db WHERE size = '$size'";
-                $result2 = mysqli_query($con, $sql2);
-                $row2 = mysqli_fetch_assoc($result2);
-                $size_id = $row2['id'];
-
-                // Insert into verification table with error status
-                $add_product = "INSERT INTO `{$table}_verify`(`{$table}_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
-                          VALUES ('$product_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','1')";
-                $result_add = mysqli_query($con, $add_product);
-
-                if ($result_add) {
-
-                    $message = "Verify Needed For a product\n";
-                    $message .= "Product Name: $product_name\n";
-                    $message .= "Price: $price\n";
-                    $message .= "Size: $size\n";
-                    $message .= "Quantity: $quantity\n";
-                    $message .= "Cash: $cash\n";
-                    $message .= "Bank: $bank\n";
-                    $message .= "Reason: Size not found\n";
-
-
-
-                    $subject = "Verify Needed";
-
-                    // Send updates to subscribers
-                    sendMessageToSubscribers($message, $con);
-                    sendEmailToSubscribers($message, $subject, $con);
-
-                    echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
-                }
-
-
+                // Handle verification for missing size
+                $verify_message = "Verify Needed for product:\nProduct Name: $product_name\nPrice: $price\nSize: $size\nQuantity: $quantity\n";
+                sendVerificationNotification($verify_message, $con);
                 continue;
             }
 
-            // Get product details from the row
             $product_id = $row['id'];
-            $size_id = $row['size_id'];
             $current_quantity = $row['quantity'];
 
-            // Check quantity availability
             if ($current_quantity < $quantity) {
-                // Handle insufficient quantity error (if necessary)
-
-
-                $price = $row['price'];
-                $image = $row['image'];
-                $type = $row['type'];
-                $type_id = $row['type_id'];
-
-                $add_product = "INSERT INTO `{$table}_verify`(`{$table}_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
-                          VALUES ('$product_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','2')";
-                $result_add = mysqli_query($con, $add_product);
-
-                if ($result_add) {
-
-
-
-                    $message = "Verify Needed For a product\n";
-                    $message .= "Product Name: $product_name\n";
-                    $message .= "Price: $price\n";
-                    $message .= "Size: $size\n";
-                    $message .= "Quantity: $quantity\n";
-                    $message .= "Cash: $cash\n";
-                    $message .= "Bank: $bank\n";
-                    $message .= "Reason: Quantity Not found\n";
-
-
-
-                    $subject = "Verify Needed";
-
-                    // Send updates to subscribers
-                    sendMessageToSubscribers($message, $con);
-                    sendEmailToSubscribers($message, $subject, $con);
-                    echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
-                }
-                echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
-
+                // Handle verification for insufficient quantity
+                $verify_message = "Verify Needed for insufficient quantity:\nProduct Name: $product_name\nPrice: $price\nSize: $size\nQuantity: $quantity\n";
+                sendVerificationNotification($verify_message, $con);
                 continue;
             }
 
@@ -187,118 +93,70 @@ if (isset($_POST['add'])) {
                 $reason = $_POST['reason'];
                 $delivery_table = ($table == 'jeans') ? 'delivery' : $table . '_delivery';
 
-                $sql = "INSERT INTO $delivery_table ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status,reason)
-                        VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', '$status','$reason')";
+                $sql = "INSERT INTO $delivery_table ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status, reason)
+                        VALUES ('$product_id', '{$row['size_id']}', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', '$status', '$reason')";
                 mysqli_query($con, $sql);
 
-
-
-
-
+                // Update quantity
                 $new_quantity = $current_quantity - $quantity;
                 $update_quantity = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
-                $result_update = mysqli_query($con, $update_quantity);
+                mysqli_query($con, $update_quantity);
 
-
-                $message = " From $table  is going out for a delivery  \n";
-                $message .= "Product Name: $product_name\n";
-                $message .= "Price: $price\n";
-                $message .= "Size: $size\n";
-                $message .= "Reason: $reason\n";
-
-
-
-                $subject = "Delivery $table";
-
-                sendMessageToSubscribers($message, $con);
-                sendEmailToSubscribers($message, $subject, $con);
-
-
-
-
-
-                if (!$result || !$result_update) {
-                    echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
-                    continue;
-                }
+                // Add delivery details to combined delivery message
+                $multi_delivery_message .= "Product Name: $product_name\nPrice: $price\nSize: $size\nReason: $reason\n\n";
             } else {
                 $sales_table = ($table == 'jeans') ? 'sales' : $table . '_sales';
 
-                // Insert into sales table
                 $sql = "INSERT INTO $sales_table ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, bank_id, bank_name, status)
-                        VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', 'active')";
-
+                        VALUES ('$product_id', '{$row['size_id']}', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', '$bank_id', '$bank_name', 'active')";
                 if (mysqli_query($con, $sql)) {
-                    $successful_sales_count++; // Increment count for successful sales
-                    $sales_id = mysqli_insert_id($con); // Get inserted sale ID
-                    $sales_ids[] = $sales_id; // Store sales ID for multi sale logging
+                    $successful_sales_count++;
+                    $sales_id = mysqli_insert_id($con);
+                    $sales_ids[] = $sales_id;
 
-                    // Insert into sales log (only one log insert per sale)
+                    // Log sale and update quantity
                     $sales_log = ($table == 'jeans') ? 'sales_log' : $table . '_sales_log';
-
                     $sql_log = "INSERT INTO $sales_log ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, status)
-                                VALUES ('$product_id', '$size_id', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', 'sold')";
+                                VALUES ('$product_id', '{$row['size_id']}', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', 'sold')";
                     mysqli_query($con, $sql_log);
 
-                    // Update the quantity in the product table
                     $new_quantity = $current_quantity - $quantity;
                     $sql_update = "UPDATE $table SET quantity = '$new_quantity' WHERE id = '$product_id' AND size = '$size'";
                     mysqli_query($con, $sql_update);
 
-
-
-                    $message = "Sale Have been Made \n";
-
-
-                    $message .= "Product Name: $product_name\n";
-                    $message .= "Price: $price\n";
-                    $message .= "Size: $size\n";
-                    $message .= "Quantity: $quantity\n";
-                    $message .= "Cash :  $cash\n";
-                    $message .= "Bank : $bank\n";
-
-
-
-                    $subject = "Sold $table";
-
-
-                    sendMessageToSubscribers($message, $con);
-                    sendEmailToSubscribers($message, $subject, $con);
+                    // Add sale details to combined sale message
+                    $multi_sale_message .= "Product Name: $product_name\nPrice: $price\nSize: $size\nQuantity: $quantity\n\n";
                 }
             }
         }
     }
 
-    // If more than one sale was successful, insert into multi_sale
-    if ($successful_sales_count > 1) {
-        $from = $table;
-        foreach ($sales_ids as $sales_id) {
-            $multi_log = "INSERT INTO multi_sale (multi_id, sales_id, from_table) VALUES ('$number', '$sales_id', '$from')";
-            mysqli_query($con, $multi_log);
-        }
+    // Send combined notifications
+    if (!empty($multi_sale_message)) {
+        $sale_subject = "Combined Sales Notification";
+        sendMessageToSubscribers("Sale made:\n" . $multi_sale_message, $con);
+        sendEmailToSubscribers($multi_sale_message, $sale_subject, $con);
     }
 
-    // Notify subscribers about the sales (optional)
-    $subscribers_query = "SELECT chat_id FROM subscribers";
-    $subscribers_result = mysqli_query($con, $subscribers_query);
-    $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
-
-    foreach ($subscribers as $subscriber) {
-        $message = "New Sale Added:\n";
-        $message .= "Product Name: $product_name\n";
-        $message .= "Size: $size\n";
-        $message .= "Price: $price\n";
-        $message .= "Cash: $cash\n";
-        $message .= "Bank: $bank\n";
-        $message .= "Method: $method\n";
-        // Send notification to each subscriber (Telegram bot integration here)
+    if (!empty($multi_delivery_message)) {
+        $delivery_subject = "Combined Delivery Notification";
+        sendMessageToSubscribers("Delivery prepared:\n" . $multi_delivery_message, $con);
+        sendEmailToSubscribers($multi_delivery_message, $delivery_subject, $con);
     }
 
-    // Redirect on success
     echo "<script>window.location = 'action.php?status=success&redirect=multi.php';</script>";
 }
 
+// Function to handle verification notifications
+function sendVerificationNotification($message, $con)
+{
+    $subject = "Verification Needed";
+    sendMessageToSubscribers($message, $con);
+    sendEmailToSubscribers($message, $subject, $con);
+}
+
 ?>
+
 
 
 
@@ -500,7 +358,7 @@ if ($result) {
 
 
 
-                                       
+
 
 
 

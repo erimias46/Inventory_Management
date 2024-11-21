@@ -4,7 +4,7 @@ $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 $current_date = date('Y-m-d');
-$title = "All top";
+$title = "All dress";
 ?>
 
 <head>
@@ -15,7 +15,7 @@ $title = "All top";
 
     <?php
 
-    $title = "All top";
+    $title = "All dress";
 
 
     ?>
@@ -44,8 +44,8 @@ $title = "All top";
 
 
 
-            $updateButtonVisible = ($module['edittop'] == 1) ? true : false;
-            $deleteButtonVisible = ($module['deletetop'] == 1) ? true : false;
+            $updateButtonVisible = ($module['editdress'] == 1) ? true : false;
+            $deleteButtonVisible = ($module['deletedress'] == 1) ? true : false;
         } else {
             echo "No user found with the specified ID";
         }
@@ -96,7 +96,7 @@ $title = "All top";
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">top Name</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">dress Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
@@ -107,7 +107,7 @@ $title = "All top";
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sql = "SELECT * FROM top ORDER BY top_name";
+                                                $sql = "SELECT * FROM dress ORDER BY dress_name, created_at DESC";
                                                 $result22 = mysqli_query($con, $sql);
 
                                                 // Define colors with better contrast and opacity for readability
@@ -119,7 +119,7 @@ $title = "All top";
                                                     'rgba(158, 158, 158, 0.2)'   // Medium grey
                                                 ];
 
-                                                // Store all unique top names first
+                                                // Store all unique dress names first
                                                 $uniqueNames = [];
                                                 $colorMap = [];
                                                 $tempResults = [];
@@ -127,10 +127,10 @@ $title = "All top";
                                                 // First pass: collect unique names and assign colors
                                                 while ($row = mysqli_fetch_assoc($result22)) {
                                                     $tempResults[] = $row;
-                                                    if (!in_array($row['top_name'], $uniqueNames)) {
-                                                        $uniqueNames[] = $row['top_name'];
+                                                    if (!in_array($row['dress_name'], $uniqueNames)) {
+                                                        $uniqueNames[] = $row['dress_name'];
                                                         $colorIndex = count($uniqueNames) - 1;
-                                                        $colorMap[$row['top_name']] = $colors[$colorIndex % count($colors)];
+                                                        $colorMap[$row['dress_name']] = $colors[$colorIndex % count($colors)];
                                                     }
                                                 }
 
@@ -139,18 +139,18 @@ $title = "All top";
 
                                                 // Second pass: display the data
                                                 foreach ($tempResults as $row) {
-                                                    $topName = $row['top_name'];
-                                                    $color = $colorMap[$topName];
+                                                    $dressName = $row['dress_name'];
+                                                    $color = $colorMap[$dressName];
 
                                                     // Start new group
-                                                    if ($currentName !== $topName) {
+                                                    if ($currentName !== $dressName) {
                                                         $groupId++;
-                                                        $currentName = $topName;
+                                                        $currentName = $dressName;
                                                 ?>
                                                         <!-- Group header row -->
                                                         <tr style="background-color: <?php echo $color; ?>;" class="cursor-pointer hover:opacity-90">
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['id']; ?></td>
-                                                            <td class="px-2 py-2.5 text-sm font-medium text-gray-900"><?php echo $topName; ?></td>
+                                                            <td class="px-2 py-2.5 text-sm font-medium text-gray-900"><?php echo $dressName; ?></td>
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['size']; ?></td>
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['price']; ?></td>
                                                             <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['quantity']; ?></td>
@@ -170,7 +170,7 @@ $title = "All top";
                                                     <!-- Detail row -->
                                                     <tr class="group-<?php echo $groupId; ?> hidden group-row" style="background-color: <?php echo $color; ?>;">
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['id']; ?></td>
-                                                        <td class="px-2 py-2.5 text-sm font-medium text-gray-900"><?php echo $topName; ?></td>
+                                                        <td class="px-2 py-2.5 text-sm font-medium text-gray-900"><?php echo $dressName; ?></td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['size']; ?></td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['price']; ?></td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['quantity']; ?></td>
@@ -180,13 +180,13 @@ $title = "All top";
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['created_at']; ?></td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900">
                                                             <?php if ($deleteButtonVisible) : ?>
-                                                                <a id="del-btn" href="api/remove.php?id=<?php echo $row['id']; ?>&from=top"
+                                                                <a id="del-btn" href="api/remove.php?id=<?php echo $row['id']; ?>&from=dress"
                                                                     class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
                                                                     <i class="mgc_delete_2_line text-base me-2"></i> Delete
                                                                 </a>
                                                             <?php endif; ?>
                                                             <?php if ($updateButtonVisible) : ?>
-                                                                <a id="edit-btn" href="edit_top.php?id=<?php echo $row['id']; ?>"
+                                                                <a id="edit-btn" href="edit_dress.php?id=<?php echo $row['id']; ?>"
                                                                     class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full">
                                                                     <i class="mgc_edit_2_line text-base me-2"></i> Edit
                                                                 </a>

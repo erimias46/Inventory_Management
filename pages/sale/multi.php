@@ -246,7 +246,7 @@ if ($result) {
                     <div class="card col-span-3 bg-white shadow-md rounded-md p-6 mx-lg max-w-lg">
                         <form method="post" enctype="multipart/form-data" id="saleForm">
 
-                            <h2 class="text-4xl font-bold text-white-700 text-center mb-10">SALE DATA ENTRY</h2>
+                            <h2 class="text-4xl font-bold text-white-700 text-center mb-10">Rent Data Entry</h2>
 
                             <div>
                                 <div id="salesEntries">
@@ -257,7 +257,7 @@ if ($result) {
                                             <select name="code_name[]" id="codeNameSelect" class="code_name w-48 border border-gray-300 p-2 rounded-md" style="width: 200px;" required onchange="fetchProductPriceN(this)">
                                                 <option value="">Select Name</option>
                                                 <?php
-                                                $tables = ['jeans', 'shoes', 'complete', 'accessory', 'top'];
+                                                $tables = ['dress'];
                                                 foreach ($tables as $table) {
                                                     $display_label = ucfirst($table);
                                                     echo "<optgroup label='$display_label'>";

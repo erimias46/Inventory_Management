@@ -71,20 +71,9 @@ $title = "All Sales";
                                                 $currentColorIndex = 0;
 
                                                 $sql = "
-SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,cash,bank,method
-FROM shoes_sales
-UNION ALL
-SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size,cash,bank,method
-FROM top_sales
-UNION ALL
-SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size,cash,bank,method
-FROM complete_sales
-UNION ALL
-SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size,cash,bank,method
-FROM accessory_sales
-UNION ALL
-SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size,cash,bank,method
-FROM sales
+SELECT 'dress' AS source, sales_id, dress_name AS Name, sales_date, price, size,cash,bank,method
+FROM dress_sales
+
 ORDER BY sales_date DESC;
 ";
 
@@ -181,9 +170,9 @@ ORDER BY sales_date DESC;
                                                                                 $sql3 = "SELECT * FROM jeans GROUP BY jeans_name ORDER BY jeans_name ASC";
                                                                                 $sql4 = "SELECT size FROM jeansdb";  // Ensure this table exists
                                                                                 break;
-                                                                            case 'shoes':
-                                                                                $sql3 = "SELECT * FROM shoes GROUP BY shoes_name ORDER BY shoes_name ASC";
-                                                                                $sql4 = "SELECT size FROM shoesdb";  // Ensure this table exists
+                                                                            case 'dress':
+                                                                                $sql3 = "SELECT * FROM dress GROUP BY dress_name ORDER BY dress_name ASC";
+                                                                                $sql4 = "SELECT size FROM dressdb";  // Ensure this table exists
                                                                                 break;
                                                                             case 'top':
                                                                                 $sql3 = "SELECT * FROM `top` GROUP BY top_name ORDER BY top_name ASC";

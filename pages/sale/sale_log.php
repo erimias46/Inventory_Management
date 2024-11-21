@@ -44,20 +44,9 @@ $title = "Sale Log";
                                         $color_index = 0;
 
                                         $sql = "
-SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size, status, created_at
-FROM shoes_sales_log
-UNION ALL
-SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size, status, created_at
-FROM top_sales_log
-UNION ALL
-SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size, status, created_at
-FROM complete_sales_log
-UNION ALL
-SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size, status, created_at
-FROM accessory_sales_log
-UNION ALL
-SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size, status, created_at
-FROM sales_log
+SELECT 'dress' AS source, sales_id, dress_name AS Name, sales_date, price, size, status, created_at
+FROM dress_sales_log
+
 ORDER BY created_at DESC;
 ";
 

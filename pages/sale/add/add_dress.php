@@ -1,24 +1,15 @@
 <?php
-$redirect_link = "../../";
-$side_link = "../../";
+$redirect_link = "../../../";
+$side_link = "../../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 include_once $redirect_link . 'include/bot.php';
 include_once $redirect_link . 'include/email.php';
 
+
 $current_date = date('Y-m-d');
 
-$generate_button = '';
 
-if (isset($_GET['import_brocher_id'])) {
-    $brocher_type = $_GET['brocher_type'];
-
-
-
-    $add_button = '<button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>';
-    $update_button = '<button name="update" type="submit" class="btn btn-sm bg-danger text-white rounded-full"> <i class="mgc_pencil_line text-base me-2"></i> Update </button>';
-    $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
-}
 
 ?>
 
@@ -26,19 +17,17 @@ if (isset($_GET['import_brocher_id'])) {
 if (isset($_POST['add'])) {
 
     // Collect form data
-    $cosmetics_name = $_POST['cosmetics_name'];
+    $dress_name = $_POST['dress_name'];
     $size_ids = $_POST['size_ids']; // Array of size IDs
     $sizes = $_POST['sizes']; // Array of sizes
-    $quantities = $_POST['quantities'];
-     // Array of quantities
-    $prices = $_POST['prices'];
+    $quantities = $_POST['quantities']; // Array of quantities
     $type_id = $_POST['type'];
-    //$price = $_POST['price'];
+    $price = $_POST['price'];
 
     $image = $_FILES['image']['name'];
 
     // Fetch type from the database
-    $sql = "SELECT * FROM cosmetics_type_db WHERE id='$type_id'";
+    $sql = "SELECT * FROM dress_type_db WHERE id='$type_id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $type = $row['type'];
@@ -85,12 +74,13 @@ if (isset($_POST['add'])) {
         }
     } else {
         // If no image is uploaded, use the default image
-        $image_path = 'uploads/defaultcosmetics.jpg';
+        $image_path = 'uploads/defaultdress.jpg';
+        $uploadOk = 1;
     }
 
     // If image upload failed, use the default image
     if ($uploadOk == 0) {
-        $image_path = 'uploads/defaultcosmetics.jpg';
+        $image_path = 'uploads/defaultdress.jpg';
     }
 
     // Loop through sizes and quantities to insert each size with quantity > 0
@@ -98,24 +88,60 @@ if (isset($_POST['add'])) {
         $size = $sizes[$i];
         $size_id = $size_ids[$i];
         $quantity = $quantities[$i];
-        $price = $prices[$i];
 
         // Insert only if the quantity is greater than zero
         if ($quantity > 0) {
-            $add_cosmetics = "INSERT INTO cosmetics(cosmetics_name, size, size_id, image, price,type_id, type, quantity,active) 
-                          VALUES ('$cosmetics_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1')";
-            mysqli_query($con, $add_cosmetics);
+
+
+            $check_existing = "SELECT id, quantity FROM dress 
+                      WHERE dress_name = ? AND size = ? AND active = '1'";
+
+            $stmt = mysqli_prepare($con, $check_existing);
+            mysqli_stmt_bind_param($stmt, "ss", $dress_name, $size);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+
+            if (mysqli_num_rows($result) > 0) {
+                // Item exists, update quantity
+                $row = mysqli_fetch_assoc($result);
+                $new_quantity = $row['quantity'] + $quantity;
+
+                $update_query = "UPDATE dress 
+                        SET quantity = ? 
+                        WHERE id = ?";
+
+                $stmt = mysqli_prepare($con, $update_query);
+                mysqli_stmt_bind_param($stmt, "ii", $new_quantity, $row['id']);
+                mysqli_stmt_execute($stmt);
+
+                $source_table = 'dress';
+                $product_type = 'dress';
+
+
+
+
+                $add_jeans_product = "INSERT INTO product(product_name, product_type, size, `type`, image, price, quantity, source_table) 
+                      VALUES ('$dress_name', '$product_type', '$size', '$type', '$image_path', '$price', '$quantity', '$source_table')";
+                mysqli_query($con, $add_jeans_product);
+
+
+
+
+            } else {
+
+                $add_dress = "INSERT INTO dress(dress_name, size, size_id, image, price,type_id, type, quantity,active) 
+                          VALUES ('$dress_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1')";
+                mysqli_query($con, $add_dress);
+            }
         }
     }
 
     // Redirect after successful insertion
 
-    if ($add_cosmetics) {
+    if ($add_dress || $update_query) {
 
-
-
-        $message = "New cosmetics Added:\n";
-        $message .= "cosmetics Name: $cosmetics_name\n";
+        $message = "New dress Added:\n";
+        $message .= "dress Name: $dress_name\n";
         $message .= "Price: $price\n";
         $message .= "Type: $type\n";
 
@@ -130,19 +156,19 @@ if (isset($_POST['add'])) {
 
 
 
-        $subject = "New cosmetics Added";
+        $subject = "New dress Added";
 
         sendMessageToSubscribers($message, $con);
         sendEmailToSubscribers($message, $subject, $con);
 
 
-
-
-        echo "<script>window.location = 'action.php?status=success&redirect=add_cosmetics.php';</script>";
+        echo "<script>window.location = 'action.php?status=success&redirect=add_dress.php';</script>";
     } else {
-        echo "<script>window.location = 'action.php?status=error&message=Error adding cosmetics to the database.&redirect=add_cosmetics.php';</script>";
+        echo "<script>window.location = 'action.php?status=error&message=Error adding dress to the database.&redirect=add_dress.php';</script>";
     }
 }
+
+
 ?>
 
 <?php
@@ -172,12 +198,8 @@ if ($result) {
         $privileged = $row['previledge'];
         $module = json_decode($row['module'], true);
 
-        
-        $addButtonVisible = ($module['addcosmetics'] == 1) ? true : false;
 
-
-
-       
+        $addButtonVisible = ($module['addshoes'] == 1) ? true : false;
     } else {
         echo "No user found with the specified ID";
     }
@@ -192,7 +214,7 @@ if ($result) {
 
 <head>
     <?php
-    $title = 'Add cosmetics';
+    $title = 'Add dress';
     include $redirect_link . 'partials/title-meta.php'; ?>
     <link href="../../assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css">
 
@@ -262,19 +284,96 @@ if ($result) {
                     <div class="card">
                         <div class="card-header">
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium"><?= $title ?></h4>
+                            
                         </div>
                         <div class="p-6">
 
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 
 
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">cosmetics Name</label>
-                                    <input type="text" name="cosmetics_name" id="cosmetics_name" class="form-input" list="jeans_types" required>
-                                    <datalist id="jeans_types">
-                                        <!-- Options will be populated here -->
-                                    </datalist>
+                                <div class="relative mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="dress_name">Dress Name</label>
+                                    <div class="relative">
+                                        <input
+                                            type="text"
+                                            name="dress_name"
+                                            id="dress_name"
+                                            value="<?php if (isset($dress_name)) echo $dress_name ?>"
+                                            class="form-input w-full"
+                                            autocomplete="off"
+                                            required
+                                            oninput="filterOptions(this.value)"
+                                            onblur="handleBlur()">
+                                        <div id="dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto hidden">
+                                            <?php
+                                            $sql10 = "SELECT DISTINCT dress_name FROM dress";
+                                            $result10 = $con->query($sql10);
+
+                                            if ($result10->num_rows > 0) {
+                                                while ($row10 = $result10->fetch_assoc()) {
+                                                    echo "<div class='option px-4 py-2 hover:bg-gray-100 cursor-pointer' onclick='selectOption(this.innerText)'>" .
+                                                        htmlspecialchars($row10['dress_name']) .
+                                                        "</div>";
+                                                }
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
                                 </div>
+
+
+                                <script>
+                                    function filterOptions(searchText) {
+                                        const dropdown = document.getElementById('dropdown');
+                                        const options = dropdown.getElementsByClassName('option');
+
+                                        dropdown.classList.remove('hidden');
+
+                                        for (let option of options) {
+                                            const text = option.innerText.toLowerCase();
+                                            const search = searchText.toLowerCase();
+
+                                            if (text.includes(search)) {
+                                                option.style.display = '';
+                                            } else {
+                                                option.style.display = 'none';
+                                            }
+                                        }
+                                    }
+
+                                    function selectOption(value) {
+                                        document.getElementById('dress_name').value = value;
+                                        document.getElementById('dropdown').classList.add('hidden');
+                                    }
+
+                                    function handleBlur() {
+                                        // Delay hiding dropdown to allow click events to register
+                                        setTimeout(() => {
+                                            document.getElementById('dropdown').classList.add('hidden');
+                                        }, 200);
+                                    }
+
+                                    // Show dropdown when clicking input
+                                    document.getElementById('dress_name').addEventListener('click', function() {
+                                        document.getElementById('dropdown').classList.remove('hidden');
+                                        filterOptions(this.value);
+                                    });
+                                </script>
+
+                                <style>
+                                    .form-input {
+                                        width: 100%;
+                                        padding: 0.5rem;
+                                        border: 1px solid #e2e8f0;
+                                        border-radius: 0.375rem;
+                                    }
+
+                                    .form-input:focus {
+                                        outline: none;
+                                        border-color: #4f46e5;
+                                        box-shadow: 0 0 0 1px #4f46e5;
+                                    }
+                                </style>
 
 
 
@@ -286,7 +385,7 @@ if ($result) {
 
                                         <?php
 
-                                        $sql = "SELECT * FROM cosmetics_type_db";
+                                        $sql = "SELECT * FROM dress_type_db";
                                         $result = mysqli_query($con, $sql);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
@@ -315,7 +414,7 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
-                                    <input type="number" step="0.0000001" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
+                                    <input type="number" min="0" value="0" step="0.01" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
                                 </div>
 
 
@@ -331,17 +430,17 @@ if ($result) {
                                 <div class="mb-3">
                                     <div class="image-preview" id="imagePreview">
                                         <!-- The selected image will be displayed here -->
-                                        <img src="../../include/uploads/defaultcosmetics.jpg" />
+                                        <img src="../../../include/uploads/defaultdress.jpg" />
                                     </div>
                                 </div>
 
 
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Cosmetics Sizes and Quantities      Price</label>
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Dress Sizes and Quantities</label>
 
                                     <?php
-
-                                    $sql = "SELECT * FROM cosmeticsdb";
+                                    // Fetch all sizes from the `dressdb` table
+                                    $sql = "SELECT * FROM dressdb";
                                     $result = mysqli_query($con, $sql);
                                     while ($row = mysqli_fetch_assoc($result)) {
                                         $size = $row['size'];
@@ -357,9 +456,7 @@ if ($result) {
                                             <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
 
                                             <!-- Quantity Input -->
-                                            <input type="number" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 mx-5 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
-
-                                            <input type="number" name="prices[]" value="0.00" step="0.01" class="form-input flex-1 ml-4  mx-5 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Price for size <?php echo $size; ?>">
+                                            <input type="number" min="0" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
                                         </div>
                                     <?php
                                     }
@@ -464,12 +561,12 @@ if ($result) {
 
 
 <script>
-    document.getElementById('jeans_types').addEventListener('focus', function() {
+    document.getElementById('dress_types').addEventListener('focus', function() {
         // Fetch suggestions from the server and populate the datalist
-        fetch('get_job_types.php?database=jeans')
+        fetch('get_job_types.php?database=dress')
             .then(response => response.json())
             .then(data => {
-                const datalist = document.getElementById('jeans_types');
+                const datalist = document.getElementById('dress_types');
                 datalist.innerHTML = ''; // Clear previous options
                 data.forEach(item => {
                     const option = document.createElement('option');

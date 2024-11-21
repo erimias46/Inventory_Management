@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Mapping table names to their corresponding size databases
     $size_tables = [
+        'dress' => 'dressdb',
         'jeans' => 'jeansdb',
         'shoes' => 'shoesdb',
         'complete' => 'completedb',

@@ -44,8 +44,8 @@ $title = "All dress";
 
 
 
-            $updateButtonVisible = ($module['editdress'] == 1) ? true : false;
-            $deleteButtonVisible = ($module['deletedress'] == 1) ? true : false;
+            $updateButtonVisible = ($module['editjeans'] == 1) ? true : false;
+            $deleteButtonVisible = ($module['deletejeans'] == 1) ? true : false;
         } else {
             echo "No user found with the specified ID";
         }

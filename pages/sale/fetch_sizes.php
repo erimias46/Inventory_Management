@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         {
             $logFile = 'debug_log.txt';
             $currentDate = date('Y-m-d H:i:s');
-            file_put_contents($logFile, "[$currentDate] $message\n", FILE_APPEND);
+            
         }
 
         if ($table === 'jeans') {

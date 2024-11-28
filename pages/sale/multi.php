@@ -104,6 +104,12 @@ if (isset($_POST['add'])) {
 
                 // Add delivery details to combined delivery message
                 $multi_delivery_message .= "Product Name: $product_name\nPrice: $price\nSize: $size\nReason: $reason\n\n";
+
+
+                $sales_log = ($table == 'jeans') ? 'sales_log' : $table . '_sales_log';
+                    $sql_log = "INSERT INTO $sales_log ({$table}_id, size_id, {$table}_name, size, price, cash, bank, method, sales_date, update_date, quantity, user_id, status)
+                                VALUES ('$product_id', '{$row['size_id']}', '$product_name', '$size', '$price', '$cash', '$bank', '$method', '$date', '$date', '$quantity', '$user_id', 'Out for Delivery')";
+                    mysqli_query($con, $sql_log);
             } else {
                 $sales_table = ($table == 'jeans') ? 'sales' : $table . '_sales';
 

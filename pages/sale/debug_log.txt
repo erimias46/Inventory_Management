@@ -108,3 +108,8 @@
 [2024-11-04 05:07:58] Code name: Wrangler Jeans
 [2024-11-04 05:07:58] Type retrieved: 1
 [2024-11-04 05:07:58] Sizes found: 36, 37, 38, SMALL, Large, XXL
+[2024-11-28 08:47:29] Table selected: jeans
+[2024-11-28 08:47:29] Size table used: jeansdb
+[2024-11-28 08:47:29] Code name: Gucci Test
+[2024-11-28 08:47:29] Type retrieved: 2
+[2024-11-28 08:47:29] Sizes found: 35, 40

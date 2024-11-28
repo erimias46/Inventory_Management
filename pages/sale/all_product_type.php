@@ -172,7 +172,7 @@ ORDER BY created_at DESC;
 
 
                                                     $category = $row['category'];
-                                                    file_put_contents("log.txt", "Category: $category\n", FILE_APPEND);
+                                                   
 
                                                     if ($category == 'jeans') {
                                                         $sql6 = "SELECT COUNT(*) AS total_sales 

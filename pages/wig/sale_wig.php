@@ -917,7 +917,7 @@ if (isset($_POST['add_data'])) {
         $debug_message .= "Size: $size\n";
         $debug_message .= "Piece: $piece\n";
         $debug_message .= "From Piece: $from_piece\n";
-        file_put_contents($log_file, $debug_message, FILE_APPEND);
+       
 
         if ($current_quantity < $quantity) {
 

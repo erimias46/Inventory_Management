@@ -58,8 +58,9 @@ $title = "All Products";
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
 
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Product Name</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                                                    
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Now</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Sold</th>
@@ -235,7 +236,7 @@ ORDER BY created_at DESC;
                                                         <td> <?php echo $row['product_name']; ?> 
                                                         </td>
 
-                                                        <td> <?php echo $row['category']; ?> </td>
+                                                        
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 text-ellipsis overflow-hidden">
 
@@ -281,6 +282,8 @@ ORDER BY created_at DESC;
                                                             }
                                                             ?>
                                                         </td>
+
+                                                        <td> <?php echo ucfirst($row['category']); ?> </td>
 
 
 

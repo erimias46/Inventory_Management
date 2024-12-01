@@ -271,6 +271,11 @@ ORDER BY created_at DESC;
             });
         });
     });
+
+
+    $('#zero_config').DataTable({
+    pageLength: 50
+});
 </script>
 
 </html>

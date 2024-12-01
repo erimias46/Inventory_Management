@@ -234,6 +234,12 @@ if ($result) {
 
 </body>
 
+<script>
+    $('#zero_config').DataTable({
+        pageLength: 50
+    });
+</script>
+
 </html>
 
 <?php

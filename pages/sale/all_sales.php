@@ -335,7 +335,13 @@ ORDER BY sales_date DESC;
                 }
             });
         });
+
     });
+
+
+    $('#zero_config').DataTable({
+    pageLength: 50
+});
 </script>
 
 </html>

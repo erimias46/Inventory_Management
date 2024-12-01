@@ -150,5 +150,11 @@ ORDER BY created_at DESC;
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
 </body>
 
+<script>
+       $('#zero_config').DataTable({
+    pageLength: 50
+});
+</script>
+
 
 </html>

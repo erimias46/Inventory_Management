@@ -162,17 +162,22 @@ if ($result) {
                     <div class="card bg-white shadow-md rounded-md p-6 mx-lg max-w-lg">
 
                         <div class="p-6">
-                            <h2 class="text-4xl font-bold text-white-700 text-center mb-10">SEARCH Product</h2>
+                            <h2 class="text-4xl font-bold text-white-700 text-center mb-10">Search Product</h2>
+
+                            <div class="mb-3 text-center">
+                                        <a href="search2.php" class="btn btn-sm bg-success text-white "> <i class="mgc_search_fill text-base me-2"></i> Search By Size </a>
+
+                                    </div>
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-3 gap-5">
                                 <!-- Jeans Name Field -->
                                 <form method="post" enctype="multipart/form-data" class="grid grid-cols-2 gap-5">
                                     <!-- Search By Option -->
                                     <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Select Product Type:</label>
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Select Type:</label>
                                         <!-- Product Type Dropdown -->
 
                                         <select id="product-type" name="product-type" onchange="loadProductNames()" class="form-input">
-                                            <option value="">Select Product Type</option>
+                                            <option value="">Select Type</option>
                                             <option value="jeans">Jeans</option>
                                             <option value="shoes">Shoes</option>
                                             <option value="top">Top</option>
@@ -184,20 +189,17 @@ if ($result) {
 
                                     <!-- Product Name Dropdown -->
                                     <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Select Product Name:</label>
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Select Name:</label>
 
                                         <select id="product-name" name="product-name" onchange="loadSizes()" class="form-input">
-                                            <option value="">Select Product Name</option>
+                                            <option value="">Select  Name</option>
                                         </select>
 
                                     </div>
 
                                     <!-- Size Dropdown -->
 
-                                    <div class="mb-3">
-                                        <a href="search2.php" class="btn btn-sm bg-success text-white "> <i class="mgc_search_fill text-base me-2"></i> Search By Size </a>
-
-                                    </div>
+                                   
                                 </form>
 
 
@@ -254,7 +256,7 @@ if ($result) {
                 }
 
                 #size-table {
-                    width: 100%;
+                    width: 10%;
                     border-collapse: collapse;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                     margin-bottom: 20px;
@@ -262,7 +264,7 @@ if ($result) {
 
                 #size-table th,
                 #size-table td {
-                    padding: 12px;
+                    padding: 8px;
                     border-bottom: 2px solid #ddd;
                     text-align: left;
                 }
@@ -275,6 +277,7 @@ if ($result) {
 
                 #size-table td {
                     font-size: 14px;
+                    width: 10%;
 
                 }
             </style>

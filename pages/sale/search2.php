@@ -53,10 +53,15 @@ include_once $redirect_link . 'include/bot.php';
 
                         <div class="p-6">
                             <h2 class="text-4xl font-bold text-white-700 text-center mb-10">Search By Size</h2>
+                            <div class="mb-3 text-center">
+                                   
+                                    <a href="search.php" class="btn btn-sm bg-success text-white "> <i class="mgc_search_fill text-base me-2"></i> Search By Product Name </a>
+
+                                </div>
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-3 gap-5">
                                 <!-- Search By Option -->
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Select Product Type:</label>
+                                <div class="mb-3 text-center">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Select  Type:</label>
                                     <select id="product-type" name="product-type" class="form-input">
                                         <option value="">Select Product Type</option>
                                         <option value="jeans">Jeans</option>
@@ -67,7 +72,7 @@ include_once $redirect_link . 'include/bot.php';
                                     </select>
                                 </div>
 
-                                <div class="mb-3">
+                                <div class="mb-3 text-center">
                                     <label for="size" class="text-gray-800 text-sm font-medium inline-block mb-2">Select Size:</label>
                                     <select id="size" name="size" class="form-input">
                                         <option value="">Select Size</option>
@@ -75,11 +80,7 @@ include_once $redirect_link . 'include/bot.php';
                                 </div>
 
 
-                                <div class="mb-3">
-                                   
-                                    <a href="search.php" class="btn btn-sm bg-success text-white "> <i class="mgc_search_fill text-base me-2"></i> Search By Product Name </a>
-
-                                </div>
+                                
                             </form>
 
                             <!-- Table for displaying product names and quantities based on selected size -->

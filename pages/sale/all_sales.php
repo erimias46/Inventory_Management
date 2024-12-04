@@ -128,17 +128,17 @@ ORDER BY sales_date DESC;
 
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                             <a id="del-btn" href="api/remove.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>&from=<?php echo $type . '_sales' ?>" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
-                                                                <i class="mgc_delete_2_line text-base me-2"></i> Delete
+                                                                <i class="fas fa-trash text-base me-2"></i> Delete
                                                             </a>
 
-                                                            <a id="del-btn" href="exchange.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-warning text-white hover:bg-warning hover:text-white btn-sm rounded-full">
-                                                                <i class="mgc_delete_2_line text-base me-2"></i> Exchange
+                                                            <a id="exchange-btn" href="exchange.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-warning text-white hover:bg-warning hover:text-white btn-sm rounded-full">
+    <i class="fas fa-exchange-alt text-base me-2"></i> Exchange
+</a>
+                                                            <a id="refund-btn" href="api/refund.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-info text-white hover:bg-warning hover:text-white btn-sm rounded-full">
+                                                            <i class="fas fa-undo text-base me-2"></i> Refund
                                                             </a>
-                                                            <a id="del-btn" href="api/refund.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-info text-white hover:bg-warning hover:text-white btn-sm rounded-full">
-                                                                <i class="mgc_delete_2_line text-base me-2"></i> Refund
-                                                            </a>
-                                                            <a id="del-btn" href="edit.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-success text-white hover:bg-warning hover:text-white btn-sm rounded-full">
-                                                                <i class="mgc_delete_2_line text-base me-2"></i> Edit
+                                                            <a id="edit-btn" href="edit.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-success text-white hover:bg-warning hover:text-white btn-sm rounded-full">
+                                                            <i class="fas fa-edit text-base me-2"></i> Edit
                                                             </a>
 
 

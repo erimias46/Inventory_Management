@@ -84,13 +84,17 @@ if (isset($_POST['add'])) {
     }
 
     // Loop through sizes and quantities to insert each size with quantity > 0
+    $total_quantity = 0;
     for ($i = 0; $i < count($sizes); $i++) {
         $size = $sizes[$i];
         $size_id = $size_ids[$i];
         $quantity = $quantities[$i];
+        
 
         // Insert only if the quantity is greater than zero
         if ($quantity > 0) {
+            $total_quantity++;
+
 
 
             $check_existing = "SELECT id, quantity FROM shoes 
@@ -144,6 +148,8 @@ if (isset($_POST['add'])) {
         $message .= "shoes Name: $shoes_name\n";
         $message .= "Price: $price\n";
         $message .= "Type: $type\n";
+        $message .="Total Quantity: $total_quantity\n";
+        
 
         $message .= "Sizes and Quantities:\n";
         for ($i = 0; $i < count($sizes); $i++) {
@@ -462,13 +468,37 @@ if ($result) {
                                             <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
 
                                             <!-- Quantity Input -->
-                                            <input type="number" min="0" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
+                                            <input type="number" min="0" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800 quantity-input" placeholder="Quantity for size <?php echo $size; ?>">
                                         </div>
                                     <?php
                                     }
                                     ?>
+                                    <div class="mt-4">
+        <label class="text-gray-800 text-sm font-medium">Total:</label>
+        <span id="total-quantity" class="text-black-800 text-sm font-bold">0</span>
+    </div>
                                 </div>
 
+                                
+
+
+    <script>
+    // JavaScript to calculate the total
+    document.addEventListener('DOMContentLoaded', function () {
+        const quantityInputs = document.querySelectorAll('.quantity-input');
+        const totalQuantitySpan = document.getElementById('total-quantity');
+
+        quantityInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                let total = 0;
+                quantityInputs.forEach(qty => {
+                    total += parseInt(qty.value) || 0; // Parse input value or default to 0
+                });
+                totalQuantitySpan.textContent = total; // Update total display
+            });
+        });
+    });
+</script>
 
 
 

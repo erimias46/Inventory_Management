@@ -34,7 +34,7 @@ if (isset($_GET['id'])) {
 
 if (isset($_POST['update'])) {
 
-    $shoes_name = $_POST['product_name'];
+    $product_name = $_POST['product_name'];
     $buy_price = $_POST['buy_price'];
     $selling_price = $_POST['price'];
     $image = $_FILES['image']['name'];
@@ -103,7 +103,7 @@ if (isset($_POST['update'])) {
 
 
 
-    $sql = "UPDATE $category SET buy_price = '$buy_price', price = '$selling_price', image = '$image_path' WHERE {$category}_name = '$shoes_name'";
+    $sql = "UPDATE $category SET {$category}_name='$product_name', buy_price = '$buy_price', price = '$selling_price', image = '$image_path' WHERE {$category}_name='$shoes_name'";
 
     $result = mysqli_query($con, $sql);
 

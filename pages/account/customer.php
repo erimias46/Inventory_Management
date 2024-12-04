@@ -142,7 +142,9 @@ if ($result) {
                                                         <?php if ($updateButtonVisible) : ?>
 
 
-                                                            <button type="button" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
+                                                            <button 
+                                                            id="edit-btn"
+                                                            type="button" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
                                                                 data-fc-type="modal" data-fc-target="edit<?= $row['customer_id'] ?>">
                                                                 <i class="mgc_pencil_line text-base me-2"></i>
                                                                 Edit

@@ -173,8 +173,8 @@ ORDER BY created_at DESC;
 
 
                                                                 <?php if ($row['verifiy'] != '1'): ?>
-                                                                    <a id="del-btn" href="api/verify.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-success text-white hover:bg-warning hover:text-white btn-sm rounded-full">
-                                                                        <i class="mgc_delete_2_line text-base me-2"></i> Verify
+                                                                    <a id="verify-btn" href="api/verify.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-success text-white hover:bg-warning hover:text-white btn-sm rounded-full">
+                                                                    <i class="fas fa-check-circle text-base me-2"></i> Verify
                                                                     </a>
 
                                                                 <?php endif; ?>

@@ -47,13 +47,16 @@
 </style>
 
 <script>
-$(document).ready(function() {
+$(document).ready(function () {
+    // Initialize DataTable
     $('#zero_config').DataTable();
+
+    // Delete Button Warning
     document.querySelectorAll('#del-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault()
-            const href = e.currentTarget.getAttribute('href')
-            console.log(href)
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const href = e.currentTarget.getAttribute('href');
+            console.log(href);
             swal({
                 title: "Are you sure?",
                 text: "Once deleted, you will not be able to recover this data!",
@@ -61,15 +64,103 @@ $(document).ready(function() {
                 buttons: true,
                 dangerMode: true,
             }).then((willDelete) => {
-                console.log(willDelete)
+                console.log(willDelete);
                 if (willDelete) {
                     document.location.href = href;
                 }
-            })
-        })
+            });
+        });
     });
-})
+
+    // Exchange Button Warning
+    document.querySelectorAll('#exchange-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const href = e.currentTarget.getAttribute('href');
+            console.log(href);
+            swal({
+                title: "Are you sure?",
+                text: "Once Exchanged, you will not be able to recover this data!",
+                icon: "info",
+                buttons: true,
+                dangerMode: false,
+            }).then((willDelete) => {
+                console.log(willDelete);
+                if (willDelete) {
+                    document.location.href = href;
+                }
+            });
+        });
+    });
+
+    // Refund Button Warning
+    document.querySelectorAll('#refund-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const href = e.currentTarget.getAttribute('href');
+            console.log(href);
+            swal({
+                title: "Refund Confirmation",
+                text: "Are you sure you want to process this refund?",
+                icon: "success",
+                buttons: ["Cancel", "Refund"],
+                dangerMode: false,
+            }).then((willRefund) => {
+                console.log(willRefund);
+                if (willRefund) {
+                    document.location.href = href;
+                }
+            });
+        });
+    });
+
+    // Edit Button Warning
+    document.querySelectorAll('#edit-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const href = e.currentTarget.getAttribute('href');
+            console.log(href);
+            swal({
+                title: "Edit Confirmation",
+                text: "Are you sure you want to edit this data?",
+                icon: "warning",
+                buttons: ["Cancel", "Edit"],
+                dangerMode: true,
+            }).then((willEdit) => {
+                console.log(willEdit);
+                if (willEdit) {
+                    document.location.href = href;
+                }
+            });
+        });
+    });
+
+
+    document.querySelectorAll('#verify-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const href = e.currentTarget.getAttribute('href');
+            swal({
+                title: "Verification Confirmation",
+                text: "Are you sure you want to verify this action?",
+                icon: "info",
+                buttons: ["Cancel", "Verify"],
+                dangerMode: false,
+            }).then((willVerify) => {
+                if (willVerify) {
+                    document.location.href = href;
+                }
+            });
+        });
+    });
+
+});
+
+
+
+
 </script>
+
 
 <?php
 

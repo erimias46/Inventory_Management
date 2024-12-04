@@ -210,7 +210,10 @@ if ($result) {
 
                                                         <?php if ($editsaleaccessory) : ?>
 
-                                                            <button type="button"
+                                                            <button
+                                                            id="edit-btn"
+                                                            
+                                                            type="button"
                                                                 class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
                                                                 data-fc-type="modal"
                                                                 data-fc-target="edit<?= $row['sales_id'] ?>">
@@ -230,7 +233,10 @@ if ($result) {
 
                                                         <?php if ($exchangesaleaccessory) : ?>
 
-                                                            <button type="button"
+                                                            <button 
+                                                            id="exchange-btn"
+                                                            
+                                                            type="button"
                                                                 class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full"
                                                                 data-fc-type="modal"
                                                                 data-fc-target="exchange<?= $row['sales_id'] ?>">

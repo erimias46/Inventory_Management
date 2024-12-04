@@ -66,6 +66,7 @@ $title = "All Products";
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Sold</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Total Recived</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+                                                    
 
 
 
@@ -299,12 +300,19 @@ ORDER BY created_at DESC;
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                                                             <?php echo $total_quantity ?>
                                                         </td>
-                                                        <td>
-                                                            <button class="bg bg-info  p-3 border-2  border text-center text-green-800">
-                                                                <a href="editprice.php?id=<?php echo $row['id']; ?>&category=<?php echo $row['category']; ?>">Set Price</a>
-                                                            
-                                                            </button>
-                                                        </td>
+                                                        
+
+<td>
+    <button 
+        class="p-3 border-2 text-center 
+        <?php echo ($row['price'] == 0) ? 'bg-red-500 text-white' : 'bg-green-500 text-white'; ?>">
+        <a href="editprice.php?id=<?php echo $row['id']; ?>&category=<?php echo $row['category']; ?>" 
+           class="block">
+            Set Price
+        </a>
+    </button>
+</td>
+                                                        
 
 
 

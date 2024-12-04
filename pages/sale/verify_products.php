@@ -133,7 +133,7 @@ if ($result) {
                                                         </td>
 
                                                         <td>
-                                                            <a href="api/verify_products.php?id=<?php echo $row['id']; ?>&from=<?php echo strtolower($row['item_type']); ?>" id="del-btn" class="btn bg-success/25 text-success hover:bg-success hover:text-white btn-sm rounded-full">
+                                                            <a id="verify-btn" href="api/verify_products.php?id=<?php echo $row['id']; ?>&from=<?php echo strtolower($row['item_type']); ?>"  class="btn bg-success/25 text-success hover:bg-success hover:text-white btn-sm rounded-full">
                                                                 <i class="mgc_check_circle_line text-base me-2"></i>
                                                                 Verify
                                                             </a>

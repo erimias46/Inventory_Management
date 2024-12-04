@@ -93,7 +93,7 @@ if (isset($_POST['add'])) {
 
         // Insert only if the quantity is greater than zero
         if ($quantity > 0) {
-            $total_quantity++;
+            $total_quantity += $quantity;
 
 
 
@@ -149,7 +149,7 @@ if (isset($_POST['add'])) {
         $message .= "Price: $price\n";
         $message .= "Type: $type\n";
         $message .="Total Quantity: $total_quantity\n";
-        
+
 
         $message .= "Sizes and Quantities:\n";
         for ($i = 0; $i < count($sizes); $i++) {

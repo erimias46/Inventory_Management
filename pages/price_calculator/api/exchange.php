@@ -63,9 +63,16 @@ $side_link = "../../../";
             $result_add = mysqli_query($con, $add_jeans);
 
             if ($result_add) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+                if(isset($place)) {
+                    echo "<script>window.location = '../sale/action.php?status=error&redirect=all_sales.php'; </script>";
+                } else {
+                    echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+                }
+                // echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
                 
             }
+           
+
 
             exit;
 
@@ -95,8 +102,12 @@ $side_link = "../../../";
                 $result_add = mysqli_query($con, $add_jeans);
 
                 if ($result_add) {
-                    echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
-                    exit;
+                    if(isset($place)) {
+                        echo "<script>window.location = '../sale/action.php?status=error&redirect=all_sales.php'; </script>";
+                    } else {
+                        echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+                    }
+
                 }
 
                 exit;
@@ -130,7 +141,13 @@ $side_link = "../../../";
                 }
                 
             } else {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+
+                if(isset($place)) {
+                    echo "<script>window.location = '../sale/action.php?status=error&redirect=all_sales.php'; </script>";
+                } else {
+                    echo "<script>window.location = 'action.php?status=error&redirect=sale_jeans.php'; </script>";
+                }
+               
             }
 
             $status = "Exchange Sell";

@@ -124,7 +124,7 @@ if (isset($_POST['add'])) {
 
 
 
-                $add_jeans_product = "INSERT INTO product(product_name, product_type, size, `type`, image, price, quantity, source_table) 
+                $add_jeans_product = "INSERT INTO products(product_name, product_type, size, `type`, image, price, quantity, source_table) 
                       VALUES ('$shoes_name', '$product_type', '$size', '$type', '$image_path', '$price', '$quantity', '$source_table')";
                 mysqli_query($con, $add_jeans_product);
 
@@ -303,89 +303,112 @@ if ($result) {
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 
 
-                                <div class="relative mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="shoes_name">Shoes Name</label>
-                                    <div class="relative">
-                                        <input
-                                            type="text"
-                                            name="shoes_name"
-                                            id="shoes_name"
-                                            value="<?php if (isset($shoes_name)) echo $shoes_name ?>"
-                                            class="form-input w-full"
-                                            autocomplete="off"
-                                            required
-                                            oninput="filterOptions(this.value)"
-                                            onblur="handleBlur()">
-                                        <div id="dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto hidden">
-                                            <?php
-                                            $sql10 = "SELECT DISTINCT shoes_name FROM shoes";
-                                            $result10 = $con->query($sql10);
+                            <div class="relative mb-3">
+    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="shoes_name">Shoes Name</label>
+    <div class="relative">
+        <input
+            type="text"
+            name="shoes_name"
+            id="shoes_name"
+            value="<?php if (isset($shoes_name)) echo $shoes_name ?>"
+            class="form-input w-full"
+            autocomplete="off"
+            required
+            oninput="filterOptions(this.value)"
+            onblur="handleBlur()">
+        <div id="dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto hidden">
+            <?php
+            $sql10 = "SELECT DISTINCT shoes_name FROM shoes";
+            $result10 = $con->query($sql10);
 
-                                            if ($result10->num_rows > 0) {
-                                                while ($row10 = $result10->fetch_assoc()) {
-                                                    echo "<div class='option px-4 py-2 hover:bg-gray-100 cursor-pointer' onclick='selectOption(this.innerText)'>" .
-                                                        htmlspecialchars($row10['shoes_name']) .
-                                                        "</div>";
-                                                }
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
-                                </div>
+            if ($result10->num_rows > 0) {
+                while ($row10 = $result10->fetch_assoc()) {
+                    echo "<div class='option px-4 py-2 hover:bg-gray-100 cursor-pointer' onclick='selectOption(this.innerText)'>" .
+                        htmlspecialchars($row10['shoes_name']) .
+                        "</div>";
+                }
+            }
+            ?>
+        </div>
+    </div>
+</div>
 
 
-                                <script>
-                                    function filterOptions(searchText) {
-                                        const dropdown = document.getElementById('dropdown');
-                                        const options = dropdown.getElementsByClassName('option');
+<script>
+    function filterOptions(searchText) {
+        const dropdown = document.getElementById('dropdown');
+        const options = dropdown.getElementsByClassName('option');
 
-                                        dropdown.classList.remove('hidden');
+        dropdown.classList.remove('hidden');
 
-                                        for (let option of options) {
-                                            const text = option.innerText.toLowerCase();
-                                            const search = searchText.toLowerCase();
+        for (let option of options) {
+            const text = option.innerText.toLowerCase();
+            const search = searchText.toLowerCase();
 
-                                            if (text.includes(search)) {
-                                                option.style.display = '';
-                                            } else {
-                                                option.style.display = 'none';
-                                            }
-                                        }
-                                    }
+            if (text.includes(search)) {
+                option.style.display = '';
+            } else {
+                option.style.display = 'none';
+            }
+        }
+    }
 
-                                    function selectOption(value) {
-                                        document.getElementById('shoes_name').value = value;
-                                        document.getElementById('dropdown').classList.add('hidden');
-                                    }
+    function selectOption(value) {
+        const input = document.getElementById('shoes_name');
+        const preview = document.getElementById('imagePreview');
 
-                                    function handleBlur() {
-                                        // Delay hiding dropdown to allow click events to register
-                                        setTimeout(() => {
-                                            document.getElementById('dropdown').classList.add('hidden');
-                                        }, 200);
-                                    }
+        input.value = value;
+        document.getElementById('dropdown').classList.add('hidden');
 
-                                    // Show dropdown when clicking input
-                                    document.getElementById('shoes_name').addEventListener('click', function() {
-                                        document.getElementById('dropdown').classList.remove('hidden');
-                                        filterOptions(this.value);
-                                    });
-                                </script>
+        // Fetch the image dynamically
+        fetch(`get_shoe_image.php?shoes_name=${encodeURIComponent(value)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.image_path) {
+                    preview.innerHTML = `<img src="${data.image_path}" alt="Shoes Image" />`;
+                } else {
+                    preview.innerHTML = `<img src="../../../include/uploads/defaultshoes.jpg" alt="Default Shoes Image" />`;
+                }
+            })
+            .catch(() => {
+                preview.innerHTML = `<img src="../../../include/uploads/defaultshoes.jpg" alt="Default Shoes Image" />`;
+            });
+    }
 
-                                <style>
-                                    .form-input {
-                                        width: 100%;
-                                        padding: 0.5rem;
-                                        border: 1px solid #e2e8f0;
-                                        border-radius: 0.375rem;
-                                    }
+    function handleBlur() {
+        setTimeout(() => {
+            document.getElementById('dropdown').classList.add('hidden');
+        }, 200);
+    }
 
-                                    .form-input:focus {
-                                        outline: none;
-                                        border-color: #4f46e5;
-                                        box-shadow: 0 0 0 1px #4f46e5;
-                                    }
-                                </style>
+    document.getElementById('shoes_name').addEventListener('click', function() {
+        document.getElementById('dropdown').classList.remove('hidden');
+        filterOptions(this.value);
+    });
+</script>
+
+<style>
+    .form-input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.375rem;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 1px #4f46e5;
+    }
+
+    .image-preview img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-top: 10px;
+    }
+</style>
+
 
 
 
@@ -440,11 +463,26 @@ if ($result) {
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <div class="image-preview" id="imagePreview">
-                                        <!-- The selected image will be displayed here -->
-                                        <img src="../../../include/uploads/defaultshoes.jpg" />
-                                    </div>
-                                </div>
+    <div class="image-preview" id="imagePreview">
+        <?php
+        if (isset($shoes_name)) {
+            $sql = "SELECT image FROM shoes WHERE shoes_name='" . mysqli_real_escape_string($con, $shoes_name) . "'";
+            $result = mysqli_query($con, $sql);
+            $row = mysqli_fetch_assoc($result);
+
+            if ($row && file_exists('../../../include/' . $row['image'])) {
+                $image_path = '../../../include/' . $row['image'];
+                echo "<img src='$image_path' alt='Shoes Image' />";
+            } else {
+                echo "<img src='../../../include/uploads/defaultshoes.jpg' alt='Default Shoes Image' />";
+            }
+        } else {
+            echo "<img src='../../../include/uploads/defaultshoes.jpg' alt='Default Shoes Image' />";
+        }
+        ?>
+    </div>
+</div>
+
 
 
                                 <div class="mb-3">

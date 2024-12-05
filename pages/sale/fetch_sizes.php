@@ -24,19 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Check if the table is 'jeans' to include the 'type' filter
         // Define the log function
-        function logMessage($message)
-        {
-            $logFile = 'debug_log.txt';
-            $currentDate = date('Y-m-d H:i:s');
-            
-        }
+        
 
         if ($table === 'jeans') {
             $size_table = $size_tables[$table];
 
-            logMessage("Table selected: $table");
-            logMessage("Size table used: $size_table");
-            logMessage("Code name: $code_name");
+           
 
             // Query to get type for selected code_name
             $type_sql = "SELECT * FROM jeans WHERE jeans_name = '$code_name'";
@@ -49,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($type_result && $type_row = $type_result->fetch_assoc()) {
                 $type = (int) $type_row['size_t'];
-                logMessage("Type retrieved: $type");
+                
 
                 // Query to get sizes for jeans with the specified type
                 $sql = "SELECT DISTINCT size FROM $size_table WHERE type = $type";
@@ -60,11 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $sizes[] = $row['size'];
                 }
 
-                logMessage("Sizes found: " . implode(", ", $sizes));
+               
 
                 echo json_encode($sizes);
             } else {
-                logMessage("No type found for code name: $code_name");
+
+                echo json_encode(['error'=> 'No type found']);
             }
         }
 

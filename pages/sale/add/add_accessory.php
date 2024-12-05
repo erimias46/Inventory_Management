@@ -84,13 +84,17 @@ if (isset($_POST['add'])) {
     }
 
     // Loop through sizes and quantities to insert each size with quantity > 0
+    $total_quantity = 0;
     for ($i = 0; $i < count($sizes); $i++) {
         $size = $sizes[$i];
         $size_id = $size_ids[$i];
         $quantity = $quantities[$i];
+        
 
         // Insert only if the quantity is greater than zero
         if ($quantity > 0) {
+            $total_quantity += $quantity;
+
 
 
             $check_existing = "SELECT id, quantity FROM accessory 
@@ -114,14 +118,19 @@ if (isset($_POST['add'])) {
                 mysqli_stmt_bind_param($stmt, "ii", $new_quantity, $row['id']);
                 mysqli_stmt_execute($stmt);
 
-                // Update the product table
                 $source_table = 'accessory';
                 $product_type = 'accessory';
 
 
-                $add_jeans_product = "INSERT INTO product(product_name, product_type, size, `type`, image, price, quantity, source_table) 
+
+
+                $add_jeans_product = "INSERT INTO products(product_name, product_type, size, `type`, image, price, quantity, source_table) 
                       VALUES ('$accessory_name', '$product_type', '$size', '$type', '$image_path', '$price', '$quantity', '$source_table')";
                 mysqli_query($con, $add_jeans_product);
+
+
+
+
             } else {
 
                 $add_accessory = "INSERT INTO accessory(accessory_name, size, size_id, image, price,type_id, type, quantity,active) 
@@ -139,6 +148,8 @@ if (isset($_POST['add'])) {
         $message .= "accessory Name: $accessory_name\n";
         $message .= "Price: $price\n";
         $message .= "Type: $type\n";
+        $message .="Total Quantity: $total_quantity\n";
+
 
         $message .= "Sizes and Quantities:\n";
         for ($i = 0; $i < count($sizes); $i++) {
@@ -280,100 +291,124 @@ if ($result) {
                         <div class="card-header">
                             <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium"><?= $title ?></h4>
                             <div class="text-end">
-                                <button class="btn btn-sm bg-success text-white rounded-full" onclick="window.location.href='add_shoes.php'">Add Shoes</button>
+                                <button class="btn btn-sm bg-success text-white rounded-full" onclick="window.location.href='add_product.php'">Add Jeans</button>
                                 <button class="btn btn-sm bg-warning text-white rounded-full" onclick="window.location.href='add_top.php'">Add Top</button>
-                                <button class="btn btn-sm bg-danger text-white rounded-full" onclick="window.location.href='add_product.php'">Add Jeans</button>
+                                <button class="btn btn-sm bg-danger text-white rounded-full" onclick="window.location.href='add_accessory.php'">Add Accessory</button>
                                 <button class="btn btn-sm bg-info text-white rounded-full" onclick="window.location.href='add_complete.php'">Add Complete</button>
                             </div>
+
                         </div>
                         <div class="p-6">
 
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 
 
-                                <div class="relative mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="accessory_name">Accessory Name</label>
-                                    <div class="relative">
-                                        <input
-                                            type="text"
-                                            name="accessory_name"
-                                            id="accessory_name"
-                                            value="<?php if (isset($accessory_name)) echo $accessory_name ?>"
-                                            class="form-input w-full"
-                                            autocomplete="off"
-                                            required
-                                            oninput="filterOptions(this.value)"
-                                            onblur="handleBlur()">
-                                        <div id="dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto hidden">
-                                            <?php
-                                            $sql10 = "SELECT DISTINCT accessory_name FROM accessory";
-                                            $result10 = $con->query($sql10);
+                            <div class="relative mb-3">
+    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="accessory_name">accessory Name</label>
+    <div class="relative">
+        <input
+            type="text"
+            name="accessory_name"
+            id="accessory_name"
+            value="<?php if (isset($accessory_name)) echo $accessory_name ?>"
+            class="form-input w-full"
+            autocomplete="off"
+            required
+            oninput="filterOptions(this.value)"
+            onblur="handleBlur()">
+        <div id="dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto hidden">
+            <?php
+            $sql10 = "SELECT DISTINCT accessory_name FROM accessory";
+            $result10 = $con->query($sql10);
 
-                                            if ($result10->num_rows > 0) {
-                                                while ($row10 = $result10->fetch_assoc()) {
-                                                    echo "<div class='option px-4 py-2 hover:bg-gray-100 cursor-pointer' onclick='selectOption(this.innerText)'>" .
-                                                        htmlspecialchars($row10['accessory_name']) .
-                                                        "</div>";
-                                                }
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
-                                </div>
+            if ($result10->num_rows > 0) {
+                while ($row10 = $result10->fetch_assoc()) {
+                    echo "<div class='option px-4 py-2 hover:bg-gray-100 cursor-pointer' onclick='selectOption(this.innerText)'>" .
+                        htmlspecialchars($row10['accessory_name']) .
+                        "</div>";
+                }
+            }
+            ?>
+        </div>
+    </div>
+</div>
 
 
-                                <script>
-                                    function filterOptions(searchText) {
-                                        const dropdown = document.getElementById('dropdown');
-                                        const options = dropdown.getElementsByClassName('option');
+<script>
+    function filterOptions(searchText) {
+        const dropdown = document.getElementById('dropdown');
+        const options = dropdown.getElementsByClassName('option');
 
-                                        dropdown.classList.remove('hidden');
+        dropdown.classList.remove('hidden');
 
-                                        for (let option of options) {
-                                            const text = option.innerText.toLowerCase();
-                                            const search = searchText.toLowerCase();
+        for (let option of options) {
+            const text = option.innerText.toLowerCase();
+            const search = searchText.toLowerCase();
 
-                                            if (text.includes(search)) {
-                                                option.style.display = '';
-                                            } else {
-                                                option.style.display = 'none';
-                                            }
-                                        }
-                                    }
+            if (text.includes(search)) {
+                option.style.display = '';
+            } else {
+                option.style.display = 'none';
+            }
+        }
+    }
 
-                                    function selectOption(value) {
-                                        document.getElementById('accessory_name').value = value;
-                                        document.getElementById('dropdown').classList.add('hidden');
-                                    }
+    function selectOption(value) {
+        const input = document.getElementById('accessory_name');
+        const preview = document.getElementById('imagePreview');
 
-                                    function handleBlur() {
-                                        // Delay hiding dropdown to allow click events to register
-                                        setTimeout(() => {
-                                            document.getElementById('dropdown').classList.add('hidden');
-                                        }, 200);
-                                    }
+        input.value = value;
+        document.getElementById('dropdown').classList.add('hidden');
 
-                                    // Show dropdown when clicking input
-                                    document.getElementById('accessory_name').addEventListener('click', function() {
-                                        document.getElementById('dropdown').classList.remove('hidden');
-                                        filterOptions(this.value);
-                                    });
-                                </script>
+        // Fetch the image dynamically
+        fetch(`get_accessory_image.php?accessory_name=${encodeURIComponent(value)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.image_path) {
+                    preview.innerHTML = `<img src="${data.image_path}" alt="accessory Image" />`;
+                } else {
+                    preview.innerHTML = `<img src="../../../include/uploads/defaultaccessory.jpg" alt="Default accessory Image" />`;
+                }
+            })
+            .catch(() => {
+                preview.innerHTML = `<img src="../../../include/uploads/defaultaccessory.jpg" alt="Default accessory Image" />`;
+            });
+    }
 
-                                <style>
-                                    .form-input {
-                                        width: 100%;
-                                        padding: 0.5rem;
-                                        border: 1px solid #e2e8f0;
-                                        border-radius: 0.375rem;
-                                    }
+    function handleBlur() {
+        setTimeout(() => {
+            document.getElementById('dropdown').classList.add('hidden');
+        }, 200);
+    }
 
-                                    .form-input:focus {
-                                        outline: none;
-                                        border-color: #4f46e5;
-                                        box-shadow: 0 0 0 1px #4f46e5;
-                                    }
-                                </style>
+    document.getElementById('accessory_name').addEventListener('click', function() {
+        document.getElementById('dropdown').classList.remove('hidden');
+        filterOptions(this.value);
+    });
+</script>
+
+<style>
+    .form-input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.375rem;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 1px #4f46e5;
+    }
+
+    .image-preview img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-top: 10px;
+    }
+</style>
+
 
 
 
@@ -428,15 +463,30 @@ if ($result) {
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <div class="image-preview" id="imagePreview">
-                                        <!-- The selected image will be displayed here -->
-                                        <img src="../../../include/uploads/defaultaccessory.jpg" />
-                                    </div>
-                                </div>
+    <div class="image-preview" id="imagePreview">
+        <?php
+        if (isset($accessory_name)) {
+            $sql = "SELECT image FROM accessory WHERE accessory_name='" . mysqli_real_escape_string($con, $accessory_name) . "'";
+            $result = mysqli_query($con, $sql);
+            $row = mysqli_fetch_assoc($result);
+
+            if ($row && file_exists('../../../include/' . $row['image'])) {
+                $image_path = '../../../include/' . $row['image'];
+                echo "<img src='$image_path' alt='accessory Image' />";
+            } else {
+                echo "<img src='../../../include/uploads/defaultaccessory.jpg' alt='Default accessory Image' />";
+            }
+        } else {
+            echo "<img src='../../../include/uploads/defaultaccessory.jpg' alt='Default accessory Image' />";
+        }
+        ?>
+    </div>
+</div>
+
 
 
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Accessory Sizes and Quantities</label>
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">accessory Sizes and Quantities</label>
 
                                     <?php
                                     // Fetch all sizes from the `accessorydb` table
@@ -456,13 +506,37 @@ if ($result) {
                                             <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
 
                                             <!-- Quantity Input -->
-                                            <input type="number" min="0" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
+                                            <input type="number" min="0" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800 quantity-input" placeholder="Quantity for size <?php echo $size; ?>">
                                         </div>
                                     <?php
                                     }
                                     ?>
+                                    <div class="mt-4">
+        <label class="text-gray-800 text-sm font-medium">Total:</label>
+        <span id="total-quantity" class="text-black-800 text-sm font-bold">0</span>
+    </div>
                                 </div>
 
+                                
+
+
+    <script>
+    // JavaScript to calculate the total
+    document.addEventListener('DOMContentLoaded', function () {
+        const quantityInputs = document.querySelectorAll('.quantity-input');
+        const totalQuantitySpan = document.getElementById('total-quantity');
+
+        quantityInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                let total = 0;
+                quantityInputs.forEach(qty => {
+                    total += parseInt(qty.value) || 0; // Parse input value or default to 0
+                });
+                totalQuantitySpan.textContent = total; // Update total display
+            });
+        });
+    });
+</script>
 
 
 
@@ -529,22 +603,7 @@ if ($result) {
     </script>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fetch suggestions for customer names from the server and populate the datalist
-            fetch('getcust.php')
-                .then(response => response.json())
-                .then(data => {
-                    const datalist = document.getElementById('customer_names');
-                    datalist.innerHTML = ''; // Clear previous options
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item; // Customer name
-                        datalist.appendChild(option);
-                    });
-                });
-        });
-    </script>
+    
 </body>
 
 </html>
@@ -560,21 +619,3 @@ if ($result) {
 
 
 
-<script>
-    document.getElementById('accessory_types').addEventListener('focus', function() {
-        // Fetch suggestions from the server and populate the datalist
-        fetch('get_job_types.php?database=accessory')
-            .then(response => response.json())
-            .then(data => {
-                const datalist = document.getElementById('accessory_types');
-                datalist.innerHTML = ''; // Clear previous options
-                data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.job_type; // Adjust to match your database field
-                    datalist.appendChild(option);
-                });
-            });
-    });
-</script>
-
-<script src="../../assets/libs/dropzone/min/dropzone.min.js"></script>

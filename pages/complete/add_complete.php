@@ -122,7 +122,7 @@ if (isset($_POST['add'])) {
 
 
 
-                $add_jeans_product = "INSERT INTO product(product_name, product_type, size, `type`, image, price, quantity, source_table) 
+                $add_jeans_product = "INSERT INTO products(product_name, product_type, size, `type`, image, price, quantity, source_table) 
                       VALUES ('$complete_name', '$product_type', '$size', '$type', '$image_path', '$price', '$quantity', '$source_table')";
                 mysqli_query($con, $add_jeans_product);
             } else {

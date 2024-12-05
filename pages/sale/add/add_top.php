@@ -144,11 +144,12 @@ if (isset($_POST['add'])) {
 
     if ($add_top || $update_query) {
 
-        $message = "New top Added:\n";
-        $message .= "top Name: $top_name\n";
-        $message .= "Price: $price\n";
-        $message .= "Type: $type\n";
-        $message .="Total Quantity: $total_quantity\n";
+        $message = "👚 **New Top Added!** 🎉\n";
+        $message .= "📛 **Top Name:** $top_name\n";
+        $message .= "💲 **Price:** $price\n";
+        $message .= "📦 **Type:** $type\n";
+        $message .= "🔢 **Total Quantity:** $total_quantity\n";
+        
 
 
         $message .= "Sizes and Quantities:\n";

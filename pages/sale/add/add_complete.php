@@ -89,7 +89,7 @@ if (isset($_POST['add'])) {
         $size = $sizes[$i];
         $size_id = $size_ids[$i];
         $quantity = $quantities[$i];
-        
+
 
         // Insert only if the quantity is greater than zero
         if ($quantity > 0) {
@@ -127,10 +127,6 @@ if (isset($_POST['add'])) {
                 $add_jeans_product = "INSERT INTO products(product_name, product_type, size, `type`, image, price, quantity, source_table) 
                       VALUES ('$complete_name', '$product_type', '$size', '$type', '$image_path', '$price', '$quantity', '$source_table')";
                 mysqli_query($con, $add_jeans_product);
-
-
-
-
             } else {
 
                 $add_complete = "INSERT INTO complete(complete_name, size, size_id, image, price,type_id, type, quantity,active) 
@@ -144,11 +140,11 @@ if (isset($_POST['add'])) {
 
     if ($add_complete || $update_query) {
 
-        $message = "New complete Added:\n";
-        $message .= "complete Name: $complete_name\n";
-        $message .= "Price: $price\n";
-        $message .= "Type: $type\n";
-        $message .="Total Quantity: $total_quantity\n";
+        $message = "➕ New Complete Added:\n";
+        $message .= "📦 Complete Name: $complete_name\n";
+        $message .= "💲 Price: $price\n";
+        $message .= "📦 Type: $type\n";
+        $message .= "📦 Total Quantity: $total_quantity\n";
 
 
         $message .= "Sizes and Quantities:\n";
@@ -303,111 +299,111 @@ if ($result) {
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 
 
-                            <div class="relative mb-3">
-    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="complete_name">complete Name</label>
-    <div class="relative">
-        <input
-            type="text"
-            name="complete_name"
-            id="complete_name"
-            value="<?php if (isset($complete_name)) echo $complete_name ?>"
-            class="form-input w-full"
-            autocomplete="off"
-            required
-            oninput="filterOptions(this.value)"
-            onblur="handleBlur()">
-        <div id="dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto hidden">
-            <?php
-            $sql10 = "SELECT DISTINCT complete_name FROM complete";
-            $result10 = $con->query($sql10);
+                                <div class="relative mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="complete_name">complete Name</label>
+                                    <div class="relative">
+                                        <input
+                                            type="text"
+                                            name="complete_name"
+                                            id="complete_name"
+                                            value="<?php if (isset($complete_name)) echo $complete_name ?>"
+                                            class="form-input w-full"
+                                            autocomplete="off"
+                                            required
+                                            oninput="filterOptions(this.value)"
+                                            onblur="handleBlur()">
+                                        <div id="dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto hidden">
+                                            <?php
+                                            $sql10 = "SELECT DISTINCT complete_name FROM complete";
+                                            $result10 = $con->query($sql10);
 
-            if ($result10->num_rows > 0) {
-                while ($row10 = $result10->fetch_assoc()) {
-                    echo "<div class='option px-4 py-2 hover:bg-gray-100 cursor-pointer' onclick='selectOption(this.innerText)'>" .
-                        htmlspecialchars($row10['complete_name']) .
-                        "</div>";
-                }
-            }
-            ?>
-        </div>
-    </div>
-</div>
+                                            if ($result10->num_rows > 0) {
+                                                while ($row10 = $result10->fetch_assoc()) {
+                                                    echo "<div class='option px-4 py-2 hover:bg-gray-100 cursor-pointer' onclick='selectOption(this.innerText)'>" .
+                                                        htmlspecialchars($row10['complete_name']) .
+                                                        "</div>";
+                                                }
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
 
 
-<script>
-    function filterOptions(searchText) {
-        const dropdown = document.getElementById('dropdown');
-        const options = dropdown.getElementsByClassName('option');
+                                <script>
+                                    function filterOptions(searchText) {
+                                        const dropdown = document.getElementById('dropdown');
+                                        const options = dropdown.getElementsByClassName('option');
 
-        dropdown.classList.remove('hidden');
+                                        dropdown.classList.remove('hidden');
 
-        for (let option of options) {
-            const text = option.innerText.toLowerCase();
-            const search = searchText.toLowerCase();
+                                        for (let option of options) {
+                                            const text = option.innerText.toLowerCase();
+                                            const search = searchText.toLowerCase();
 
-            if (text.includes(search)) {
-                option.style.display = '';
-            } else {
-                option.style.display = 'none';
-            }
-        }
-    }
+                                            if (text.includes(search)) {
+                                                option.style.display = '';
+                                            } else {
+                                                option.style.display = 'none';
+                                            }
+                                        }
+                                    }
 
-    function selectOption(value) {
-        const input = document.getElementById('complete_name');
-        const preview = document.getElementById('imagePreview');
+                                    function selectOption(value) {
+                                        const input = document.getElementById('complete_name');
+                                        const preview = document.getElementById('imagePreview');
 
-        input.value = value;
-        document.getElementById('dropdown').classList.add('hidden');
+                                        input.value = value;
+                                        document.getElementById('dropdown').classList.add('hidden');
 
-        // Fetch the image dynamically
-        fetch(`get_complete_image.php?complete_name=${encodeURIComponent(value)}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.image_path) {
-                    preview.innerHTML = `<img src="${data.image_path}" alt="complete Image" />`;
-                } else {
-                    preview.innerHTML = `<img src="../../../include/uploads/defaultcomplete.jpg" alt="Default complete Image" />`;
-                }
-            })
-            .catch(() => {
-                preview.innerHTML = `<img src="../../../include/uploads/defaultcomplete.jpg" alt="Default complete Image" />`;
-            });
-    }
+                                        // Fetch the image dynamically
+                                        fetch(`get_complete_image.php?complete_name=${encodeURIComponent(value)}`)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success && data.image_path) {
+                                                    preview.innerHTML = `<img src="${data.image_path}" alt="complete Image" />`;
+                                                } else {
+                                                    preview.innerHTML = `<img src="../../../include/uploads/defaultcomplete.jpg" alt="Default complete Image" />`;
+                                                }
+                                            })
+                                            .catch(() => {
+                                                preview.innerHTML = `<img src="../../../include/uploads/defaultcomplete.jpg" alt="Default complete Image" />`;
+                                            });
+                                    }
 
-    function handleBlur() {
-        setTimeout(() => {
-            document.getElementById('dropdown').classList.add('hidden');
-        }, 200);
-    }
+                                    function handleBlur() {
+                                        setTimeout(() => {
+                                            document.getElementById('dropdown').classList.add('hidden');
+                                        }, 200);
+                                    }
 
-    document.getElementById('complete_name').addEventListener('click', function() {
-        document.getElementById('dropdown').classList.remove('hidden');
-        filterOptions(this.value);
-    });
-</script>
+                                    document.getElementById('complete_name').addEventListener('click', function() {
+                                        document.getElementById('dropdown').classList.remove('hidden');
+                                        filterOptions(this.value);
+                                    });
+                                </script>
 
-<style>
-    .form-input {
-        width: 100%;
-        padding: 0.5rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.375rem;
-    }
+                                <style>
+                                    .form-input {
+                                        width: 100%;
+                                        padding: 0.5rem;
+                                        border: 1px solid #e2e8f0;
+                                        border-radius: 0.375rem;
+                                    }
 
-    .form-input:focus {
-        outline: none;
-        border-color: #4f46e5;
-        box-shadow: 0 0 0 1px #4f46e5;
-    }
+                                    .form-input:focus {
+                                        outline: none;
+                                        border-color: #4f46e5;
+                                        box-shadow: 0 0 0 1px #4f46e5;
+                                    }
 
-    .image-preview img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-        margin-top: 10px;
-    }
-</style>
+                                    .image-preview img {
+                                        max-width: 100%;
+                                        height: auto;
+                                        display: block;
+                                        margin-top: 10px;
+                                    }
+                                </style>
 
 
 
@@ -463,25 +459,25 @@ if ($result) {
                                     </div>
                                 </div>
                                 <div class="mb-3">
-    <div class="image-preview" id="imagePreview">
-        <?php
-        if (isset($complete_name)) {
-            $sql = "SELECT image FROM complete WHERE complete_name='" . mysqli_real_escape_string($con, $complete_name) . "'";
-            $result = mysqli_query($con, $sql);
-            $row = mysqli_fetch_assoc($result);
+                                    <div class="image-preview" id="imagePreview">
+                                        <?php
+                                        if (isset($complete_name)) {
+                                            $sql = "SELECT image FROM complete WHERE complete_name='" . mysqli_real_escape_string($con, $complete_name) . "'";
+                                            $result = mysqli_query($con, $sql);
+                                            $row = mysqli_fetch_assoc($result);
 
-            if ($row && file_exists('../../../include/' . $row['image'])) {
-                $image_path = '../../../include/' . $row['image'];
-                echo "<img src='$image_path' alt='complete Image' />";
-            } else {
-                echo "<img src='../../../include/uploads/defaultcomplete.jpg' alt='Default complete Image' />";
-            }
-        } else {
-            echo "<img src='../../../include/uploads/defaultcomplete.jpg' alt='Default complete Image' />";
-        }
-        ?>
-    </div>
-</div>
+                                            if ($row && file_exists('../../../include/' . $row['image'])) {
+                                                $image_path = '../../../include/' . $row['image'];
+                                                echo "<img src='$image_path' alt='complete Image' />";
+                                            } else {
+                                                echo "<img src='../../../include/uploads/defaultcomplete.jpg' alt='Default complete Image' />";
+                                            }
+                                        } else {
+                                            echo "<img src='../../../include/uploads/defaultcomplete.jpg' alt='Default complete Image' />";
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
 
 
 
@@ -512,31 +508,31 @@ if ($result) {
                                     }
                                     ?>
                                     <div class="mt-4">
-        <label class="text-gray-800 text-sm font-medium">Total:</label>
-        <span id="total-quantity" class="text-black-800 text-sm font-bold">0</span>
-    </div>
+                                        <label class="text-gray-800 text-sm font-medium">Total:</label>
+                                        <span id="total-quantity" class="text-black-800 text-sm font-bold">0</span>
+                                    </div>
                                 </div>
 
-                                
 
 
-    <script>
-    // JavaScript to calculate the total
-    document.addEventListener('DOMContentLoaded', function () {
-        const quantityInputs = document.querySelectorAll('.quantity-input');
-        const totalQuantitySpan = document.getElementById('total-quantity');
 
-        quantityInputs.forEach(input => {
-            input.addEventListener('input', () => {
-                let total = 0;
-                quantityInputs.forEach(qty => {
-                    total += parseInt(qty.value) || 0; // Parse input value or default to 0
-                });
-                totalQuantitySpan.textContent = total; // Update total display
-            });
-        });
-    });
-</script>
+                                <script>
+                                    // JavaScript to calculate the total
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const quantityInputs = document.querySelectorAll('.quantity-input');
+                                        const totalQuantitySpan = document.getElementById('total-quantity');
+
+                                        quantityInputs.forEach(input => {
+                                            input.addEventListener('input', () => {
+                                                let total = 0;
+                                                quantityInputs.forEach(qty => {
+                                                    total += parseInt(qty.value) || 0; // Parse input value or default to 0
+                                                });
+                                                totalQuantitySpan.textContent = total; // Update total display
+                                            });
+                                        });
+                                    });
+                                </script>
 
 
 
@@ -603,19 +599,7 @@ if ($result) {
     </script>
 
 
-    
+
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

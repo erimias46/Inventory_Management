@@ -144,11 +144,11 @@ if (isset($_POST['add'])) {
 
     if ($add_accessory || $update_query) {
 
-        $message = "New accessory Added:\n";
-        $message .= "accessory Name: $accessory_name\n";
-        $message .= "Price: $price\n";
-        $message .= "Type: $type\n";
-        $message .="Total Quantity: $total_quantity\n";
+        $message = "➕ New Accessory Added:\n";
+        $message .= "👓 Accessory Name: $accessory_name\n";
+        $message .= "💲 Price: $price\n";
+        $message .= "👓 Type: $type\n";
+        $message .= "📦 Total Quantity: $total_quantity\n";
 
 
         $message .= "Sizes and Quantities:\n";

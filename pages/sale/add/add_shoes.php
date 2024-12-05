@@ -144,11 +144,11 @@ if (isset($_POST['add'])) {
 
     if ($add_shoes || $update_query) {
 
-        $message = "New shoes Added:\n";
-        $message .= "shoes Name: $shoes_name\n";
-        $message .= "Price: $price\n";
-        $message .= "Type: $type\n";
-        $message .="Total Quantity: $total_quantity\n";
+        $message = "➕ New Shoes Added:\n";
+        $message .= "👟 Shoes Name: $shoes_name\n";
+        $message .= "💲 Price: $price\n";
+        $message .= "👞 Type: $type\n";
+        $message .= "📦 Total Quantity: $total_quantity\n";
 
 
         $message .= "Sizes and Quantities:\n";
@@ -162,7 +162,7 @@ if (isset($_POST['add'])) {
 
 
 
-        $subject = "New shoes Added";
+        $subject = "👟New shoes Added";
 
         sendMessageToSubscribers($message, $con);
         sendEmailToSubscribers($message, $subject, $con);
@@ -603,22 +603,7 @@ if ($result) {
     </script>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fetch suggestions for customer names from the server and populate the datalist
-            fetch('getcust.php')
-                .then(response => response.json())
-                .then(data => {
-                    const datalist = document.getElementById('customer_names');
-                    datalist.innerHTML = ''; // Clear previous options
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item; // Customer name
-                        datalist.appendChild(option);
-                    });
-                });
-        });
-    </script>
+    
 </body>
 
 </html>
@@ -634,21 +619,4 @@ if ($result) {
 
 
 
-<script>
-    document.getElementById('shoes_types').addEventListener('focus', function() {
-        // Fetch suggestions from the server and populate the datalist
-        fetch('get_job_types.php?database=shoes')
-            .then(response => response.json())
-            .then(data => {
-                const datalist = document.getElementById('shoes_types');
-                datalist.innerHTML = ''; // Clear previous options
-                data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.job_type; // Adjust to match your database field
-                    datalist.appendChild(option);
-                });
-            });
-    });
-</script>
 
-<script src="../../assets/libs/dropzone/min/dropzone.min.js"></script>

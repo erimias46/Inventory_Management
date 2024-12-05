@@ -72,7 +72,12 @@ if (isset($_POST['add'])) {
 
             if (!$row) {
                 // Handle verification for missing size
-                $verify_message = "Verify Needed for product:\nProduct Name: $product_name\nPrice: $price\nSize: $size\nQuantity: $quantity\n";
+                $verify_message = "⚠️ **Verification Needed for Product:** ⚠️\n";
+$verify_message .= "📛 **Product Name:** $product_name\n";
+$verify_message .= "💲 **Price:** $price\n";
+$verify_message .= "📏 **Size:** $size\n";
+$verify_message .= "🔢 **Quantity:** $quantity\n";
+
                 sendVerificationNotification($verify_message, $con);
                 continue;
             }
@@ -82,7 +87,12 @@ if (isset($_POST['add'])) {
 
             if ($current_quantity < $quantity) {
                 // Handle verification for insufficient quantity
-                $verify_message = "Verify Needed for insufficient quantity:\nProduct Name: $product_name\nPrice: $price\nSize: $size\nQuantity: $quantity\n";
+                $verify_message = "⚠️ **Verify Needed for Insufficient Quantity:** ⚠️\n";
+$verify_message .= "📛 **Product Name:** $product_name\n";
+$verify_message .= "💲 **Price:** $price\n";
+$verify_message .= "📏 **Size:** $size\n";
+$verify_message .= "🔢 **Quantity:** $quantity\n";
+
                 sendVerificationNotification($verify_message, $con);
                 continue;
             }
@@ -103,7 +113,11 @@ if (isset($_POST['add'])) {
                 mysqli_query($con, $update_quantity);
 
                 // Add delivery details to combined delivery message
-                $multi_delivery_message .= "Product Name: $product_name\nPrice: $price\nSize: $size\nReason: $reason\n\n";
+                $multi_delivery_message .= "🚚 **Product Name:** $product_name\n";
+                $multi_delivery_message .= "💲 **Price:** $price\n";
+                $multi_delivery_message .= "📏 **Size:** $size\n";
+                $multi_delivery_message .= "📝 **Reason:** $reason\n\n";
+                
 
 
                 $sales_log = ($table == 'jeans') ? 'sales_log' : $table . '_sales_log';
@@ -131,7 +145,11 @@ if (isset($_POST['add'])) {
                     mysqli_query($con, $sql_update);
 
                     // Add sale details to combined sale message
-                    $multi_sale_message .= "Product Name: $product_name\nPrice: $price\nSize: $size\nQuantity: $quantity\n\n";
+                    $multi_sale_message .= "🛍️ **Product Name:** $product_name\n";
+$multi_sale_message .= "💲 **Price:** $price\n";
+$multi_sale_message .= "📏 **Size:** $size\n";
+$multi_sale_message .= "🔢 **Quantity:** $quantity\n\n";
+
                 }
             }
         }
@@ -139,13 +157,13 @@ if (isset($_POST['add'])) {
 
     // Send combined notifications
     if (!empty($multi_sale_message)) {
-        $sale_subject = "Combined Sales Notification";
+        $sale_subject = "🛍️ Combined Sales Notification";
         sendMessageToSubscribers("Sale made:\n" . $multi_sale_message, $con);
         sendEmailToSubscribers($multi_sale_message, $sale_subject, $con);
     }
 
     if (!empty($multi_delivery_message)) {
-        $delivery_subject = "Combined Delivery Notification";
+        $delivery_subject = "🚚 Combined Delivery Notification";
         sendMessageToSubscribers("Delivery prepared:\n" . $multi_delivery_message, $con);
         sendEmailToSubscribers($multi_delivery_message, $delivery_subject, $con);
     }

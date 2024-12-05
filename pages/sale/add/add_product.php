@@ -134,11 +134,11 @@ if (isset($_POST['add'])) {
 
     if ($add_jeans || $update_query) {
 
-        $message = "New Jeans Added:\n";
-        $message .= "Jeans Name: $jeans_name\n";
-        $message .= "Price: $price\n";
-        $message .= "Type: $type\n";
-        $message .="Total Quantity: $total_quantity\n";
+        $message = "➕ New Jeans Added:\n";
+        $message .= "👖 Jeans Name: $jeans_name\n";
+        $message .= "💲Price: $price\n";
+        $message .= "👖 Type: $type\n";
+        $message .= "📦 Total Quantity: $total_quantity\n";
 
         $message .= "Sizes and Quantities:\n";
         for ($i = 0; $i < count($sizes); $i++) {

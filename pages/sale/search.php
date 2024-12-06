@@ -177,9 +177,9 @@ if ($result) {
                                         <!-- Product Type Dropdown -->
 
                                         <select id="product-type" name="product-type" onchange="loadProductNames()" class="form-input">
-                                            <option value="">Select Type</option>
+                                            <option >Select Type</option>
+                                            <option value="shoes" selected>Shoes</option>
                                             <option value="jeans">Jeans</option>
-                                            <option value="shoes">Shoes</option>
                                             <option value="top">Top</option>
                                             <option value="cosmetics">Cosmetics</option>
                                             <option value="accessory">Accessory</option>
@@ -234,6 +234,11 @@ if ($result) {
                                         <!-- The rows will be dynamically inserted here -->
                                     </tbody>
                                 </table>
+
+                                <div id="total-quantity" class="mt-3 text-white-800 font-medium"></div>
+
+
+
 
                             </form>
                         </div>
@@ -386,6 +391,8 @@ if ($result) {
                 productDropdown.innerHTML = '<option value="">Select Product Name</option>';
                 initializeNiceSelect();
             }
+
+          
         }
 
         // Initialize the first NiceSelect when the page loads
@@ -395,63 +402,73 @@ if ($result) {
 
         // Load sizes and quantities based on the selected product name
         function loadSizes() {
+    var productType = document.getElementById("product-type").value;
+    var productName = document.getElementById("product-name").value;
 
+    if (productType !== "" && productName !== "") {
+        fetch('api/searchapi/loadSizes.php?productType=' + encodeURIComponent(productType) + '&productName=' + encodeURIComponent(productName))
+            .then(response => response.json())
+            .then(data => {
+                let sizeTableBody = document.getElementById("size-table-body");
+                sizeTableBody.innerHTML = ''; // Clear existing rows
 
-            var productType = document.getElementById("product-type").value;
-            var productName = document.getElementById("product-name").value;
+                let totalQuantity = 0; // Initialize total quantity
 
-            if (productType !== "" && productName !== "") {
-                fetch('api/searchapi/loadSizes.php?productType=' + encodeURIComponent(productType) + '&productName=' + encodeURIComponent(productName))
-                    .then(response => response.json())
-                    .then(data => {
-                        let sizeTableBody = document.getElementById("size-table-body");
-                        sizeTableBody.innerHTML = ''; // Clear existing rows
+                // Check if sizes data exists
+                if (data.sizes && data.sizes.length > 0) {
+                    // Add the image before the size and quantity rows
+                    if (data.image) {
+                        let imageContainer = document.getElementById("product-image");
+                        imageContainer.innerHTML = ''; // Clear previous image if any
+                        let image = document.createElement('img');
+                        image.src = '../../include/' + data.image; // Adjust this path based on your file structure
 
-                        // Check if sizes data exists
-                        if (data.sizes && data.sizes.length > 0) {
-                            // Add the image before the size and quantity rows
-                            if (data.image) {
-                                let imageContainer = document.getElementById("product-image");
-                                imageContainer.innerHTML = ''; // Clear previous image if any
-                                let image = document.createElement('img');
-                                image.src = '../../include/' + data.image; // Adjust this path based on your file structure
+                        image.alt = productName + ' image';
+                        image.style.width = '200px'; // Adjust the size as needed
+                        imageContainer.appendChild(image);
+                    }
 
-                                image.alt = productName + ' image';
-                                image.style.width = '200px'; // Adjust the size as needed
-                                imageContainer.appendChild(image);
-                            }
+                    // Populate the table with sizes and quantities
+                    data.sizes.forEach(sizeData => {
+                        let row = document.createElement('tr');
 
-                            // Populate the table with sizes and quantities
-                            data.sizes.forEach(sizeData => {
-                                let row = document.createElement('tr');
+                        // Create size cell
+                        let sizeCell = document.createElement('td');
+                        sizeCell.textContent = sizeData.size;
+                        row.appendChild(sizeCell);
 
-                                // Create size cell
-                                let sizeCell = document.createElement('td');
-                                sizeCell.textContent = sizeData.size;
-                                row.appendChild(sizeCell);
+                        // Create quantity cell
+                        let quantityCell = document.createElement('td');
+                        quantityCell.textContent = sizeData.quantity;
+                        row.appendChild(quantityCell);
 
-                                // Create quantity cell
-                                let quantityCell = document.createElement('td');
-                                quantityCell.textContent = sizeData.quantity;
-                                row.appendChild(quantityCell);
+                        // Add quantity to total
+                        totalQuantity += parseInt(sizeData.quantity, 10);
+                       
 
-                                // Append the row to the table body
-                                sizeTableBody.appendChild(row);
-                            });
-                        } else {
-                            let row = document.createElement('tr');
-                            let noDataCell = document.createElement('td');
-                            noDataCell.colSpan = 2;
-                            noDataCell.textContent = 'No sizes available';
-                            row.appendChild(noDataCell);
-                            sizeTableBody.appendChild(row);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching sizes:', error);
+                        // Append the row to the table body
+                        sizeTableBody.appendChild(row);
                     });
-            }
-        }
+                } else {
+                    let row = document.createElement('tr');
+                    let noDataCell = document.createElement('td');
+                    noDataCell.colSpan = 2;
+                    noDataCell.textContent = 'No sizes available';
+                    row.appendChild(noDataCell);
+                    sizeTableBody.appendChild(row);
+                }
+
+                // Display the total quantity
+                let totalQuantityContainer = document.getElementById("total-quantity");
+                totalQuantityContainer.textContent = 'Total Quantity: ' + totalQuantity;
+                console.log(totalQuantity);
+            })
+            .catch(error => {
+                console.error('Error fetching sizes:', error);
+            });
+    }
+}
+
 
 
 
@@ -481,6 +498,11 @@ if ($result) {
 
 
     <script>
+
+
+window.onload = function() {
+        loadProductNames();
+    };
         // JavaScript to automatically calculate the total price
         document.addEventListener('DOMContentLoaded', function() {
             const searchByName = document.getElementById('search_by_name');

@@ -4,7 +4,7 @@
 function sendMessageToSubscribers($message, $con)
 {
     // Fetch all subscribers
-    $subscribers_query = "SELECT chat_id FROM subscribers";
+    $subscribers_query = "SELECT chat_id FROM subscribers where active = 1";
     $subscribers_result = mysqli_query($con, $subscribers_query);
     $subscribers = mysqli_fetch_all($subscribers_result, MYSQLI_ASSOC);
 

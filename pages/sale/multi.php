@@ -71,6 +71,29 @@ if (isset($_POST['add'])) {
             $row = mysqli_fetch_assoc($result);
 
             if (!$row) {
+
+
+                $sql = "SELECT * FROM $table WHERE {$table}_name = '$product_name'";
+                $result = mysqli_query($con, $sql);
+                $row = mysqli_fetch_assoc($result);
+                $price = $row['price'];
+                $image = $row['image'];
+                $type = $row['type'];
+                $type_id = $row['type_id'];
+                $sql2 = "SELECT * FROM {$table}db WHERE size = '$size'";
+                $result2 = mysqli_query($con, $sql2);
+                $row2 = mysqli_fetch_assoc($result2);
+                $size_id = $row2['id'];
+                // Insert into verification table with error status
+                $add_product = "INSERT INTO `{$table}_verify`(`{$table}_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
+                          VALUES ('$product_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','1')";
+                $result_add = mysqli_query($con, $add_product);
+
+
+                if($result_add){
+
+
+
                 // Handle verification for missing size
                 $verify_message = "⚠️ **Verification Needed for Product:** ⚠️\n";
 $verify_message .= "📛 **Product Name:** $product_name\n";
@@ -79,7 +102,10 @@ $verify_message .= "📏 **Size:** $size\n";
 $verify_message .= "🔢 **Quantity:** $quantity\n";
 
                 sendVerificationNotification($verify_message, $con);
+
+                echo "<script>window.location = 'action.php?status=error&redirect=multi.php'; </script>";
                 continue;
+                }
             }
 
             $product_id = $row['id'];
@@ -87,6 +113,19 @@ $verify_message .= "🔢 **Quantity:** $quantity\n";
 
             if ($current_quantity < $quantity) {
                 // Handle verification for insufficient quantity
+
+
+                $price = $row['price'];
+                $image = $row['image'];
+                $type = $row['type'];
+                $type_id = $row['type_id'];
+                $add_product = "INSERT INTO `{$table}_verify`(`{$table}_name`, `size`, `price`, `quantity`, `image`, `type`, `type_id`, `size_id`, `active`, `error`) 
+                          VALUES ('$product_name', '$size', '$price', '$quantity', '$image', '$type', '$type_id', '$size_id', '0','2')";
+                $result_add = mysqli_query($con, $add_product);
+                if ($result_add) {
+
+
+
                 $verify_message = "⚠️ **Verify Needed for Insufficient Quantity:** ⚠️\n";
 $verify_message .= "📛 **Product Name:** $product_name\n";
 $verify_message .= "💲 **Price:** $price\n";
@@ -94,6 +133,8 @@ $verify_message .= "📏 **Size:** $size\n";
 $verify_message .= "🔢 **Quantity:** $quantity\n";
 
                 sendVerificationNotification($verify_message, $con);
+                echo "<script>window.location = 'action.php?status=error&redirect=multi.php';</script>";
+                }
                 continue;
             }
 

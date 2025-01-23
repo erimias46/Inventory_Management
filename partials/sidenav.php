@@ -163,7 +163,7 @@ if ($result) {
 
 
             <li class="menu-item">
-                <a href="<?php echo $redirect_link ?>index.php" class="menu-link">
+                <a href="<?php echo $redirect_link ?>index2.php" class="menu-link">
                     <span class="menu-icon"><i class="mgc_home_3_line"></i></span>
                     <span class="menu-text"> Dashboard </span>
                 </a>

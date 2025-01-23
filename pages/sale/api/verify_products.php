@@ -47,9 +47,16 @@ if (isset($update_id) && isset($from)) {
     $error = $row['error'];
 
 
+    $sql2="SELECT * FROM $from WHERE {$from}_name = '$product_name' ";
+    $result2 = mysqli_query($con, $sql2);
+    $row2 = mysqli_fetch_assoc($result2);
+    $buy_price=$row2['buy_price'];
+
+
+
     if ($error == '1') {
         $active = '1';
-        $insert= "INSERT INTO `$from`(`$from"."_name`, `size`, `type`, `price`, `quantity`, `active`,`size_id`,`type_id`,`image`) VALUES ('$product_name','$size','$type','$price','$quantity','$active','$size_id','$type_id','$image')";
+        $insert= "INSERT INTO `$from`(`$from"."_name`, `size`, `type`, `price`, `quantity`, `active`,`size_id`,`type_id`,`image`,`buy_price`) VALUES ('$product_name','$size','$type','$price','$quantity','$active','$size_id','$type_id','$image','$buy_price')";
         
         $result_insert = mysqli_query($con, $insert);
 

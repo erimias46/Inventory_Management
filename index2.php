@@ -142,33 +142,34 @@ $to_date = empty($_GET['to']) ? "3000-01-01" : $_GET['to'];
                                                 }
 
                                                 $sql = "SELECT SUM(total_profit) AS grand_total
-                            FROM (
-                                SELECT SUM((s.price - j.buy_price) * s.quantity) AS total_profit
-                                FROM sales s
-                                INNER JOIN jeans j ON s.jeans_id = j.id
-                                WHERE " . str_replace('{column}', 's.sales_date', $dateCondition) . "
-                                
-                                UNION ALL
-                                
-                                SELECT SUM((ss.price - sh.buy_price) * ss.quantity)
-                                FROM shoes_sales ss
-                                INNER JOIN shoes sh ON ss.shoes_id = sh.id
-                                WHERE " . str_replace('{column}', 'ss.sales_date', $dateCondition) . "
-                                
-                                UNION ALL
-                                
-                                SELECT SUM((acs.price - a.buy_price) * acs.quantity)
-                                FROM accessory_sales acs
-                                INNER JOIN accessory a ON acs.accessory_id = a.id
-                                WHERE " . str_replace('{column}', 'acs.sales_date', $dateCondition) . "
-                                
-                                UNION ALL
-                                
-                                SELECT SUM((cs.price - c.buy_price) * cs.quantity)
-                                FROM complete_sales cs
-                                INNER JOIN complete c ON cs.complete_id = c.id
-                                WHERE " . str_replace('{column}', 'cs.sales_date', $dateCondition) . "
-                            ) AS combined_profits";
+        FROM (
+            SELECT SUM((s.price - j.buy_price) * s.quantity) AS total_profit
+            FROM sales s
+            INNER JOIN jeans j ON s.jeans_id = j.id
+            WHERE s.status = 'active' AND " . str_replace('{column}', 's.sales_date', $dateCondition) . "
+            
+            UNION ALL
+            
+            SELECT SUM((ss.price - sh.buy_price) * ss.quantity)
+            FROM shoes_sales ss
+            INNER JOIN shoes sh ON ss.shoes_id = sh.id
+            WHERE ss.status = 'active' AND " . str_replace('{column}', 'ss.sales_date', $dateCondition) . "
+            
+            UNION ALL
+            
+            SELECT SUM((acs.price - a.buy_price) * acs.quantity)
+            FROM accessory_sales acs
+            INNER JOIN accessory a ON acs.accessory_id = a.id
+            WHERE acs.status = 'active' AND " . str_replace('{column}', 'acs.sales_date', $dateCondition) . "
+            
+            UNION ALL
+            
+            SELECT SUM((cs.price - c.buy_price) * cs.quantity)
+            FROM complete_sales cs
+            INNER JOIN complete c ON cs.complete_id = c.id
+            WHERE cs.status = 'active' AND " . str_replace('{column}', 'cs.sales_date', $dateCondition) . "
+        ) AS combined_profits";
+
 
                                                 $result = mysqli_query($con, $sql);
                                                 $row = mysqli_fetch_array($result);
@@ -256,22 +257,22 @@ $to_date = empty($_GET['to']) ? "3000-01-01" : $_GET['to'];
 
                                                 $sql = "SELECT SUM(price) AS total_price 
                             FROM sales 
-                            WHERE status IN ('active', 'Exchange Sell')
+                            WHERE status IN ('active', 'Exchange Sells')
                             AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
                             UNION ALL
                             SELECT SUM(price) AS total_price
                             FROM shoes_sales
-                            WHERE status IN ('active', 'Exchange Sell')
+                            WHERE status IN ('active', 'Exchange Sellss')
                             AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
                             UNION ALL
                             SELECT SUM(price) AS total_price
                             FROM accessory_sales
-                            WHERE status IN ('active', 'Exchange Sell')
+                            WHERE status IN ('active', 'Exchange Sellss')
                             AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
                             UNION ALL
                             SELECT SUM(price) AS total_price
                             FROM complete_sales
-                            WHERE status IN ('active', 'Exchange Sell')
+                            WHERE status IN ('active', 'Exchange Sellss')
                             AND " . str_replace('{column}', 'sales_date', $dateCondition);
 
                                                 $result = mysqli_query($con, $sql);
@@ -368,22 +369,41 @@ $to_date = empty($_GET['to']) ? "3000-01-01" : $_GET['to'];
                                             }
 
                                             $query = "SELECT SUM(quantity) AS total_quantity 
-                        FROM (
-                            SELECT quantity FROM sales
-                            WHERE " . str_replace('{column}', 'sales_date', $dateCondition) . "
-                            UNION ALL
-                            SELECT quantity FROM shoes_sales
-                            WHERE " . str_replace('{column}', 'sales_date', $dateCondition) . "
-                            UNION ALL
-                            SELECT quantity FROM accessory_sales
-                            WHERE " . str_replace('{column}', 'sales_date', $dateCondition) . "
-                            UNION ALL
-                            SELECT quantity FROM complete_sales
-                            WHERE " . str_replace('{column}', 'sales_date', $dateCondition) . "
-                            UNION ALL
-                            SELECT quantity FROM top_sales
-                            WHERE " . str_replace('{column}', 'sales_date', $dateCondition) . "
-                        ) AS combined_sales";
+          FROM (
+              SELECT quantity 
+              FROM sales
+              WHERE status = 'active' 
+              AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
+              
+              UNION ALL
+              
+              SELECT quantity 
+              FROM shoes_sales
+              WHERE status = 'active' 
+              AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
+              
+              UNION ALL
+              
+              SELECT quantity 
+              FROM accessory_sales
+              WHERE status = 'active' 
+              AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
+              
+              UNION ALL
+              
+              SELECT quantity 
+              FROM complete_sales
+              WHERE status = 'active' 
+              AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
+              
+              UNION ALL
+              
+              SELECT quantity 
+              FROM top_sales
+              WHERE status = 'active' 
+              AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
+          ) AS combined_sales";
+
 
                                             $result = mysqli_query($con, $query);
                                             $row = mysqli_fetch_assoc($result);
@@ -478,35 +498,41 @@ $to_date = empty($_GET['to']) ? "3000-01-01" : $_GET['to'];
                                             }
 
                                             $query = "SELECT SUM(quantity) AS total_sales 
-                        FROM (
-                            SELECT quantity 
-                            FROM sales 
-                            WHERE " . str_replace('{column}', 'sales_date', $dateCondition) . "
-                            
-                            UNION ALL
-                            
-                            SELECT quantity 
-                            FROM shoes_sales 
-                            WHERE " . str_replace('{column}', 'sales_date', $dateCondition) . "
-                            
-                            UNION ALL
-                            
-                            SELECT quantity 
-                            FROM accessory_sales 
-                            WHERE " . str_replace('{column}', 'sales_date', $dateCondition) . "
-                            
-                            UNION ALL
-                            
-                            SELECT quantity 
-                            FROM complete_sales 
-                            WHERE " . str_replace('{column}', 'sales_date', $dateCondition) . "
-                            
-                            UNION ALL
-                            
-                            SELECT quantity 
-                            FROM top_sales 
-                            WHERE " . str_replace('{column}', 'sales_date', $dateCondition) . "
-                        ) AS combined_sales";
+          FROM (
+              SELECT quantity 
+              FROM sales 
+              WHERE status = 'active' 
+              AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
+              
+              UNION ALL
+              
+              SELECT quantity 
+              FROM shoes_sales 
+              WHERE status = 'active' 
+              AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
+              
+              UNION ALL
+              
+              SELECT quantity 
+              FROM accessory_sales 
+              WHERE status = 'active' 
+              AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
+              
+              UNION ALL
+              
+              SELECT quantity 
+              FROM complete_sales 
+              WHERE status = 'active' 
+              AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
+              
+              UNION ALL
+              
+              SELECT quantity 
+              FROM top_sales 
+              WHERE status = 'active' 
+              AND " . str_replace('{column}', 'sales_date', $dateCondition) . "
+          ) AS combined_sales";
+
 
                                             $result = mysqli_query($con, $query);
                                             $row = mysqli_fetch_assoc($result);
@@ -563,13 +589,15 @@ $to_date = empty($_GET['to']) ? "3000-01-01" : $_GET['to'];
                                         {
                                             $data = [];
                                             $sql = "SELECT 
-                DATE_FORMAT(s.sales_date, '%Y-%m') AS month,
-                SUM(s.quantity) AS total_quantity,
-                SUM(s.price * s.quantity) AS total_sales,
-                SUM((s.price - p.buy_price) * s.quantity) AS total_profit
-            FROM $salesTable s
-            INNER JOIN $productTable p ON s.$foreignKey = p.id
-            GROUP BY DATE_FORMAT(s.sales_date, '%Y-%m')";
+            DATE_FORMAT(s.sales_date, '%Y-%m') AS month,
+            SUM(s.quantity) AS total_quantity,
+            SUM(s.price * s.quantity) AS total_sales,
+            SUM((s.price - p.buy_price) * s.quantity) AS total_profit
+        FROM $salesTable s
+        INNER JOIN $productTable p ON s.$foreignKey = p.id
+        WHERE s.status = 'active'
+        GROUP BY DATE_FORMAT(s.sales_date, '%Y-%m')";
+
 
                                             $result = $conn->query($sql);
                                             if ($result->num_rows > 0) {
@@ -1415,25 +1443,27 @@ FROM products;
                                             $dateCondition = "WHERE sales_date >= CURDATE() - INTERVAL $selectedPeriod DAY";
                                         }
 
-                                        $sql = "SELECT product_name, SUM(quantity) AS total_sold,price
+                                        $sql = "SELECT product_name, SUM(quantity) AS total_sold,price,status
                             FROM (
-                                SELECT jeans_name AS product_name, quantity, sales_date,price FROM sales
+                                SELECT jeans_name AS product_name, quantity, sales_date,price,status FROM sales
                                 $dateCondition
                                 UNION ALL
-                                SELECT shoes_name AS product_name, quantity, sales_date,price FROM shoes_sales
+                                SELECT shoes_name AS product_name, quantity, sales_date,price,status  FROM shoes_sales 
                                 $dateCondition
                                 UNION ALL
-                                SELECT accessory_name AS product_name, quantity, sales_date ,price FROM accessory_sales
+                                SELECT accessory_name AS product_name, quantity, sales_date ,price,status FROM accessory_sales
                                 $dateCondition
                                 UNION ALL
-                                SELECT complete_name AS product_name, quantity, sales_date,price FROM complete_sales
+                                SELECT complete_name AS product_name, quantity, sales_date,price,status FROM complete_sales
                                 $dateCondition
                                 UNION ALL
-                                SELECT top_name AS product_name, quantity, sales_date,price FROM top_sales
+                                SELECT top_name AS product_name, quantity, sales_date,price,status FROM top_sales
                                 $dateCondition
                             ) AS combined_sales
+                             where status='active'
                             GROUP BY product_name
                             ORDER BY total_sold DESC
+                           
                             LIMIT 10";
 
                                         $result = mysqli_query($con, $sql);

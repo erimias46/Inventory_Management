@@ -71,22 +71,28 @@ $title = "All Sales";
                                                 $currentColorIndex = 0;
 
                                                 $sql = "
-SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,cash,bank,method
-FROM shoes_sales
-UNION ALL
-SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size,cash,bank,method
-FROM top_sales
-UNION ALL
-SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size,cash,bank,method
-FROM complete_sales
-UNION ALL
-SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size,cash,bank,method
-FROM accessory_sales
-UNION ALL
-SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size,cash,bank,method
-FROM sales
-ORDER BY sales_date DESC;
-";
+                                                SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size, cash, bank, method
+                                                FROM shoes_sales
+                                                WHERE status = 'active'
+                                                UNION ALL
+                                                SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size, cash, bank, method
+                                                FROM top_sales
+                                                WHERE status = 'active'
+                                                UNION ALL
+                                                SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size, cash, bank, method
+                                                FROM complete_sales
+                                                WHERE status = 'active'
+                                                UNION ALL
+                                                SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size, cash, bank, method
+                                                FROM accessory_sales
+                                                WHERE status = 'active'
+                                                UNION ALL
+                                                SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size, cash, bank, method
+                                                FROM sales
+                                                WHERE status = 'active'
+                                                ORDER BY sales_date DESC;
+                                                ";
+                                                
 
 
                                                 $result22 = mysqli_query($con, $sql);

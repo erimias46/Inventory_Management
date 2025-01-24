@@ -31,6 +31,12 @@ $current_date = date('Y-m-d');
 
             <main class="flex-grow p-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+
+                <?php  
+
+                if ($user_name=='masteradmin') {
+
+                ?>
                     <a href="add/add_shoes.php" class="block">
                         <div class="card">
                             <div class="flex justify-between items-center w-full bg-blue-600 p-4 rounded-xl">
@@ -42,6 +48,10 @@ $current_date = date('Y-m-d');
                             </div>
                         </div>
                     </a>
+
+                    <?php
+                }
+                ?>
                     <a href="multi.php" class="block">
                         <div class="card">
                             <div class="flex justify-between items-center w-full bg-slate-900 p-4 rounded-xl">
@@ -136,19 +146,19 @@ $current_date = date('Y-m-d');
                                     $current_date = date('Y-m-d');
 
                                     $sql = "SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,cash,bank,method
-FROM shoes_sales Where sales_date = '$current_date'
+FROM shoes_sales Where sales_date = '$current_date' And status = 'active'
 UNION ALL
 SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size,cash,bank,method
-FROM top_sales Where sales_date = '$current_date'
+FROM top_sales Where sales_date = '$current_date' And status = 'active'
 UNION ALL
 SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size,cash,bank,method
-FROM complete_sales    Where sales_date = '$current_date'
+FROM complete_sales    Where sales_date = '$current_date' And status = 'active'
 UNION ALL
 SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size,cash,bank,method
-FROM accessory_sales Where sales_date = '$current_date'
+FROM accessory_sales Where sales_date = '$current_date' And status = 'active'
 UNION ALL
 SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size,cash,bank,method
-FROM sales  Where sales_date = '$current_date'
+FROM sales  Where sales_date = '$current_date' And status = 'active'
 ";
                                     $result = mysqli_query($con, $sql);
                                     while ($row = mysqli_fetch_array($result)) {
@@ -222,7 +232,8 @@ FROM (
         SUM(cash) AS total_cash,
         SUM(bank) AS total_bank
     FROM shoes_sales
-    WHERE sales_date = '$current_date'
+
+    WHERE sales_date = '$current_date' AND status = 'active'
 
     UNION ALL
 
@@ -232,7 +243,7 @@ FROM (
         SUM(cash),
         SUM(bank)
     FROM top_sales
-    WHERE sales_date = '$current_date'
+    WHERE sales_date = '$current_date' AND status = 'active'
 
     UNION ALL
 
@@ -242,7 +253,7 @@ FROM (
         SUM(cash),
         SUM(bank)
     FROM complete_sales
-    WHERE sales_date = '$current_date'
+    WHERE sales_date = '$current_date' AND status = 'active'
 
     UNION ALL
 
@@ -252,7 +263,7 @@ FROM (
         SUM(cash),
         SUM(bank)
     FROM accessory_sales
-    WHERE sales_date = '$current_date'
+    WHERE sales_date = '$current_date' AND status = 'active'
 
     UNION ALL
 
@@ -262,7 +273,7 @@ FROM (
         SUM(cash),
         SUM(bank)
     FROM sales
-    WHERE sales_date = '$current_date'
+    WHERE sales_date = '$current_date' AND status = 'active'
 ) AS all_sales";
                                 $result2 = mysqli_query($con, $sql2);
                                 $row2 = mysqli_fetch_array($result2);

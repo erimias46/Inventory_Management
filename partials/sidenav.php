@@ -158,6 +158,16 @@ if ($result) {
             <li class="menu-title">Menu</li>
 
 
+            <?php 
+
+            if ($user_name=="masteradmin"){
+
+
+                ?>
+               
+           
+
+
 
 
 
@@ -788,6 +798,9 @@ if ($result) {
             <?php endif; ?>
 
 
+            <?php  } ?>
+
+
             
 
 
@@ -808,6 +821,12 @@ if ($result) {
                             </li>
                        
 
+                            <?php  
+
+                if ($user_name=='masteradmin') {
+
+                ?>
+
                         <?php if ($addproduct) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/add/add_shoes.php" class="menu-link">
@@ -815,6 +834,9 @@ if ($result) {
                                 </a>
                             </li>
                         <?php endif; ?>
+
+
+                        <?php } ?>
 
 
 
@@ -859,6 +881,13 @@ if ($result) {
                             </li>
                         <?php endif; ?>
 
+
+                        <?php  
+
+                if ($user_name=='masteradmin') {
+
+                ?>
+
                         <?php if ($producttypes) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/all_product_type.php" class="menu-link">
@@ -866,6 +895,8 @@ if ($result) {
                                 </a>
                             </li>
                         <?php endif; ?>
+
+                        <?php } ?>
 
 
                         <?php if ($searchproduct) : ?>
@@ -877,6 +908,13 @@ if ($result) {
                         <?php endif; ?>
 
 
+                        <?php  
+
+                if ($user_name=='masteradmin') {
+
+                ?>
+
+
                         <?php if ($productsin) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/products_log.php" class="menu-link">
@@ -884,6 +922,15 @@ if ($result) {
                                 </a>
                             </li>
                         <?php endif; ?>
+
+                        <?php } ?>
+
+
+                        <?php  
+
+                if ($user_name=='masteradmin') {
+
+                ?>
 
                         <?php if ($logsale) : ?>
                             <li class="menu-item">
@@ -893,6 +940,15 @@ if ($result) {
                             </li>
                         <?php endif; ?>
 
+                        <?php } ?>
+
+
+                        <?php  
+
+                if ($user_name=='masteradmin') {
+
+                ?>
+
                         <?php if ($verifyproducts) : ?>
                             <li class="menu-item">
                                 <a href="<?php echo $redirect_link ?>pages/sale/verify_products.php" class="menu-link">
@@ -901,12 +957,21 @@ if ($result) {
                             </li>
                         <?php endif; ?>
 
+                        <?php } ?>
+
 
 
 
                     </ul>
                 </li>
             
+
+                <?php 
+
+if ($user_name=="masteradmin"){
+
+
+    ?>
 
 
             <?php if ($constant) : ?>
@@ -941,6 +1006,8 @@ if ($result) {
 
             <?php endif; ?>
 
+            <?php } ?>
+
 
 
             <?php if ($backup) : ?>
@@ -952,6 +1019,13 @@ if ($result) {
                 </li>
             <?php endif; ?>
 
+            <?php 
+
+if ($user_name=="masteradmin"){
+
+
+    ?>
+
 
             <?php if ($email) : ?>
                 <li class="menu-item">
@@ -962,6 +1036,8 @@ if ($result) {
                 </li>
             <?php endif; ?>
 
+
+            <?php } ?>
 
 
 

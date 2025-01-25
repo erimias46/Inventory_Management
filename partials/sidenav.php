@@ -329,6 +329,15 @@ if ($result) {
                         <?php } ?>
 
 
+                        <?php if ($viewshoes) : ?>
+            <li class="menu-item">
+                <a href="<?php echo $redirect_link ?>pages/shoe/all_shoes.php" class="menu-link">
+                    <span class="menu-text">All Shoes</span>
+                </a>
+            </li>
+        <?php endif; ?>
+
+
 
 
                        

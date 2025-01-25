@@ -140,9 +140,7 @@ $title = "All Sales";
                                                             <a id="exchange-btn" href="exchange.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-warning text-white hover:bg-warning hover:text-white btn-sm rounded-full">
     <i class="fas fa-exchange-alt text-base me-2"></i> Exchange
 </a>
-                                                            <a id="refund-btn" href="api/refund.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-info text-white hover:bg-warning hover:text-white btn-sm rounded-full">
-                                                            <i class="fas fa-undo text-base me-2"></i> Refund
-                                                            </a>
+                                                            
                                                             <a id="edit-btn" href="edit.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-success text-white hover:bg-warning hover:text-white btn-sm rounded-full">
                                                             <i class="fas fa-edit text-base me-2"></i> Edit
                                                             </a>

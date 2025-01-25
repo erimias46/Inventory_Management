@@ -23,6 +23,7 @@ if (isset($_POST['add'])) {
     $quantities = $_POST['quantities']; // Array of quantities
     $type_id = $_POST['type'];
     $price = $_POST['price'];
+    $buy_price = $_POST['buy_price'];
 
     $image = $_FILES['image']['name'];
 
@@ -133,8 +134,8 @@ if (isset($_POST['add'])) {
 
             } else {
 
-                $add_shoes = "INSERT INTO shoes(shoes_name, size, size_id, image, price,type_id, type, quantity,active) 
-                          VALUES ('$shoes_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1')";
+                $add_shoes = "INSERT INTO shoes(shoes_name, size, size_id, image, price,type_id, type, quantity,active, buy_price) 
+                          VALUES ('$shoes_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1', '$buy_price')";
                 mysqli_query($con, $add_shoes);
             }
         }
@@ -446,11 +447,18 @@ if ($result) {
 
 
 
-
+                                <div class="col-span 2">
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
                                     <input type="number" min="0" value="0" step="0.01" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
                                 </div>
+                                <div class="mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Buy Price</label>
+                                    <input type="number" min="0" value="0" step="0.01" name="buy_price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
+                                </div>
+
+                                </div>
+                                
 
 
 

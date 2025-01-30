@@ -109,7 +109,7 @@ SELECT 'shoes' AS category,
        price, image, created_at, id 
 FROM shoes 
 WHERE quantity > 0 
-GROUP BY shoes_name, price, image
+GROUP BY shoes_name, image
 
 UNION ALL
 

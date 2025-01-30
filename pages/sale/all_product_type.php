@@ -98,7 +98,7 @@ $title = "All Products";
        price, image, created_at, id 
 FROM jeans 
 WHERE quantity > 0 
-GROUP BY jeans_name, price, image
+GROUP BY jeans_name
 
 UNION ALL
 
@@ -109,7 +109,7 @@ SELECT 'shoes' AS category,
        price, image, created_at, id 
 FROM shoes 
 WHERE quantity > 0 
-GROUP BY shoes_name, image
+GROUP BY shoes_name
 
 UNION ALL
 
@@ -120,7 +120,7 @@ SELECT 'accessory' AS category,
        price, image, created_at, id 
 FROM accessory 
 WHERE quantity > 0 
-GROUP BY accessory_name, price, image
+GROUP BY accessory_name
 
 UNION ALL
 
@@ -131,7 +131,7 @@ SELECT 'top' AS category,
        price, image, created_at, id 
 FROM top 
 WHERE quantity > 0 
-GROUP BY top_name, price, image
+GROUP BY top_name
 
 UNION ALL
 
@@ -142,7 +142,7 @@ SELECT 'complete' AS category,
        price, image, created_at, id
 FROM complete
 WHERE quantity > 0
-GROUP BY complete_name, price, image
+GROUP BY complete_name
 
 ORDER BY created_at DESC;
 

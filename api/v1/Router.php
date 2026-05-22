@@ -78,6 +78,7 @@ final class ApiRouter
             'GET:/verify/queue' => fn () => $this->verify->queue($user),
             'GET:/dashboard/daily-sales' => fn () => $this->dashboard->dailySales(),
             'GET:/dashboard/summary' => fn () => $this->dashboard->summary(),
+            'GET:/dashboard/overview' => fn () => $this->dashboard->overview(),
             'GET:/customers/manage' => fn () => $this->customers->manage($user),
             'GET:/users' => fn () => $this->users->index($user),
             'GET:/constants' => fn () => $this->users->constants($user),

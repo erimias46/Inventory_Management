@@ -18,4 +18,11 @@ final class DashboardController
         $period = $_GET['period'] ?? '30';
         ApiResponse::success($this->dashboard->summary($period));
     }
+
+    public function overview(): void
+    {
+        $period = $_GET['period'] ?? '30';
+        $year = isset($_GET['year']) ? (int) $_GET['year'] : null;
+        ApiResponse::success($this->dashboard->overview($period, $year));
+    }
 }

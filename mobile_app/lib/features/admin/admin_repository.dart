@@ -21,6 +21,18 @@ class AdminRepository {
     return {};
   }
 
+  Future<Map<String, dynamic>> dashboardOverview({
+    String period = '30',
+    int? year,
+  }) async {
+    final data = await _api.get('/dashboard/overview', query: {
+      'period': period,
+      if (year != null) 'year': year,
+    });
+    if (data is Map<String, dynamic>) return data;
+    return {};
+  }
+
   Future<Map<String, dynamic>> dailySales({required int month, required int year}) async {
     final data = await _api.get('/dashboard/daily-sales', query: {'month': month, 'year': year});
     if (data is Map<String, dynamic>) return data;

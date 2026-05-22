@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../core/models/app_category.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/category_utils.dart';
 import '../shared/pos_widgets.dart';
 
 class CategoryLogsScreen extends ConsumerStatefulWidget {
@@ -17,7 +19,7 @@ class CategoryLogsScreen extends ConsumerStatefulWidget {
 }
 
 class _CategoryLogsScreenState extends ConsumerState<CategoryLogsScreen> {
-  static const _types = ['jeans', 'shoes', 'top', 'complete', 'accessory', 'wig', 'cosmetics'];
+  List<AppCategory> _categories = fallbackCategories();
   String _type = 'jeans';
   List<Map<String, dynamic>> _items = [];
   bool _loading = true;
@@ -31,7 +33,17 @@ class _CategoryLogsScreenState extends ConsumerState<CategoryLogsScreen> {
   @override
   void initState() {
     super.initState();
-    _load();
+    _init();
+  }
+
+  Future<void> _init() async {
+    final cats = await loadCategories(ref);
+    if (!mounted) return;
+    setState(() {
+      _categories = cats;
+      _type = cats.first.slug;
+    });
+    await _load();
   }
 
   Future<void> _load() async {
@@ -62,7 +74,9 @@ class _CategoryLogsScreenState extends ConsumerState<CategoryLogsScreen> {
             child: DropdownButtonFormField<String>(
               initialValue: _type,
               decoration: const InputDecoration(labelText: 'Category'),
-              items: _types.map((t) => DropdownMenuItem(value: t, child: Text(t[0].toUpperCase() + t.substring(1)))).toList(),
+              items: _categories
+                  .map((c) => DropdownMenuItem(value: c.slug, child: Text(c.label)))
+                  .toList(),
               onChanged: (v) {
                 if (v != null) {
                   setState(() => _type = v);

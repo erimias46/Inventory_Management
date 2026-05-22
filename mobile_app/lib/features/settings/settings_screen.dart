@@ -67,6 +67,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (user != null && user.shopName.isNotEmpty)
+              Card(
+                color: AppColors.accent.withValues(alpha: 0.12),
+                child: ListTile(
+                  leading: const Icon(Icons.storefront, color: AppColors.accent),
+                  title: Text(user.shopName, style: const TextStyle(fontWeight: FontWeight.w700)),
+                  subtitle: user.shopSlug.isNotEmpty ? Text('Shop: ${user.shopSlug}') : null,
+                ),
+              ),
+            if (user != null && user.shopName.isNotEmpty) const SizedBox(height: 12),
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),

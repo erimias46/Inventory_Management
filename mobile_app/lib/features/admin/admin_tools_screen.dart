@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/models/user_model.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/category_utils.dart';
 import '../shared/pos_widgets.dart';
 
 /// Hub for web admin features (backup, constants, export, etc.).
@@ -55,19 +56,9 @@ class AdminToolsScreen extends ConsumerWidget {
     );
   }
 
-  bool _anyRefund(AppUser u) {
-    for (final t in ['jeans', 'shoes', 'top', 'complete', 'accessory', 'wig', 'cosmetics']) {
-      if (u.hasModule('refundsale$t')) return true;
-    }
-    return false;
-  }
+  bool _anyRefund(AppUser u) => hasAnyModulePrefix(u, 'refundsale');
 
-  bool _anyExchange(AppUser u) {
-    for (final t in ['jeans', 'shoes', 'top', 'complete', 'accessory', 'wig', 'cosmetics']) {
-      if (u.hasModule('exchangesale$t')) return true;
-    }
-    return false;
-  }
+  bool _anyExchange(AppUser u) => hasAnyModulePrefix(u, 'exchangesale');
 
   Widget _tile(
     BuildContext context,

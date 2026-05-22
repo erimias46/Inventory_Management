@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/category_utils.dart';
 import '../shared/pos_widgets.dart';
 
 /// Search across categories or by multiple sizes (web: search_multi.php).
@@ -28,13 +29,15 @@ class _MultiSearchScreenState extends ConsumerState<MultiSearchScreen> with Sing
   void initState() {
     super.initState();
     _tabs = TabController(length: 2, vsync: this);
-    ref.read(salesRepositoryProvider).productTypes().then((t) {
-      if (mounted) {
-        setState(() {
-          _types = t;
-          if (t.isNotEmpty) _type = t.first['key'] as String;
-        });
-      }
+    _loadTypes();
+  }
+
+  Future<void> _loadTypes() async {
+    final cats = await loadCategories(ref);
+    if (!mounted) return;
+    setState(() {
+      _types = categoriesToChipMaps(cats);
+      if (_types.isNotEmpty) _type = _types.first['key'] as String;
     });
   }
 

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/models/app_category.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/category_utils.dart';
 import '../shared/pos_widgets.dart';
 
 class CategoriesScreen extends ConsumerWidget {
@@ -126,20 +127,9 @@ class _LoadingGrid extends StatelessWidget {
   }
 }
 
-/// Fallback: hardcoded categories used if API is unreachable.
 class _FallbackGrid extends StatelessWidget {
-  static const _fallback = [
-    AppCategory(slug: 'jeans',     label: 'Jeans',     icon: 'fas fa-scroll',      sortOrder: 1),
-    AppCategory(slug: 'shoes',     label: 'Shoes',     icon: 'fas fa-shoe-prints', sortOrder: 2),
-    AppCategory(slug: 'top',       label: 'Top',       icon: 'fas fa-tshirt',      sortOrder: 3),
-    AppCategory(slug: 'complete',  label: 'Complete',  icon: 'fas fa-box-open',    sortOrder: 4),
-    AppCategory(slug: 'accessory', label: 'Accessory', icon: 'fas fa-gem',         sortOrder: 5),
-    AppCategory(slug: 'wig',       label: 'Wig',       icon: 'fas fa-hat-wizard',  sortOrder: 6),
-    AppCategory(slug: 'cosmetics', label: 'Cosmetics', icon: 'fas fa-spa',         sortOrder: 7),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return _CategoryGrid(categories: _fallback);
+    return _CategoryGrid(categories: fallbackCategories());
   }
 }

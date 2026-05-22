@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/config/api_config.dart';
 import '../../core/network/api_exception.dart';
 import '../../core/providers/app_providers.dart';
+import '../../core/utils/category_utils.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/pos_widgets.dart';
 import 'models/cart_line.dart';
@@ -24,6 +25,7 @@ class PosScreen extends ConsumerStatefulWidget {
 class _PosScreenState extends ConsumerState<PosScreen> {
   List<Map<String, dynamic>> _types = [];
   String? _selectedType;
+  String? _fixedCategoryLabel;
   List<Map<String, dynamic>> _products = [];
   final _searchCtrl = TextEditingController();
   final List<CartLine> _cart = [];
@@ -60,7 +62,8 @@ class _PosScreenState extends ConsumerState<PosScreen> {
     });
     try {
       final repo = ref.read(salesRepositoryProvider);
-      final types = await repo.productTypes();
+      final cats = await loadCategories(ref);
+      final types = categoriesToChipMaps(cats);
       final banks = await repo.banks();
       if (!mounted) return;
       final fixed = widget.fixedCategory;
@@ -69,10 +72,11 @@ class _PosScreenState extends ConsumerState<PosScreen> {
         _types = filtered.isNotEmpty ? filtered : types;
         _banks = banks;
         _selectedType = fixed ?? (types.isNotEmpty ? types.first['key'] as String? : null);
+        _fixedCategoryLabel = fixed != null ? categoryLabel(cats, fixed) : null;
         _bootstrapping = false;
       });
       if (types.isEmpty) {
-        setState(() => _loadError = 'No categories returned. Check API URL in Settings.');
+        setState(() => _loadError = 'No categories for this shop. Check Settings or store setup.');
         return;
       }
       await _loadProducts();
@@ -386,7 +390,7 @@ class _PosScreenState extends ConsumerState<PosScreen> {
               alignment: Alignment.centerLeft,
               child: Chip(
                 label: Text(
-                  '${widget.fixedCategory![0].toUpperCase()}${widget.fixedCategory!.substring(1)} sale',
+                  '${_fixedCategoryLabel ?? widget.fixedCategory} sale',
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
               ),

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/models/app_category.dart';
 import '../../core/models/user_model.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/category_utils.dart';
 import '../sales/pos_screen.dart';
 import '../sales/all_sales_screen.dart';
 import '../sales/multi_search_screen.dart';
@@ -62,12 +64,18 @@ class _SalesShellState extends ConsumerState<SalesShell> {
               child: const Icon(Icons.storefront, size: 20),
             ),
             const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Yurostock', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
-                Text(user.userName, style: const TextStyle(fontSize: 11, color: AppColors.textMuted)),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    user.shopName.isNotEmpty ? user.shopName : 'Yurostock',
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(user.userName, style: const TextStyle(fontSize: 11, color: AppColors.textMuted)),
+                ],
+              ),
             ),
           ],
         ),
@@ -112,14 +120,15 @@ class _PosTab extends StatelessWidget {
 }
 
 /// Per-category sale (web sale_jeans.php, sale_shoes.php, …).
-class CategoryPosScreen extends StatelessWidget {
+class CategoryPosScreen extends ConsumerWidget {
   const CategoryPosScreen({super.key, required this.type});
 
   final String type;
 
   @override
-  Widget build(BuildContext context) {
-    final label = '${type[0].toUpperCase()}${type.substring(1)}';
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cats = ref.watch(categoriesProvider).valueOrNull ?? fallbackCategories();
+    final label = categoryLabel(cats, type);
     return Scaffold(
       appBar: AppBar(title: Text('$label Sale')),
       body: Column(
@@ -133,30 +142,24 @@ class CategoryPosScreen extends StatelessWidget {
   }
 }
 
-void _showCategorySales(BuildContext context) {
-  const types = [
-    ('jeans', 'Jeans'),
-    ('shoes', 'Shoes'),
-    ('top', 'Top'),
-    ('complete', 'Complete'),
-    ('accessory', 'Accessory'),
-    ('wig', 'Wig'),
-    ('cosmetics', 'Cosmetics'),
-  ];
+Future<void> _showCategorySales(BuildContext context, WidgetRef ref) async {
+  final cats = await loadCategories(ref);
+  if (!context.mounted) return;
   showModalBottomSheet(
     context: context,
     backgroundColor: AppColors.navyLight,
     builder: (ctx) => SafeArea(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: types
+        children: cats
             .map(
-              (t) => ListTile(
-                title: Text('${t.$2} Sale'),
+              (AppCategory c) => ListTile(
+                leading: Icon(c.materialIcon, color: AppColors.accent),
+                title: Text('${c.label} Sale'),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   Navigator.pop(ctx);
-                  context.push('/sales/category/${t.$1}');
+                  context.push('/sales/category/${c.slug}');
                 },
               ),
             )
@@ -166,12 +169,7 @@ void _showCategorySales(BuildContext context) {
   );
 }
 
-bool _hasRefundModule(AppUser user) {
-  for (final t in ['jeans', 'shoes', 'top', 'complete', 'accessory', 'wig', 'cosmetics']) {
-    if (user.hasModule('refundsale$t')) return true;
-  }
-  return false;
-}
+bool _hasRefundModule(AppUser user) => hasAnyModulePrefix(user, 'refundsale');
 
 class _MoreTab extends ConsumerWidget {
   const _MoreTab({required this.user});
@@ -233,9 +231,9 @@ class _MoreTab extends ConsumerWidget {
         _MoreCard(
           icon: Icons.point_of_sale_outlined,
           title: 'Category Sales',
-          subtitle: 'Jeans, shoes, top… dedicated POS',
+          subtitle: 'Dedicated POS per category',
           color: AppColors.posGreen,
-          onTap: () => _showCategorySales(context),
+          onTap: () => _showCategorySales(context, ref),
         ),
         if (user.isMasterAdmin || _hasRefundModule(user))
           _MoreCard(

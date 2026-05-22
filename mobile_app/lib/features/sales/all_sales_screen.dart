@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/category_utils.dart';
 import '../shared/pos_widgets.dart';
 
 class AllSalesScreen extends ConsumerStatefulWidget {
@@ -22,12 +23,20 @@ class _AllSalesScreenState extends ConsumerState<AllSalesScreen> {
   bool _loading = true;
   final _searchCtrl = TextEditingController();
   String _filterType = 'all';
+  List<String> _typeFilters = ['all'];
 
   @override
   void initState() {
     super.initState();
     _load();
+    _loadFilters();
     _searchCtrl.addListener(_applyFilter);
+  }
+
+  Future<void> _loadFilters() async {
+    final cats = await loadCategories(ref);
+    if (!mounted) return;
+    setState(() => _typeFilters = ['all', ...cats.map((c) => c.slug)]);
   }
 
   @override
@@ -87,14 +96,18 @@ class _AllSalesScreenState extends ConsumerState<AllSalesScreen> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  children: [
-                    'all', 'jeans', 'shoes', 'top', 'wig', 'cosmetics', 'accessory', 'complete',
-                  ].map((t) {
+                  children: _typeFilters.map((t) {
                     final sel = _filterType == t;
+                    final label = t == 'all'
+                        ? 'All'
+                        : categoryLabel(
+                            ref.read(categoriesProvider).valueOrNull ?? fallbackCategories(),
+                            t,
+                          );
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: FilterChip(
-                        label: Text(t == 'all' ? 'All' : t[0].toUpperCase() + t.substring(1)),
+                        label: Text(label),
                         selected: sel,
                         onSelected: (_) {
                           setState(() => _filterType = t);

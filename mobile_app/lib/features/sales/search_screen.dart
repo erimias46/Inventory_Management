@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/category_utils.dart';
 import '../shared/pos_widgets.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -26,13 +27,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    ref.read(salesRepositoryProvider).productTypes().then((t) {
-      if (mounted) {
-        setState(() {
-          _types = t;
-          if (t.isNotEmpty) _type = t.first['key'] as String;
-        });
-      }
+    _loadTypes();
+  }
+
+  Future<void> _loadTypes() async {
+    final cats = await loadCategories(ref);
+    if (!mounted) return;
+    setState(() {
+      _types = categoriesToChipMaps(cats);
+      if (_types.isNotEmpty) _type = _types.first['key'] as String;
     });
   }
 

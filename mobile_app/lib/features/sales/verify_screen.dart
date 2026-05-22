@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/models/app_category.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/category_utils.dart';
 import '../shared/pos_widgets.dart';
 
 class VerifyScreen extends ConsumerStatefulWidget {
@@ -13,16 +15,7 @@ class VerifyScreen extends ConsumerStatefulWidget {
 }
 
 class _VerifyScreenState extends ConsumerState<VerifyScreen> {
-  static const _types = [
-    ('jeans', 'Jeans'),
-    ('shoes', 'Shoes'),
-    ('top', 'Top'),
-    ('complete', 'Complete'),
-    ('accessory', 'Accessory'),
-    ('wig', 'Wig'),
-    ('cosmetics', 'Cosmetics'),
-  ];
-
+  List<AppCategory> _categories = fallbackCategories();
   String _type = 'jeans';
   List<Map<String, dynamic>> _queue = [];
   bool _loading = true;
@@ -30,7 +23,17 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
   @override
   void initState() {
     super.initState();
-    _load();
+    _init();
+  }
+
+  Future<void> _init() async {
+    final cats = await loadCategories(ref);
+    if (!mounted) return;
+    setState(() {
+      _categories = cats;
+      _type = cats.first.slug;
+    });
+    await _load();
   }
 
   Future<void> _load() async {
@@ -72,15 +75,15 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: _types.map((t) {
-                  final sel = t.$1 == _type;
+                children: _categories.map((c) {
+                  final sel = c.slug == _type;
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: FilterChip(
-                      label: Text(t.$2),
+                      label: Text(c.label),
                       selected: sel,
                       onSelected: (_) {
-                        setState(() => _type = t.$1);
+                        setState(() => _type = c.slug);
                         _load();
                       },
                     ),

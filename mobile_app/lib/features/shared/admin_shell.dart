@@ -35,7 +35,7 @@ class _AdminShellState extends ConsumerState<AdminShell> {
     return Scaffold(
       backgroundColor: AppColors.navy,
       appBar: AppBar(
-        title: const Text('Admin'),
+        title: Text(user.shopName.isNotEmpty ? user.shopName : 'Admin'),
         actions: [
           IconButton(
             tooltip: 'Sales POS',

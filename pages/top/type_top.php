@@ -85,11 +85,11 @@ $title = "Type top";
 
                                                 $sql = "SELECT top_name, 
                GROUP_CONCAT(CONCAT(size, '(', quantity, ')') SEPARATOR ', ') AS sizes, 
-               price, image, created_at, id 
+               price, image, MAX(created_at) AS created_at,
+               SUBSTRING_INDEX(GROUP_CONCAT(id ORDER BY created_at DESC), ',', 1) AS id
         FROM top 
-       
         GROUP BY top_name, price, image  
-        ORDER BY created_at DESC";
+        ORDER BY MAX(created_at) DESC";
 
                                                 $result22 = mysqli_query($con, $sql);
                                                 while ($row = mysqli_fetch_assoc($result22)) {

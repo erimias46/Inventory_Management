@@ -10,8 +10,5 @@
 <!-- Theme Config Js -->
 <script src="<?php echo $redirect_link ?>assets/js/config.js"></script>
 
-<style>
-    .swal-modal {
-background-color: var(--tw-body-bg);
-    }
-</style>
+<!-- Zuqemens Premium UI -->
+<link href="<?php echo $redirect_link ?>assets/css/custom.css" rel="stylesheet" type="text/css">

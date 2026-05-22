@@ -16,3 +16,9 @@
 [2024-08-28 20:14:40] SQL Query: SELECT * FROM `remainder`
 [2024-08-28 20:14:40] No data found for the given criteria.
 [2024-09-22 10:13:58] SQL Query: SELECT * FROM `bank`
+[2026-05-22 10:04:52] Error: Type parameter is missing.
+[2026-05-22 10:04:52] Error: Type parameter is missing.
+[2026-05-22 10:06:17] Error: Type parameter is missing.
+[2026-05-22 10:08:22] Error: Type parameter is missing.
+[2026-05-22 10:09:50] Error: Type parameter is missing.
+[2026-05-22 10:10:29] Error: Type parameter is missing.

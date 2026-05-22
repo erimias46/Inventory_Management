@@ -1326,12 +1326,12 @@ CREATE TABLE `complete` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO complete VALUES("1","Test 1","38","1","Flat","1","uploads/defaultcomplete.jpg","6000","1","","2024-09-29 15:36:30","1","0","0"),
-("2","Test 1","Large","3","Flat","1","uploads/defaultcomplete.jpg","6000","2","","2024-09-29 15:36:30","1","0","0"),
-("3","Nike tech 1","38","1","Nike Tech","1","uploads/defaultcomplete.jpg","5000","3","","2024-10-11 22:20:25","1","0","0"),
-("4","Nike tech 1","39","2","Nike Tech","1","uploads/defaultcomplete.jpg","5000","2","","2024-10-11 22:20:25","1","0","0"),
-("5","Compelete 1","38","1","Addidas Tech","2","uploads/Untitled design (6).png","5000","2","","2024-10-20 17:37:18","1","0","4000"),
-("6","Compelete 1","39","2","Addidas Tech","2","uploads/Untitled design (6).png","5000","0","","2024-10-20 17:37:18","1","0","4000");
+INSERT INTO complete VALUES("1","Test 1","38","1","Flat","1","uploads/defaultcomplete.jpg","6000","1",NULL,"2024-09-29 15:36:30","1","0","0"),
+("2","Test 1","Large","3","Flat","1","uploads/defaultcomplete.jpg","6000","2",NULL,"2024-09-29 15:36:30","1","0","0"),
+("3","Nike tech 1","38","1","Nike Tech","1","uploads/defaultcomplete.jpg","5000","3",NULL,"2024-10-11 22:20:25","1","0","0"),
+("4","Nike tech 1","39","2","Nike Tech","1","uploads/defaultcomplete.jpg","5000","2",NULL,"2024-10-11 22:20:25","1","0","0"),
+("5","Compelete 1","38","1","Addidas Tech","2","uploads/Untitled design (6).png","5000","2",NULL,"2024-10-20 17:37:18","1","0","4000"),
+("6","Compelete 1","39","2","Addidas Tech","2","uploads/Untitled design (6).png","5000","0",NULL,"2024-10-20 17:37:18","1","0","4000");
 
 
 
@@ -1517,11 +1517,11 @@ CREATE TABLE `cosmetics` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO cosmetics VALUES("1","Cerave ","100 ML","1","Lotion","1","uploads/defaultcosmetics.jpg","6500","0","","2024-10-01 16:10:50","1","0","0"),
-("2","Cerave New ","100 ML","1","Lotion","1","uploads/defaultcosmetics.jpg","2000","1","","2024-10-02 17:45:13","1","0","0"),
-("3","Cerave New ","250 ML","2","Lotion","1","uploads/defaultcosmetics.jpg","5000","2","","2024-10-02 17:45:13","1","0","0"),
-("4","Cerave New ","500 ML","3","Lotion","1","uploads/defaultcosmetics.jpg","8000","3","","2024-10-02 17:45:13","1","0","0"),
-("5","Cerave ","250 ML","2","Lotion","1","uploads/defaultcosmetics.jpg","6500","1","","2024-10-02 21:08:18","1","0","0");
+INSERT INTO cosmetics VALUES("1","Cerave ","100 ML","1","Lotion","1","uploads/defaultcosmetics.jpg","6500","0",NULL,"2024-10-01 16:10:50","1","0","0"),
+("2","Cerave New ","100 ML","1","Lotion","1","uploads/defaultcosmetics.jpg","2000","1",NULL,"2024-10-02 17:45:13","1","0","0"),
+("3","Cerave New ","250 ML","2","Lotion","1","uploads/defaultcosmetics.jpg","5000","2",NULL,"2024-10-02 17:45:13","1","0","0"),
+("4","Cerave New ","500 ML","3","Lotion","1","uploads/defaultcosmetics.jpg","8000","3",NULL,"2024-10-02 17:45:13","1","0","0"),
+("5","Cerave ","250 ML","2","Lotion","1","uploads/defaultcosmetics.jpg","6500","1",NULL,"2024-10-02 21:08:18","1","0","0");
 
 
 
@@ -2052,8 +2052,8 @@ INSERT INTO delivery VALUES("1","2024-10-16","2024-10-16","Gucci Test","1","35",
 ("5","2024-10-27","2024-10-27","dsds","2","36","2","10000","delivery","10000","0","1","25","0","","2024-10-27 17:20:22","pending","0",""),
 ("6","2024-10-30","2024-10-30","dsds","2","36","2","10000","delivery","10000","0","1","25","0","","2024-10-30 21:24:05","pending","0","new reason"),
 ("7","2024-10-30","2024-10-30","Fike Jeans","33","36","2","5000","delivery","5000","0","1","25","0","","2024-10-30 21:30:55","Delivered","1","Hede wede amlaku"),
-("8","2024-10-30","2024-10-30","Fike Jeans","33","36","2","5000","delivery","5000","0","1","25","","","2024-10-30 21:39:05","Delivered","1","Micki mexico"),
-("9","2024-10-30","2024-10-30","Fike Jeans","33","36","2","5000","delivery","5000","0","1","25","","","2024-10-30 21:45:42","Delivered","1","yess"),
+("8","2024-10-30","2024-10-30","Fike Jeans","33","36","2","5000","delivery","5000","0","1","25",NULL,"","2024-10-30 21:39:05","Delivered","1","Micki mexico"),
+("9","2024-10-30","2024-10-30","Fike Jeans","33","36","2","5000","delivery","5000","0","1","25",NULL,"","2024-10-30 21:45:42","Delivered","1","yess"),
 ("10","2024-10-30","2024-10-30","Fike Jeans","33","36","2","5000","delivery","5000","0","1","25","0","","2024-10-30 21:54:27","Delivered","1","yalllaa"),
 ("11","2024-10-30","2024-10-30","Fike Jeans","34","37","3","5000","delivery","5000","0","1","25","0","","2024-10-30 22:34:29","Delivered","1","hede broo"),
 ("12","2024-10-30","2024-10-30","Fike Jeans","34","37","3","5000","delivery","5000","0","1","25","0","","2024-10-30 23:00:37","Delivered","1","nwee"),
@@ -2880,9 +2880,9 @@ CREATE TABLE `jeans` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO jeans VALUES("1","Jeans 1 Test ","36","2","Jeans","1","uploads/defaultjeans.jpg","5000","1","","2025-01-23 16:43:19","1","0","0","1"),
-("2","Jeans 1 Test ","37","3","Jeans","1","uploads/defaultjeans.jpg","5000","2","","2025-01-23 16:43:19","1","0","0","1"),
-("3","Jeans 1 Test ","38","4","Jeans","1","uploads/defaultjeans.jpg","5000","3","","2025-01-23 16:43:19","1","0","0","1");
+INSERT INTO jeans VALUES("1","Jeans 1 Test ","36","2","Jeans","1","uploads/defaultjeans.jpg","5000","1",NULL,"2025-01-23 16:43:19","1","0","0","1"),
+("2","Jeans 1 Test ","37","3","Jeans","1","uploads/defaultjeans.jpg","5000","2",NULL,"2025-01-23 16:43:19","1","0","0","1"),
+("3","Jeans 1 Test ","38","4","Jeans","1","uploads/defaultjeans.jpg","5000","3",NULL,"2025-01-23 16:43:19","1","0","0","1");
 
 
 
@@ -5434,12 +5434,12 @@ CREATE TABLE `shoes` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO shoes VALUES("1","Test","36","1","Flat","1","uploads/defaultshoes.jpg","6000","0","","2025-01-23 16:41:48","1","0","5000"),
-("2","Test","37","2","Flat","1","uploads/defaultshoes.jpg","6000","0","","2025-01-23 16:41:48","1","0","5000"),
-("3","Test","38","3","Flat","1","uploads/defaultshoes.jpg","6000","3","","2025-01-23 16:41:48","1","0","5000"),
-("4","Test","40","5","Flat","1","uploads/defaultshoes.jpg","6000","0","","2025-01-23 17:25:21","1","0","5000"),
-("5","Test","42","7","Flat","1","uploads/defaultshoes.jpg","6000","1","","2025-01-23 17:49:00","1","0","5000"),
-("6","Test","43","8","Flat","1","uploads/defaultshoes.jpg","6000","1","","2025-01-23 17:50:56","1","0","5000");
+INSERT INTO shoes VALUES("1","Test","36","1","Flat","1","uploads/defaultshoes.jpg","6000","0",NULL,"2025-01-23 16:41:48","1","0","5000"),
+("2","Test","37","2","Flat","1","uploads/defaultshoes.jpg","6000","0",NULL,"2025-01-23 16:41:48","1","0","5000"),
+("3","Test","38","3","Flat","1","uploads/defaultshoes.jpg","6000","3",NULL,"2025-01-23 16:41:48","1","0","5000"),
+("4","Test","40","5","Flat","1","uploads/defaultshoes.jpg","6000","0",NULL,"2025-01-23 17:25:21","1","0","5000"),
+("5","Test","42","7","Flat","1","uploads/defaultshoes.jpg","6000","1",NULL,"2025-01-23 17:49:00","1","0","5000"),
+("6","Test","43","8","Flat","1","uploads/defaultshoes.jpg","6000","1",NULL,"2025-01-23 17:50:56","1","0","5000");
 
 
 
@@ -5468,7 +5468,7 @@ CREATE TABLE `shoes_delivery` (
   PRIMARY KEY (`sales_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO shoes_delivery VALUES("1","2025-01-23","2025-01-23","Test","2","37","2","6000","delivery","6000","0","1","25","0","","2025-01-23 21:24:13","Delivered","1","abebe");
+INSERT INTO shoes_delivery VALUES("1","2025-01-23","2025-01-23","Test","2","37","2","6000","delivery","6000","0","1","25","0",NULL,"2025-01-23 21:24:13","Delivered","1","abebe");
 
 
 
@@ -5495,11 +5495,11 @@ CREATE TABLE `shoes_sales` (
   PRIMARY KEY (`sales_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO shoes_sales VALUES("1","2025-01-23","2025-01-23","Test","1","36","1","6000","shop","6000","0","1","25","0","","2025-01-23 16:46:53","active"),
-("2","2025-01-23","2025-01-23","Test","4","40","5","6000","shop","6000","0","1","25","0","","2025-01-23 17:25:39","active"),
-("3","2025-01-23","2025-01-23","Test","1","36","1","6000","shop","0","6000","1","25","0","","2025-01-23 18:21:14","active"),
+INSERT INTO shoes_sales VALUES("1","2025-01-23","2025-01-23","Test","1","36","1","6000","shop","6000","0","1","25","0",NULL,"2025-01-23 16:46:53","active"),
+("2","2025-01-23","2025-01-23","Test","4","40","5","6000","shop","6000","0","1","25","0",NULL,"2025-01-23 17:25:39","active"),
+("3","2025-01-23","2025-01-23","Test","1","36","1","6000","shop","0","6000","1","25","0",NULL,"2025-01-23 18:21:14","active"),
 ("4","2025-01-23","2025-01-23","Test","2","37","2","6000","shop","0","6000","1","25","2","CBE","2025-01-23 18:23:13","active"),
-("5","2025-01-23","2025-01-23","Test","0","37","2","6000","delivery","6000","0","1","25","0","","2025-01-23 21:24:24","active");
+("5","2025-01-23","2025-01-23","Test","0","37","2","6000","delivery","6000","0","1","25","0",NULL,"2025-01-23 21:24:24","active");
 
 
 
@@ -5620,13 +5620,13 @@ CREATE TABLE `top` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO top VALUES("1","Top test 1","SMALL","1","Flat","1","uploads/defaulttop.jpg","500","1","","2024-09-29 09:28:34","1","0","0"),
-("2","Top test 1","Large","2","Flat","1","uploads/defaulttop.jpg","500","4","","2024-09-29 09:28:34","1","0","0"),
-("3","Gucci Tshirt","SMALL","1","Slippers","2","uploads/defaulttop.jpg","5000","10","","2024-10-09 22:15:15","1","0","400"),
-("4","Gucci Tshirt","Large","2","Slippers","2","uploads/defaulttop.jpg","5000","4","","2024-10-09 22:15:15","1","0","400"),
-("5","New Top","SMALL","1","Slippers","2","uploads/defaulttop.jpg","5000","2","","2024-10-11 14:33:22","1","0","0"),
-("6","New Top","Large","2","Slippers","2","uploads/defaulttop.jpg","5000","2","","2024-10-11 14:33:22","1","0","0"),
-("7","Gucci Tshirt","XXL","3","T-shirt","2","uploads/defaulttop.jpg","5000","3","","2024-10-30 12:18:46","1","0","400");
+INSERT INTO top VALUES("1","Top test 1","SMALL","1","Flat","1","uploads/defaulttop.jpg","500","1",NULL,"2024-09-29 09:28:34","1","0","0"),
+("2","Top test 1","Large","2","Flat","1","uploads/defaulttop.jpg","500","4",NULL,"2024-09-29 09:28:34","1","0","0"),
+("3","Gucci Tshirt","SMALL","1","Slippers","2","uploads/defaulttop.jpg","5000","10",NULL,"2024-10-09 22:15:15","1","0","400"),
+("4","Gucci Tshirt","Large","2","Slippers","2","uploads/defaulttop.jpg","5000","4",NULL,"2024-10-09 22:15:15","1","0","400"),
+("5","New Top","SMALL","1","Slippers","2","uploads/defaulttop.jpg","5000","2",NULL,"2024-10-11 14:33:22","1","0","0"),
+("6","New Top","Large","2","Slippers","2","uploads/defaulttop.jpg","5000","2",NULL,"2024-10-11 14:33:22","1","0","0"),
+("7","Gucci Tshirt","XXL","3","T-shirt","2","uploads/defaulttop.jpg","5000","3",NULL,"2024-10-30 12:18:46","1","0","400");
 
 
 
@@ -5784,7 +5784,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
-INSERT INTO user VALUES("25","masteradmin","admin","administrator","{\n  \"viewjeans\": true,\n  \"viewshoes\": true,\n  \"viewtop\": true,\n  \"viewcomplete\": true,\n  \"viewaccessory\": true,\n  \"viewwig\": true,\n  \"viewcosmetics\": true,\n  \"addjeans\": 1,\n  \"addshoes\": 1,\n  \"addtop\": 1,\n  \"addcomplete\": 1,\n  \"addaccessory\": 1,\n  \"addwig\": 1,\n  \"addcosmetics\": 1,\n  \"editjeans\": 1,\n  \"editshoes\": 1,\n  \"edittop\": 1,\n  \"editcomplete\": 1,\n  \"editaccessory\": 1,\n  \"editwig\": 1,\n  \"editcosmetics\": 1,\n  \"deletejeans\": 1,\n  \"deleteshoes\": 1,\n  \"deletetop\": 1,\n  \"deletecomplete\": 1,\n  \"deleteaccessory\": 1,\n  \"deletewig\": 1,\n  \"deletecosmetics\": 1,\n  \"verifyjeans\": 1,\n  \"verifyshoes\": 1,\n  \"verifytop\": 1,\n  \"verifycomplete\": 1,\n  \"verifyaccessory\": 1,\n  \"verifywig\": 1,\n  \"verifycosmetics\": 1,\n  \"salejeans\": 1,\n  \"saleshoes\": 1,\n  \"saletop\": 1,\n  \"salecomplete\": 1,\n  \"saleaccessory\": 1,\n  \"salewig\": 1,\n  \"salecosmetics\": 1,\n  \"editsalejeans\": 1,\n  \"editsaleshoes\": 1,\n  \"editsaletop\": 1,\n  \"editsalecomplete\": 1,\n  \"editsaleaccessory\": 1,\n  \"editsalewig\": 1,\n  \"editsalecosmetics\": 1,\n  \"deletesalejeans\": 1,\n  \"deletesaleshoes\": 1,\n  \"deletesaletop\": 1,\n  \"deletesalecomplete\": 1,\n  \"deletesaleaccessory\": 1,\n  \"deletesalewig\": 1,\n  \"deletesalecosmetics\": 1,\n  \"refundsalejeans\": 1,\n  \"refundsaleshoes\": 1,\n  \"refundsaletop\": 1,\n  \"refundsalecomplete\": 1,\n  \"refundsaleaccessory\": 1,\n  \"refundsalewig\": 1,\n  \"refundsalecosmetics\": 1,\n  \"exchangesalejeans\": 1,\n  \"exchangesaleshoes\": 1,\n  \"exchangesaletop\": 1,\n  \"exchangesalecomplete\": 1,\n  \"exchangesaleaccessory\": 1,\n  \"exchangesalewig\": 1,\n  \"exchangesalecosmetics\": 1,\n  \"deliverysalejeans\": 1,\n  \"deliverysaleshoes\": 1,\n  \"deliverysaletop\": 1,\n  \"deliverysalecomplete\": 1,\n  \"deliverysaleaccessory\": 1,\n  \"deliverysalewig\": 1,\n  \"deliverysalecosmetics\": 1,\n  \"logjeans\": 1,\n  \"logshoes\": 1,\n  \"logtop\": 1,\n  \"logcomplete\": 1,\n  \"logaccessory\": 1,\n  \"logwig\": 1,\n  \"logcosmetics\": 1,\n  \"constant\": 1,\n  \"email\": 1,\n  \"backup\": 1,\n  \"user\": 1,\n  \"editbuyprice\": 1,\n  \"addproduct\": 1,\n  \"fullsale\": 1,\n  \"allsale\": 1,\n  \"logsale\": 1,\n  \"searchproduct\": 1,\n  \"deliverysale\": 1,\n  \"producttypes\": 1,\n  \"productsin\": 1,\n  \"verifyproducts\": 1\n}\n"),
+INSERT INTO user VALUES("25","masteradmin","admin","administrator",'{"viewjeans":true,"viewshoes":true,"viewtop":true,"viewcomplete":true,"viewaccessory":true,"viewwig":true,"viewcosmetics":true,"addjeans":1,"addshoes":1,"addtop":1,"addcomplete":1,"addaccessory":1,"addwig":1,"addcosmetics":1,"editjeans":1,"editshoes":1,"edittop":1,"editcomplete":1,"editaccessory":1,"editwig":1,"editcosmetics":1,"deletejeans":1,"deleteshoes":1,"deletetop":1,"deletecomplete":1,"deleteaccessory":1,"deletewig":1,"deletecosmetics":1,"verifyjeans":1,"verifyshoes":1,"verifytop":1,"verifycomplete":1,"verifyaccessory":1,"verifywig":1,"verifycosmetics":1,"salejeans":1,"saleshoes":1,"saletop":1,"salecomplete":1,"saleaccessory":1,"salewig":1,"salecosmetics":1,"editsalejeans":1,"editsaleshoes":1,"editsaletop":1,"editsalecomplete":1,"editsaleaccessory":1,"editsalewig":1,"editsalecosmetics":1,"deletesalejeans":1,"deletesaleshoes":1,"deletesaletop":1,"deletesalecomplete":1,"deletesaleaccessory":1,"deletesalewig":1,"deletesalecosmetics":1,"refundsalejeans":1,"refundsaleshoes":1,"refundsaletop":1,"refundsalecomplete":1,"refundsaleaccessory":1,"refundsalewig":1,"refundsalecosmetics":1,"exchangesalejeans":1,"exchangesaleshoes":1,"exchangesaletop":1,"exchangesalecomplete":1,"exchangesaleaccessory":1,"exchangesalewig":1,"exchangesalecosmetics":1,"deliverysalejeans":1,"deliverysaleshoes":1,"deliverysaletop":1,"deliverysalecomplete":1,"deliverysaleaccessory":1,"deliverysalewig":1,"deliverysalecosmetics":1,"logjeans":1,"logshoes":1,"logtop":1,"logcomplete":1,"logaccessory":1,"logwig":1,"logcosmetics":1,"constant":1,"email":1,"backup":1,"user":1,"editbuyprice":1,"addproduct":1,"fullsale":1,"allsale":1,"logsale":1,"searchproduct":1,"deliverysale":1,"producttypes":1,"productsin":1,"verifyproducts":1}'),
 ("47","sales","123","user","{\"viewjeans\":0,\"viewshoes\":0,\"viewtop\":0,\"viewcomplete\":0,\"viewaccessory\":0,\"viewwig\":0,\"viewcosmetics\":0,\"addjeans\":0,\"addshoes\":0,\"addtop\":0,\"addcomplete\":0,\"addaccessory\":0,\"addwig\":0,\"addcosmetics\":0,\"editjeans\":0,\"editshoes\":0,\"edittop\":0,\"editcomplete\":0,\"editaccessory\":0,\"editwig\":0,\"editcosmetics\":0,\"deletejeans\":0,\"deleteshoes\":0,\"deletetop\":0,\"deletecomplete\":0,\"deleteaccessory\":0,\"deletewig\":0,\"deletecosmetics\":0,\"verifyjeans\":0,\"verifyshoes\":0,\"verifytop\":0,\"verifycomplete\":0,\"verifyaccessory\":0,\"verifywig\":0,\"verifycosmetics\":0,\"salejeans\":0,\"saleshoes\":0,\"saletop\":0,\"salecomplete\":0,\"saleaccessory\":0,\"salewig\":0,\"salecosmetics\":0,\"editsalejeans\":0,\"editsaleshoes\":0,\"editsaletop\":0,\"editsalecomplete\":0,\"editsaleaccessory\":0,\"editsalewig\":0,\"editsalecosmetics\":0,\"deletesalejeans\":0,\"deletesaleshoes\":0,\"deletesaletop\":0,\"deletesalecomplete\":0,\"deletesaleaccessory\":0,\"deletesalewig\":0,\"deletesalecosmetics\":0,\"refundsalejeans\":0,\"refundsaleshoes\":0,\"refundsaletop\":0,\"refundsalecomplete\":0,\"refundsaleaccessory\":0,\"refundsalewig\":0,\"refundsalecosmetics\":0,\"exchangesalejeans\":0,\"exchangesaleshoes\":0,\"exchangesaletop\":0,\"exchangesalecomplete\":0,\"exchangesaleaccessory\":0,\"exchangesalewig\":0,\"exchangesalecosmetics\":0,\"deliverysalejeans\":0,\"deliverysaleshoes\":0,\"deliverysaletop\":0,\"deliverysalecomplete\":0,\"deliverysaleaccessory\":0,\"deliverysalewig\":0,\"deliverysalecosmetics\":0,\"logjeans\":0,\"logshoes\":0,\"logtop\":0,\"logcomplete\":0,\"logaccessory\":0,\"logwig\":0,\"logcosmetics\":0,\"constant\":0,\"email\":0,\"backup\":0,\"user\":0}");
 
 
@@ -5811,16 +5811,16 @@ CREATE TABLE `wig` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO wig VALUES("10","Brown One","18","1","Straight","1","uploads/defaultwig.jpg","0","3","3","15","","2024-10-03 17:46:36","1","0","0"),
-("9","Brown One","18","1","Straight","1","uploads/defaultwig.jpg","0","5","2","10","","2024-10-03 17:46:36","1","0","0"),
-("3","Black One ","18","1","Straight","1","uploads/defaultwig.jpg","0","1","1","5","","2024-10-03 13:03:56","1","0","0"),
-("4","Black One ","18","1","Straight","1","uploads/defaultwig.jpg","0","1","2","4","","2024-10-03 13:03:56","1","0","0"),
-("5","Black One ","20","2","Straight","1","uploads/defaultwig.jpg","0","4","3","12","","2024-10-03 13:03:56","1","0","0"),
-("6","Black One ","22","3","Straight","1","uploads/defaultwig.jpg","0","3","1","3","","2024-10-03 13:03:56","1","0","0"),
-("11","New Email Wig","18","1","Straight","1","uploads/defaultwig.jpg","0","1","1","1","","2024-10-08 14:29:18","1","0","0"),
-("8","Brown One","18","1","Straight","1","uploads/defaultwig.jpg","0","2","1","1","","2024-10-03 17:46:36","1","0","0"),
-("12","New Email Wig","18","1","Straight","1","uploads/defaultwig.jpg","0","3","2","6","","2024-10-08 14:29:18","1","0","0"),
-("13","New Email Wig","18","1","Freeze","1","uploads/defaultwig.jpg","5000","3","3","12","","2024-10-08 14:29:18","1","0","0");
+INSERT INTO wig VALUES("10","Brown One","18","1","Straight","1","uploads/defaultwig.jpg","0","3","3","15",NULL,"2024-10-03 17:46:36","1","0","0"),
+("9","Brown One","18","1","Straight","1","uploads/defaultwig.jpg","0","5","2","10",NULL,"2024-10-03 17:46:36","1","0","0"),
+("3","Black One ","18","1","Straight","1","uploads/defaultwig.jpg","0","1","1","5",NULL,"2024-10-03 13:03:56","1","0","0"),
+("4","Black One ","18","1","Straight","1","uploads/defaultwig.jpg","0","1","2","4",NULL,"2024-10-03 13:03:56","1","0","0"),
+("5","Black One ","20","2","Straight","1","uploads/defaultwig.jpg","0","4","3","12",NULL,"2024-10-03 13:03:56","1","0","0"),
+("6","Black One ","22","3","Straight","1","uploads/defaultwig.jpg","0","3","1","3",NULL,"2024-10-03 13:03:56","1","0","0"),
+("11","New Email Wig","18","1","Straight","1","uploads/defaultwig.jpg","0","1","1","1",NULL,"2024-10-08 14:29:18","1","0","0"),
+("8","Brown One","18","1","Straight","1","uploads/defaultwig.jpg","0","2","1","1",NULL,"2024-10-03 17:46:36","1","0","0"),
+("12","New Email Wig","18","1","Straight","1","uploads/defaultwig.jpg","0","3","2","6",NULL,"2024-10-08 14:29:18","1","0","0"),
+("13","New Email Wig","18","1","Freeze","1","uploads/defaultwig.jpg","5000","3","3","12",NULL,"2024-10-08 14:29:18","1","0","0");
 
 
 

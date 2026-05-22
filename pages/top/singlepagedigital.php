@@ -6,6 +6,8 @@ include_once $redirect_link . 'include/db.php';
 include_once $redirect_link . 'include/mdb.php';
 
 $current_date = date('Y-m-d');
+$singlePageAvailable = stock_table_exists($con, 'single_page');
+$pageDbAvailable = stock_table_exists($con, 'pagedb');
 
 $total_price = 0;
 $total_price_vat = 0;
@@ -19,11 +21,11 @@ $add_button = '';
 $update_button = '';
 $generate_button = '';
 
-if (isset($_GET['import_banner_id'])) {
-    $banner_type = $_GET['banner_type'];
+if (isset($_GET['import_banner_id']) && stock_table_exists($con, 'single_page')) {
+    $banner_type = mysqli_real_escape_string($con, $_GET['banner_type'] ?? '');
     $sql = "SELECT * FROM single_page WHERE single_page_id = '$banner_type'";
     $result = mysqli_query($con, $sql);
-    $row = mysqli_fetch_assoc($result);
+    $row = $result ? mysqli_fetch_assoc($result) : null;
     $customer = $row['customer'];
     $job_type = $row['job_type'];
     $commitonprice = $row['commitonprice'];
@@ -46,11 +48,16 @@ if (isset($_GET['import_banner_id'])) {
 
 
     $total_price_vat = $row['total_price_vat'];
-    $sql = "SELECT * FROM pagedb WHERE page_id = '$page_id'";
-    $result = mysqli_query($con, $sql);
-    $row = mysqli_fetch_assoc($result);
-    $unitbanner_type = $row['page_id'];
-    $unitbanner_price = $row['page_price'];
+    $unitbanner_type = $page_id;
+    $unitbanner_price = 0;
+    if ($pageDbAvailable) {
+        $sql = "SELECT * FROM pagedb WHERE page_id = '$page_id'";
+        $result = mysqli_query($con, $sql);
+        if ($result && ($pageRow = mysqli_fetch_assoc($result))) {
+            $unitbanner_type = $pageRow['page_id'];
+            $unitbanner_price = $pageRow['page_price'];
+        }
+    }
 
     $machine_run = $print_side * $required_quantity;
 
@@ -80,10 +87,16 @@ if (isset($_POST['calculate'])) {
     $machine_type = $_POST['machine_type'];
     $size = $_POST['size'];
 
-    $sql = "SELECT * FROM pagedb WHERE page_id = '$unitbanner_type'";
-    $result = mysqli_query($con, $sql);
-    $row = mysqli_fetch_assoc($result);
-    $unitbanner_price = $row['page_price'];
+    $unitbanner_price = 0;
+    if ($pageDbAvailable) {
+        $unitbanner_type = mysqli_real_escape_string($con, $unitbanner_type);
+        $sql = "SELECT * FROM pagedb WHERE page_id = '$unitbanner_type'";
+        $result = mysqli_query($con, $sql);
+        if ($result && ($pageRow = mysqli_fetch_assoc($result))) {
+            $unitbanner_price = $pageRow['page_price'];
+            $unitbanner_type = $pageRow['page_id'];
+        }
+    }
     $print_side = $_POST['print_side'];
 
     $machine_run = $print_side * $required_quantity;
@@ -292,19 +305,12 @@ if ($result) {
         $user_name = $row['user_name'];
         $password = $row['password'];
         $privileged = $row['previledge'];
-        $module = json_decode($row['module'], true);
+        $module = json_decode($row['module'], true) ?: [];
 
-
-        $calculateButtonVisible = ($module['calcview'] == 1) ? true : false;
-
-
-        $addButtonVisible = ($module['calcadd'] == 1) ? true : false;
-
-
-        $updateButtonVisible = ($module['calcedit'] == 1) ? true : false;
-
-
-        $generateButtonVisible = ($module['calcgenerate'] == 1) ? true : false;
+        $calculateButtonVisible = !empty($module['calcview']);
+        $addButtonVisible = !empty($module['calcadd']);
+        $updateButtonVisible = !empty($module['calcedit']);
+        $generateButtonVisible = !empty($module['calcgenerate']);
     } else {
         echo "No user found with the specified ID";
     }
@@ -352,13 +358,17 @@ if ($result) {
                                     <select name="banner_type" class="form-input  rounded-none">
                                         <?php
 
-                                        if ($_SESSION['username'] == 'masteradmin') {
-                                            $sql = "SELECT * FROM single_page ORDER BY single_page_id DESC";
+                                        if ($singlePageAvailable) {
+                                            if ($_SESSION['username'] == 'masteradmin') {
+                                                $sql = "SELECT * FROM single_page ORDER BY single_page_id DESC";
+                                            } else {
+                                                $sql = "SELECT * FROM single_page WHERE private != 'yes' ORDER BY single_page_id DESC";
+                                            }
+                                            $result = mysqli_query($con, $sql);
                                         } else {
-                                            $sql = "SELECT * FROM single_page WHERE private != 'yes' ORDER BY single_page_id DESC";
+                                            $result = false;
                                         }
-
-                                        $result = mysqli_query($con, $sql);
+                                        if ($result) {
                                         while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
                                             <option value="<?php echo $row['single_page_id'] ?>" <?php if (isset($banner_type) && $row['single_page_id'] == $banner_type) {
@@ -366,6 +376,9 @@ if ($result) {
                                                                                                     } ?>>
                                                 <?php echo $row['single_page_id'] ?></option>
                                         <?php
+                                        }
+                                        } else {
+                                            echo '<option value="">Single page module not installed</option>';
                                         }
                                         ?>
                                     </select>
@@ -424,9 +437,11 @@ if ($result) {
                                         Type</label>
                                     <select type="text" name="unitbanner_type" class="form-input" required>
                                         <?php
-                                        $sql = "SELECT * FROM pagedb";
-                                        $result = mysqli_query($con, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
+                                        if ($pageDbAvailable) {
+                                            $sql = "SELECT * FROM pagedb";
+                                            $result = mysqli_query($con, $sql);
+                                            if ($result) {
+                                                while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
                                             <option value="<?php echo $row['page_id'] ?>" <?php
                                                                                             if (isset($unitbanner_type)) {
@@ -438,6 +453,10 @@ if ($result) {
                                                 <?php echo $row['page_type']; ?>
                                             </option>
                                         <?php
+                                                }
+                                            }
+                                        } else {
+                                            echo '<option value="">Page types not configured</option>';
                                         }
                                         ?>
                                     </select>
@@ -498,9 +517,12 @@ if ($result) {
                                     <Select name="machine_type" class="form-input" required>
 
 
-                                        <?php $sql = "SELECT * FROM machine_run";
-                                        $result = mysqli_query($con, $sql);
-                                        while ($row = mysqli_fetch_assoc($result)) {
+                                        <?php
+                                        if (stock_table_exists($con, 'machine_run')) {
+                                            $sql = "SELECT * FROM machine_run";
+                                            $result = mysqli_query($con, $sql);
+                                            if ($result) {
+                                                while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
                                             <option value="<?php echo $row['id'] ?>" <?php
                                                                                         if (isset($machine_type) && $row['id'] == $machine_type) {
@@ -509,7 +531,13 @@ if ($result) {
                                                                                         ?>>
                                                 <?php echo $row['type'] ?>
                                             </option>
-                                        <?php } ?>
+                                        <?php
+                                                }
+                                            }
+                                        } else {
+                                            echo '<option value="">Machine types not configured</option>';
+                                        }
+                                        ?>
 
 
                                     </Select>

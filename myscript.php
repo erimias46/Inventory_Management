@@ -1,4 +1,10 @@
 <?php
+// Legacy migration script — CLI only.
+if (php_sapi_name() !== 'cli') {
+    http_response_code(404);
+    exit;
+}
+
 // Database configuration for Database A
 $servernameA = "localhost";
 $usernameA = "habeshyq_erimias";

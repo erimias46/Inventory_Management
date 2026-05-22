@@ -1443,27 +1443,26 @@ FROM products;
                                             $dateCondition = "WHERE sales_date >= CURDATE() - INTERVAL $selectedPeriod DAY";
                                         }
 
-                                        $sql = "SELECT product_name, SUM(quantity) AS total_sold,price,status
+                                        $sql = "SELECT product_name, SUM(quantity) AS total_sold, MAX(price) AS price
                             FROM (
-                                SELECT jeans_name AS product_name, quantity, sales_date,price,status FROM sales
+                                SELECT jeans_name AS product_name, quantity, sales_date, price, status FROM sales
                                 $dateCondition
                                 UNION ALL
-                                SELECT shoes_name AS product_name, quantity, sales_date,price,status  FROM shoes_sales 
+                                SELECT shoes_name AS product_name, quantity, sales_date, price, status FROM shoes_sales
                                 $dateCondition
                                 UNION ALL
-                                SELECT accessory_name AS product_name, quantity, sales_date ,price,status FROM accessory_sales
+                                SELECT accessory_name AS product_name, quantity, sales_date, price, status FROM accessory_sales
                                 $dateCondition
                                 UNION ALL
-                                SELECT complete_name AS product_name, quantity, sales_date,price,status FROM complete_sales
+                                SELECT complete_name AS product_name, quantity, sales_date, price, status FROM complete_sales
                                 $dateCondition
                                 UNION ALL
-                                SELECT top_name AS product_name, quantity, sales_date,price,status FROM top_sales
+                                SELECT top_name AS product_name, quantity, sales_date, price, status FROM top_sales
                                 $dateCondition
                             ) AS combined_sales
-                             where status='active'
+                            WHERE status = 'active'
                             GROUP BY product_name
                             ORDER BY total_sold DESC
-                           
                             LIMIT 10";
 
                                         $result = mysqli_query($con, $sql);

@@ -20,7 +20,7 @@
             color: "light",
         },
         menu: {
-            color: "light",
+            color: "dark",
         },
         sidenav: {
             view: "default"  

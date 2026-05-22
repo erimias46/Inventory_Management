@@ -35,10 +35,29 @@ include_once $redirect_link . 'include/db.php';
                         <h4 class="text-slate-900 dark:text-slate-200 text-lg font-medium">Information</h4>
                     </div>
                     <?php
-                   
+                    $row = [
+                        'address' => '',
+                        'phone_number' => '',
+                        'vat' => '',
+                        'tin_number' => '',
+                        'vat_number' => '',
+                    ];
+                    if (!stock_table_exists($con, 'info')) {
+                        mysqli_query($con, "CREATE TABLE IF NOT EXISTS info (
+                            id int NOT NULL PRIMARY KEY DEFAULT 1,
+                            address varchar(255) NOT NULL DEFAULT '',
+                            phone_number varchar(100) NOT NULL DEFAULT '',
+                            vat varchar(50) NOT NULL DEFAULT '',
+                            tin_number varchar(100) NOT NULL DEFAULT '',
+                            vat_number varchar(100) NOT NULL DEFAULT ''
+                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+                        mysqli_query($con, "INSERT IGNORE INTO info (id) VALUES (1)");
+                    }
                     $sql = "SELECT * FROM info WHERE id = 1";
                     $result = mysqli_query($con, $sql);
-                    $row = mysqli_fetch_assoc($result);
+                    if ($result && ($dbRow = mysqli_fetch_assoc($result))) {
+                        $row = $dbRow;
+                    }
                     ?>
                     <form method="POST" class="p-6 grid grid-cols-1 gap-3">
                         <!-- <div class="mx-auto">

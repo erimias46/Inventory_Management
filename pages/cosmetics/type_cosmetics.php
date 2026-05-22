@@ -80,11 +80,12 @@ $current_date = date('Y-m-d');
                                                 ]; // Array of 10 different text colors to alternate between
                                                 $currentColorIndex = 0; // To toggle between colors
 
-                                                $sql = "SELECT cosmetics_name, GROUP_CONCAT(CONCAT('Size ', size, ' (', quantity, 'X)') SEPARATOR ', ') AS sizes, price, image, created_at, id 
+                                                $sql = "SELECT cosmetics_name, GROUP_CONCAT(CONCAT('Size ', size, ' (', quantity, 'X)') SEPARATOR ', ') AS sizes, price, image, MAX(created_at) AS created_at,
+               SUBSTRING_INDEX(GROUP_CONCAT(id ORDER BY created_at DESC), ',', 1) AS id
         FROM cosmetics
         WHERE quantity > 0 
         GROUP BY cosmetics_name, price, image  
-        ORDER BY created_at DESC";
+        ORDER BY MAX(created_at) DESC";
                                                 $result22 = mysqli_query($con, $sql);
                                                 while ($row = mysqli_fetch_assoc($result22)) {
                                                     // Extract just the date part (Y-m-d) from the timestamp

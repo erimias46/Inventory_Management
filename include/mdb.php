@@ -1,12 +1,4 @@
 <?php
-$host = "localhost";
-$user_name = "root";
-$password = "";
-$name = "management";
-
-
-
-$conn = mysqli_connect($host, $user_name, $password, $name);
-if ($conn === false) {
-    error_log('cant connect to database');
-}
+// Secondary connection (legacy "management" features). Reuses main stock DB on MAMP.
+require_once __DIR__ . '/db.php';
+$conn = $con;

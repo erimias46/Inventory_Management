@@ -84,12 +84,12 @@ $current_date = date('Y-m-d');
        GROUP_CONCAT(CONCAT('Size ', size, ' (', quantity, 'X, ', piece, ' pcs)') SEPARATOR ', ') AS sizes, 
        price, 
        image, 
-       created_at, 
-       id 
+       MAX(created_at) AS created_at,
+       SUBSTRING_INDEX(GROUP_CONCAT(id ORDER BY created_at DESC), ',', 1) AS id
 FROM wig
 WHERE quantity > 0 
 GROUP BY wig_name, price, image  
-ORDER BY created_at DESC;
+ORDER BY MAX(created_at) DESC;
 ";
                                                 $result22 = mysqli_query($con, $sql);
                                                 while ($row = mysqli_fetch_assoc($result22)) {

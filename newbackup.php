@@ -10,8 +10,8 @@ if (isset($_POST['backup'])) {
     // Database connection parameters from your db.php
     $host = "localhost";
     $user = "root";
-    $pass = "";
-    $name = "inventory";
+    $pass = "root";
+    $name = "stock";
     
     // Create connection
     $conn = new mysqli($host, $user, $pass, $name);

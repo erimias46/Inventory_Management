@@ -5,17 +5,31 @@ include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
 $current_date = date('Y-m-d');
 
-$id = $_GET['id'];
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$row1 = null;
+$db_id = $name = $db_name = '';
 
+if ($id > 0) {
+    $sql1 = "SELECT * FROM d_constants WHERE id = $id";
+    $result2 = mysqli_query($con, $sql1);
+    $row1 = $result2 ? mysqli_fetch_assoc($result2) : null;
+}
 
+if (!$row1 || empty($row1['db'])) {
+    echo '<div class="p-6 text-red-600">Invalid or missing constants configuration. Open this page from the Constants menu.</div>';
+    include $redirect_link . 'partials/footer-scripts.php';
+    exit;
+}
 
-
-$sql1 = "SELECT * FROM d_constants WHERE id = '$id'";
-$result2 = mysqli_query($con, $sql1);
-$row1 = mysqli_fetch_assoc($result2);
 $db_id = $row1['id'];
 $name = $row1['name'];
-$db_name = $row1['db'];
+$db_name = mysqli_real_escape_string($con, $row1['db']);
+
+if (!stock_table_exists($con, $db_name)) {
+    echo '<div class="p-6 text-red-600">Table "' . htmlspecialchars($db_name) . '" is not in this database.</div>';
+    include $redirect_link . 'partials/footer-scripts.php';
+    exit;
+}
 ?>
 
 

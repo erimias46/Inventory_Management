@@ -1,26 +1,33 @@
 <?php
 
-// Include the Telegram Bot SDK
-require 'vendor/autoload.php'; // Ensure you have installed the Telegram SDK
+// Webhook endpoint only (not for browser visits).
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(200);
+    exit('OK');
+}
+
+require __DIR__ . '/vendor/autoload.php';
 
 use Telegram\Bot\Api;
 
-// Create a new instance of the Telegram API
-$telegram = new Api('7938846333:AAEmBwXas0iuu2tMF3HJ2jhXzf_egE1sJT8'); // Replace with your Bot Token
+$telegram = new Api('7938846333:AAEmBwXas0iuu2tMF3HJ2jhXzf_egE1sJT8');
 
-// Database connection
-include('include/db.php'); // Update this
+include __DIR__ . '/include/db.php';
 
-// Get webhook updates from Telegram
-$update = $telegram->getWebhookUpdates();
+try {
+    $update = $telegram->getWebhookUpdates();
+} catch (Throwable $e) {
+    error_log('telegram_bot: ' . $e->getMessage());
+    http_response_code(200);
+    exit;
+}
 
-// Check if the update contains a message
-if ($update->getMessage()) {
-    $chat_id = $update->getMessage()->getChat()->getId(); // Get user's chat_id
-    $first_name = $update->getMessage()->getChat()->getFirstName(); // Get user's first name
+$message = $update->getMessage();
+if ($message) {
+    $chat_id = $message->getChat()->getId();
+    $first_name = $message->getChat()->getFirstName();
 
-    // Check if this is the /start command
-    if ($update->getMessage()->getText() === '/start') {
+    if ($message->getText() === '/start') {
         // Insert or update subscriber in the database
         $sql = "INSERT INTO subscribers (chat_id, first_name) VALUES ('$chat_id', '$first_name') 
                 ON DUPLICATE KEY UPDATE first_name='$first_name'";
@@ -33,3 +40,5 @@ if ($update->getMessage()) {
         ]);
     }
 }
+
+http_response_code(200);

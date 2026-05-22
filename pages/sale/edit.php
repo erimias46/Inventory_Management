@@ -13,20 +13,21 @@ include_once $redirect_link . 'include/bot.php';
 
 
 
-$type = $_GET['type'];
-$sales_id = $_GET['sales_id'];
+$type = $_GET['type'] ?? '';
+$sales_id = isset($_GET['sales_id']) ? (int) $_GET['sales_id'] : 0;
+$row = null;
 
-
-if ($type == 'jeans') {
-    $sql = "SELECT * FROM sales WHERE sales_id = $sales_id";
-} else {
-    $sql = "SELECT * FROM {$type}_sales WHERE sales_id = $sales_id";
+if ($sales_id > 0 && stock_allowed_product_type($type)) {
+    if ($type === 'jeans') {
+        $sql = "SELECT * FROM sales WHERE sales_id = $sales_id";
+    } else {
+        $sql = "SELECT * FROM {$type}_sales WHERE sales_id = $sales_id";
+    }
+    $result = mysqli_query($con, $sql);
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+    }
 }
-
-
-
-$result = mysqli_query($con, $sql);
-$row = mysqli_fetch_assoc($result);
 
 if ($row) {
     $product_name = $row[$type . '_name'];
@@ -39,7 +40,7 @@ if ($row) {
     $status = $row['status'];
     $price = $row['price'];
 } else {
-    echo "No product found with the specified ID";
+    $product_name = $size = $price = $cash = $bank = $method = $bank_name = $status = '';
 }
 
 
@@ -203,16 +204,18 @@ if ($result) {
                                     <select name="code_name" id="code_name" class="w-full border border-gray-300 p-2 rounded-md " onchange="fetchSizes()" required disabled>
                                         <option value="">Select Name</option>
                                         <?php
+                                        if ($row && stock_allowed_product_type($type)) {
                                         $sql3 = "SELECT * FROM `$type` GROUP BY `{$type}_name` ORDER BY `{$type}_name` ASC";
                                         $result3 = mysqli_query($con, $sql3);
 
-                                        if (mysqli_num_rows($result3) > 0) {
+                                        if ($result3 && mysqli_num_rows($result3) > 0) {
                                             while ($row3 = mysqli_fetch_assoc($result3)) {
                                                 // Check if the current option should be selected
                                                 $selected = ($row3[$type . '_name'] == $product_name) ? 'selected' : '';
                                         ?>
                                                 <option value="<?= $row3[$type . '_name'] ?>" <?= $selected ?>><?= $row3[$type . '_name'] ?></option>
                                         <?php }
+                                        }
                                         }
                                         ?>
                                     </select>

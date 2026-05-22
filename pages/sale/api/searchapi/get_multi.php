@@ -21,10 +21,10 @@ if (isset($_POST['product_type']) && isset($_POST['sizes'])) {
         // Fetch products that have all selected sizes
         $sql = "SELECT {$productType}_name AS product_name, 
                        GROUP_CONCAT(CONCAT(size, ' (', quantity, ' qty)') ORDER BY size) AS size_quantity,
-                       image 
+                       MAX(image) AS image 
                 FROM {$productType} 
                 WHERE size IN ($placeholders) 
-                and quantity > 0
+                AND quantity > 0
                 GROUP BY {$productType}_name 
                 HAVING COUNT(DISTINCT size) = ?  ";
 

@@ -14,7 +14,7 @@ include_once $redirect_link . 'include/db.php';
 
 // Fetch product names based on product type
 // Properly build the table and column name
-$query = "SELECT id, `" . $productType . "_name` as name FROM `" . $productType . "`  GROUP BY `" . $productType . "_name`";
+$query = "SELECT MIN(id) AS id, `" . $productType . "_name` AS name FROM `" . $productType . "` GROUP BY `" . $productType . "_name` ORDER BY name ASC";
 
 $result = $con->query($query);
 

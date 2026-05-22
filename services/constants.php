@@ -1,15 +1,15 @@
 <?php
-include_once('database.php');
+include_once __DIR__ . '/database.php';
 
-class ConstantsService {
-    private $conn;
-
-    function __construct() {
+class ConstantsService
+{
+    public static function getAllConstants(): array
+    {
         $conn = DatabaseService::getConnection();
-    }
-
-    public static function getAllConstants() {
-        $result = $conn->query("SELECT * FROM d_constants");
-        return $conn->fetch_all();
+        $result = $conn->query('SELECT * FROM d_constants');
+        if (!$result) {
+            return [];
+        }
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 }

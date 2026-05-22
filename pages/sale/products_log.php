@@ -112,10 +112,10 @@ SELECT
         ORDER BY p.size
         SEPARATOR ', '
     ) AS sizes,
-    p.type,
-    MAX(p.price) as price,
-    p.warehouse,
-    p.image,
+    MAX(p.type) AS type,
+    MAX(p.price) AS price,
+    MAX(p.warehouse) AS warehouse,
+    MAX(p.image) AS image,
     MAX(p.created_at) AS created_at,
     p.source_table,
     SUM(p.quantity) AS total_quantity
@@ -123,10 +123,8 @@ FROM products p
 GROUP BY 
     p.product_name,
     p.product_type,
-   
-   
     p.source_table
-ORDER BY created_at DESC;
+ORDER BY MAX(p.created_at) DESC;
 ";
 
 

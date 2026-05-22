@@ -58,32 +58,24 @@ $from = $_GET['from'];
 
                                         <?php
 
-                                        $id = $_GET['id'];
-                                        $result = mysqli_query($con, "SELECT * FROM user WHERE user_id = $id");
+                                        $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+                                        $row = null;
+                                        if ($id > 0) {
+                                            $result = mysqli_query($con, "SELECT * FROM user WHERE user_id = $id");
+                                            if ($result) {
+                                                $row = mysqli_fetch_assoc($result);
+                                                mysqli_free_result($result);
+                                            }
+                                        }
 
-
-                                        if ($result) {
-
-                                            $row = mysqli_fetch_assoc($result);
-
-
-                                            if ($row) {
-
+                                        if ($row) {
                                                 $user_id = $row['user_id'];
                                                 $user_name = $row['user_name'];
                                                 $password = $row['password'];
                                                 $privileged = $row['previledge'];
                                                 $module = $row['module'];
-                                            } else {
-
-                                                echo "No user found with the specified ID";
-                                            }
-
-                                            // Free the result set
-                                            mysqli_free_result($result);
                                         } else {
-                                            // Handle the case where the query failed
-                                            echo "Error executing query: " . mysqli_error($con);
+                                                echo "No user found with the specified ID";
                                         }
 
 
@@ -784,7 +776,26 @@ $from = $_GET['from'];
                                                             class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                User Account </td>
+                                                                Settings Access </td>
+                                                            <?php
+                                                            $moduleData = json_decode($module, true);
+                                                            $checkboxNames = ['settings'];
+                                                            foreach ($checkboxNames as $checkboxName) {
+                                                                $checked = (!empty($moduleData[$checkboxName]) && $moduleData[$checkboxName] == 1) ? 'checked' : '';
+                                                                echo '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">';
+                                                                echo '<input type="checkbox" name="' . $checkboxName . '" value="1" ' . $checked . ' title="Access system settings page">';
+                                                                echo '</td>';
+                                                            }
+                                                            // Fill remaining 6 empty cells to match column count
+                                                            for ($i=0;$i<6;$i++) echo '<td></td>';
+                                                            ?>
+                                                        </tr>
+
+                                                        <tr
+                                                            class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                Edit Buy Price </td>
 
 
 
@@ -1166,11 +1177,12 @@ if (isset($_POST['update_user'])) {
     $logcosmetics = (int) boolval($_POST['logcosmetics']);
 
 
-    $constant = (int) boolval($_POST['constant']);
-    $email = (int) boolval($_POST['email']);
-    $backup = (int) boolval($_POST['backup']);
-    $user = (int) boolval($_POST['user']);
-    $editbuyprice = (int) boolval($_POST['editbuyprice']);
+    $constant     = (int) boolval($_POST['constant']     ?? 0);
+    $email        = (int) boolval($_POST['email']        ?? 0);
+    $backup       = (int) boolval($_POST['backup']       ?? 0);
+    $user         = (int) boolval($_POST['user']         ?? 0);
+    $editbuyprice = (int) boolval($_POST['editbuyprice'] ?? 0);
+    $settings     = (int) boolval($_POST['settings']     ?? 0);
 
 
 
@@ -1302,11 +1314,12 @@ if (isset($_POST['update_user'])) {
         'logwig' => $logwig,
         'logcosmetics' => $logcosmetics,
 
-        'constant' => $constant,
-        'email' => $email,
-        'backup' => $backup,
-        'user' => $user,
-        'editbuyprice' => $editbuyprice
+        'constant'     => $constant,
+        'email'        => $email,
+        'backup'       => $backup,
+        'user'         => $user,
+        'editbuyprice' => $editbuyprice,
+        'settings'     => $settings
 
 
 

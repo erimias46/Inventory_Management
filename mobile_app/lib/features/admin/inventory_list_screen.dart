@@ -6,6 +6,7 @@ import '../../core/providers/app_providers.dart';
 import '../../core/models/user_model.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 class InventoryListScreen extends ConsumerStatefulWidget {
   const InventoryListScreen({super.key, required this.type});
@@ -208,7 +209,7 @@ class _InventoryListScreenState extends ConsumerState<InventoryListScreen> {
                         itemCount: _items.length,
                         itemBuilder: (_, i) {
                           final item = _items[i];
-                          final qty = (item['quantity'] as num?)?.toDouble() ?? 0;
+                          final qty = parseJsonDouble(item['quantity']);
                           final canDel = _canDelete(user);
                           return Card(
                             margin: const EdgeInsets.only(bottom: 8),
@@ -222,7 +223,7 @@ class _InventoryListScreenState extends ConsumerState<InventoryListScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    currencyFmt.format((item['price'] as num?)?.toDouble() ?? 0),
+                                    currencyFmt.format(parseJsonDouble(item['price'])),
                                     style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.posGreen),
                                   ),
                                   Container(

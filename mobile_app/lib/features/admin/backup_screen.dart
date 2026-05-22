@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 class BackupScreen extends ConsumerStatefulWidget {
   const BackupScreen({super.key});
@@ -69,7 +70,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                         itemCount: _files.length,
                         itemBuilder: (_, i) {
                           final f = _files[i];
-                          final sizeKb = ((f['size'] as num?) ?? 0) / 1024;
+                          final sizeKb = parseJsonDouble(f['size']) / 1024;
                           return Card(
                             child: ListTile(
                               leading: const Icon(Icons.description, color: AppColors.accent),

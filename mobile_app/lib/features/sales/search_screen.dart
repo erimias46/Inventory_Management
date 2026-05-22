@@ -5,6 +5,7 @@ import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/category_utils.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key, this.embedded = false});
@@ -107,7 +108,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       itemCount: _results.length,
                       itemBuilder: (_, i) {
                         final r = _results[i];
-                        final qty = (r['quantity'] as num?)?.toDouble() ?? 0;
+                        final qty = parseJsonDouble(r['quantity']);
                         return Card(
                           margin: const EdgeInsets.only(bottom: 8),
                           child: ListTile(
@@ -125,7 +126,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             title: Text(r['name']?.toString() ?? '', style: const TextStyle(fontWeight: FontWeight.w600)),
                             subtitle: Text('Size ${r['size']} · ${r['id']}'),
                             trailing: Text(
-                              currencyFmt.format((r['price'] as num?)?.toDouble() ?? 0),
+                              currencyFmt.format(parseJsonDouble(r['price'])),
                               style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.posGreen),
                             ),
                           ),

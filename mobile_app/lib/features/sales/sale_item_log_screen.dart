@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 /// Per-product sale history (web: pages/sale/sale_log.php).
 class SaleItemLogScreen extends ConsumerStatefulWidget {
@@ -60,7 +61,7 @@ class _SaleItemLogScreenState extends ConsumerState<SaleItemLogScreen> {
                         ),
                         isThreeLine: true,
                         trailing: Text(
-                          currencyFmt.format((row['price'] as num?)?.toDouble() ?? 0),
+                          currencyFmt.format(parseJsonDouble(row['price'])),
                           style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.posGreen),
                         ),
                       ),

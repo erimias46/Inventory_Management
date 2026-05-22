@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 /// Edit product price/qty/buy price (web: editprice.php per category).
 class EditPriceScreen extends ConsumerStatefulWidget {
@@ -33,9 +34,9 @@ class _EditPriceScreenState extends ConsumerState<EditPriceScreen> {
 
   Future<void> _load() async {
     _item = await ref.read(adminRepositoryProvider).inventoryItem(widget.type, widget.id);
-    _priceCtrl.text = (_item['price'] as num?)?.toString() ?? '';
-    _buyCtrl.text = (_item['buy_price'] as num?)?.toString() ?? '';
-    _qtyCtrl.text = (_item['quantity'] as num?)?.toString() ?? '';
+    _priceCtrl.text = parseJsonDouble(_item['price']).toString();
+    _buyCtrl.text = parseJsonDouble(_item['buy_price']).toString();
+    _qtyCtrl.text = parseJsonDouble(_item['quantity']).toString();
     setState(() => _loading = false);
   }
 

@@ -7,6 +7,7 @@ import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/category_utils.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 class AllSalesScreen extends ConsumerStatefulWidget {
   const AllSalesScreen({super.key, this.embedded = false});
@@ -129,7 +130,7 @@ class _AllSalesScreenState extends ConsumerState<AllSalesScreen> {
                           separatorBuilder: (_, __) => const SizedBox(height: 8),
                           itemBuilder: (_, i) {
                             final s = _filtered[i];
-                            final price = (s['price'] as num?)?.toDouble() ?? 0;
+                            final price = parseJsonDouble(s['price']);
                             return Card(
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(14),

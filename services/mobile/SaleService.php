@@ -355,7 +355,7 @@ final class SaleService
         );
         mysqli_stmt_bind_param(
             $stmt,
-            'iissddddssi',
+            'iissdddsssii',
             $productId,
             $sale['size_id'],
             $sale[$nameCol],

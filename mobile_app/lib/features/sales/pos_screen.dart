@@ -11,6 +11,7 @@ import '../../core/utils/category_utils.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/pos_widgets.dart';
 import 'models/cart_line.dart';
+import '../../core/utils/json_parse.dart';
 
 class PosScreen extends ConsumerStatefulWidget {
   const PosScreen({super.key, this.fixedCategory});
@@ -70,7 +71,7 @@ class _PosScreenState extends ConsumerState<PosScreen> {
       final filtered = fixed != null ? types.where((t) => t['key'] == fixed).toList() : types;
       setState(() {
         _types = filtered.isNotEmpty ? filtered : types;
-        _banks = banks;
+        _banks = uniqueStrings(banks);
         _selectedType = fixed ?? (types.isNotEmpty ? types.first['key'] as String? : null);
         _fixedCategoryLabel = fixed != null ? categoryLabel(cats, fixed) : null;
         _bootstrapping = false;
@@ -143,8 +144,8 @@ class _PosScreenState extends ConsumerState<PosScreen> {
         } else {
           final g = grouped[name]!;
           g['sizes'] = [...(g['sizes'] as List), p];
-          g['total_qty'] = (g['total_qty'] as num) + (p['quantity'] as num? ?? 0);
-          final price = (p['price'] as num?)?.toDouble() ?? 0;
+          g['total_qty'] = parseJsonDouble(g['total_qty']) + parseJsonDouble(p['quantity']);
+          final price = parseJsonDouble(p['price']);
           if (price < (g['min_price'] as num)) g['min_price'] = price;
         }
       }
@@ -253,8 +254,8 @@ class _PosScreenState extends ConsumerState<PosScreen> {
           );
       if (!mounted) return;
       HapticFeedback.heavyImpact();
-      final successCount = (result['success_count'] as num?)?.toInt() ?? _cart.length;
-      final deliveryCount = (result['delivery_count'] as num?)?.toInt() ?? 0;
+      final successCount = parseJsonInt(result['success_count'], _cart.length);
+      final deliveryCount = parseJsonInt(result['delivery_count'], 0);
       final isDelivery = _method == 'delivery';
       await showDialog(
         context: context,
@@ -339,11 +340,11 @@ class _PosScreenState extends ConsumerState<PosScreen> {
       itemCount: _products.length,
       itemBuilder: (_, i) {
         final p = _products[i];
-        final qty = (p['total_qty'] as num?)?.toDouble() ?? 0;
+        final qty = parseJsonDouble(p['total_qty']);
         return ProductGridTile(
           name: p['name'] as String,
           subtitle: '${qty.toStringAsFixed(0)} in stock',
-          price: (p['min_price'] as num?)?.toDouble(),
+          price: parseJsonDouble(p['min_price']),
           lowStock: qty < 3,
           imageUrl: p['image']?.toString(),
           onTap: () => _openSizePicker(p),
@@ -493,7 +494,7 @@ class _SizePickerSheet extends StatelessWidget {
               runSpacing: 10,
               children: sizes.map((s) {
                 final size = s['size']?.toString() ?? '';
-                final qty = (s['quantity'] as num?)?.toDouble() ?? 0;
+                final qty = parseJsonDouble(s['quantity']);
                 final out = qty <= 0;
                 return ActionChip(
                   label: Text('$size (${qty.toStringAsFixed(0)})'),
@@ -542,9 +543,9 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
   void initState() {
     super.initState();
     _method = widget.method == 'cash' ? 'shop' : widget.method;
-    _uniqueBanks = widget.banks.toSet().toList()..sort();
-    final initial = widget.bankName;
-    _bank = initial != null && _uniqueBanks.contains(initial) ? initial : null;
+    _uniqueBanks = uniqueStrings(widget.banks);
+    final initial = widget.bankName?.trim();
+    _bank = initial != null && initial.isNotEmpty && _uniqueBanks.contains(initial) ? initial : null;
     _reasonCtrl = TextEditingController(text: widget.deliveryReason ?? '');
   }
 
@@ -597,6 +598,7 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
               if (_method == 'delivery') ...[
                 const SizedBox(height: 16),
                 TextField(
+                  key: const Key('checkout_delivery_reason'),
                   controller: _reasonCtrl,
                   decoration: InputDecoration(
                     labelText: 'Delivery person',

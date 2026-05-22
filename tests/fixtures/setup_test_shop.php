@@ -100,8 +100,8 @@ foreach (stock_schema_seed_categories() as $sql) {
 $allModules = json_encode(array_fill_keys([
     'viewjeans', 'viewshoes', 'fullsale', 'allsale', 'searchproduct', 'deliverysale',
     'verifyproducts', 'logsale', 'user', 'constant', 'backup', 'email', 'custview',
-    'salejeans', 'saleshoes', 'refundsalejeans', 'refundsaleshoes', 'deletesalejeans',
-    'exchangesalejeans', 'addjeans', 'addshoes',
+    'salejeans', 'saleshoes', 'refundsalejeans', 'refundsaleshoes', 'deletesalejeans', 'deletesaleshoes',
+    'exchangesalejeans', 'editsalejeans', 'editsaleshoes', 'addjeans', 'addshoes',
 ], 1), JSON_THROW_ON_ERROR);
 
 $limitedModules = json_encode(['viewjeans' => 1], JSON_THROW_ON_ERROR);
@@ -116,7 +116,8 @@ mysqli_query($rootCon, "INSERT INTO bankdb (bankname, accountnumber) VALUES ('CB
 mysqli_query($rootCon, "INSERT INTO jeansdb (size) VALUES ('M'), ('L')");
 mysqli_query($rootCon, "INSERT INTO jeans_type_db (type) VALUES ('Standard')");
 mysqli_query($rootCon, "INSERT INTO jeans (jeans_name, size, size_id, type, type_id, image, price, quantity, buy_price, active)
-  VALUES ('Test Jean', 'M', 1, 'Standard', 1, '', 100, 10, 50, 1)");
+  VALUES ('Test Jean', 'M', 1, 'Standard', 1, '', 100, 10, 50, 1),
+         ('Test Jean', 'L', 2, 'Standard', 1, '', 110, 8, 55, 1)");
 
 mysqli_query($rootCon, "INSERT INTO shoesdb (size) VALUES ('40')");
 mysqli_query($rootCon, "INSERT INTO shoe_type_db (type) VALUES ('Flat')");

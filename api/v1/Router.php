@@ -107,8 +107,8 @@ final class ApiRouter
             $this->sales->show($user);
         }
 
-        if ($method === 'POST' && count($segments) === 4 && $segments[0] === 'sales' && $segments[2] === 'refund') {
-            $this->sales->refund($user, $segments[1], (int) $segments[3]);
+        if ($method === 'POST' && count($segments) === 4 && $segments[0] === 'sales' && $segments[3] === 'refund') {
+            $this->sales->refund($user, $segments[1], (int) $segments[2]);
         }
 
         if ($method === 'POST' && count($segments) === 4 && $segments[0] === 'sales' && $segments[3] === 'exchange') {

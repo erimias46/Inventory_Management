@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/json_parse.dart';
 
 class UsersScreen extends ConsumerStatefulWidget {
   const UsersScreen({super.key});
@@ -52,7 +53,7 @@ class _UsersScreenState extends ConsumerState<UsersScreen> {
                 final u = _users[i];
                 final name = u['user_name']?.toString() ?? '';
                 final isAdmin = u['is_master_admin'] == true;
-                final id = (u['id'] as num?)?.toInt() ?? 0;
+                final id = parseJsonInt(u['id'], 0);
                 return Card(
                   margin: const EdgeInsets.only(bottom: 8),
                   child: ListTile(

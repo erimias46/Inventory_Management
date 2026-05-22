@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 class SaleDetailScreen extends ConsumerStatefulWidget {
   const SaleDetailScreen({super.key, required this.type, required this.id});
@@ -117,15 +118,15 @@ class _SaleDetailScreenState extends ConsumerState<SaleDetailScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          currencyFmt.format((_sale['price'] as num?)?.toDouble() ?? 0),
+                          currencyFmt.format(parseJsonDouble(_sale['price'])),
                           style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w800, color: AppColors.posGreen),
                         ),
                         const SizedBox(height: 16),
                         const Divider(),
                         _DetailRow('Category', widget.type),
                         _DetailRow('Size', _sale['size']?.toString() ?? ''),
-                        _DetailRow('Cash', currencyFmt.format((_sale['cash'] as num?) ?? 0)),
-                        _DetailRow('Bank', currencyFmt.format((_sale['bank'] as num?) ?? 0)),
+                        _DetailRow('Cash', currencyFmt.format(parseJsonDouble(_sale['cash']))),
+                        _DetailRow('Bank', currencyFmt.format(parseJsonDouble(_sale['bank']))),
                         _DetailRow('Method', _sale['method']?.toString() ?? ''),
                         _DetailRow('Date', _sale['sales_date']?.toString() ?? ''),
                         _DetailRow('Status', _sale['status']?.toString() ?? ''),

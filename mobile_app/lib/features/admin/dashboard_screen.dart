@@ -8,6 +8,7 @@ import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/category_utils.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key, this.embedded = false});
@@ -206,7 +207,7 @@ class _TodayCard extends StatelessWidget {
                 Expanded(
                   child: _MiniStat(
                     'Sales amount',
-                    currencyFmt.format((today['earnings'] as num?) ?? 0),
+                    currencyFmt.format(parseJsonDouble(today['earnings'])),
                     AppColors.accent,
                   ),
                 ),
@@ -232,7 +233,7 @@ class _TodayCard extends StatelessWidget {
                 Expanded(
                   child: _MiniStat(
                     'Cash / Bank',
-                    '${currencyFmt.format((today['cash'] as num?) ?? 0)} · ${currencyFmt.format((today['bank'] as num?) ?? 0)}',
+                    '${currencyFmt.format(parseJsonDouble(today['cash']))} · ${currencyFmt.format(parseJsonDouble(today['bank']))}',
                     AppColors.posGreen,
                   ),
                 ),
@@ -271,12 +272,12 @@ class _KpiGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = [
-      ('Profit', currencyFmt.format((kpis['profit'] as num?) ?? 0), AppColors.success, Icons.trending_up),
-      ('Earnings', currencyFmt.format((kpis['earnings'] as num?) ?? 0), AppColors.accent, Icons.attach_money),
+      ('Profit', currencyFmt.format(parseJsonDouble(kpis['profit'])), AppColors.success, Icons.trending_up),
+      ('Earnings', currencyFmt.format(parseJsonDouble(kpis['earnings'])), AppColors.accent, Icons.attach_money),
       ('Units sold', '${kpis['quantity_sold'] ?? 0}', AppColors.warning, Icons.shopping_cart_outlined),
       ('Transactions', '${kpis['transactions'] ?? 0}', const Color(0xFF8B5CF6), Icons.receipt_long_outlined),
-      ('Cash', currencyFmt.format((kpis['cash'] as num?) ?? 0), AppColors.posGreen, Icons.payments_outlined),
-      ('Bank', currencyFmt.format((kpis['bank'] as num?) ?? 0), AppColors.accentBright, Icons.account_balance_outlined),
+      ('Cash', currencyFmt.format(parseJsonDouble(kpis['cash'])), AppColors.posGreen, Icons.payments_outlined),
+      ('Bank', currencyFmt.format(parseJsonDouble(kpis['bank'])), AppColors.accentBright, Icons.account_balance_outlined),
     ];
     return GridView.count(
       crossAxisCount: 2,
@@ -484,7 +485,7 @@ class _CategoryBreakdown extends StatelessWidget {
         ),
       );
     }
-    final maxRev = items.map((e) => (e['revenue'] as num?)?.toDouble() ?? 0).fold(0.0, (a, b) => a > b ? a : b);
+    final maxRev = items.map((e) => parseJsonDouble(e['revenue'])).fold(0.0, (a, b) => a > b ? a : b);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -495,9 +496,9 @@ class _CategoryBreakdown extends StatelessWidget {
             const SizedBox(height: 12),
             ...items.map((row) {
               final slug = row['slug']?.toString() ?? '';
-              final rev = (row['revenue'] as num?)?.toDouble() ?? 0;
+              final rev = parseJsonDouble(row['revenue']);
               final qty = row['quantity'] ?? 0;
-              final profit = (row['profit'] as num?)?.toDouble() ?? 0;
+              final profit = parseJsonDouble(row['profit']);
               final pct = maxRev > 0 ? rev / maxRev : 0.0;
               AppCategory? cat;
               for (final c in fallbackCategories()) {
@@ -543,7 +544,7 @@ class _BankSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final total = banks.fold<double>(0, (s, b) => s + ((b['total'] as num?)?.toDouble() ?? 0));
+    final total = banks.fold<double>(0, (s, b) => s + parseJsonDouble(b['total']));
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -568,7 +569,7 @@ class _BankSection extends StatelessWidget {
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.account_balance, color: AppColors.accent),
                   title: Text(b['name']?.toString() ?? 'Bank'),
-                  trailing: Text(currencyFmt.format((b['total'] as num?) ?? 0), style: const TextStyle(fontWeight: FontWeight.w700)),
+                  trailing: Text(currencyFmt.format(parseJsonDouble(b['total'])), style: const TextStyle(fontWeight: FontWeight.w700)),
                 ),
               ),
           ],
@@ -607,7 +608,7 @@ class _TopProducts extends StatelessWidget {
                   ),
                   title: Text(row['name']?.toString() ?? '', style: const TextStyle(fontWeight: FontWeight.w600)),
                   subtitle: Text('${row['quantity'] ?? 0} sold'),
-                  trailing: Text(currencyFmt.format((row['price'] as num?) ?? 0), style: const TextStyle(color: AppColors.textMuted, fontSize: 12)),
+                  trailing: Text(currencyFmt.format(parseJsonDouble(row['price'])), style: const TextStyle(color: AppColors.textMuted, fontSize: 12)),
                 );
               }),
           ],
@@ -669,7 +670,7 @@ class _MonthlyTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final withSales = months.where((m) => ((m['quantity'] as num?) ?? 0) > 0).toList();
+    final withSales = months.where((m) => parseJsonDouble(m['quantity']) > 0).toList();
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -709,9 +710,9 @@ class _MonthlyTable extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${m['quantity']} items · ${currencyFmt.format((m['revenue'] as num?) ?? 0)}', style: const TextStyle(fontSize: 12)),
+                            Text('${m['quantity']} items · ${currencyFmt.format(parseJsonDouble(m['revenue']))}', style: const TextStyle(fontSize: 12)),
                             Text(
-                              'Avg sale ${currencyFmt.format((m['avg_sale'] as num?) ?? 0)} · profit ${currencyFmt.format((m['avg_profit'] as num?) ?? 0)}/unit',
+                              'Avg sale ${currencyFmt.format(parseJsonDouble(m['avg_sale']))} · profit ${currencyFmt.format(parseJsonDouble(m['avg_profit']))}/unit',
                               style: const TextStyle(fontSize: 10, color: AppColors.textMuted),
                             ),
                           ],

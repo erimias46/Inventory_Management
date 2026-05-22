@@ -6,6 +6,7 @@ import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/category_utils.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 class VerifyScreen extends ConsumerStatefulWidget {
   const VerifyScreen({super.key});
@@ -111,7 +112,7 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
                           return Card(
                             child: ListTile(
                               title: Text(item[nameKey]?.toString() ?? '', style: const TextStyle(fontWeight: FontWeight.w600)),
-                              subtitle: Text('Size ${item['size']} · Qty ${item['quantity']} · ${currencyFmt.format((item['price'] as num?) ?? 0)}'),
+                              subtitle: Text('Size ${item['size']} · Qty ${item['quantity']} · ${currencyFmt.format(parseJsonDouble(item['price']))}'),
                               leading: Chip(
                                 label: Text(_errorLabel(item['error']), style: const TextStyle(fontSize: 10)),
                                 backgroundColor: AppColors.warning.withValues(alpha: 0.2),

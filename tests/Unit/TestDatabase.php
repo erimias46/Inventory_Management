@@ -23,11 +23,23 @@ final class TestDatabase
 
     public static function scalar(string $sql): float
     {
+        return (float) self::stringScalar($sql);
+    }
+
+    public static function stringScalar(string $sql): string
+    {
         $con = self::connection();
         $result = mysqli_query($con, $sql);
         if (!$result || !($row = mysqli_fetch_assoc($result))) {
-            return 0.0;
+            return '';
         }
-        return (float) reset($row);
+        return (string) reset($row);
+    }
+
+    public static function exec(string $sql): void
+    {
+        if (!mysqli_query(self::connection(), $sql)) {
+            throw new RuntimeException('SQL failed: ' . mysqli_error(self::connection()) . " — $sql");
+        }
     }
 }

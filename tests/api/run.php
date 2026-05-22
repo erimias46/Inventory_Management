@@ -225,6 +225,9 @@ $runner->section('Negative');
 $nf = $client->request('GET', '/does-not-exist-route');
 $runner->assert(($nf['code'] === 404) || (($nf['json']['error']['code'] ?? '') === 'not_found'), 'unknown route 404');
 
+require_once __DIR__ . '/flows.php';
+run_api_flows($client, $runner, $env);
+
 $logout = $client->request('POST', '/auth/logout');
 $runner->assert(($logout['json']['ok'] ?? false) === true, 'POST /auth/logout');
 

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 /// Products added to inventory (web: pages/sale/products_log.php).
 class ProductsInLogScreen extends ConsumerStatefulWidget {
@@ -55,7 +56,7 @@ class _ProductsInLogScreenState extends ConsumerState<ProductsInLogScreen> {
                         ),
                         isThreeLine: true,
                         trailing: Text(
-                          currencyFmt.format((row['price'] as num?)?.toDouble() ?? 0),
+                          currencyFmt.format(parseJsonDouble(row['price'])),
                           style: const TextStyle(color: AppColors.posGreen, fontWeight: FontWeight.w700),
                         ),
                       ),

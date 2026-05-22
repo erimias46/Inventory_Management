@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 /// Cross-category product summary (web: all_product_type.php).
 class AllProductTypesScreen extends ConsumerStatefulWidget {
@@ -56,7 +57,7 @@ class _AllProductTypesScreenState extends ConsumerState<AllProductTypesScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _row('Price', currencyFmt.format((row['price'] as num?) ?? 0)),
+                                _row('Price', currencyFmt.format(parseJsonDouble(row['price']))),
                                 _row('In stock now', '${row['total_quantity_now']}'),
                                 _row('Total received', '${row['total_received']}'),
                                 _row('Total sold', '${row['total_sold']}'),

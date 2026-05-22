@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/network/api_exception.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/json_parse.dart';
 
 /// Add inventory stock (web: pages/{module}/add_*.php).
 class AddProductScreen extends ConsumerStatefulWidget {
@@ -51,9 +52,13 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
       if (!mounted) return;
       final sizes = <Map<String, dynamic>>[];
       final types = <Map<String, dynamic>>[];
+      final seenSizes = <String>{};
       for (final row in typeRows) {
         if (row['size'] != null) {
-          sizes.add({'size': row['size']?.toString(), 'id': row['id']});
+          final label = row['size']?.toString() ?? '';
+          if (label.isNotEmpty && seenSizes.add(label)) {
+            sizes.add({'size': label, 'id': parseJsonInt(row['id'])});
+          }
         } else if (row['type'] != null) {
           types.add(row);
         }
@@ -138,12 +143,12 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                   DropdownButtonFormField<int>(
                     decoration: const InputDecoration(labelText: 'Product type'),
                     items: _types.map((t) {
-                      final id = (t['id'] as num?)?.toInt() ?? 0;
+                      final id = parseJsonInt(t['id'], 0);
                       final label = t['type']?.toString() ?? t['name']?.toString() ?? '$id';
                       return DropdownMenuItem(value: id, child: Text(label));
                     }).toList(),
                     onChanged: (id) {
-                      final row = _types.firstWhere((t) => (t['id'] as num?)?.toInt() == id, orElse: () => {});
+                      final row = _types.firstWhere((t) => parseJsonInt(t['id']) == id, orElse: () => {});
                       setState(() {
                         _selectedTypeId = id;
                         _selectedTypeLabel = row['type']?.toString();
@@ -153,6 +158,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
                   decoration: const InputDecoration(labelText: 'Size'),
+                  value: _selectedSize != null && _sizes.any((s) => s['size'] == _selectedSize) ? _selectedSize : null,
                   items: _sizes
                       .map((s) => DropdownMenuItem(
                             value: s['size']?.toString(),
@@ -160,10 +166,11 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
                           ))
                       .toList(),
                   onChanged: (v) {
+                    if (v == null) return;
                     final row = _sizes.firstWhere((s) => s['size'] == v, orElse: () => {});
                     setState(() {
                       _selectedSize = v;
-                      _selectedSizeId = (row['id'] as num?)?.toInt();
+                      _selectedSizeId = parseJsonInt(row['id']);
                     });
                   },
                 ),

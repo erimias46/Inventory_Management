@@ -1,4 +1,5 @@
 import '../../core/network/api_client.dart';
+import '../../core/utils/json_parse.dart';
 
 class SalesRepository {
   SalesRepository(this._api);
@@ -27,7 +28,7 @@ class SalesRepository {
 
   Future<double> productPrice(String type, String name, String size) async {
     final data = await _api.get('/products/price', query: {'type': type, 'name': name, 'size': size});
-    if (data is Map) return (data['price'] as num?)?.toDouble() ?? 0;
+    if (data is Map) return parseJsonDouble(data['price']);
     return 0;
   }
 
@@ -164,15 +165,9 @@ class SalesRepository {
   Future<List<String>> banks() async {
     final data = await _api.get('/banks');
     if (data is List) {
-      final seen = <String>{};
-      final names = <String>[];
-      for (final e in data) {
-        final name = e is Map ? (e['name']?.toString() ?? '') : e.toString();
-        if (name.isNotEmpty && seen.add(name)) {
-          names.add(name);
-        }
-      }
-      return names;
+      return uniqueStrings(
+        data.map((e) => e is Map ? (e['name'] ?? e['bankname']) : e),
+      );
     }
     return [];
   }

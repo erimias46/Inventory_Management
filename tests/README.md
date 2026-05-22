@@ -37,10 +37,12 @@ Do not point tests at production data. Use `stock_test` only.
 | Command | What it runs |
 |---------|----------------|
 | `php tests/fixtures/setup_test_shop.php` | Creates `stock_master` shop row + `stock_test` schema/seed |
-| `php tests/api/run.php` | HTTP integration tests against live API |
+| `php tests/api/run.php` | HTTP integration tests (~98 checks) including `flows.php` (sale lifecycle, refund, exchange, CRUD, validation) |
 | `vendor/bin/phpunit` | PHP unit tests (`tests/Unit/`) |
-| `cd mobile_app && flutter test` | Dart unit + widget tests |
-| `cd mobile_app && flutter test integration_test` | Optional device smoke (needs MAMP + API) |
+| `cd mobile_app && flutter test test/` | Dart unit + widget tests (23) |
+| `RUN_INTEGRATION=1 ./tests/run_all.sh` | PHP/API + `api_smoke_test` + `api_repositories_test` |
+| `RUN_UI_INTEGRATION=1 RUN_INTEGRATION=1 ./tests/run_all.sh` | Full mobile `integration_test/` on simulator (~35 tests) |
+| `cd mobile_app && flutter test integration_test/ -d <device>` | All integration tests (see `mobile_app/integration_test/README.md`) |
 
 ## Manual regression
 

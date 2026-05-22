@@ -18,7 +18,7 @@ class _FakeSalesRepo extends SalesRepository {
   }
 
   @override
-  Future<List<String>> banks() async => ['CBE'];
+  Future<List<String>> banks() async => ['CBE', 'CBE', 'CBE'];
 
   @override
   Future<List<Map<String, dynamic>>> productNames(String type) async => [];

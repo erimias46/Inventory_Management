@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/network/api_exception.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/json_parse.dart';
 
 /// Edit sale payment fields (web: pages/sale/edit.php).
 class SaleEditScreen extends ConsumerStatefulWidget {
@@ -35,9 +36,9 @@ class _SaleEditScreenState extends ConsumerState<SaleEditScreen> {
 
   Future<void> _load() async {
     final sale = await ref.read(salesRepositoryProvider).getSale(widget.type, widget.id);
-    _priceCtrl.text = (sale['price'] as num?)?.toString() ?? '';
-    _cashCtrl.text = (sale['cash'] as num?)?.toString() ?? '';
-    _bankCtrl.text = (sale['bank'] as num?)?.toString() ?? '';
+    _priceCtrl.text = parseJsonDouble(sale['price']).toString();
+    _cashCtrl.text = parseJsonDouble(sale['cash']).toString();
+    _bankCtrl.text = parseJsonDouble(sale['bank']).toString();
     _method = sale['method']?.toString() ?? 'shop';
     setState(() => _loading = false);
   }

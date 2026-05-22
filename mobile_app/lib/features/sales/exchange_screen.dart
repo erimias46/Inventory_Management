@@ -7,6 +7,7 @@ import '../../core/network/api_exception.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/pos_widgets.dart';
+import '../../core/utils/json_parse.dart';
 
 /// Exchange an active sale for another product (web: pages/sale/exchange.php).
 class ExchangeScreen extends ConsumerStatefulWidget {
@@ -60,10 +61,10 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
       if (!mounted) return;
       setState(() {
         _original = sale;
-        _banks = banks;
+        _banks = uniqueStrings(banks);
         _loading = false;
-        _cash = (sale['cash'] as num?)?.toDouble() ?? 0;
-        _bank = (sale['bank'] as num?)?.toDouble() ?? 0;
+        _cash = parseJsonDouble(sale['cash']);
+        _bank = parseJsonDouble(sale['bank']);
         _method = sale['method']?.toString() ?? 'shop';
         _bankName = sale['bank_name']?.toString();
         _cashCtrl.text = _cash.toStringAsFixed(2);
@@ -118,7 +119,7 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
                 runSpacing: 8,
                 children: sizes.map((s) {
                   final size = s['size']?.toString() ?? '';
-                  final qty = (s['quantity'] as num?)?.toDouble() ?? 0;
+                  final qty = parseJsonDouble(s['quantity']);
                   return ActionChip(
                     label: Text('$size ($qty)'),
                     onPressed: qty > 0 ? () => Navigator.pop(ctx, s) : null,
@@ -199,7 +200,7 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
                         const Text('Returning to stock', style: TextStyle(color: AppColors.textMuted, fontSize: 12)),
                         const SizedBox(height: 8),
                         Text(origName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-                        Text('Size ${_original['size']} · ${currencyFmt.format((_original['price'] as num?) ?? 0)}',
+                        Text('Size ${_original['size']} · ${currencyFmt.format(parseJsonDouble(_original['price']))}',
                             style: const TextStyle(color: AppColors.textMuted)),
                       ],
                     ),
@@ -263,13 +264,13 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
                 if (_banks.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
-                    initialValue: _bankName != null && _banks.contains(_bankName) ? _bankName : null,
+                    value: _bankName != null && _banks.contains(_bankName) ? _bankName : null,
                     decoration: const InputDecoration(labelText: 'Bank name'),
                     items: [
                       const DropdownMenuItem<String>(value: null, child: Text('None')),
                       ..._banks.map((b) => DropdownMenuItem(value: b, child: Text(b))),
                     ],
-                    onChanged: (v) => _bankName = v,
+                    onChanged: (v) => setState(() => _bankName = v),
                   ),
                 ],
                 const SizedBox(height: 24),

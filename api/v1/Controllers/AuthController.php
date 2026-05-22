@@ -9,12 +9,13 @@ final class AuthController
     public function login(): void
     {
         $body = json_decode(file_get_contents('php://input') ?: '{}', true) ?? [];
-        $username = trim($body['username'] ?? '');
-        $password = $body['password'] ?? '';
+        $username  = trim($body['username'] ?? '');
+        $password  = $body['password'] ?? '';
+        $shopSlug  = trim($body['shop_slug'] ?? '');
         if ($username === '' || $password === '') {
             ApiResponse::error('validation', 'Username and password required', 422);
         }
-        $result = $this->auth->login($username, $password);
+        $result = $this->auth->login($username, $password, $shopSlug);
         if (!$result) {
             ApiResponse::error('invalid_credentials', 'Invalid username or password', 401);
         }

@@ -1,4 +1,5 @@
 import '../../core/models/user_model.dart';
+import '../../core/models/shop_info.dart';
 import '../../core/network/api_client.dart';
 
 class HealthStatus {
@@ -16,10 +17,21 @@ class AuthRepository {
 
   final ApiClient _api;
 
-  Future<AppUser> login(String username, String password) async {
+  Future<List<ShopInfo>> fetchShops() async {
+    try {
+      final data = await _api.get('/shops');
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>().map(ShopInfo.fromJson).toList();
+      }
+    } catch (_) {}
+    return [];
+  }
+
+  Future<AppUser> login(String username, String password, {String? shopSlug}) async {
     final data = await _api.post('/auth/login', body: {
       'username': username,
       'password': password,
+      if (shopSlug != null && shopSlug.isNotEmpty) 'shop_slug': shopSlug,
     });
     if (data is! Map<String, dynamic>) {
       throw Exception('Invalid login response');
@@ -27,7 +39,8 @@ class AuthRepository {
     final token = data['token']?.toString() ?? '';
     await _api.setToken(token);
     await _api.resetClient();
-    return AppUser.fromJson(data['user'] as Map<String, dynamic>);
+    final shopMap = data['shop'] as Map<String, dynamic>?;
+    return AppUser.fromJson(data['user'] as Map<String, dynamic>, shop: shopMap);
   }
 
   Future<AppUser?> me() async {

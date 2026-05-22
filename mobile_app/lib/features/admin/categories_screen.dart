@@ -1,70 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/models/app_category.dart';
+import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/pos_widgets.dart';
 
-class CategoriesScreen extends StatelessWidget {
+class CategoriesScreen extends ConsumerWidget {
   const CategoriesScreen({super.key, this.embedded = false});
 
   final bool embedded;
 
-  static const categories = [
-    ('jeans', 'Jeans', Icons.checkroom, Color(0xFF3B82F6)),
-    ('shoes', 'Shoes', Icons.shopping_bag, Color(0xFF8B5CF6)),
-    ('top', 'Top', Icons.style, Color(0xFFEC4899)),
-    ('complete', 'Complete', Icons.layers, Color(0xFF14B8A6)),
-    ('accessory', 'Accessory', Icons.watch, Color(0xFFF59E0B)),
-    ('wig', 'Wig', Icons.face_3, Color(0xFF6366F1)),
-    ('cosmetics', 'Cosmetics', Icons.spa, Color(0xFF22C55E)),
-  ];
-
   @override
-  Widget build(BuildContext context) {
-    final grid = GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
-        childAspectRatio: 1.05,
-      ),
-      itemCount: categories.length,
-      itemBuilder: (_, i) {
-        final c = categories[i];
-        return Material(
-          color: AppColors.navyCard,
-          borderRadius: BorderRadius.circular(16),
-          child: InkWell(
-            onTap: () => context.push('/admin/inventory/${c.$1}'),
-            borderRadius: BorderRadius.circular(16),
-            child: Padding(
-              padding: const EdgeInsets.all(18),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: c.$4.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Icon(c.$3, color: c.$4, size: 28),
-                  ),
-                  const Spacer(),
-                  Text(c.$2, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
-                  Text(
-                    c.$1 == 'jeans' ? 'Jeans / price calculator' : 'Manage stock',
-                    style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categoriesAsync = ref.watch(categoriesProvider);
+
+    return categoriesAsync.when(
+      loading: () => _buildShell(embedded, _LoadingGrid()),
+      error: (e, st) => _buildShell(embedded, _FallbackGrid()),
+      data: (cats) {
+        final grid = cats.isEmpty ? _FallbackGrid() : _CategoryGrid(categories: cats);
+        return _buildShell(embedded, grid);
       },
     );
+  }
 
+  Widget _buildShell(bool embedded, Widget grid) {
     if (embedded) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -75,5 +37,109 @@ class CategoriesScreen extends StatelessWidget {
       );
     }
     return Scaffold(appBar: AppBar(title: const Text('Categories')), body: grid);
+  }
+}
+
+class _CategoryGrid extends StatelessWidget {
+  const _CategoryGrid({required this.categories});
+  final List<AppCategory> categories;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 1.05,
+      ),
+      itemCount: categories.length,
+      itemBuilder: (context, i) {
+        final cat = categories[i];
+        return _CategoryCard(category: cat);
+      },
+    );
+  }
+}
+
+class _CategoryCard extends StatelessWidget {
+  const _CategoryCard({required this.category});
+  final AppCategory category;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = category.accentColor;
+    return Material(
+      color: AppColors.navyCard,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: () => context.push('/admin/inventory/${category.slug}'),
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(category.materialIcon, color: color, size: 28),
+              ),
+              const Spacer(),
+              Text(category.label, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+              Text(
+                'Manage stock',
+                style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _LoadingGrid extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 1.05,
+      ),
+      itemCount: 6,
+      itemBuilder: (context, i) => Container(
+        decoration: BoxDecoration(
+          color: AppColors.navyCard,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      ),
+    );
+  }
+}
+
+/// Fallback: hardcoded categories used if API is unreachable.
+class _FallbackGrid extends StatelessWidget {
+  static const _fallback = [
+    AppCategory(slug: 'jeans',     label: 'Jeans',     icon: 'fas fa-scroll',      sortOrder: 1),
+    AppCategory(slug: 'shoes',     label: 'Shoes',     icon: 'fas fa-shoe-prints', sortOrder: 2),
+    AppCategory(slug: 'top',       label: 'Top',       icon: 'fas fa-tshirt',      sortOrder: 3),
+    AppCategory(slug: 'complete',  label: 'Complete',  icon: 'fas fa-box-open',    sortOrder: 4),
+    AppCategory(slug: 'accessory', label: 'Accessory', icon: 'fas fa-gem',         sortOrder: 5),
+    AppCategory(slug: 'wig',       label: 'Wig',       icon: 'fas fa-hat-wizard',  sortOrder: 6),
+    AppCategory(slug: 'cosmetics', label: 'Cosmetics', icon: 'fas fa-spa',         sortOrder: 7),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return _CategoryGrid(categories: _fallback);
   }
 }

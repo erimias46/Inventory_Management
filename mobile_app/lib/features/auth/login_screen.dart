@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/models/shop_info.dart';
 import '../../core/providers/app_providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/connection_banner.dart';
@@ -19,6 +20,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   String? _error;
   bool _loading = false;
   bool _obscure = true;
+  ShopInfo? _selectedShop;
 
   Future<void> _login() async {
     setState(() {
@@ -29,9 +31,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final user = await ref.read(authRepositoryProvider).login(
             _userCtrl.text.trim(),
             _passCtrl.text,
+            shopSlug: _selectedShop?.slug,
           );
       ref.read(currentUserProvider.notifier).state = user;
       ref.invalidate(connectionStatusProvider);
+      ref.invalidate(categoriesProvider);
       if (!mounted) return;
       context.go(user.isMasterAdmin ? '/admin' : '/sales');
     } catch (e) {
@@ -43,6 +47,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final shopsAsync = ref.watch(shopsProvider);
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -76,6 +82,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(height: 6),
                     const Text('Inventory & Point of Sale', style: TextStyle(color: AppColors.textMuted)),
                     const SizedBox(height: 36),
+
+                    // Shop selector
+                    shopsAsync.when(
+                      loading: () => _ShopSelectorSkeleton(),
+                      error: (e, st) => const SizedBox.shrink(),
+                      data: (shops) {
+                        if (shops.isEmpty) return const SizedBox.shrink();
+                        if (shops.length == 1) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (_selectedShop == null) {
+                              setState(() => _selectedShop = shops.first);
+                            }
+                          });
+                          return _ShopBadge(shop: shops.first);
+                        }
+                        return _ShopDropdown(
+                          shops: shops,
+                          selected: _selectedShop,
+                          onChanged: (s) => setState(() => _selectedShop = s),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 16),
+
                     TextField(
                       controller: _userCtrl,
                       decoration: const InputDecoration(labelText: 'Username', prefixIcon: Icon(Icons.person_outline)),
@@ -128,6 +158,96 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _ShopBadge extends StatelessWidget {
+  const _ShopBadge({required this.shop});
+  final ShopInfo shop;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.accent.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.storefront_rounded, size: 18, color: AppColors.accent),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              shop.name,
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ShopDropdown extends StatelessWidget {
+  const _ShopDropdown({required this.shops, required this.selected, required this.onChanged});
+  final List<ShopInfo> shops;
+  final ShopInfo? selected;
+  final ValueChanged<ShopInfo?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1B4B).withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: ButtonTheme(
+          alignedDropdown: true,
+          child: DropdownButton<ShopInfo>(
+            value: selected,
+            hint: const Padding(
+              padding: EdgeInsets.only(left: 4),
+              child: Text('Select shop', style: TextStyle(color: AppColors.textMuted)),
+            ),
+            isExpanded: true,
+            dropdownColor: const Color(0xFF1E1B4B),
+            borderRadius: BorderRadius.circular(14),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            icon: const Icon(Icons.expand_more, color: AppColors.textMuted),
+            items: shops.map((s) => DropdownMenuItem(
+              value: s,
+              child: Row(
+                children: [
+                  const Icon(Icons.storefront_rounded, size: 16, color: AppColors.accent),
+                  const SizedBox(width: 10),
+                  Text(s.name, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                ],
+              ),
+            )).toList(),
+            onChanged: onChanged,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ShopSelectorSkeleton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 48,
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(14),
       ),
     );
   }

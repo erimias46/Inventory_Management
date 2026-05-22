@@ -5,6 +5,7 @@ declare(strict_types=1);
 final class ApiRouter
 {
     public function __construct(
+        private ShopController $shops,
         private AuthController $auth,
         private ProductController $products,
         private SaleController $sales,
@@ -39,8 +40,9 @@ final class ApiRouter
 
         if ($method === 'GET') {
             $public = [
-                '/customers' => fn () => $this->customers->names(),
-                '/banks' => fn () => $this->customers->banks(),
+                '/shops'          => fn () => $this->shops->index(),
+                '/customers'      => fn () => $this->customers->names(),
+                '/banks'          => fn () => $this->customers->banks(),
                 '/products/types' => fn () => $this->products->types(),
                 '/products/image' => fn () => $this->products->image(),
             ];
@@ -54,6 +56,7 @@ final class ApiRouter
         $handlers = [
             'GET:/auth/me' => fn () => $this->auth->me($user),
             'POST:/auth/logout' => fn () => $this->auth->logout(),
+            'GET:/products/categories' => fn () => $this->products->categories($user),
             'GET:/products/names' => fn () => $this->products->names($user),
             'GET:/products/sizes' => fn () => $this->products->sizes($user),
             'GET:/products/price' => fn () => $this->products->price($user),

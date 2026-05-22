@@ -5,6 +5,8 @@ class AppUser {
     required this.privilege,
     required this.isMasterAdmin,
     required this.modules,
+    this.shopSlug = '',
+    this.shopName = '',
   });
 
   final int id;
@@ -12,8 +14,10 @@ class AppUser {
   final String privilege;
   final bool isMasterAdmin;
   final Map<String, int> modules;
+  final String shopSlug;
+  final String shopName;
 
-  factory AppUser.fromJson(Map<String, dynamic> json) {
+  factory AppUser.fromJson(Map<String, dynamic> json, {Map<String, dynamic>? shop}) {
     final mods = json['modules'];
     final Map<String, int> modules = {};
     if (mods is Map) {
@@ -27,6 +31,8 @@ class AppUser {
       privilege: json['privilege']?.toString() ?? 'user',
       isMasterAdmin: json['is_master_admin'] == true,
       modules: modules,
+      shopSlug: shop?['slug']?.toString() ?? json['shop_slug']?.toString() ?? '',
+      shopName: shop?['name']?.toString() ?? json['shop_name']?.toString() ?? '',
     );
   }
 

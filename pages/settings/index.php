@@ -29,7 +29,7 @@ $settings = [];
 $res = mysqli_query($con, "SELECT `key`, `value` FROM `app_settings`");
 if ($res) { while ($r = mysqli_fetch_assoc($res)) { $settings[$r['key']] = $r['value']; } }
 $defaults = [
-    'company_name'    => 'Zuqemens',
+    'company_name'    => 'My Shop',
     'store_name'      => 'Stock Hub',
     'company_address' => '',
     'company_phone'   => '',
@@ -40,14 +40,15 @@ $defaults = [
     'receipt_footer'  => 'Thank you for your business!',
     'low_stock_alert' => '5',
     'timezone'        => 'Africa/Addis_Ababa',
-    'mod_jeans'       => '1',
-    'mod_shoes'       => '1',
-    'mod_top'         => '1',
-    'mod_complete'    => '1',
-    'mod_accessory'   => '1',
-    'mod_wig'         => '1',
-    'mod_cosmetics'   => '1',
 ];
+/* Add dynamic module defaults from categories */
+$_cat_res = mysqli_query($con, "SHOW TABLES LIKE 'categories'");
+if ($_cat_res && mysqli_num_rows($_cat_res) > 0) {
+    $_cats = mysqli_query($con, "SELECT slug FROM categories ORDER BY sort_order");
+    if ($_cats) while ($_c = mysqli_fetch_assoc($_cats)) $defaults['mod_' . $_c['slug']] = '1';
+} else {
+    foreach (['jeans','shoes','top','complete','accessory','wig','cosmetics'] as $_s) $defaults['mod_' . $_s] = '1';
+}
 $s = array_merge($defaults, $settings);
 
 /* ── Handle form submission ─────────────────────────────────── */
@@ -113,9 +114,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
     }
 
     if ($tab === 'modules') {
-        $all_mods = ['mod_jeans','mod_shoes','mod_top','mod_complete','mod_accessory','mod_wig','mod_cosmetics'];
+        $cat_slugs_res = mysqli_query($con, "SELECT slug FROM categories ORDER BY sort_order");
+        $all_mods = [];
+        if ($cat_slugs_res) {
+            while ($cr = mysqli_fetch_assoc($cat_slugs_res)) $all_mods[] = 'mod_' . $cr['slug'];
+        }
+        if (empty($all_mods)) {
+            $all_mods = ['mod_jeans','mod_shoes','mod_top','mod_complete','mod_accessory','mod_wig','mod_cosmetics'];
+        }
         foreach ($all_mods as $m) {
             $upsert($m, isset($_POST[$m]) ? '1' : '0');
+            /* Also sync categories.enabled */
+            $cslug = mysqli_real_escape_string($con, substr($m, 4));
+            $en    = isset($_POST[$m]) ? 1 : 0;
+            mysqli_query($con, "UPDATE categories SET enabled=$en WHERE slug='$cslug'");
         }
     }
 
@@ -507,15 +519,21 @@ $timezones = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
                             </p>
 
                             <?php
-                            $module_defs = [
-                                ['key'=>'mod_jeans',     'name'=>'Jeans',         'desc'=>'Denim inventory & pricing',      'icon'=>'fa-scroll',      'bg'=>'rgba(99,102,241,0.1)',   'color'=>'#6366f1'],
-                                ['key'=>'mod_shoes',     'name'=>'Shoes',         'desc'=>'Footwear stock tracking',        'icon'=>'fa-shoe-prints', 'bg'=>'rgba(59,130,246,0.1)',   'color'=>'#3b82f6'],
-                                ['key'=>'mod_top',       'name'=>'Tops',          'desc'=>'Shirts & tops inventory',        'icon'=>'fa-tshirt',      'bg'=>'rgba(14,165,233,0.1)',   'color'=>'#0ea5e9'],
-                                ['key'=>'mod_complete',  'name'=>'Complete Sets', 'desc'=>'Full outfit sets & bundles',     'icon'=>'fa-box-open',    'bg'=>'rgba(20,184,166,0.1)',   'color'=>'#14b8a6'],
-                                ['key'=>'mod_accessory', 'name'=>'Accessories',   'desc'=>'Bags, belts & accessories',      'icon'=>'fa-gem',         'bg'=>'rgba(245,158,11,0.1)',   'color'=>'#f59e0b'],
-                                ['key'=>'mod_wig',       'name'=>'Wigs',          'desc'=>'Hair pieces & wig products',     'icon'=>'fa-hat-wizard',  'bg'=>'rgba(236,72,153,0.1)',   'color'=>'#ec4899'],
-                                ['key'=>'mod_cosmetics', 'name'=>'Cosmetics',     'desc'=>'Beauty & cosmetics products',    'icon'=>'fa-spa',         'bg'=>'rgba(239,68,68,0.1)',    'color'=>'#ef4444'],
-                            ];
+                            /* Build module defs dynamically from categories table */
+                            $icon_colors = ['#6366f1','#3b82f6','#0ea5e9','#14b8a6','#f59e0b','#ec4899','#ef4444','#8b5cf6','#10b981','#f97316'];
+                            $dyn_cats = stock_get_categories($con);
+                            $module_defs = [];
+                            foreach ($dyn_cats as $i => $cat) {
+                                $color = $icon_colors[$i % count($icon_colors)];
+                                $module_defs[] = [
+                                    'key'   => 'mod_' . $cat['slug'],
+                                    'name'  => $cat['label'],
+                                    'desc'  => $cat['label'] . ' inventory management',
+                                    'icon'  => ltrim($cat['icon'], 'fas '),
+                                    'bg'    => 'rgba(' . implode(',', sscanf(ltrim($color,'#'), '%02x%02x%02x')) . ',0.1)',
+                                    'color' => $color,
+                                ];
+                            }
                             ?>
 
                             <div class="modules-grid">
@@ -524,16 +542,16 @@ $timezones = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
                             ?>
                                 <div class="module-card <?= $enabled ? '' : 'mod-off' ?>" id="mc-<?= $mod['key'] ?>">
                                     <div class="module-card-icon" style="background:<?= $mod['bg'] ?>;">
-                                        <i class="fas <?= $mod['icon'] ?>" style="color:<?= $mod['color'] ?>;"></i>
+                                        <i class="<?= htmlspecialchars($mod['icon']) ?>" style="color:<?= $mod['color'] ?>;"></i>
                                     </div>
                                     <div class="module-card-body">
-                                        <div class="module-card-name"><?= $mod['name'] ?></div>
-                                        <div class="module-card-desc"><?= $mod['desc'] ?></div>
+                                        <div class="module-card-name"><?= htmlspecialchars($mod['name']) ?></div>
+                                        <div class="module-card-desc"><?= htmlspecialchars($mod['desc']) ?></div>
                                     </div>
                                     <label class="mod-toggle" title="<?= $enabled ? 'Click to disable' : 'Click to enable' ?>">
-                                        <input type="checkbox" name="<?= $mod['key'] ?>" value="1"
+                                        <input type="checkbox" name="<?= htmlspecialchars($mod['key']) ?>" value="1"
                                                <?= $enabled ? 'checked' : '' ?>
-                                               onchange="updateModuleCard('<?= $mod['key'] ?>',this)">
+                                               onchange="updateModuleCard('<?= htmlspecialchars($mod['key']) ?>',this)">
                                         <span class="toggle-slider"></span>
                                     </label>
                                 </div>

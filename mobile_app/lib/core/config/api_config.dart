@@ -56,16 +56,21 @@ class ApiConfig {
     return apiBase;
   }
 
-  static String defaultImageFilename(String category) => switch (category) {
-        'jeans' => 'defaultjeans.jpg',
-        'shoes' => 'defaultshoes.jpg',
-        'top' => 'defaulttop.jpg',
-        'complete' => 'defaultcomplete.jpg',
-        'accessory' => 'defaultaccessory.jpg',
-        'wig' => 'defaultwig.jpg',
-        'cosmetics' => 'defaultcosmetics.jpg',
-        _ => 'defaultjeans.jpg',
-      };
+  /// Returns the default image filename for a category slug.
+  /// For well-known slugs the original filenames are preserved;
+  /// new dynamic categories fall back to `default{slug}.jpg`.
+  static String defaultImageFilename(String category) {
+    const known = {
+      'jeans': 'defaultjeans.jpg',
+      'shoes': 'defaultshoes.jpg',
+      'top': 'defaulttop.jpg',
+      'complete': 'defaultcomplete.jpg',
+      'accessory': 'defaultaccessory.jpg',
+      'wig': 'defaultwig.jpg',
+      'cosmetics': 'defaultcosmetics.jpg',
+    };
+    return known[category] ?? 'default${category.replaceAll(RegExp(r'[^a-z0-9]'), '')}.jpg';
+  }
 
   /// Align image host/path with the configured API URL (MAMP + include/uploads).
   static String? normalizeProductImageUrl(

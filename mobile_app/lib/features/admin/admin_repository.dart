@@ -1,9 +1,19 @@
+import '../../core/models/app_category.dart';
 import '../../core/network/api_client.dart';
 
 class AdminRepository {
   AdminRepository(this._api);
 
   final ApiClient _api;
+
+  Future<List<AppCategory>> fetchCategories() async {
+    final data = await _api.get('/products/categories');
+    if (data is! List) return [];
+    return data
+        .whereType<Map<String, dynamic>>()
+        .map(AppCategory.fromJson)
+        .toList();
+  }
 
   Future<Map<String, dynamic>> dashboardSummary({String period = '30'}) async {
     final data = await _api.get('/dashboard/summary', query: {'period': period});

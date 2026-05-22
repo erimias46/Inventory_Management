@@ -18,6 +18,7 @@ $deliveryService = new DeliveryService($con);
 $opsService = new OpsService($con, stock_project_root());
 
 $router = new ApiRouter(
+    new ShopController(),
     new AuthController($authService),
     new ProductController($productService, $authService),
     new SaleController($saleService, $exchangeService, $authService),

@@ -28,8 +28,34 @@ final class AuthService
         mysqli_query($this->con, $sql);
     }
 
-    public function login(string $username, string $password): ?array
+    public function login(string $username, string $password, string $shopSlug = ''): ?array
     {
+        $shopDb   = null;
+        $shopMeta = null;
+
+        if ($shopSlug !== '') {
+            $master = stock_master_connect();
+            if ($master) {
+                $safe = mysqli_real_escape_string($master, $shopSlug);
+                $res  = mysqli_query($master, "SELECT id, name, db_name FROM shops WHERE slug='$safe' AND active=1 LIMIT 1");
+                if ($res && $sr = mysqli_fetch_assoc($res)) {
+                    $shopDb   = $sr['db_name'];
+                    $shopMeta = ['id' => (int) $sr['id'], 'name' => $sr['name'], 'slug' => $shopSlug];
+                }
+                mysqli_close($master);
+            }
+            if (!$shopDb) {
+                return null; // unknown or inactive shop
+            }
+            $newCon = @mysqli_connect('localhost', 'root', 'root', $shopDb);
+            if (!$newCon) {
+                return null;
+            }
+            mysqli_set_charset($newCon, 'utf8mb4');
+            mysqli_query($newCon, "SET SESSION sql_mode = 'ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'");
+            $this->con = $newCon;
+        }
+
         $stmt = mysqli_prepare($this->con, 'SELECT user_id, user_name, password, previledge, module FROM user WHERE user_name = ? LIMIT 1');
         mysqli_stmt_bind_param($stmt, 's', $username);
         mysqli_stmt_execute($stmt);
@@ -41,8 +67,8 @@ final class AuthService
             return null;
         }
 
-        $token = bin2hex(random_bytes(32));
-        $hash = hash('sha256', $token);
+        $token   = bin2hex(random_bytes(32));
+        $hash    = hash('sha256', $token);
         $expires = date('Y-m-d H:i:s', strtotime('+' . (int) $this->config['token_ttl_days'] . ' days'));
 
         $stmt = mysqli_prepare($this->con, 'INSERT INTO user_api_token (user_id, token_hash, expires_at) VALUES (?, ?, ?)');
@@ -50,10 +76,33 @@ final class AuthService
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
+        if ($shopDb) {
+            $this->registerMasterToken($hash, $shopDb, $expires);
+        }
+
         return [
             'token' => $token,
-            'user' => $this->formatUser($row),
+            'shop'  => $shopMeta,
+            'user'  => $this->formatUser($row),
         ];
+    }
+
+    private function registerMasterToken(string $hash, string $shopDb, string $expires): void
+    {
+        $master = stock_master_connect();
+        if (!$master) return;
+        mysqli_query($master, "CREATE TABLE IF NOT EXISTS `master_api_tokens` (
+            `token_hash` VARCHAR(64) NOT NULL,
+            `shop_db`    VARCHAR(100) NOT NULL DEFAULT 'stock',
+            `expires_at` DATETIME NOT NULL,
+            PRIMARY KEY (`token_hash`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $safe_db  = mysqli_real_escape_string($master, $shopDb);
+        $safe_exp = mysqli_real_escape_string($master, $expires);
+        mysqli_query($master, "INSERT INTO master_api_tokens (token_hash,shop_db,expires_at)
+                               VALUES ('$hash','$safe_db','$safe_exp')
+                               ON DUPLICATE KEY UPDATE shop_db='$safe_db',expires_at='$safe_exp'");
+        mysqli_close($master);
     }
 
     public function resolveUser(string $token): ?array
@@ -88,6 +137,13 @@ final class AuthService
         mysqli_stmt_bind_param($stmt, 's', $hash);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+
+        $master = stock_master_connect();
+        if ($master) {
+            $safe = mysqli_real_escape_string($master, $hash);
+            mysqli_query($master, "DELETE FROM master_api_tokens WHERE token_hash='$safe'");
+            mysqli_close($master);
+        }
     }
 
     public function formatUser(array $row): array

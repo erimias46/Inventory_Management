@@ -49,6 +49,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+require_once dirname(__DIR__) . '/include/db_master.php';
+
+/* ── Multi-tenant: resolve shop_db from Bearer token ─────────────── */
+(function (): void {
+    $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+    if (!preg_match('/^Bearer\s+(\S+)$/i', $auth, $m)) {
+        return; // no token → db.php will default to 'stock'
+    }
+    $hash   = hash('sha256', $m[1]);
+    $now    = date('Y-m-d H:i:s');
+    $master = stock_master_connect();
+    if (!$master) {
+        return;
+    }
+    mysqli_query($master, "CREATE TABLE IF NOT EXISTS `master_api_tokens` (
+        `token_hash` VARCHAR(64) NOT NULL,
+        `shop_db`    VARCHAR(100) NOT NULL DEFAULT 'stock',
+        `expires_at` DATETIME NOT NULL,
+        PRIMARY KEY (`token_hash`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+    $stmt = mysqli_prepare($master, 'SELECT shop_db FROM master_api_tokens WHERE token_hash=? AND expires_at>? LIMIT 1');
+    if (!$stmt) { mysqli_close($master); return; }
+    mysqli_stmt_bind_param($stmt, 'ss', $hash, $now);
+    mysqli_stmt_execute($stmt);
+    $row = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+    mysqli_stmt_close($stmt);
+    mysqli_close($master);
+
+    if ($row && !empty($row['shop_db'])) {
+        if (session_status() === PHP_SESSION_NONE) session_start();
+        $_SESSION['shop_db'] = $row['shop_db'];
+    }
+})();
+
 require_once dirname(__DIR__) . '/include/db.php';
 
 if (!isset($con) || $con === false) {
@@ -79,3 +114,4 @@ require_once __DIR__ . '/v1/Controllers/VerifyController.php';
 require_once __DIR__ . '/v1/Controllers/DashboardController.php';
 require_once __DIR__ . '/v1/Controllers/InventoryController.php';
 require_once __DIR__ . '/v1/Controllers/UserController.php';
+require_once __DIR__ . '/v1/Controllers/ShopController.php';

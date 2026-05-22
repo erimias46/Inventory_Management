@@ -9,6 +9,11 @@ final class ProductController
         private AuthService $auth
     ) {}
 
+    public function categories(array $user): void
+    {
+        ApiResponse::success($this->products->categories());
+    }
+
     public function types(): void
     {
         ApiResponse::success($this->products->types());

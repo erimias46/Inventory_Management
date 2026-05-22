@@ -13,6 +13,18 @@ final class ProductService
         $this->baseUrl = rtrim($baseUrl, '/');
     }
 
+    public function categories(): array
+    {
+        $rows = stock_get_categories($this->con);
+        return array_map(fn($r) => [
+            'slug'          => $r['slug'],
+            'label'         => $r['label'],
+            'icon'          => $r['icon'],
+            'sort_order'    => (int) $r['sort_order'],
+            'default_image' => $r['default_image'] ?? '',
+        ], $rows);
+    }
+
     public function types(): array
     {
         $labels = stock_product_type_labels();

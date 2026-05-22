@@ -1,0 +1,4 @@
+tests/.env.test
+.phpunit.cache
+phpunit.phar
+vendor/

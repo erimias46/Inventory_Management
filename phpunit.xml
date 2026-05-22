@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="tests/bootstrap.php" colors="true" cacheDirectory=".phpunit.cache">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="TEST_MYSQL_HOST" value="localhost"/>
+        <env name="TEST_MYSQL_USER" value="root"/>
+        <env name="TEST_MYSQL_PASS" value="root"/>
+        <env name="TEST_SHOP_DB" value="stock_test"/>
+    </php>
+</phpunit>

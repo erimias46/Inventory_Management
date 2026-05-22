@@ -28,6 +28,16 @@ Use header on protected routes:
 Authorization: Bearer <token>
 ```
 
+## Testing
+
+```bash
+php tests/fixtures/setup_test_shop.php   # isolated stock_test DB
+php tests/api/run.php                    # API integration (MAMP must be running)
+./tests/run_all.sh                       # full local suite
+```
+
+See [tests/README.md](../tests/README.md) for manual checklists and env vars.
+
 ## Key endpoints
 
 | Method | Path | Description |

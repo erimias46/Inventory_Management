@@ -18,6 +18,17 @@ function stock_schema_sql(): array
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
 
+    /* ── API tokens ─────────────────────────────────────────────────── */
+    $sqls[] = "CREATE TABLE IF NOT EXISTS `user_api_token` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `token_hash` VARCHAR(64) NOT NULL,
+  `expires_at` DATETIME NOT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_token_hash (token_hash),
+  INDEX idx_user_id (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+
     /* ── app_settings ───────────────────────────────────────────────── */
     $sqls[] = "CREATE TABLE IF NOT EXISTS `app_settings` (
   `key`   VARCHAR(100) NOT NULL,
@@ -58,6 +69,16 @@ function stock_schema_sql(): array
     $sqls[] = "CREATE TABLE IF NOT EXISTS `bankdb` (
   `id`   INT AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+
+    /* ── customer ───────────────────────────────────────────────────── */
+    $sqls[] = "CREATE TABLE IF NOT EXISTS `customer` (
+  `customer_id` int NOT NULL AUTO_INCREMENT,
+  `customer_name` varchar(100) NOT NULL,
+  `tin_number` varchar(100) NOT NULL DEFAULT '',
+  `phone_number` varchar(100) NOT NULL DEFAULT '',
+  `management_id` int NOT NULL DEFAULT 0,
+  PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
 
     /* ── subscribers ────────────────────────────────────────────────── */

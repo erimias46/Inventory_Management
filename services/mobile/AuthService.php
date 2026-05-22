@@ -54,6 +54,7 @@ final class AuthService
             mysqli_set_charset($newCon, 'utf8mb4');
             mysqli_query($newCon, "SET SESSION sql_mode = 'ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'");
             $this->con = $newCon;
+            $this->ensureTokenTable();
         }
 
         $stmt = mysqli_prepare($this->con, 'SELECT user_id, user_name, password, previledge, module FROM user WHERE user_name = ? LIMIT 1');

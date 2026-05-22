@@ -6,13 +6,12 @@ $side_link = "../../../";
 
 
 
-include $redirect_link . 'partials/main.php';
-include_once $redirect_link . 'include/db.php'; 
+
 $sale_id = $_POST['sales_id'];
 
 $wig_name = $_POST['wig_name'];
 
-$sql="SELECT * from wig WHERE wig_name = '$wig_name'";
+$sql = "SELECT * from wig WHERE wig_name = '$wig_name'";
 $result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 
@@ -21,7 +20,7 @@ $wig_id = $row['wig_id'];
 $size = $_POST['size'];
 
 
-$sql="SELECT * from wigdb WHERE size = '$size'";
+$sql = "SELECT * from wigdb WHERE size = '$size'";
 $result = mysqli_query($con, $sql);
 $row = mysqli_fetch_assoc($result);
 
@@ -37,12 +36,12 @@ $user_id = $_SESSION['user_id'];
 $bank_id = $_POST['bank_id'];
 $bank_name = $_POST['bank_name'];
 
-if($bank == 0){
-    $bank_name = null; 
+if ($bank == 0) {
+    $bank_name = null;
     $bank_id = null;
 } else {
     $bank_name = $_POST['bank_name'];
-    $sql="SELECT * FROM bankdb WHERE bankname = '$bank_name'";
+    $sql = "SELECT * FROM bankdb WHERE bankname = '$bank_name'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $bank_id = $row['id'];
@@ -74,14 +73,38 @@ $result = mysqli_query($con, $sql);
 
 
 
+$message = "Delivery Have been verified and delivered to customer\n";
+
+
+$message .= "wig Name: $wig_name\n";
+$message .= "Price: $price\n";
+$message .= "Size: $size\n";
+$message .= "Quantity: $quantity\n";
+$message .= "Cash :  $cash\n";
+$message .= "Bank : $bank\n";
+
+
+
+$subject = "Sold wig Deliverd to Customer";
+
+
+sendMessageToSubscribers($message, $con);
+sendEmailToSubscribers($message, $subject, $con);
+
+
+
 if (!$result_add || !$result_adds || !$result) {
-    echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
+    if (isset($place)) {
+        echo "<script>window.location = '../../sale/action.php?status=success&redirect=delivery.php'; </script>";
+    } else {
+        echo "<script>window.location = 'action.php?status=error&redirect=sale_wig.php'; </script>";
+    }
     exit;
 }
 
 
-
-echo "<script>window.location = 'action.php?status=success&redirect=sale_wig.php'; </script>";
-
-?>
-
+if (isset($place)) {
+    echo "<script>window.location = '../../sale/action.php?status=success&redirect=delivery.php'; </script>";
+} else {
+    echo "<script>window.location = 'action.php?status=success&redirect=sale_wig.php'; </script>";
+}

@@ -14,15 +14,15 @@
     <a href="index.php" class="logo-box">
         <!-- Light Brand Logo -->
         <div class="logo-light">
-            <img src="<?php echo $redirect_link ?>assets/images/logo2.png" class="logo-lg h-6" alt="Light logo">
-            <img src="<?php echo $redirect_link ?>assets/images/logo2.png" class="logo-sm" alt="Small logo">
+            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.jpg" class="logo-lg h-6" alt="Light logo">
+            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.jpg" class="logo-sm" alt="Small logo">
         </div>
 
 
         <!-- Dark Brand Logo -->
         <div class="logo-dark">
-            <img src="<?php echo $redirect_link ?>assets/images/logo2.png" class="logo-lg h-6" alt="Dark logo">
-            <img src="<?php echo $redirect_link ?>assets/images/logo2.png" class="logo-sm" alt="Small logo">
+            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.jpg" class="logo-lg h-6" alt="Dark logo">
+            <img src="<?php echo $redirect_link ?>assets/images/yunasbrand.jpg" class="logo-sm" alt="Small logo">
         </div>
     </a>
 

@@ -75,65 +75,58 @@ if (isset($_POST['add'])) {
     $quantity = 1;
     $type = $_GET['type'];
     $sales_id = $_GET['sales_id'];
+    $quantity = 1;
 
 
     if ($type == 'jeans') {
         $_POST['jeans_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $_POST['quantity'] = $quantity;
 
-        include('../price_calculator/api/exchange.php');}
-elseif ($type == 'shoes') {
+        $place = 'all_sales.php';
 
-    $_POST['shoes_name'] = $_POST['code_name'];
+        include('../price_calculator/api/exchange.php');
+    } elseif ($type == 'shoes') {
+
+        $_POST['shoes_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $_POST['quantity'] = $quantity;
+        $place = 'all_sales.php';
 
 
-            include('../shoe/api/exchange.php');
-        }
+        include('../shoe/api/exchange.php');
+    } elseif ($type == 'top') {
 
-        elseif ($type == 'top') {
-
-            $_POST['top_name'] = $_POST['code_name'];
+        $_POST['top_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $_POST['quantity'] = $quantity;
+        $place = 'all_sales.php';
 
 
-            
-            include('../top/api/exchange.php');
-        }
-        elseif ($type == 'accessory') {
 
-            $_POST['accessory_name'] = $_POST['code_name'];
+        include('../top/api/exchange.php');
+    } elseif ($type == 'accessory') {
+
+        $_POST['accessory_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
-            include('../accessory/api/exchange.php');
-        }
+        $_POST['quantity'] = $quantity;
+        $place = 'all_sales.php';
+        include('../accessory/api/exchange.php');
+    } elseif ($type == 'complete') {
 
-        elseif ($type == 'complete') {
-
-            $_POST['complete_name'] = $_POST['code_name'];
+        $_POST['complete_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
-            include('../complete/api/exchange.php');
-        }
-
-
-
-    
-    
-
-
-
-
-
-
-   
-
-        // Notify subscribers for both delivery and sales
-        
-
-
-
-        // Success redirect
-        echo "<script>window.location = 'action.php?status=success&redirect=sale_$table.php'; </script>";
+        $_POST['quantity'] = $quantity;
+        $place = 'all_sales.php';
+        include('../complete/api/exchange.php');
     }
+
+
+
+
+
+    echo "<script>window.location = 'action.php?status=success&redirect=all_sales.php'; </script>";
+}
 
 ?>
 
@@ -215,12 +208,29 @@ if ($result) {
                     <div class="card bg-white shadow-md rounded-md p-6 mx-lg max-w-lg">
 
                         <div class="p-6">
-                            <h2 class="text-4xl	 font-bold text-white-700 text-center mb-10">EXCHANGE <?php echo ucfirst($type) ; ?> </h2>
+
+
+
+                            <h2 class="text-4xl	 font-bold text-white-700 text-center mb-10">EXCHANGE <?php echo ucfirst($type); ?> </h2>
+
+                            <p class="text-center text-red-500"> The product to be exchanged </p>
+                            <p class="text-center text-red-500"> Product Name: <?php echo $product_name; ?> </p>
+                            <p class="text-center text-red-500"> Size: <?php echo $size; ?> </p>
+                            <p class="text-center text-red-500"> Price: <?php echo $price; ?> </p>
+
+
+
+                            <div class="text-center mb-4">
+                                <img id="productImage" src="" alt="Product Image" class="w-32 h-32 object-cover mx-auto hidden" />
+                            </div>
+
+
+
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-2 gap-5">
                                 <!-- Jeans Name Field -->
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name"><?php echo ucfirst($type) ?> Name</label>
-                                    <select name="code_name" id="code_name" class="w-full border border-gray-300 p-2 rounded-md search-select" onchange="fetchSizes()" required>
+                                    <select name="code_name" id="code_name" class="w-full border border-gray-300 p-2 rounded-md search-select" onchange="fetchSizes(); fetchImage()" required>
                                         <option value="">Select Name</option>
                                         <?php
                                         $sql3 = "SELECT * FROM `$type` GROUP BY `{$type}_name` ORDER BY `{$type}_name` ASC";
@@ -228,7 +238,6 @@ if ($result) {
 
                                         if (mysqli_num_rows($result3) > 0) {
                                             while ($row3 = mysqli_fetch_assoc($result3)) {
-                                                // Check if the current option should be selected
                                                 $selected = ($row3[$type . '_name'] == $product_name) ? 'selected' : '';
                                         ?>
                                                 <option value="<?= $row3[$type . '_name'] ?>" <?= $selected ?>><?= $row3[$type . '_name'] ?></option>
@@ -266,11 +275,11 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
-                                    <input type="text" name="cash" id="cash" class="form-input w-full border border-gray-300 p-2 rounded-md" required >
+                                    <input type="text" name="cash" id="cash" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
-                                    <input type="text" name="bank" id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required >
+                                    <input type="text" name="bank" id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
 
                                 </div>
 
@@ -295,7 +304,7 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="price">Total Price</label>
-                                    <input type="text" name="price" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" readonly required >
+                                    <input type="text" name="price" id="totalPrice" class="form-input w-full border border-gray-300 p-2 rounded-md" readonly required>
                                 </div>
 
                                 <div class="mb-3">
@@ -350,6 +359,33 @@ if ($result) {
     <?php include $redirect_link . 'partials/customizer.php'; ?>
 
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
+
+
+
+
+    <script>
+        // JavaScript function to fetch image
+        function fetchImage() {
+            const codeName = document.getElementById('code_name').value;
+            const productImage = document.getElementById('productImage');
+
+            if (codeName) {
+                fetch(`fetch_image.php?type=<?php echo $type; ?>&name=${codeName}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            productImage.src ="../../include/"+ data.image;
+                            productImage.classList.remove('hidden');
+                        } else {
+                            productImage.classList.add('hidden');
+                        }
+                    })
+                    .catch(error => console.error('Error fetching image:', error));
+            } else {
+                productImage.classList.add('hidden');
+            }
+        }
+    </script>
 
 
 

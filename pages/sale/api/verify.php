@@ -2,9 +2,9 @@
 $redirect_link = "../../../";
 $side_link = "../../../";
 include $redirect_link . 'partials/main.php';
-include_once $redirect_link . 'include/db.php';
-include_once $redirect_link . 'include/email.php';
-include_once $redirect_link . 'include/bot.php';
+include $redirect_link . 'include/db.php';
+include $redirect_link . 'include/email.php';
+include $redirect_link . 'include/bot.php';
 
 
 
@@ -38,6 +38,14 @@ if ($row) {
     $bank_name = $row['bank_name'];
     $status = $row['status'];
     $price = $row['price'];
+    
+
+    $sql2= "SELECT * FROM {$type} WHERE {$type}_name = '$product_name'";
+    $result2 = mysqli_query($con, $sql2);
+    $row2 = mysqli_fetch_assoc($result2);
+    $image = $row2['image'];
+
+    $image="../../../include/".$image;
 
 
   
@@ -77,12 +85,14 @@ if (isset($_POST['update'])) {
     if ($type == 'jeans') {
         $_POST['jeans_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $place = 'all_sales.php';
 
         include('../../price_calculator/api/delivery.php');
     } elseif ($type == 'shoes') {
 
         $_POST['shoes_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $place = 'all_sales.php';
 
 
         include('../../shoe/api/delivery.php');
@@ -90,6 +100,7 @@ if (isset($_POST['update'])) {
 
         $_POST['top_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $place = 'all_sales.php';
 
 
 
@@ -98,11 +109,13 @@ if (isset($_POST['update'])) {
 
         $_POST['accessory_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $place = 'all_sales.php';
         include('../../accessory/api/delivery.php');
     } elseif ($type == 'complete') {
 
         $_POST['complete_name'] = $_POST['code_name'];
         $_POST['sales_id'] = $sales_id;
+        $place = 'all_sales.php';
         include('../../complete/api/delivery.php');
     }
     
@@ -270,6 +283,12 @@ if ($result) {
                                         <option value="delivery" <?php if (isset($row['method']) && $row['method'] == 'delivery') echo 'selected'; ?>>Delivery</option>
                                     </select>
                                 </div>
+                               <div class="mb-3">
+
+                               <img src="<?php echo $image; ?>" alt="product image" class="w-40 h-40 object-cover rounded-md">
+
+
+                               </div>
 
 
 
@@ -280,10 +299,10 @@ if ($result) {
 
 
                                 <!-- Submit Button Section -->
-                                <div class="text-center mt-5">
+                                <div class="text-center ">
                                     <?php if ($add_button) : ?>
-                                        <button name="update" type="submit" class="btn btn-sm bg-info text-white rounded-full px-4 py-2">
-                                            <i class="mgc_add_fill text-base me-2"></i> Verify Delivery
+                                        <button name="update" type="submit" class="btn btn-xxl bg-success text-white rounded-full px-4 py-2">
+                                             Verify Delivery
                                         </button>
                                     <?php endif; ?>
                                 </div>

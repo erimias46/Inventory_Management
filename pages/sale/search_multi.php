@@ -81,7 +81,7 @@ include_once $redirect_link . 'include/bot.php';
                                     <button type="button" id="add-size-btn" class="btn btn-sm bg-info text-white">Add Size</button>
                                 </div>
 
-                               
+
                             </form>
 
                             <!-- Table for displaying product names and quantities based on selected sizes -->
@@ -90,7 +90,7 @@ include_once $redirect_link . 'include/bot.php';
                                     <tr>
                                         <th>Product Name</th>
                                         <th>Size</th>
-                                        
+
                                         <th>Image</th>
                                     </tr>
                                 </thead>
@@ -129,12 +129,12 @@ include_once $redirect_link . 'include/bot.php';
                     // Add new size dropdown when the "Add Size" button is clicked
                     $('#add-size-btn').click(function() {
                         var newSizeDropdown = `
-                <div class="size-group flex items-center mb-3 mr-3  mx-2 my-1">
-                    <select name="size[]" class="form-input size-dropdown">
-                        <option value="">Select Size</option>
-                    </select>
-                    <button type="button" class="remove-size-btn ml-2  mx-2 text-red-500">Remove</button>
-                </div>`;
+            <div class="size-group flex items-center mb-3 mr-3 mx-2 my-1">
+                <select name="size[]" class="form-input size-dropdown">
+                    <option value="">Select Size</option>
+                </select>
+                <button type="button" class="remove-size-btn ml-2 mx-2 text-red-500">Remove</button>
+            </div>`;
                         $('#sizes-container').append(newSizeDropdown);
 
                         // Populate the new dropdown with the current product type's sizes
@@ -153,13 +153,18 @@ include_once $redirect_link . 'include/bot.php';
                         }
                     });
 
-                    // Remove size dropdown
+                    // Remove size dropdown and update size selection
                     $(document).on('click', '.remove-size-btn', function() {
                         $(this).parent('.size-group').remove();
+                        updateSelectedSizes();
                     });
 
                     // Fetch products based on selected sizes
                     $('#sizes-container').on('change', '.size-dropdown', function() {
+                        updateSelectedSizes();
+                    });
+
+                    function updateSelectedSizes() {
                         var productType = $('#product-type').val();
                         var selectedSizes = $('select[name="size[]"]').map(function() {
                             return $(this).val();
@@ -180,7 +185,7 @@ include_once $redirect_link . 'include/bot.php';
                         } else {
                             $('#size-table-body').html('');
                         }
-                    });
+                    }
                 });
             </script>
 

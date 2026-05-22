@@ -358,11 +358,11 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="cash">Cash</label>
-                                    <input type="text" name="cash" id="cash" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
+                                    <input type="number" value="0" step="0.01" name="cash" id="cash" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="bank">Bank</label>
-                                    <input type="text" name="bank" id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
+                                    <input type="number" value="0" step="0.01" name="bank"   id="bank" class="form-input w-full border border-gray-300 p-2 rounded-md" required>
                                 </div>
 
                                 <div id="bankNameDiv">

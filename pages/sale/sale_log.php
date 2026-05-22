@@ -32,8 +32,8 @@ $title = "Sale Log";
                                     <div class="overflow-hidden">
 
                                         <?php
-    // Define an array of colors (10 colors)
-    $colors = ['#D32F2F', '#7B1FA2', '#303F9F', '#0288D1', '#0097A7', '#388E3C', '#FBC02D', '#FFA000', '#F57C00', '#D84315'];
+                                        // Define an array of colors (10 colors)
+                                        $colors = ['#D32F2F', '#7B1FA2', '#303F9F', '#0288D1', '#0097A7', '#388E3C', '#FBC02D', '#FFA000', '#F57C00', '#D84315'];
 
 
 
@@ -69,13 +69,14 @@ ORDER BY created_at DESC;
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
+                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Product Name</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Log Type</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                                    <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -93,6 +94,9 @@ ORDER BY created_at DESC;
                                                 ?>
                                                     <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-700 dark:even:bg-slate-800 cursor-pointer">
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $num ?></td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200" style="background-color: <?php echo $date_color; ?>;">
+                                                            <?php echo date('d-M-Y', strtotime($row['sales_date'])); ?>
+                                                        </td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['Name']; ?></td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['size']; ?></td>
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['price']; ?></td>
@@ -114,9 +118,7 @@ ORDER BY created_at DESC;
                                                         <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo ucfirst($row['status']); ?></td>
 
                                                         <!-- Color the Date Cell Only -->
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200" style="background-color: <?php echo $date_color; ?>;">
-                                                            <?php echo $row['sales_date']; ?>
-                                                        </td>
+
                                                     </tr>
                                                 <?php
                                                     $num++;
@@ -147,6 +149,12 @@ ORDER BY created_at DESC;
     <?php include $redirect_link . 'partials/customizer.php'; ?>
     <?php include $redirect_link . 'partials/footer-scripts.php'; ?>
 </body>
+
+<script>
+       $('#zero_config').DataTable({
+    pageLength: 50
+});
+</script>
 
 
 </html>

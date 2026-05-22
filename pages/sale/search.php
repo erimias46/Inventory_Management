@@ -9,17 +9,7 @@ include_once $redirect_link . 'include/bot.php';
 
 $current_date = date('Y-m-d');
 
-$generate_button = '';
 
-if (isset($_GET['import_brocher_id'])) {
-    $brocher_type = $_GET['brocher_type'];
-
-
-
-    $add_button = '<button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>';
-    $update_button = '<button name="update" type="submit" class="btn btn-sm bg-danger text-white rounded-full"> <i class="mgc_pencil_line text-base me-2"></i> Update </button>';
-    $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
-}
 
 ?>
 
@@ -124,6 +114,30 @@ if ($result) {
     <?php include $redirect_link . 'partials/head-css.php'; ?>
 
 
+    <!-- Select2 CSS -->
+    <!-- jQuery -->
+
+
+    <!-- Select2 CSS -->
+
+
+
+    <!-- Select2 CSS -->
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+
+
+
+
+
 
 </head>
 
@@ -148,19 +162,24 @@ if ($result) {
                     <div class="card bg-white shadow-md rounded-md p-6 mx-lg max-w-lg">
 
                         <div class="p-6">
-                            <h2 class="text-4xl font-bold text-white-700 text-center mb-10">SEARCH Product</h2>
+                            <h2 class="text-4xl font-bold text-white-700 text-center mb-10">Search Product</h2>
+
+                            <div class="mb-3 text-center">
+                                        <a href="search2.php" class="btn btn-sm bg-success text-white "> <i class="mgc_search_fill text-base me-2"></i> Search By Size </a>
+
+                                    </div>
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-3 gap-5">
                                 <!-- Jeans Name Field -->
                                 <form method="post" enctype="multipart/form-data" class="grid grid-cols-2 gap-5">
                                     <!-- Search By Option -->
                                     <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Select Product Type:</label>
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Select Type:</label>
                                         <!-- Product Type Dropdown -->
 
                                         <select id="product-type" name="product-type" onchange="loadProductNames()" class="form-input">
-                                            <option value="">Select Product Type</option>
+                                            <option >Select Type</option>
+                                            <option value="shoes" selected>Shoes</option>
                                             <option value="jeans">Jeans</option>
-                                            <option value="shoes">Shoes</option>
                                             <option value="top">Top</option>
                                             <option value="cosmetics">Cosmetics</option>
                                             <option value="accessory">Accessory</option>
@@ -170,19 +189,17 @@ if ($result) {
 
                                     <!-- Product Name Dropdown -->
                                     <div class="mb-3">
-                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Select Product Name:</label>
+                                        <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="code_name">Select Name:</label>
+
                                         <select id="product-name" name="product-name" onchange="loadSizes()" class="form-input">
-                                            <option value="">Select Product Name</option>
+                                            <option value="">Select  Name</option>
                                         </select>
 
                                     </div>
 
                                     <!-- Size Dropdown -->
 
-                                    <div class="mb-3">
-                                        <a href="search2.php" class="btn btn-sm bg-success text-white "> <i class="mgc_search_fill text-base me-2"></i> Search By Size </a>
-                                       
-                                    </div>
+                                   
                                 </form>
 
 
@@ -218,6 +235,11 @@ if ($result) {
                                     </tbody>
                                 </table>
 
+                                <div id="total-quantity" class="mt-3 text-white-800 font-medium"></div>
+
+
+
+
                             </form>
                         </div>
                     </div>
@@ -239,7 +261,7 @@ if ($result) {
                 }
 
                 #size-table {
-                    width: 100%;
+                    width: 10%;
                     border-collapse: collapse;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                     margin-bottom: 20px;
@@ -247,23 +269,22 @@ if ($result) {
 
                 #size-table th,
                 #size-table td {
-                    padding: 12px;
+                    padding: 8px;
                     border-bottom: 2px solid #ddd;
                     text-align: left;
                 }
 
                 #size-table th {
-                    
+
                     font-size: 16px;
-                    
+
                 }
 
                 #size-table td {
                     font-size: 14px;
-                    
-                }
+                    width: 10%;
 
-                
+                }
             </style>
 
 
@@ -316,10 +337,33 @@ if ($result) {
 
 
 
+
+
     <script>
-        // Load product names based on the selected product type
+        let currentNiceSelect = null;
+
+        function initializeNiceSelect() {
+            const productDropdown = document.getElementById("product-name");
+
+            // First destroy if there's an existing instance
+            if (currentNiceSelect) {
+                currentNiceSelect.destroy();
+            }
+
+            // Create new instance using bind
+            currentNiceSelect = NiceSelect.bind(productDropdown, {
+                searchable: true
+            });
+        }
+
         function loadProductNames() {
-            var productType = document.getElementById("product-type").value;
+            const productType = document.getElementById("product-type").value;
+
+            // Destroy existing NiceSelect before modifying options
+            if (currentNiceSelect) {
+                currentNiceSelect.destroy();
+                currentNiceSelect = null;
+            }
 
             if (productType !== "") {
                 fetch('api/searchapi/loadProductNames.php?productType=' + productType)
@@ -334,67 +378,97 @@ if ($result) {
                             option.text = product.name;
                             productDropdown.appendChild(option);
                         });
+
+                        // Initialize Nice Select after loading new options
+                        initializeNiceSelect();
+                    })
+                    .catch(error => {
+                        console.error('Error loading product names:', error);
                     });
+            } else {
+                // Reset dropdown if no product type is selected
+                let productDropdown = document.getElementById("product-name");
+                productDropdown.innerHTML = '<option value="">Select Product Name</option>';
+                initializeNiceSelect();
             }
+
+          
         }
+
+        // Initialize the first NiceSelect when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNiceSelect();
+        });
 
         // Load sizes and quantities based on the selected product name
         function loadSizes() {
-            var productType = document.getElementById("product-type").value;
-            var productName = document.getElementById("product-name").value;
+    var productType = document.getElementById("product-type").value;
+    var productName = document.getElementById("product-name").value;
 
-            if (productType !== "" && productName !== "") {
-                fetch('api/searchapi/loadSizes.php?productType=' + encodeURIComponent(productType) + '&productName=' + encodeURIComponent(productName))
-                    .then(response => response.json())
-                    .then(data => {
-                        let sizeTableBody = document.getElementById("size-table-body");
-                        sizeTableBody.innerHTML = ''; // Clear existing rows
+    if (productType !== "" && productName !== "") {
+        fetch('api/searchapi/loadSizes.php?productType=' + encodeURIComponent(productType) + '&productName=' + encodeURIComponent(productName))
+            .then(response => response.json())
+            .then(data => {
+                let sizeTableBody = document.getElementById("size-table-body");
+                sizeTableBody.innerHTML = ''; // Clear existing rows
 
-                        // Check if sizes data exists
-                        if (data.sizes && data.sizes.length > 0) {
-                            // Add the image before the size and quantity rows
-                            if (data.image) {
-                                let imageContainer = document.getElementById("product-image");
-                                imageContainer.innerHTML = ''; // Clear previous image if any
-                                let image = document.createElement('img');
-                                image.src = '../../include/' + data.image; // Adjust this path based on your file structure
+                let totalQuantity = 0; // Initialize total quantity
 
-                                image.alt = productName + ' image';
-                                image.style.width = '200px'; // Adjust the size as needed
-                                imageContainer.appendChild(image);
-                            }
+                // Check if sizes data exists
+                if (data.sizes && data.sizes.length > 0) {
+                    // Add the image before the size and quantity rows
+                    if (data.image) {
+                        let imageContainer = document.getElementById("product-image");
+                        imageContainer.innerHTML = ''; // Clear previous image if any
+                        let image = document.createElement('img');
+                        image.src = '../../include/' + data.image; // Adjust this path based on your file structure
 
-                            // Populate the table with sizes and quantities
-                            data.sizes.forEach(sizeData => {
-                                let row = document.createElement('tr');
+                        image.alt = productName + ' image';
+                        image.style.width = '200px'; // Adjust the size as needed
+                        imageContainer.appendChild(image);
+                    }
 
-                                // Create size cell
-                                let sizeCell = document.createElement('td');
-                                sizeCell.textContent = sizeData.size;
-                                row.appendChild(sizeCell);
+                    // Populate the table with sizes and quantities
+                    data.sizes.forEach(sizeData => {
+                        let row = document.createElement('tr');
 
-                                // Create quantity cell
-                                let quantityCell = document.createElement('td');
-                                quantityCell.textContent = sizeData.quantity;
-                                row.appendChild(quantityCell);
+                        // Create size cell
+                        let sizeCell = document.createElement('td');
+                        sizeCell.textContent = sizeData.size;
+                        row.appendChild(sizeCell);
 
-                                // Append the row to the table body
-                                sizeTableBody.appendChild(row);
-                            });
-                        } else {
-                            let row = document.createElement('tr');
-                            let noDataCell = document.createElement('td');
-                            noDataCell.colSpan = 2;
-                            noDataCell.textContent = 'No sizes available';
-                            row.appendChild(noDataCell);
-                            sizeTableBody.appendChild(row);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching sizes:', error);
+                        // Create quantity cell
+                        let quantityCell = document.createElement('td');
+                        quantityCell.textContent = sizeData.quantity;
+                        row.appendChild(quantityCell);
+
+                        // Add quantity to total
+                        totalQuantity += parseInt(sizeData.quantity, 10);
+                       
+
+                        // Append the row to the table body
+                        sizeTableBody.appendChild(row);
                     });
-            }
-        }
+                } else {
+                    let row = document.createElement('tr');
+                    let noDataCell = document.createElement('td');
+                    noDataCell.colSpan = 2;
+                    noDataCell.textContent = 'No sizes available';
+                    row.appendChild(noDataCell);
+                    sizeTableBody.appendChild(row);
+                }
+
+                // Display the total quantity
+                let totalQuantityContainer = document.getElementById("total-quantity");
+                totalQuantityContainer.textContent = 'Total Quantity: ' + totalQuantity;
+                console.log(totalQuantity);
+            })
+            .catch(error => {
+                console.error('Error fetching sizes:', error);
+            });
+    }
+}
+
 
 
 
@@ -424,6 +498,11 @@ if ($result) {
 
 
     <script>
+
+
+window.onload = function() {
+        loadProductNames();
+    };
         // JavaScript to automatically calculate the total price
         document.addEventListener('DOMContentLoaded', function() {
             const searchByName = document.getElementById('search_by_name');
@@ -495,22 +574,7 @@ if ($result) {
     </script>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fetch suggestions for customer names from the server and populate the datalist
-            fetch('getcust.php')
-                .then(response => response.json())
-                .then(data => {
-                    const datalist = document.getElementById('customer_names');
-                    datalist.innerHTML = ''; // Clear previous options
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item; // Customer name
-                        datalist.appendChild(option);
-                    });
-                });
-        });
-    </script>
+
 </body>
 
 </html>

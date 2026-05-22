@@ -28,6 +28,28 @@ include_once $redirect_link . 'include/bot.php';
     <?php include $redirect_link . 'partials/head-css.php'; ?>
 
 
+    <style>
+        .print-btn {
+            background-color: grey; /* Green background */
+            border: none; /* Remove borders */
+            color: white; /* White text */
+            padding: 5px 10px; /* Some padding */
+            text-align: center; /* Center text */
+            text-decoration: none; /* Remove underline */
+            display: inline-block;
+            font-size: 20px; /* Increase font size */
+            margin: 4px 2px;
+            cursor: pointer; /* Add a pointer cursor on mouse-over */
+            border-radius: 12px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .print-btn:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+
+
 
 </head>
 
@@ -53,10 +75,15 @@ include_once $redirect_link . 'include/bot.php';
 
                         <div class="p-6">
                             <h2 class="text-4xl font-bold text-white-700 text-center mb-10">Search By Size</h2>
+                            <div class="mb-3 text-center">
+                                   
+                                    <a href="search.php" class="btn btn-sm bg-success text-white "> <i class="mgc_search_fill text-base me-2"></i> Search By Product Name </a>
+
+                                </div>
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-3 gap-5">
                                 <!-- Search By Option -->
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Select Product Type:</label>
+                                <div class="mb-3 text-center">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Select  Type:</label>
                                     <select id="product-type" name="product-type" class="form-input">
                                         <option value="">Select Product Type</option>
                                         <option value="jeans">Jeans</option>
@@ -67,7 +94,7 @@ include_once $redirect_link . 'include/bot.php';
                                     </select>
                                 </div>
 
-                                <div class="mb-3">
+                                <div class="mb-3 text-center">
                                     <label for="size" class="text-gray-800 text-sm font-medium inline-block mb-2">Select Size:</label>
                                     <select id="size" name="size" class="form-input">
                                         <option value="">Select Size</option>
@@ -75,14 +102,12 @@ include_once $redirect_link . 'include/bot.php';
                                 </div>
 
 
-                                <div class="mb-3">
-                                   
-                                    <a href="search.php" class="btn btn-sm bg-success text-white "> <i class="mgc_search_fill text-base me-2"></i> Search By Product Name </a>
-
-                                </div>
+                                
                             </form>
 
                             <!-- Table for displaying product names and quantities based on selected size -->
+                            <button onclick="printTable()" class="print-btn">🖨️</button>
+
                             <table id="resultTable">
                                 <thead>
                                     <tr>
@@ -149,6 +174,27 @@ include_once $redirect_link . 'include/bot.php';
                     });
                 });
             </script>
+
+
+<script>
+    function printTable() {
+        // Create a new window to print
+        var printWindow = window.open('', '', 'height=600,width=800');
+        var tableHTML = document.getElementById('resultTable').outerHTML;
+
+        // Prepare the HTML for the print window
+        printWindow.document.write('<html><head><title>Print Table</title>');
+        printWindow.document.write('<style>body{font-family: Arial, sans-serif;} table{width: 100%; border-collapse: collapse;} th, td{border: 1px solid #ddd; padding: 8px; text-align: center;} th{background-color: #f2f2f2;} img{max-width: 80px; height: auto;}</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write('<h2>Product Table</h2>');
+        printWindow.document.write(tableHTML);
+        printWindow.document.write('</body></html>');
+
+        // Close the document to finish loading and print
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
 
 
 

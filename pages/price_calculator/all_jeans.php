@@ -92,7 +92,7 @@ $title = "All Jeans";
                             <div class="overflow-x-auto">
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
-                                        <table id="zero_config" data-order='[[ 0, "dsc" ]]' class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                        <table id="zero_config"  class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                             <thead>
                                                 <tr>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">#</th>
@@ -107,58 +107,87 @@ $title = "All Jeans";
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sql = "SELECT * FROM jeans ORDER BY created_at DESC";
+                                                $sql = "SELECT * FROM jeans ORDER BY jeans_name";
                                                 $result22 = mysqli_query($con, $sql);
-                                                $previousName = '';
-                                                $groupId = 0;
+
+                                                // Define colors with better contrast and opacity for readability
+                                                $colors = [
+                                                    'rgba(0, 128, 128, 0.2)',    // Teal
+                                                    'rgba(255, 87, 34, 0.2)',    // Deep orange
+                                                    'rgba(103, 58, 183, 0.2)',   // Deep purple
+                                                    'rgba(139, 195, 74, 0.2)',   // Lime green
+                                                    'rgba(158, 158, 158, 0.2)'   // Medium grey
+                                                ];
+
+                                                // Store all unique jeans names first
+                                                $uniqueNames = [];
+                                                $colorMap = [];
+                                                $tempResults = [];
+
+                                                // First pass: collect unique names and assign colors
                                                 while ($row = mysqli_fetch_assoc($result22)) {
-                                                    // Increment groupId for each unique group of jeans_name
-                                                    if ($previousName != $row['jeans_name']) {
-                                                        $groupId++; // Unique ID for each group
-                                                        $previousName = $row['jeans_name'];
+                                                    $tempResults[] = $row;
+                                                    if (!in_array($row['jeans_name'], $uniqueNames)) {
+                                                        $uniqueNames[] = $row['jeans_name'];
+                                                        $colorIndex = count($uniqueNames) - 1;
+                                                        $colorMap[$row['jeans_name']] = $colors[$colorIndex % count($colors)];
+                                                    }
+                                                }
+
+                                                $groupId = 0;
+                                                $currentName = '';
+
+                                                // Second pass: display the data
+                                                foreach ($tempResults as $row) {
+                                                    $jeansName = $row['jeans_name'];
+                                                    $color = $colorMap[$jeansName];
+
+                                                    // Start new group
+                                                    if ($currentName !== $jeansName) {
+                                                        $groupId++;
+                                                        $currentName = $jeansName;
                                                 ?>
-                                                        <!-- Accordion header (first row of the group) -->
-                                                        <tr class="cursor-pointer">
-                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['id']; ?> </td>
-                                                            <td> <?php echo $row['jeans_name']; ?> </td>
-                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['size']; ?> </td>
-                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['price']; ?> </td>
-                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['quantity'] ?></td>
-                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                        <!-- Group header row -->
+                                                        <tr style="background-color: <?php echo $color; ?>;" class="cursor-pointer hover:opacity-90">
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['id']; ?></td>
+                                                            <td class="px-2 py-2.5 text-sm font-medium text-gray-900"><?php echo $jeansName; ?></td>
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['size']; ?></td>
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['price']; ?></td>
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['quantity']; ?></td>
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900">
                                                                 <img width="100px" height="100px" src="../../include/<?php echo $row['image']; ?>" alt="Product Image" class="product-image" />
                                                             </td>
-                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['created_at']; ?> </td>
-                                                            <!-- Actions column with accordion trigger -->
-                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                                                                <button onclick="toggleGroup('<?php echo $groupId; ?>', this.closest('tr'))" class="btn bg-primary/25 text-primary hover:bg-primary hover:text-white btn-sm rounded-full">
-
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['created_at']; ?></td>
+                                                            <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                                <button onclick="toggleGroup('<?php echo $groupId; ?>', this.closest('tr'))"
+                                                                    class="btn bg-primary/25 text-primary hover:bg-primary hover:text-white btn-sm rounded-full">
                                                                     <i class="mgc_arrow_down_2_line text-base me-2"></i> Expand
                                                                 </button>
                                                             </td>
                                                         </tr>
-                                                    <?php
-                                                    } // End of accordion header
-                                                    ?>
-                                                    <!-- Hidden rows for the rest of the group -->
-                                                    <tr class="group-<?php echo $groupId; ?> hidden group-row">
+                                                    <?php } ?>
 
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['id']; ?> </td>
-                                                        <td> <?php echo $row['jeans_name']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 text-ellipsis overflow-hidden" style="max-width: 32ch"> <?php echo $row['size']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['price']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"><?php echo $row['quantity'] ?></td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                    <!-- Detail row -->
+                                                    <tr class="group-<?php echo $groupId; ?> hidden group-row" style="background-color: <?php echo $color; ?>;">
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['id']; ?></td>
+                                                        <td class="px-2 py-2.5 text-sm font-medium text-gray-900"><?php echo $jeansName; ?></td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['size']; ?></td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['price']; ?></td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['quantity']; ?></td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900">
                                                             <img width="100px" height="100px" src="../../include/<?php echo $row['image']; ?>" alt="Product Image" class="product-image" />
                                                         </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <?php echo $row['created_at']; ?> </td>
-                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo $row['created_at']; ?></td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-medium text-gray-900">
                                                             <?php if ($deleteButtonVisible) : ?>
-                                                                <a id="del-btn" href="api/remove.php?id=<?php echo $row['id']; ?>&from=jeans" class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
+                                                                <a id="del-btn" href="api/remove.php?id=<?php echo $row['id']; ?>&from=jeans"
+                                                                    class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full">
                                                                     <i class="mgc_delete_2_line text-base me-2"></i> Delete
                                                                 </a>
                                                             <?php endif; ?>
                                                             <?php if ($updateButtonVisible) : ?>
-                                                                <a id="edit-btn" href="edit_jeans.php?id=<?php echo $row['id']; ?>" class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full">
+                                                                <a id="edit-btn" href="edit_jeans.php?id=<?php echo $row['id']; ?>"
+                                                                    class="btn bg-warning/25 text-warning hover:bg-warning hover:text-white btn-sm rounded-full">
                                                                     <i class="mgc_edit_2_line text-base me-2"></i> Edit
                                                                 </a>
                                                             <?php endif; ?>
@@ -166,16 +195,18 @@ $title = "All Jeans";
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>
-                                        </table>
+                                                            </table>
+
+
+                                            </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
 
-                <?php include $redirect_link . 'partials/footer.php'; ?>
+                    <?php include $redirect_link . 'partials/footer.php'; ?>
             </main>
         </div>
 
@@ -249,7 +280,7 @@ $title = "All Jeans";
             // Your DataTable options
             paging: false, // Disable pagination
             order: [
-                [0, "desc"]
+               
             ], // Default ordering
         });
     });

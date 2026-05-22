@@ -17,7 +17,10 @@ if (isset($_POST['product_type']) && isset($_POST['size'])) {
     $tableName = $productType . "db";
 
     // Fetch products with the selected size
-    $sql = "SELECT {$productType}_name AS product_name, size, quantity, image FROM {$productType} WHERE size = ?";
+    $sql = "SELECT {$productType}_name AS product_name, size, quantity, image 
+        FROM {$productType} 
+        WHERE size = ? AND quantity > 0";
+
 
     $stmt = $con->prepare($sql);
     $stmt->bind_param('s', $size);

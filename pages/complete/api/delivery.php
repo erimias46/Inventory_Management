@@ -4,6 +4,12 @@ $current_date = date('Y-m-d');
 $redirect_link = "../../../";
 $side_link = "../../../";
 
+include $redirect_link . 'partials/main.php';
+include_once $redirect_link . 'include/db.php';
+include_once $redirect_link . 'include/email.php';
+include_once $redirect_link . 'include/bot.php';
+
+
 
 
 
@@ -31,7 +37,7 @@ $price = $_POST['price'];
 $cash = $_POST['cash'];
 $bank = $_POST['bank'];
 $method = $_POST['method'];
-$quantity = $_POST['quantity'];
+$quantity = 1;
 $user_id = $_SESSION['user_id'];
 $bank_id = $_POST['bank_id'];
 $bank_name = $_POST['bank_name'];
@@ -76,7 +82,7 @@ $result = mysqli_query($con, $sql);
 $message = "Delivery Have been verified and delivered to customer\n";
 
 
-$message .= "Complete Name: $complete_name\n";
+$message .= "complete Name: $complete_name\n";
 $message .= "Price: $price\n";
 $message .= "Size: $size\n";
 $message .= "Quantity: $quantity\n";
@@ -94,10 +100,17 @@ sendEmailToSubscribers($message, $subject, $con);
 
 
 if (!$result_add || !$result_adds || !$result) {
-    echo "<script>window.location = 'action.php?status=error&redirect=sale_complete.php'; </script>";
+    if (isset($place)) {
+        echo "<script>window.location = '../../sale/action.php?status=success&redirect=delivery.php'; </script>";
+    } else {
+        echo "<script>window.location = 'action.php?status=error&redirect=sale_complete.php'; </script>";
+    }
     exit;
 }
 
 
-
-echo "<script>window.location = 'action.php?status=success&redirect=sale_complete.php'; </script>";
+if (isset($place)) {
+    echo "<script>window.location = '../../sale/action.php?status=success&redirect=delivery.php'; </script>";
+} else {
+    echo "<script>window.location = 'action.php?status=success&redirect=sale_complete.php'; </script>";
+}

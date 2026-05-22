@@ -326,6 +326,16 @@ if ($result) {
                                                         'backup'=>['backup'],
                                                         'user'=>['user'],
                                                         'editbuyprice'=>['editbuyprice'],
+                                                        'addproduct'=>['addproduct'],
+                                                        'fullsale'=>['fullsale'],
+                                                        'allsale'=>['allsale'],
+                                                        'logsale'=>['logsale'],
+                                                        'searchproduct'=>['searchproduct'],
+                                                        'deliverysale'=>['deliverysale'],
+                                                        'producttypes'=>['producttypes'],
+                                                        'productsin'=>['productsin'],
+                                                        'verifyproducts'=>['verifyproducts'],
+
 
 
                                                     ];
@@ -549,6 +559,18 @@ if (isset($_POST['add_user'])) {
     $backup = (int) boolval($_POST['backup']);
     $user = (int) boolval($_POST['user']);
     $editbuyprice = (int) boolval($_POST['editbuyprice']);
+
+
+    $addproduct = (int) boolval($_POST['addproduct']);
+    $fullsale = (int) boolval($_POST['fullsale']);
+    $allsale = (int) boolval($_POST['allsale']);
+    $logsale = (int) boolval($_POST['logsale']);
+    $searchproduct = (int) boolval($_POST['searchproduct']);
+    $deliverysale = (int) boolval($_POST['deliverysale']);
+    $producttypes = (int) boolval($_POST['producttypes']);
+    $productsin = (int) boolval($_POST['productsin']);
+    $verifyproducts = (int) boolval($_POST['verifyproducts']);
+    
 
    
 

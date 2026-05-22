@@ -31,7 +31,7 @@ $price = $_POST['price'];
 $cash = $_POST['cash'];
 $bank = $_POST['bank'];
 $method = $_POST['method'];
-$quantity = $_POST['quantity'];
+$quantity = 1;
 $user_id = $_SESSION['user_id'];
 $bank_id = $_POST['bank_id'];
 $bank_name = $_POST['bank_name'];
@@ -94,10 +94,17 @@ sendEmailToSubscribers($message, $subject, $con);
 
 
 if (!$result_add || !$result_adds || !$result) {
-    echo "<script>window.location = 'action.php?status=error&redirect=sale_accessory.php'; </script>";
+    if (isset($place)) {
+        echo "<script>window.location = '../../sale/action.php?status=success&redirect=delivery.php'; </script>";
+    } else {
+        echo "<script>window.location = 'action.php?status=error&redirect=sale_accessory.php'; </script>";
+    }
     exit;
 }
 
 
-
-echo "<script>window.location = 'action.php?status=success&redirect=sale_accessory.php'; </script>";
+if (isset($place)) {
+    echo "<script>window.location = '../../sale/action.php?status=success&redirect=delivery.php'; </script>";
+} else {
+    echo "<script>window.location = 'action.php?status=success&redirect=sale_accessory.php'; </script>";
+}

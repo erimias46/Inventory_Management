@@ -3,22 +3,13 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
-    include_once $redirect_link . 'include/bot.php';
-    include_once $redirect_link . 'include/email.php';
+include_once $redirect_link . 'include/bot.php';
+include_once $redirect_link . 'include/email.php';
+
 
 $current_date = date('Y-m-d');
 
-$generate_button = '';
 
-if (isset($_GET['import_brocher_id'])) {
-    $brocher_type = $_GET['brocher_type'];
-
-
-
-    $add_button = '<button name="add" type="submit" class="btn btn-sm bg-success text-white rounded-full"> <i class="mgc_add_fill text-base me-2"></i> Add </button>';
-    $update_button = '<button name="update" type="submit" class="btn btn-sm bg-danger text-white rounded-full"> <i class="mgc_pencil_line text-base me-2"></i> Update </button>';
-    $generate_button = '<button name="add_generate" type="submit" class="btn btn-sm bg-info text-white rounded-full"> <i class="mgc_pdf_line text-base me-2"></i> Generate </button>';
-}
 
 ?>
 
@@ -32,11 +23,11 @@ if (isset($_POST['add'])) {
     $quantities = $_POST['quantities']; // Array of quantities
     $type_id = $_POST['type'];
     $price = $_POST['price'];
-    
+
     $image = $_FILES['image']['name'];
 
     // Fetch type from the database
-    $sql = "SELECT * FROM shoe_type_db WHERE id='$type_id'";
+    $sql = "SELECT * FROM top_type_db WHERE id='$type_id'";
     $result = mysqli_query($con, $sql);
     $row = mysqli_fetch_assoc($result);
     $type = $row['type'];
@@ -84,6 +75,7 @@ if (isset($_POST['add'])) {
     } else {
         // If no image is uploaded, use the default image
         $image_path = 'uploads/defaulttop.jpg';
+        $uploadOk = 1;
     }
 
     // If image upload failed, use the default image
@@ -99,16 +91,48 @@ if (isset($_POST['add'])) {
 
         // Insert only if the quantity is greater than zero
         if ($quantity > 0) {
-            $add_top = "INSERT INTO top(top_name, size, size_id, image, price,type_id, type, quantity,active) 
+
+
+            $check_existing = "SELECT id, quantity FROM top 
+                      WHERE top_name = ? AND size = ? AND active = '1'";
+
+            $stmt = mysqli_prepare($con, $check_existing);
+            mysqli_stmt_bind_param($stmt, "ss", $top_name, $size);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+
+            if (mysqli_num_rows($result) > 0) {
+                // Item exists, update quantity
+                $row = mysqli_fetch_assoc($result);
+                $new_quantity = $row['quantity'] + $quantity;
+
+                $update_query = "UPDATE top 
+                        SET quantity = ? 
+                        WHERE id = ?";
+
+                $stmt = mysqli_prepare($con, $update_query);
+                mysqli_stmt_bind_param($stmt, "ii", $new_quantity, $row['id']);
+                mysqli_stmt_execute($stmt);
+
+                // Insert into product table
+                $source_table = 'top';
+                $product_type = 'top';
+
+                $add_jeans_product = "INSERT INTO products(product_name, product_type, size, `type`, image, price, quantity, source_table) 
+                      VALUES ('$top_name', '$product_type', '$size', '$type', '$image_path', '$price', '$quantity', '$source_table')";
+                mysqli_query($con, $add_jeans_product);
+            } else {
+
+                $add_top = "INSERT INTO top(top_name, size, size_id, image, price,type_id, type, quantity,active) 
                           VALUES ('$top_name', '$size', '$size_id', '$image_path', '$price', '$type_id', '$type', '$quantity', '1')";
-            mysqli_query($con, $add_top);
+                mysqli_query($con, $add_top);
+            }
         }
     }
 
     // Redirect after successful insertion
 
-    if ($add_top) {
-        echo "<script>window.location = 'action.php?status=success&redirect=add_top.php';</script>";
+    if ($add_top || $update_query) {
 
         $message = "New top Added:\n";
         $message .= "top Name: $top_name\n";
@@ -130,11 +154,15 @@ if (isset($_POST['add'])) {
 
         sendMessageToSubscribers($message, $con);
         sendEmailToSubscribers($message, $subject, $con);
+
+
+        echo "<script>window.location = 'action.php?status=success&redirect=add_top.php';</script>";
     } else {
         echo "<script>window.location = 'action.php?status=error&message=Error adding top to the database.&redirect=add_top.php';</script>";
     }
-    
 }
+
+
 ?>
 
 <?php
@@ -165,13 +193,7 @@ if ($result) {
         $module = json_decode($row['module'], true);
 
 
-        
-
-
         $addButtonVisible = ($module['addtop'] == 1) ? true : false;
-
-
-        
     } else {
         echo "No user found with the specified ID";
     }
@@ -186,7 +208,7 @@ if ($result) {
 
 <head>
     <?php
-    $title = 'Add Top';
+    $title = 'Add top';
     include $redirect_link . 'partials/title-meta.php'; ?>
     <link href="../../assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css">
 
@@ -262,13 +284,89 @@ if ($result) {
                             <form method="post" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 
 
-                                <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" >Top Name</label>
-                                    <input type="text" name="top_name" id="top_name"  class="form-input" list="jeans_types" required>
-                                    <datalist id="jeans_types">
-                                        <!-- Options will be populated here -->
-                                    </datalist>
+                                <div class="relative mb-3">
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2" for="top_name">top Name</label>
+                                    <div class="relative">
+                                        <input
+                                            type="text"
+                                            name="top_name"
+                                            id="top_name"
+                                            value="<?php if (isset($top_name)) echo $top_name ?>"
+                                            class="form-input w-full"
+                                            autocomplete="off"
+                                            required
+                                            oninput="filterOptions(this.value)"
+                                            onblur="handleBlur()">
+                                        <div id="dropdown" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto hidden">
+                                            <?php
+                                            $sql10 = "SELECT DISTINCT top_name FROM top";
+                                            $result10 = $con->query($sql10);
+
+                                            if ($result10->num_rows > 0) {
+                                                while ($row10 = $result10->fetch_assoc()) {
+                                                    echo "<div class='option px-4 py-2 hover:bg-gray-100 cursor-pointer' onclick='selectOption(this.innerText)'>" .
+                                                        htmlspecialchars($row10['top_name']) .
+                                                        "</div>";
+                                                }
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
                                 </div>
+
+
+                                <script>
+                                    function filterOptions(searchText) {
+                                        const dropdown = document.getElementById('dropdown');
+                                        const options = dropdown.getElementsByClassName('option');
+
+                                        dropdown.classList.remove('hidden');
+
+                                        for (let option of options) {
+                                            const text = option.innerText.toLowerCase();
+                                            const search = searchText.toLowerCase();
+
+                                            if (text.includes(search)) {
+                                                option.style.display = '';
+                                            } else {
+                                                option.style.display = 'none';
+                                            }
+                                        }
+                                    }
+
+                                    function selectOption(value) {
+                                        document.getElementById('top_name').value = value;
+                                        document.getElementById('dropdown').classList.add('hidden');
+                                    }
+
+                                    function handleBlur() {
+                                        // Delay hiding dropdown to allow click events to register
+                                        setTimeout(() => {
+                                            document.getElementById('dropdown').classList.add('hidden');
+                                        }, 200);
+                                    }
+
+                                    // Show dropdown when clicking input
+                                    document.getElementById('top_name').addEventListener('click', function() {
+                                        document.getElementById('dropdown').classList.remove('hidden');
+                                        filterOptions(this.value);
+                                    });
+                                </script>
+
+                                <style>
+                                    .form-input {
+                                        width: 100%;
+                                        padding: 0.5rem;
+                                        border: 1px solid #e2e8f0;
+                                        border-radius: 0.375rem;
+                                    }
+
+                                    .form-input:focus {
+                                        outline: none;
+                                        border-color: #4f46e5;
+                                        box-shadow: 0 0 0 1px #4f46e5;
+                                    }
+                                </style>
 
 
 
@@ -309,7 +407,7 @@ if ($result) {
 
                                 <div class="mb-3">
                                     <label class="text-gray-800 text-sm font-medium inline-block mb-2"> Price</label>
-                                    <input type="number" step="0.0000001" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
+                                    <input type="number" min="0" value="0" step="0.01" name="price" class="form-input" required value="<?php if (isset($price)) echo  $price ?>">
                                 </div>
 
 
@@ -331,10 +429,10 @@ if ($result) {
 
 
                                 <div class="mb-3">
-                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">Top Sizes and Quantities</label>
+                                    <label class="text-gray-800 text-sm font-medium inline-block mb-2">top Sizes and Quantities</label>
 
                                     <?php
-                                  
+                                    // Fetch all sizes from the `topdb` table
                                     $sql = "SELECT * FROM topdb";
                                     $result = mysqli_query($con, $sql);
                                     while ($row = mysqli_fetch_assoc($result)) {
@@ -351,7 +449,7 @@ if ($result) {
                                             <input type="hidden" name="sizes[]" value="<?php echo $size; ?>">
 
                                             <!-- Quantity Input -->
-                                            <input type="number" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
+                                            <input type="number" min="0" name="quantities[]" value="0" step="1" class="form-input flex-1 ml-4 border border-gray-300 p-2 rounded-md text-gray-800" placeholder="Quantity for size <?php echo $size; ?>">
                                         </div>
                                     <?php
                                     }
@@ -456,12 +554,12 @@ if ($result) {
 
 
 <script>
-    document.getElementById('jeans_types').addEventListener('focus', function() {
+    document.getElementById('top_types').addEventListener('focus', function() {
         // Fetch suggestions from the server and populate the datalist
-        fetch('get_job_types.php?database=jeans')
+        fetch('get_job_types.php?database=top')
             .then(response => response.json())
             .then(data => {
-                const datalist = document.getElementById('jeans_types');
+                const datalist = document.getElementById('top_types');
                 datalist.innerHTML = ''; // Clear previous options
                 data.forEach(item => {
                     const option = document.createElement('option');

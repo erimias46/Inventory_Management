@@ -207,7 +207,11 @@ if ($result) {
 
 
                                                             <?php if($row['verifiy'] != '1'): ?>
-                                                                <button type="button"
+                                                                <button 
+
+                                                                id="verify-btn"
+                                                                
+                                                                type="button"
                                                                 class="btn bg-success/25 text-success hover:bg-warning hover:text-white btn-sm rounded-full"
                                                                 data-fc-type="modal"
                                                                 data-fc-target="verify<?= $row['sales_id'] ?>">

@@ -15,7 +15,7 @@ require 'vendor/PHPMailer/src/SMTP.php';
 
 class Backup
 {
-    public function backup_tables($host = '109.70.148.67', $user = 'habeshyq_erimias', $pass = '+s3wY8jnE@kJ', $dbname = 'habeshyq_fgsystemnet_elegant', $tables = '*')
+    public function backup_tables($host = 'localhost', $user = 'root', $pass = '', $dbname = 'inventory', $tables = '*')
     {
         $link = mysqli_connect($host, $user, $pass, $dbname);
 
@@ -139,7 +139,7 @@ try {
     }
     
    
-    public function backup_tableslc($host = '109.70.148.67', $user = 'habeshyq_erimias', $pass = '+s3wY8jnE@kJ', $dbname = 'habeshyq_fgsystemnet_elegant', $tables = '*'){
+    public function backup_tableslc($host = 'localhost', $user = 'root', $pass = '', $dbname = 'inventory', $tables = '*'){
         $link = mysqli_connect($host, $user, $pass, $dbname);
 
         // Check connection

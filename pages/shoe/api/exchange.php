@@ -1,4 +1,4 @@
-
+   
 <?php 
 
 $current_date = date('Y-m-d');
@@ -7,10 +7,7 @@ $side_link = "../../../";
 
 
 
-include $redirect_link . 'partials/main.php';
-include_once $redirect_link . 'include/db.php'; // Include your database connection
-include_once $redirect_link . 'include/email.php';
-include_once $redirect_link . 'include/bot.php';
+
 
     $user_id = $_SESSION['user_id']; 
     $sales_id = $_POST['sales_id'];
@@ -22,7 +19,8 @@ include_once $redirect_link . 'include/bot.php';
     $cash = $_POST['cash'];
     $bank = $_POST['bank'];
     $method = $_POST['method'];
-    $date = $_POST['date'];
+   // $date = $_POST['date'];
+    $date = date('Y-m-d');
     $quantity = $_POST['quantity'];
     if($bank == 0){
         $bank_name = null; 
@@ -65,9 +63,16 @@ include_once $redirect_link . 'include/bot.php';
             $result_add = mysqli_query($con, $add_shoes);
 
             if ($result_add) {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                if(isset($place)) {
+                    echo "<script>window.location = '../sale/action.php?status=error&redirect=all_sales.php'; </script>";
+                } else {
+                    echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                }
+                // echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
                 
             }
+           
+
 
             exit;
 
@@ -97,8 +102,12 @@ include_once $redirect_link . 'include/bot.php';
                 $result_add = mysqli_query($con, $add_shoes);
 
                 if ($result_add) {
-                    echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
-                    exit;
+                    if(isset($place)) {
+                        echo "<script>window.location = '../sale/action.php?status=error&redirect=all_sales.php'; </script>";
+                    } else {
+                        echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                    }
+
                 }
 
                 exit;
@@ -120,10 +129,25 @@ include_once $redirect_link . 'include/bot.php';
             $update_sales = "UPDATE `shoes_sales` SET `status` = 'Exchange Sell' WHERE sales_id = '$sales_id'";
             $result_update = mysqli_query($con, $update_sales);
 
+
+
+
             if($result_add && $result_update) {
-                echo "<script>window.location = 'action.php?status=success&redirect=sale_shoes.php'; </script>";
+
+                if(isset($place)) {
+                    echo "<script>window.location = '../sale/action.php?status=success&redirect=all_sales.php'; </script>";
+                } else {
+                    echo "<script>window.location = 'action.php?status=success&redirect=sale_shoes.php'; </script>";
+                }
+                
             } else {
-                echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+
+                if(isset($place)) {
+                    echo "<script>window.location = '../sale/action.php?status=error&redirect=all_sales.php'; </script>";
+                } else {
+                    echo "<script>window.location = 'action.php?status=error&redirect=sale_shoes.php'; </script>";
+                }
+               
             }
 
             $status = "Exchange Sell";
@@ -137,23 +161,15 @@ include_once $redirect_link . 'include/bot.php';
             $result_update = mysqli_query($con, $update_quantity);
 
 
-
-
-    $message = "Exchange To shoes\n";
-    $message .= "shoes Name: $shoes_name\n";
-    $message .= "Size: $size\n";
-    $message .= "Quantity: $quantity\n";
-    $message .= "Price: $price\n";
-    $message .= "Cash: $cash\n";
-    $message .= "Bank: $bank\n";
-    $message .= "Method: $method\n";
-    $message .= "Date: $date\n";
-
-
-
-
-
-
+            $message = "Exchange To shoes\n";
+            $message .= "shoes Name: $shoes_name\n";
+            $message .= "Size: $size\n";
+            $message .= "Quantity: $quantity\n";
+            $message .= "Price: $price\n";
+            $message .= "Cash: $cash\n";
+            $message .= "Bank: $bank\n";
+            $message .= "Method: $method\n";
+            $message .= "Date: $date\n";
 
 
             $sql="SELECT * from shoes_sales where sales_id = '$sales_id'";
@@ -199,22 +215,28 @@ include_once $redirect_link . 'include/bot.php';
 
 
 
+            $message .= "Exchange  From shoes\n";
+            $message .= "shoes Name: $shoes_name\n";
+            $message .= "Size: $size\n";
+            $message .= "Quantity: $quantity\n";
+            $message .= "Price: $price\n";
+            $message .= "Cash: $cash\n";
+            $message .= "Bank: $bank\n";
+            $message .= "Method: $method\n";
+            $message .= "Date: $date\n";
 
-    $message .= "Exchange  From shoes\n";
-    $message .= "shoes Name: $shoes_name\n";
-    $message .= "Size: $size\n";
-    $message .= "Quantity: $quantity\n";
-    $message .= "Price: $price\n";
-    $message .= "Cash: $cash\n";
-    $message .= "Bank: $bank\n";
-    $message .= "Method: $method\n";
-    $message .= "Date: $date\n";
 
-
-    $subject = "Exchange shoes";
+            $subject = "Exchange shoes";
 
     sendMessageToSubscribers($message, $con);
     sendEmailToSubscribers($message, $subject, $con);
+
+
+
+
+
+
+           
 
 
 

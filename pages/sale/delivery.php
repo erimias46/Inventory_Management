@@ -3,7 +3,10 @@ $redirect_link = "../../";
 $side_link = "../../";
 include $redirect_link . 'partials/main.php';
 include_once $redirect_link . 'include/db.php';
+include_once $redirect_link . 'include/bot.php';
+include_once $redirect_link . 'include/email.php';
 $current_date = date('Y-m-d');
+$title = "Delivery";
 ?>
 
 <head>
@@ -15,6 +18,7 @@ $current_date = date('Y-m-d');
 
 
 <?php
+
 $id = $_SESSION['user_id'];
 
 $result = mysqli_query($con, "SELECT * FROM user WHERE user_id = $id");
@@ -61,6 +65,7 @@ if ($result) {
                 <div class="card">
                     <div class="card mt-3">
                         <div class="p-6">
+                            <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200 text-center">Delivery</h2>
                             <div class="overflow-x-auto">
                                 <div class="min-w-full inline-block align-middle">
                                     <div class="overflow-hidden">
@@ -75,34 +80,67 @@ if ($result) {
 
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+
                                                     <th class="p-2.5 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                                    <th class=" p-2.5 text-left text-xs font-medium text-gray-500 uppercase"> Image</th>
+                                                    <th class=" p-2.5 text-left text-xs font-medium text-gray-500 uppercase"> Reason </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
 
+
+                                                $prevDate = ''; // Variable to track the previous date (Y-m-d)
+                                                $colors = [
+                                                    'text-red-800',
+                                                    'text-green-500',
+
+                                                    'text-yellow-500',
+
+                                                    'text-pink-500',
+
+
+                                                    'text-teal-500'
+
+                                                ]; // Array of 10 different text colors to alternate between
+                                                $currentColorIndex = 0;
+
+
+
                                                 $sql = "
-SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,verifiy
-FROM shoes_delivery
+SELECT 'shoes' AS source, sales_id, shoes_name AS Name, sales_date, price, size,verifiy,created_at,reason
+FROM shoes_delivery where verifiy = 0
 UNION ALL
-SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size,verifiy
-FROM top_delivery
+SELECT 'top' AS source, sales_id, top_name AS Name, sales_date, price, size,verifiy,created_at,reason
+FROM top_delivery where verifiy = 0
 UNION ALL
-SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size,verifiy
-FROM complete_delivery
+SELECT 'complete' AS source, sales_id, complete_name AS Name, sales_date, price, size,verifiy,created_at,reason
+FROM complete_delivery where verifiy = 0
 UNION ALL
-SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size,verifiy
-FROM accessory_delivery
+SELECT 'accessory' AS source, sales_id, accessory_name AS Name, sales_date, price, size,verifiy,created_at,reason
+FROM accessory_delivery where verifiy = 0
 UNION ALL
-SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size,verifiy
-FROM delivery
-ORDER BY sales_date DESC;
+SELECT 'jeans' AS source, sales_id, jeans_name AS Name, sales_date, price, size,verifiy,created_at,reason
+FROM delivery where verifiy = 0
+ORDER BY created_at DESC;
 ";
 
 
                                                 $result22 = mysqli_query($con, $sql);
                                                 $num = 1;
                                                 while ($row = mysqli_fetch_assoc($result22)) {
+
+
+                                                    $currentDate = $row['reason'];
+
+                                                    // Check if the current row's date matches the previous row's date
+                                                    if ($currentDate != $prevDate) {
+                                                        $currentColorIndex = ($currentColorIndex + 1) % count($colors); // Cycle through colors
+                                                    }
+                                                    $dateTextColor = $colors[$currentColorIndex]; // Assign the text color based on the index
+
+                                                    // Update previous date tracker
+                                                    $prevDate = $currentDate;
 
                                                     $type = $row['source'];
 
@@ -121,7 +159,7 @@ ORDER BY sales_date DESC;
                                                             <?php if ($deletesalejeans) : ?>
 
                                                                 <a id="del-btn"
-                                                                    href="api/remove.php?id=<?php echo $row['sales_id']; ?>&from=delivery"
+                                                                    href="api/delivery_remove.php?id=<?php echo $row['sales_id']; ?>&from=delivery&source=<?php echo $row['source']; ?>"
                                                                     class="btn bg-danger/25 text-danger hover:bg-danger hover:text-white btn-sm rounded-full"><i
                                                                         class="mgc_delete_2_line text-base me-2"></i> Delete</a>
 
@@ -135,14 +173,30 @@ ORDER BY sales_date DESC;
 
 
                                                                 <?php if ($row['verifiy'] != '1'): ?>
-                                                                    <a id="del-btn" href="api/verify.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-success text-white hover:bg-warning hover:text-white btn-sm rounded-full">
-                                                                        <i class="mgc_delete_2_line text-base me-2"></i> Verify
+                                                                    <a id="verify-btn" href="api/verify.php?type=<?= $type ?>&sales_id=<?php echo $row['sales_id']; ?>" class="btn bg-success text-white hover:bg-warning hover:text-white btn-sm rounded-full">
+                                                                    <i class="fas fa-check-circle text-base me-2"></i> Verify
                                                                     </a>
 
                                                                 <?php endif; ?>
                                                             <?php endif; ?>
 
 
+                                                        </td>
+                                                        <td>
+                                                            <?php
+                                                            $type_name = $type . '_name';
+                                                            $product_name = $row['Name'];
+                                                            $size = $row['size'];
+                                                            $sql5 = "SELECT * FROM $type WHERE $type_name = '$product_name' AND size = '$size'";
+                                                            $result5 = mysqli_query($con, $sql5);
+                                                            $row5 = mysqli_fetch_assoc($result5);
+                                                            $image = $row5['image'];
+                                                            ?>
+                                                            <img src="../../include/<?= $image ?>" alt="" class="w-30 h-20">
+
+                                                        </td>
+                                                        <td class="px-2 py-2.5 whitespace-nowrap text-sm font-sm <?php echo $dateTextColor; ?>">
+                                                            <?php echo $row['reason']; ?>
                                                         </td>
                                                     </tr>
 
@@ -188,6 +242,10 @@ ORDER BY sales_date DESC;
             });
         });
     });
+
+    $('#zero_config').DataTable({
+    pageLength: 50
+});
 </script>
 
 </html>

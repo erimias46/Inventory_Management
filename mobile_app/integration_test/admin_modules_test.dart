@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
 import 'package:yurostock_mobile/core/router/app_router.dart';
 import 'package:yurostock_mobile/features/admin/dashboard_screen.dart';
 import 'package:yurostock_mobile/features/admin/inventory_list_screen.dart';
@@ -9,10 +8,11 @@ import 'package:yurostock_mobile/features/admin/users_screen.dart';
 import 'package:yurostock_mobile/features/admin/customers_screen.dart';
 import 'package:yurostock_mobile/features/admin/categories_screen.dart';
 
+import 'support/binding.dart';
 import 'support/test_harness.dart';
 
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  configureIntegrationTestBinding();
 
   group('Admin modules', () {
     testWidgets('dashboard shows KPI cards from live API', (tester) async {
@@ -25,7 +25,7 @@ void main() {
           child: const MaterialApp(home: DashboardScreen()),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 15));
+      await IntegrationHarness.waitUntil(tester, () => find.text('Profit').evaluate().isNotEmpty);
 
       expect(find.text('Profit'), findsWidgets);
       expect(find.text('Earnings'), findsWidgets);
@@ -42,12 +42,12 @@ void main() {
           child: const MaterialApp(home: DashboardScreen()),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 12));
+      await IntegrationHarness.waitForScreenLoad(tester);
 
       for (final label in ['7d', '30d', 'Today']) {
         if (find.text(label).evaluate().isNotEmpty) {
           await tester.tap(find.text(label).first);
-          await tester.pumpAndSettle(const Duration(seconds: 8));
+          await IntegrationHarness.settle(tester);
         }
       }
       IntegrationHarness.assertNoFrameworkError(tester);
@@ -63,7 +63,10 @@ void main() {
           child: const MaterialApp(home: InventoryListScreen(type: 'jeans')),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 12));
+      await IntegrationHarness.waitUntil(
+        tester,
+        () => find.textContaining('Test Jean').evaluate().isNotEmpty,
+      );
       expect(find.textContaining('Test Jean'), findsWidgets);
       IntegrationHarness.assertNoFrameworkError(tester);
     });
@@ -78,7 +81,10 @@ void main() {
           child: const MaterialApp(home: InventoryListScreen(type: 'shoes')),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 12));
+      await IntegrationHarness.waitUntil(
+        tester,
+        () => find.textContaining('Test Shoe').evaluate().isNotEmpty,
+      );
       expect(find.textContaining('Test Shoe'), findsWidgets);
       IntegrationHarness.assertNoFrameworkError(tester);
     });
@@ -93,7 +99,10 @@ void main() {
           child: const MaterialApp(home: UsersScreen()),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await IntegrationHarness.waitUntil(
+        tester,
+        () => find.textContaining('masteradmin').evaluate().isNotEmpty,
+      );
       expect(find.textContaining('masteradmin'), findsWidgets);
       IntegrationHarness.assertNoFrameworkError(tester);
     });
@@ -108,7 +117,7 @@ void main() {
           child: const MaterialApp(home: CustomersScreen()),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await IntegrationHarness.waitForScreenLoad(tester);
       IntegrationHarness.assertNoFrameworkError(tester);
     });
 
@@ -122,7 +131,7 @@ void main() {
           child: const MaterialApp(home: CategoriesScreen()),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await IntegrationHarness.waitForScreenLoad(tester);
       IntegrationHarness.assertNoFrameworkError(tester);
     });
 
@@ -134,10 +143,10 @@ void main() {
       expect(find.text('Dashboard'), findsWidgets);
 
       await tester.tap(find.text('Inventory'));
-      await tester.pumpAndSettle(const Duration(seconds: 8));
+      await IntegrationHarness.settle(tester);
 
       await tester.tap(find.text('More'));
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await IntegrationHarness.settle(tester, cap: const Duration(seconds: 5));
       expect(find.text('Operations'), findsOneWidget);
       IntegrationHarness.assertNoFrameworkError(tester);
     });
@@ -153,9 +162,9 @@ void main() {
           child: MaterialApp.router(routerConfig: router),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 6));
+      await IntegrationHarness.settle(tester, cap: const Duration(seconds: 10));
       router.go('/admin/tools');
-      await tester.pumpAndSettle(const Duration(seconds: 8));
+      await IntegrationHarness.settle(tester, cap: const Duration(seconds: 10));
       IntegrationHarness.assertNoFrameworkError(tester);
     });
   });

@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
 import 'package:yurostock_mobile/core/config/api_config.dart';
 import 'package:yurostock_mobile/core/providers/app_providers.dart';
 
+import 'support/binding.dart';
 import 'support/live_config.dart';
 
 /// Live API smoke — requires MAMP + `php tests/fixtures/setup_test_shop.php`
@@ -13,7 +13,7 @@ import 'support/live_config.dart';
 /// Or:
 ///   cd mobile_app && flutter test integration_test
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  configureIntegrationTestBinding();
 
   test('login and load dashboard overview via API', () async {
     await ApiConfig.setBaseUrl(LiveTestConfig.apiBase);

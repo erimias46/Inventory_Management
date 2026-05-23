@@ -58,26 +58,12 @@ if command -v flutter &>/dev/null; then
   (cd mobile_app && flutter test test/)
   echo ""
   if [ -d mobile_app/integration_test ] && [ "${RUN_INTEGRATION:-0}" = "1" ]; then
-    echo "==> 5/5 Flutter API integration (live MAMP)"
-    (cd mobile_app && flutter test integration_test/api_smoke_test.dart \
-      --dart-define=TEST_API_BASE="${TEST_API_BASE:-http://127.0.0.1:8888/stock/api/v1/index.php}" \
-      --dart-define=TEST_USER="${TEST_USER:-masteradmin}" \
-      --dart-define=TEST_PASS="${TEST_PASS:-admin}" \
-      --dart-define=TEST_SHOP_SLUG="${TEST_SHOP_SLUG:-testshop}")
     if [ "${RUN_UI_INTEGRATION:-0}" = "1" ]; then
-      echo "==> 6/6 Flutter UI integration (simulator/device)"
-      DEVICE="${FLUTTER_DEVICE:-}"
-      if [ -z "$DEVICE" ]; then
-        DEVICE=$(flutter devices 2>/dev/null | awk '/simulator|mobile|macos/{print $NF; exit}' | tr -d '()')
-      fi
-      DEVICE_FLAG=()
-      if [ -n "$DEVICE" ]; then DEVICE_FLAG=(-d "$DEVICE"); fi
-      (cd mobile_app && flutter test integration_test/ "${DEVICE_FLAG[@]}" \
-        --dart-define=TEST_API_BASE="${TEST_API_BASE:-http://127.0.0.1:8888/stock/api/v1/index.php}" \
-        --dart-define=TEST_USER="${TEST_USER:-masteradmin}" \
-        --dart-define=TEST_PASS="${TEST_PASS:-admin}" \
-        --dart-define=TEST_SHOP_SLUG="${TEST_SHOP_SLUG:-testshop}")
+      echo "==> 6/6 Flutter UI integration (one file at a time — use mobile_app/run_tests.sh)"
+      (cd mobile_app && RUN_INTEGRATION=1 RUN_UI_INTEGRATION=1 ./run_tests.sh)
     else
+      echo "==> 5/5 Flutter API integration (live MAMP)"
+      (cd mobile_app && RUN_INTEGRATION=1 ./run_tests.sh)
       echo "Tip: RUN_UI_INTEGRATION=1 RUN_INTEGRATION=1 ./tests/run_all.sh for full on-device UI flows"
     fi
   else

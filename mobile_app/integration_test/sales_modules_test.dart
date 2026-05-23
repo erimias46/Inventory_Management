@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
 import 'package:yurostock_mobile/core/router/app_router.dart';
 import 'package:yurostock_mobile/features/sales/all_sales_screen.dart';
 import 'package:yurostock_mobile/features/sales/multi_search_screen.dart';
@@ -11,10 +10,11 @@ import 'package:yurostock_mobile/features/sales/sales_logs_screen.dart';
 import 'package:yurostock_mobile/features/sales/sale_item_log_screen.dart';
 import 'package:yurostock_mobile/features/sales/products_in_log_screen.dart';
 
+import 'support/binding.dart';
 import 'support/test_harness.dart';
 
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  configureIntegrationTestBinding();
 
   group('Sales modules', () {
     testWidgets('sales shell tabs: POS, Sales list, Search', (tester) async {
@@ -42,7 +42,7 @@ void main() {
           child: const MaterialApp(home: AllSalesScreen()),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 12));
+      await IntegrationHarness.waitForScreenLoad(tester);
       IntegrationHarness.assertNoFrameworkError(tester);
     });
 
@@ -56,11 +56,11 @@ void main() {
           child: const MaterialApp(home: MultiSearchScreen()),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await IntegrationHarness.waitForScreenLoad(tester);
 
       await tester.enterText(find.byType(TextField).first, 'Test');
       await tester.tap(find.text('Go'));
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await IntegrationHarness.settle(tester);
       IntegrationHarness.assertNoFrameworkError(tester);
     });
 
@@ -74,13 +74,13 @@ void main() {
           child: const MaterialApp(home: MultiSearchScreen()),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 8));
+      await IntegrationHarness.waitForScreenLoad(tester);
       await tester.tap(find.text('Multi-size'));
-      await tester.pumpAndSettle();
+      await IntegrationHarness.settle(tester, cap: const Duration(seconds: 3));
 
       await tester.enterText(find.byType(TextField).first, 'M');
       await tester.tap(find.text('Find products with all sizes'));
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await IntegrationHarness.settle(tester);
       IntegrationHarness.assertNoFrameworkError(tester);
     });
 
@@ -94,7 +94,7 @@ void main() {
           child: const MaterialApp(home: DeliveryScreen()),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await IntegrationHarness.waitForScreenLoad(tester);
       IntegrationHarness.assertNoFrameworkError(tester);
     });
 
@@ -108,7 +108,7 @@ void main() {
           child: const MaterialApp(home: VerifyScreen()),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 10));
+      await IntegrationHarness.waitForScreenLoad(tester);
       IntegrationHarness.assertNoFrameworkError(tester);
     });
 
@@ -127,7 +127,7 @@ void main() {
             child: MaterialApp(home: screen),
           ),
         );
-        await tester.pumpAndSettle(const Duration(seconds: 10));
+        await IntegrationHarness.waitForScreenLoad(tester);
         IntegrationHarness.assertNoFrameworkError(tester);
       }
     });
@@ -143,9 +143,12 @@ void main() {
           child: MaterialApp.router(routerConfig: router),
         ),
       );
-      await tester.pumpAndSettle(const Duration(seconds: 6));
+      await IntegrationHarness.settle(tester, cap: const Duration(seconds: 10));
       router.go('/sales/category/jeans');
-      await tester.pumpAndSettle(const Duration(seconds: 15));
+      await IntegrationHarness.waitUntil(
+        tester,
+        () => find.textContaining('Jean').evaluate().isNotEmpty,
+      );
       expect(find.textContaining('Jean'), findsWidgets);
       IntegrationHarness.assertNoFrameworkError(tester);
     });

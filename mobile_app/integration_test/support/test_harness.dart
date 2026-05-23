@@ -12,6 +12,31 @@ import 'live_config.dart';
 class IntegrationHarness {
   IntegrationHarness._();
 
+  /// Max time for pumpAndSettle (avoids infinite spinners / chart animations).
+  static const settleCap = Duration(seconds: 15);
+
+  static Future<void> settle(WidgetTester tester, {Duration? cap}) async {
+    await tester.pumpAndSettle(
+      const Duration(milliseconds: 100),
+      EnginePhase.sendSemanticsUpdate,
+      cap ?? settleCap,
+    );
+  }
+
+  /// Poll until [condition] is true (preferred over long pumpAndSettle on lists).
+  static Future<void> waitUntil(
+    WidgetTester tester,
+    bool Function() condition, {
+    Duration timeout = const Duration(seconds: 25),
+  }) async {
+    final end = DateTime.now().add(timeout);
+    while (DateTime.now().isBefore(end)) {
+      await tester.pump(const Duration(milliseconds: 300));
+      if (condition()) return;
+    }
+    fail('Timed out after ${timeout.inSeconds}s waiting for UI condition');
+  }
+
   static Future<ProviderContainer> login() async {
     await ApiConfig.setBaseUrl(LiveTestConfig.apiBase);
     final container = ProviderContainer();
@@ -42,7 +67,7 @@ class IntegrationHarness {
         child: const YurostockApp(),
       ),
     );
-    await tester.pumpAndSettle(const Duration(seconds: 12));
+    await settle(tester, cap: const Duration(seconds: 20));
   }
 
   static Future<void> pumpPos(
@@ -64,38 +89,38 @@ class IntegrationHarness {
   static Future<void> goToSalesPos(WidgetTester tester, ProviderContainer container) async {
     await pumpApp(tester, container);
     await tester.tap(find.byTooltip('Sales POS'));
-    await tester.pumpAndSettle(const Duration(seconds: 10));
+    await settle(tester);
   }
 
   static Future<void> openSalesTab(WidgetTester tester, String label) async {
     await tester.tap(find.text(label));
-    await tester.pumpAndSettle(const Duration(seconds: 10));
+    await settle(tester);
   }
 
   static Future<void> addTestJeanToCart(WidgetTester tester) async {
     await tapProductNamed(tester, 'Test Jean');
     await tester.tap(find.textContaining('M ('));
-    await tester.pumpAndSettle(const Duration(seconds: 5));
+    await settle(tester);
     expect(find.text('Charge'), findsOneWidget);
   }
 
   static Future<void> addTestShoeToCart(WidgetTester tester) async {
     await tapProductNamed(tester, 'Test Shoe');
     await tester.tap(find.textContaining('40 ('));
-    await tester.pumpAndSettle(const Duration(seconds: 5));
+    await settle(tester);
   }
 
   static Future<void> tapProductNamed(WidgetTester tester, String name) async {
     final finder = find.text(name);
     expect(finder, findsWidgets);
     await tester.tap(finder.first);
-    await tester.pumpAndSettle(const Duration(seconds: 5));
+    await settle(tester);
     expect(find.text('Select size'), findsOneWidget);
   }
 
   static Future<void> openCheckoutSheet(WidgetTester tester) async {
     await tester.tap(find.text('Charge'));
-    await tester.pumpAndSettle(const Duration(seconds: 5));
+    await settle(tester);
     expect(find.text('Checkout'), findsOneWidget);
     expect(tester.takeException(), isNull);
   }
@@ -104,13 +129,13 @@ class IntegrationHarness {
     final show = find.textContaining('Show cart');
     if (show.evaluate().isNotEmpty) {
       await tester.tap(show.first);
-      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await settle(tester, cap: const Duration(seconds: 3));
     }
   }
 
   static Future<void> selectDeliveryMode(WidgetTester tester) async {
     await tester.tap(find.text('Delivery'));
-    await tester.pumpAndSettle();
+    await settle(tester, cap: const Duration(seconds: 3));
     expect(find.text('Delivery person'), findsOneWidget);
   }
 
@@ -120,18 +145,26 @@ class IntegrationHarness {
   static Future<void> enterDeliveryReason(WidgetTester tester, String reason) async {
     expect(checkoutDeliveryReasonField, findsOneWidget);
     await tester.enterText(checkoutDeliveryReasonField, reason);
-    await tester.pumpAndSettle();
+    await settle(tester, cap: const Duration(seconds: 3));
   }
 
   static Future<void> confirmCheckout(WidgetTester tester) async {
     final confirm = find.textContaining('Confirm');
     expect(confirm, findsWidgets);
     await tester.tap(confirm.last);
-    await tester.pumpAndSettle(const Duration(seconds: 10));
+    await settle(tester);
   }
 
   static void assertNoFrameworkError(WidgetTester tester) {
     expect(tester.takeException(), isNull);
+  }
+
+  static Future<void> waitForScreenLoad(WidgetTester tester) async {
+    await waitUntil(
+      tester,
+      () => find.byType(CircularProgressIndicator).evaluate().isEmpty,
+    );
+    await tester.pump(const Duration(milliseconds: 400));
   }
 
   static Future<void> _waitForProducts(WidgetTester tester, String category) async {

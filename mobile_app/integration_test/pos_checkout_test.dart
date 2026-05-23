@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
-
+import 'support/binding.dart';
 import 'support/test_harness.dart';
 
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  configureIntegrationTestBinding();
 
   group('POS checkout', () {
     testWidgets('jeans POS loads seeded Test Jean product', (tester) async {
@@ -38,10 +37,10 @@ void main() {
 
       if (find.byType(DropdownButtonFormField<String>).evaluate().isNotEmpty) {
         await tester.tap(find.byType(DropdownButtonFormField<String>).first);
-        await tester.pumpAndSettle(const Duration(seconds: 3));
+        await IntegrationHarness.settle(tester, cap: const Duration(seconds: 3));
         if (find.text('CBE').evaluate().isNotEmpty) {
           await tester.tap(find.text('CBE').last);
-          await tester.pumpAndSettle();
+          await IntegrationHarness.settle(tester);
         }
       }
       IntegrationHarness.assertNoFrameworkError(tester);
@@ -57,7 +56,7 @@ void main() {
       await IntegrationHarness.selectDeliveryMode(tester);
 
       await tester.tap(find.textContaining('Confirm delivery'));
-      await tester.pumpAndSettle();
+      await IntegrationHarness.settle(tester);
       expect(find.text('Enter who is delivering'), findsOneWidget);
 
       await IntegrationHarness.enterDeliveryReason(tester, 'Driver Test');
@@ -80,7 +79,7 @@ void main() {
       );
       if (find.text('Done').evaluate().isNotEmpty) {
         await tester.tap(find.text('Done'));
-        await tester.pumpAndSettle();
+        await IntegrationHarness.settle(tester);
       }
       IntegrationHarness.assertNoFrameworkError(tester);
     });
@@ -105,7 +104,7 @@ void main() {
       final addBtn = find.byIcon(Icons.add_circle_outline);
       if (addBtn.evaluate().isNotEmpty) {
         await tester.tap(addBtn.first);
-        await tester.pumpAndSettle(const Duration(seconds: 2));
+        await IntegrationHarness.settle(tester, cap: const Duration(seconds: 3));
         expect(find.textContaining('qty 2'), findsWidgets);
       }
     });

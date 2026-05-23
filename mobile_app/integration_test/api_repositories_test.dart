@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
 import 'package:yurostock_mobile/core/providers/app_providers.dart';
 
+import 'support/binding.dart';
 import 'support/test_harness.dart';
 
 /// Deep API coverage through mobile repositories (no UI).
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  configureIntegrationTestBinding();
 
   group('Repository API coverage', () {
     testWidgets('products endpoints', (tester) async {

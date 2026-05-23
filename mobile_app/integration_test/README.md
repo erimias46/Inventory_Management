@@ -8,17 +8,13 @@ Requires:
 
 ## Run
 
+Prefer the script (runs one file at a time, 5m timeout, avoids zsh paste issues):
+
 ```bash
 cd mobile_app
-
-# API-only (fast, ~30s)
-flutter test integration_test/api_smoke_test.dart integration_test/api_repositories_test.dart
-
-# POS checkout (cart + bank dropdown + sale)
-flutter test integration_test/pos_checkout_test.dart -d <device_id>
-
-# Everything
-flutter test integration_test/ -d <device_id>
+./run_tests.sh                                    # unit/widget only
+RUN_INTEGRATION=1 ./run_tests.sh                  # + API integration
+RUN_INTEGRATION=1 RUN_UI_INTEGRATION=1 ./run_tests.sh   # + simulator UI
 ```
 
 Or from repo root:
@@ -26,6 +22,8 @@ Or from repo root:
 ```bash
 RUN_INTEGRATION=1 RUN_UI_INTEGRATION=1 ./tests/run_all.sh
 ```
+
+Do **not** run `flutter test integration_test/` as a single command — it starts concurrent Xcode builds and can hang for hours.
 
 ## Files
 
